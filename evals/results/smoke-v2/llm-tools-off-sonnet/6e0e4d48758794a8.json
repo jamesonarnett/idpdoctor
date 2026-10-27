@@ -1,0 +1,210 @@
+{
+  "case_id": "saml_status_not_success-00",
+  "case_hash": "6e0e4d48758794a8",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_STATUS_NOT_SUCCESS",
+    "posture_codes": [],
+    "evidence_path": "/Response/Status/StatusCode/@Value",
+    "fix_keys": [
+      "statuscode",
+      "sub-code",
+      "statusmessage:",
+      "responder"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_status_not_success-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "status_responder",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "6e0e4d48758794a8"
+  },
+  "output": {
+    "root_cause_code": "SAML_STATUS_NOT_SUCCESS",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/Response/Status/StatusCode/@Value",
+        "actual": "urn:oasis:names:tc:SAML:2.0:status:Responder",
+        "expected": "urn:oasis:names:tc:SAML:2.0:status:Success"
+      },
+      {
+        "path": "/Response/Status/StatusCode/StatusCode/@Value",
+        "actual": "urn:oasis:names:tc:SAML:2.0:status:RequestDenied",
+        "note": "Nested second-level status code"
+      },
+      {
+        "path": "/Response/Status/StatusMessage",
+        "actual": "The user is not assigned to this application.",
+        "note": "IdP states the denial reason"
+      }
+    ],
+    "fix": "The IdP denied the request, so the SP configuration is not the problem and the response contains no assertion to validate. Have an IdP admin assign the user, or a group they belong to, to this SP application. Then retry the login. Keep signature, audience and time-window validation unchanged. The SP should show a clear \"access denied\" message when it receives a non-Success status. It should not try to process the response as a login.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "IDP_POLICY_REFUSAL",
+        "why_not": "The refusal is real, but it is reported through a SAML status code in the artifact. The status-code class fits more directly."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T01:16:30.03656-05:00",
+  "duration_ms": 4755,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 561,
+    "cache_creation_input_tokens": 2403,
+    "cache_read_input_tokens": 3689
+  },
+  "cost_usd": 0.0155949,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 561,
+      "cacheReadInputTokens": 3689,
+      "cacheCreationInputTokens": 2403,
+      "costUSD": 0.0155949,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "envelope": {
+    "duration_api_ms": 4657,
+    "stop_reason": "tool_use",
+    "session_id": "9e5befee-80b7-42e5-aef7-1ead49b785d7",
+    "total_cost_usd": 0.0155949,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 2403,
+      "cache_read_input_tokens": 3689,
+      "output_tokens": 561,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 2403,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 561,
+          "cache_read_input_tokens": 3689,
+          "cache_creation_input_tokens": 2403,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2403
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 561,
+        "cacheReadInputTokens": 3689,
+        "cacheCreationInputTokens": 2403,
+        "webSearchRequests": 0,
+        "costUSD": 0.0155949,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 2403,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_STATUS_NOT_SUCCESS\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/Response/Status/StatusCode/@Value\",\"actual\":\"urn:oasis:names:tc:SAML:2.0:status:Responder\",\"expected\":\"urn:oasis:names:tc:SAML:2.0:status:Success\"},{\"path\":\"/Response/Status/StatusCode/StatusCode/@Value\",\"actual\":\"urn:oasis:names:tc:SAML:2.0:status:RequestDenied\",\"note\":\"Nested second-level status code\"},{\"path\":\"/Response/Status/StatusMessage\",\"actual\":\"The user is not assigned to this application.\",\"note\":\"IdP states the denial reason\"}],\"fix\":\"The IdP denied the request, so the SP configuration is not the problem and the response contains no assertion to validate. Have an IdP admin assign the user, or a group they belong to, to this SP application. Then retry the login. Keep signature, audience and time-window validation unchanged. The SP should show a clear \\\"access denied\\\" message when it receives a non-Success status. It should not try to process the response as a login.\",\"alternatives\":[{\"code\":\"IDP_POLICY_REFUSAL\",\"why_not\":\"The refusal is real, but it is reported through a SAML status code in the artifact. The status-code class fits more directly.\"}]}",
+    "structured_output": {
+      "root_cause_code": "SAML_STATUS_NOT_SUCCESS",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/Response/Status/StatusCode/@Value",
+          "actual": "urn:oasis:names:tc:SAML:2.0:status:Responder",
+          "expected": "urn:oasis:names:tc:SAML:2.0:status:Success"
+        },
+        {
+          "path": "/Response/Status/StatusCode/StatusCode/@Value",
+          "actual": "urn:oasis:names:tc:SAML:2.0:status:RequestDenied",
+          "note": "Nested second-level status code"
+        },
+        {
+          "path": "/Response/Status/StatusMessage",
+          "actual": "The user is not assigned to this application.",
+          "note": "IdP states the denial reason"
+        }
+      ],
+      "fix": "The IdP denied the request, so the SP configuration is not the problem and the response contains no assertion to validate. Have an IdP admin assign the user, or a group they belong to, to this SP application. Then retry the login. Keep signature, audience and time-window validation unchanged. The SP should show a clear \"access denied\" message when it receives a non-Success status. It should not try to process the response as a login.",
+      "alternatives": [
+        {
+          "code": "IDP_POLICY_REFUSAL",
+          "why_not": "The refusal is real, but it is reported through a SAML status code in the artifact. The status-code class fits more directly."
+        }
+      ]
+    },
+    "ttft_ms": 4736,
+    "type": "result",
+    "duration_ms": 4755,
+    "uuid": "d9e5c7e4-c3a1-4564-bb6c-7c3f9a2ef6aa",
+    "ttft_stream_ms": 1464,
+    "time_to_request_ms": 97,
+    "first_content_frame_ms": 1464,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

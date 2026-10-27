@@ -1,0 +1,185 @@
+{
+  "case_id": "oidc_request_binding_mismatch-00",
+  "case_hash": "af52fe519ad5de61",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OIDC_REQUEST_BINDING_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/claims/at_hash",
+    "fix_keys": [
+      "generate",
+      "fresh",
+      "nonce",
+      "authorization"
+    ],
+    "needs": [
+      "access_token"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "oidc_request_binding_mismatch-00",
+    "kind": "jwt",
+    "mutator": "jwt_at_hash_mismatch",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "af52fe519ad5de61"
+  },
+  "output": {
+    "root_cause_code": "OIDC_REQUEST_BINDING_MISMATCH",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/claims/at_hash",
+        "actual": "[REDACTED:at_hash:ab7aac87]",
+        "expected": "[REDACTED:at_hash:627e2ed6]",
+        "note": "at_hash in the id_token does not match the hash computed from the access token presented. The signature, issuer, audience, time claims and nonce all pass."
+      }
+    ],
+    "fix": "Make sure the access_token you validate is the one returned in the same token response as this id_token. Don't pair tokens from different responses or refreshes. Compute at_hash as the base64url of the left half of the SHA-256 digest of the ASCII access token, because RS256 uses the SHA-256 family. Keep the signature, nonce, issuer and audience checks as they are. If the pairing is correct and the mismatch persists, check whether a proxy or middleware is altering or re-issuing the access token.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T01:38:54.539288-05:00",
+  "duration_ms": 14791,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1111,
+    "cache_creation_input_tokens": 14856,
+    "cache_read_input_tokens": 12891
+  },
+  "cost_usd": 0.0718311,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1111,
+      "cacheReadInputTokens": 12891,
+      "cacheCreationInputTokens": 14856,
+      "costUSD": 0.0718311,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 14683,
+    "stop_reason": "tool_use",
+    "session_id": "f98a231f-be46-4e6b-bc60-68fe21cc7ab5",
+    "total_cost_usd": 0.0718311,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 14856,
+      "cache_read_input_tokens": 12891,
+      "output_tokens": 1111,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 14856,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 444,
+          "cache_read_input_tokens": 12891,
+          "cache_creation_input_tokens": 1965,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1965
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1111,
+        "cacheReadInputTokens": 12891,
+        "cacheCreationInputTokens": 14856,
+        "webSearchRequests": 0,
+        "costUSD": 0.0718311,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 14856,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OIDC_REQUEST_BINDING_MISMATCH\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/claims/at_hash\",\"actual\":\"[REDACTED:at_hash:ab7aac87]\",\"expected\":\"[REDACTED:at_hash:627e2ed6]\",\"note\":\"at_hash in the id_token does not match the hash computed from the access token presented. The signature, issuer, audience, time claims and nonce all pass.\"}],\"fix\":\"Make sure the access_token you validate is the one returned in the same token response as this id_token. Don't pair tokens from different responses or refreshes. Compute at_hash as the base64url of the left half of the SHA-256 digest of the ASCII access token, because RS256 uses the SHA-256 family. Keep the signature, nonce, issuer and audience checks as they are. If the pairing is correct and the mismatch persists, check whether a proxy or middleware is altering or re-issuing the access token.\",\"alternatives\":[]}",
+    "structured_output": {
+      "root_cause_code": "OIDC_REQUEST_BINDING_MISMATCH",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/claims/at_hash",
+          "actual": "[REDACTED:at_hash:ab7aac87]",
+          "expected": "[REDACTED:at_hash:627e2ed6]",
+          "note": "at_hash in the id_token does not match the hash computed from the access token presented. The signature, issuer, audience, time claims and nonce all pass."
+        }
+      ],
+      "fix": "Make sure the access_token you validate is the one returned in the same token response as this id_token. Don't pair tokens from different responses or refreshes. Compute at_hash as the base64url of the left half of the SHA-256 digest of the ASCII access token, because RS256 uses the SHA-256 family. Keep the signature, nonce, issuer and audience checks as they are. If the pairing is correct and the mismatch persists, check whether a proxy or middleware is altering or re-issuing the access token.",
+      "alternatives": []
+    },
+    "ttft_ms": 5754,
+    "type": "result",
+    "duration_ms": 14791,
+    "uuid": "968e7274-bccb-4c3d-9dab-df761d320d52",
+    "ttft_stream_ms": 2740,
+    "time_to_request_ms": 97,
+    "first_content_frame_ms": 2741,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

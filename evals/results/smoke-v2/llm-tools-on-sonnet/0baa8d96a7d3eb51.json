@@ -1,0 +1,231 @@
+{
+  "case_id": "oauth_redirect_uri_mismatch-00",
+  "case_hash": "0baa8d96a7d3eb51",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_REDIRECT_URI_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/request/redirect_uri",
+    "fix_keys": [
+      "register",
+      "exact",
+      "redirect",
+      "scheme"
+    ],
+    "needs": [
+      "registered_redirect_uris"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_redirect_uri_mismatch-00",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_redirect_uri_mismatch",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "0baa8d96a7d3eb51"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_REDIRECT_URI_MISMATCH",
+    "confidence": 0.98,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_request",
+        "note": "Classified by vendor code AADSTS50011 (redirect URI mismatch)"
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "AADSTS50011: The redirect URI 'https://app.example.com/callback/' specified in the request does not match the redirect URIs configured for the application 'client-abc123'."
+      },
+      {
+        "path": "/request/redirect_uri",
+        "actual": "https://app.example.com/callback/",
+        "expected": "https://app.example.com/callback",
+        "note": "Differs only by a trailing slash"
+      },
+      {
+        "path": "/request/registered_redirect_uris",
+        "actual": "https://app.example.com/callback",
+        "note": "The registered value has no trailing slash"
+      }
+    ],
+    "fix": "Make the redirect_uri sent in the authorize request and the token request identical, character for character, to a URI registered on the client. Either send https://app.example.com/callback with no trailing slash, or register https://app.example.com/callback/ as an additional redirect URI. Don't use wildcard or loose matching. The PKCE S256 verifier matches the challenge and the public-client configuration is fine, so neither needs to change.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+        "why_not": "The code_verifier matches the S256 code_challenge, so the PKCE check passes."
+      },
+      {
+        "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+        "why_not": "The public client with the authorization_code grant and S256 passes the client configuration check. The error is specific to the redirect URI."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T01:38:20.797903-05:00",
+  "duration_ms": 9709,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 994,
+    "cache_creation_input_tokens": 4083,
+    "cache_read_input_tokens": 23601
+  },
+  "cost_usd": 0.028640099999999998,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 994,
+      "cacheReadInputTokens": 23601,
+      "cacheCreationInputTokens": 4083,
+      "costUSD": 0.028640099999999998,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 9622,
+    "stop_reason": "tool_use",
+    "session_id": "906e082a-5dc6-4b95-8786-b3483f0ba544",
+    "total_cost_usd": 0.028640099999999998,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 4083,
+      "cache_read_input_tokens": 23601,
+      "output_tokens": 994,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 4083,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 684,
+          "cache_read_input_tokens": 12542,
+          "cache_creation_input_tokens": 2600,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2600
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 994,
+        "cacheReadInputTokens": 23601,
+        "cacheCreationInputTokens": 4083,
+        "webSearchRequests": 0,
+        "costUSD": 0.028640099999999998,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 4083,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_REDIRECT_URI_MISMATCH\",\"confidence\":0.98,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"invalid_request\",\"note\":\"Classified by vendor code AADSTS50011 (redirect URI mismatch)\"},{\"path\":\"/redirect/error_description\",\"actual\":\"AADSTS50011: The redirect URI 'https://app.example.com/callback/' specified in the request does not match the redirect URIs configured for the application 'client-abc123'.\"},{\"path\":\"/request/redirect_uri\",\"actual\":\"https://app.example.com/callback/\",\"expected\":\"https://app.example.com/callback\",\"note\":\"Differs only by a trailing slash\"},{\"path\":\"/request/registered_redirect_uris\",\"actual\":\"https://app.example.com/callback\",\"note\":\"The registered value has no trailing slash\"}],\"fix\":\"Make the redirect_uri sent in the authorize request and the token request identical, character for character, to a URI registered on the client. Either send https://app.example.com/callback with no trailing slash, or register https://app.example.com/callback/ as an additional redirect URI. Don't use wildcard or loose matching. The PKCE S256 verifier matches the challenge and the public-client configuration is fine, so neither needs to change.\",\"alternatives\":[{\"code\":\"OAUTH_PKCE_VERIFIER_MISMATCH\",\"why_not\":\"The code_verifier matches the S256 code_challenge, so the PKCE check passes.\"},{\"code\":\"OAUTH_CLIENT_CONFIG_REJECTED\",\"why_not\":\"The public client with the authorization_code grant and S256 passes the client configuration check. The error is specific to the redirect URI.\"}]}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_REDIRECT_URI_MISMATCH",
+      "confidence": 0.98,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "invalid_request",
+          "note": "Classified by vendor code AADSTS50011 (redirect URI mismatch)"
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "AADSTS50011: The redirect URI 'https://app.example.com/callback/' specified in the request does not match the redirect URIs configured for the application 'client-abc123'."
+        },
+        {
+          "path": "/request/redirect_uri",
+          "actual": "https://app.example.com/callback/",
+          "expected": "https://app.example.com/callback",
+          "note": "Differs only by a trailing slash"
+        },
+        {
+          "path": "/request/registered_redirect_uris",
+          "actual": "https://app.example.com/callback",
+          "note": "The registered value has no trailing slash"
+        }
+      ],
+      "fix": "Make the redirect_uri sent in the authorize request and the token request identical, character for character, to a URI registered on the client. Either send https://app.example.com/callback with no trailing slash, or register https://app.example.com/callback/ as an additional redirect URI. Don't use wildcard or loose matching. The PKCE S256 verifier matches the challenge and the public-client configuration is fine, so neither needs to change.",
+      "alternatives": [
+        {
+          "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+          "why_not": "The code_verifier matches the S256 code_challenge, so the PKCE check passes."
+        },
+        {
+          "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+          "why_not": "The public client with the authorization_code grant and S256 passes the client configuration check. The error is specific to the redirect URI."
+        }
+      ]
+    },
+    "ttft_ms": 4578,
+    "type": "result",
+    "duration_ms": 9709,
+    "uuid": "72f7be28-50f8-4764-a218-57a0c1b20c05",
+    "ttft_stream_ms": 3190,
+    "time_to_request_ms": 75,
+    "first_content_frame_ms": 3190,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

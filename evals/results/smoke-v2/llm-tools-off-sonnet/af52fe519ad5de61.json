@@ -1,0 +1,279 @@
+{
+  "case_id": "oidc_request_binding_mismatch-00",
+  "case_hash": "af52fe519ad5de61",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "OIDC_REQUEST_BINDING_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/claims/at_hash",
+    "fix_keys": [
+      "generate",
+      "fresh",
+      "nonce",
+      "authorization"
+    ],
+    "needs": [
+      "access_token"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "oidc_request_binding_mismatch-00",
+    "kind": "jwt",
+    "mutator": "jwt_at_hash_mismatch",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "af52fe519ad5de61"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.7,
+    "evidence": [
+      {
+        "path": "/claims/iss",
+        "actual": "https://login.example.com/tenant-1/v2.0",
+        "expected": "https://login.example.com/tenant-1/v2.0",
+        "note": "issuer matches"
+      },
+      {
+        "path": "/claims/aud",
+        "actual": "client-abc123",
+        "expected": "client-abc123",
+        "note": "audience matches client_id"
+      },
+      {
+        "path": "/claims/exp",
+        "actual": "1768482000",
+        "expected": "after 2026-01-15T12:00:00Z (1768478400)",
+        "note": "expires 1h after the reference time"
+      },
+      {
+        "path": "/claims/nbf",
+        "actual": "1768478400",
+        "expected": "\u003c= 1768478400",
+        "note": "valid at the reference time"
+      },
+      {
+        "path": "/claims/nonce",
+        "actual": "n-0S6_WzA2Mj",
+        "expected": "n-0S6_WzA2Mj",
+        "note": "nonce matches"
+      },
+      {
+        "path": "/header/kid",
+        "actual": "test-key-1",
+        "expected": "kid present in JWKS",
+        "note": "JWKS has test-key-1 (RSA, RS256)"
+      },
+      {
+        "path": "/header/alg",
+        "actual": "RS256",
+        "note": "alg matches the JWKS key and is not none or HMAC"
+      }
+    ],
+    "fix": "No fault found in the claims. Keep full signature verification against the JWKS key selected by kid, with alg pinned to RS256. Keep issuer, audience, nonce and exp/nbf checks, with clock skew of 5 minutes or less. Also verify at_hash against the access token. I couldn't recompute it, because the token and hash are redacted and I had no tools.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OIDC_REQUEST_BINDING_MISMATCH",
+        "why_not": "The nonce matches. I couldn't recompute at_hash from the redacted access token, so a mismatch is possible but there's no evidence of one."
+      },
+      {
+        "code": "JWT_ALG_NONE_OR_CONFUSION",
+        "why_not": "The alg is RS256 and the JWKS key is RSA with alg RS256, so there's no sign of confusion."
+      }
+    ],
+    "questions": [
+      "Does at_hash match the access token? I couldn't compute it from the redacted values.",
+      "Does the signature verify against the JWKS key? I had no tool to check it."
+    ]
+  },
+  "started": "2026-10-27T01:15:04.380818-05:00",
+  "duration_ms": 9827,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1054,
+    "cache_creation_input_tokens": 1537,
+    "cache_read_input_tokens": 3689
+  },
+  "cost_usd": 0.0170609,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1054,
+      "cacheReadInputTokens": 3689,
+      "cacheCreationInputTokens": 1537,
+      "costUSD": 0.0170609,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 7,
+  "envelope": {
+    "duration_api_ms": 9707,
+    "stop_reason": "tool_use",
+    "session_id": "832064a5-096e-4090-8c05-b9c928329d20",
+    "total_cost_usd": 0.0170609,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1537,
+      "cache_read_input_tokens": 3689,
+      "output_tokens": 1054,
+      "output_tokens_details": {
+        "thinking_tokens": 172
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1537,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1054,
+          "cache_read_input_tokens": 3689,
+          "cache_creation_input_tokens": 1537,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1537
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1054,
+        "cacheReadInputTokens": 3689,
+        "cacheCreationInputTokens": 1537,
+        "webSearchRequests": 0,
+        "costUSD": 0.0170609,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 172,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1537,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.7,\"evidence\":[{\"path\":\"/claims/iss\",\"actual\":\"https://login.example.com/tenant-1/v2.0\",\"expected\":\"https://login.example.com/tenant-1/v2.0\",\"note\":\"issuer matches\"},{\"path\":\"/claims/aud\",\"actual\":\"client-abc123\",\"expected\":\"client-abc123\",\"note\":\"audience matches client_id\"},{\"path\":\"/claims/exp\",\"actual\":\"1768482000\",\"expected\":\"after 2026-01-15T12:00:00Z (1768478400)\",\"note\":\"expires 1h after the reference time\"},{\"path\":\"/claims/nbf\",\"actual\":\"1768478400\",\"expected\":\"\u003c= 1768478400\",\"note\":\"valid at the reference time\"},{\"path\":\"/claims/nonce\",\"actual\":\"n-0S6_WzA2Mj\",\"expected\":\"n-0S6_WzA2Mj\",\"note\":\"nonce matches\"},{\"path\":\"/header/kid\",\"actual\":\"test-key-1\",\"expected\":\"kid present in JWKS\",\"note\":\"JWKS has test-key-1 (RSA, RS256)\"},{\"path\":\"/header/alg\",\"actual\":\"RS256\",\"note\":\"alg matches the JWKS key and is not none or HMAC\"}],\"fix\":\"No fault found in the claims. Keep full signature verification against the JWKS key selected by kid, with alg pinned to RS256. Keep issuer, audience, nonce and exp/nbf checks, with clock skew of 5 minutes or less. Also verify at_hash against the access token. I couldn't recompute it, because the token and hash are redacted and I had no tools.\",\"alternatives\":[{\"code\":\"OIDC_REQUEST_BINDING_MISMATCH\",\"why_not\":\"The nonce matches. I couldn't recompute at_hash from the redacted access token, so a mismatch is possible but there's no evidence of one.\"},{\"code\":\"JWT_ALG_NONE_OR_CONFUSION\",\"why_not\":\"The alg is RS256 and the JWKS key is RSA with alg RS256, so there's no sign of confusion.\"}],\"questions\":[\"Does at_hash match the access token? I couldn't compute it from the redacted values.\",\"Does the signature verify against the JWKS key? I had no tool to check it.\"]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.7,
+      "evidence": [
+        {
+          "path": "/claims/iss",
+          "actual": "https://login.example.com/tenant-1/v2.0",
+          "expected": "https://login.example.com/tenant-1/v2.0",
+          "note": "issuer matches"
+        },
+        {
+          "path": "/claims/aud",
+          "actual": "client-abc123",
+          "expected": "client-abc123",
+          "note": "audience matches client_id"
+        },
+        {
+          "path": "/claims/exp",
+          "actual": "1768482000",
+          "expected": "after 2026-01-15T12:00:00Z (1768478400)",
+          "note": "expires 1h after the reference time"
+        },
+        {
+          "path": "/claims/nbf",
+          "actual": "1768478400",
+          "expected": "\u003c= 1768478400",
+          "note": "valid at the reference time"
+        },
+        {
+          "path": "/claims/nonce",
+          "actual": "n-0S6_WzA2Mj",
+          "expected": "n-0S6_WzA2Mj",
+          "note": "nonce matches"
+        },
+        {
+          "path": "/header/kid",
+          "actual": "test-key-1",
+          "expected": "kid present in JWKS",
+          "note": "JWKS has test-key-1 (RSA, RS256)"
+        },
+        {
+          "path": "/header/alg",
+          "actual": "RS256",
+          "note": "alg matches the JWKS key and is not none or HMAC"
+        }
+      ],
+      "fix": "No fault found in the claims. Keep full signature verification against the JWKS key selected by kid, with alg pinned to RS256. Keep issuer, audience, nonce and exp/nbf checks, with clock skew of 5 minutes or less. Also verify at_hash against the access token. I couldn't recompute it, because the token and hash are redacted and I had no tools.",
+      "alternatives": [
+        {
+          "code": "OIDC_REQUEST_BINDING_MISMATCH",
+          "why_not": "The nonce matches. I couldn't recompute at_hash from the redacted access token, so a mismatch is possible but there's no evidence of one."
+        },
+        {
+          "code": "JWT_ALG_NONE_OR_CONFUSION",
+          "why_not": "The alg is RS256 and the JWKS key is RSA with alg RS256, so there's no sign of confusion."
+        }
+      ],
+      "questions": [
+        "Does at_hash match the access token? I couldn't compute it from the redacted values.",
+        "Does the signature verify against the JWKS key? I had no tool to check it."
+      ]
+    },
+    "ttft_ms": 4830,
+    "type": "result",
+    "duration_ms": 9827,
+    "uuid": "decf50ef-342d-4b67-a940-034fa473a559",
+    "ttft_stream_ms": 3263,
+    "time_to_request_ms": 118,
+    "first_content_frame_ms": 3263,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

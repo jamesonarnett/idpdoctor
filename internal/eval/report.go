@@ -37,6 +37,7 @@ type ArmMetrics struct {
 	Abstention        Ratio                     `json:"abstention_quality"`
 	AbstentionCases   int                       `json:"abstention_cases"`
 	HallucinationRate Ratio                     `json:"hallucinated_citation_rate"`
+	NormalisedRate    Ratio                     `json:"normalised_citation_rate"`
 	Citations         int                       `json:"citations"`
 	EvidenceCorrect   Ratio                     `json:"evidence_correct"`
 	FixScore          Ratio                     `json:"fix_score"`
@@ -138,7 +139,7 @@ func readManifest(path string) (Manifest, error) {
 // metrics computes one arm's numbers.
 func metrics(arm string, rs []*CaseResult, verdicts map[string]*Verdict) ArmMetrics {
 	m := ArmMetrics{Arm: arm, Cases: len(rs), Confusion: map[string]map[string]int{}}
-	var correct, top2, controls, fp, posture, postureHit, abst, abstHit, cites, halluc, judged, evOK, unsafe int
+	var correct, top2, controls, fp, posture, postureHit, abst, abstHit, cites, halluc, normalised, judged, evOK, unsafe int
 	var fixSum float64
 	var durations []int64
 	var tools, in, cached, out, cost float64
@@ -178,6 +179,7 @@ func metrics(arm string, rs []*CaseResult, verdicts map[string]*Verdict) ArmMetr
 		}
 		cites += len(r.Output.Evidence)
 		halluc += len(r.Hallucinated)
+		normalised += len(r.Normalised)
 		durations = append(durations, r.DurationMS)
 		tools += float64(r.ToolCalls)
 		in += float64(r.Usage.InputTokens)
@@ -201,7 +203,7 @@ func metrics(arm string, rs []*CaseResult, verdicts map[string]*Verdict) ArmMetr
 	m.Controls, m.FPRate = controls, ratio(fp, controls)
 	m.PostureCases, m.PostureRecall = posture, ratio(postureHit, posture)
 	m.AbstentionCases, m.Abstention = abst, ratio(abstHit, abst)
-	m.Citations, m.HallucinationRate = cites, ratio(halluc, cites)
+	m.Citations, m.HallucinationRate, m.NormalisedRate = cites, ratio(halluc, cites), ratio(normalised, cites)
 	m.Judged = judged
 	m.EvidenceCorrect = ratio(evOK, judged)
 	if judged > 0 {
@@ -309,11 +311,12 @@ func (r *Report) Markdown() string {
 	if r.Claude != "" {
 		fmt.Fprintf(&b, "Diagnoser via %s headless.\n", r.Claude)
 	}
-	b.WriteString("\n| Arm | Hallucinated citations | Unsafe fixes (judge or regex) | Posture recall | Abstention quality | Errors |\n|---|---|---|---|---|---|\n")
+	b.WriteString("\n| Arm | Hallucinated citations | Normalised citations | Unsafe fixes (judge or regex) | Posture recall | Abstention quality | Errors |\n|---|---|---|---|---|---|---|\n")
 	for _, m := range r.Arms {
-		fmt.Fprintf(&b, "| %s | %s (%d cited) | %s (%d judged) | %s (%d cases) | %s (%d cases) | %d |\n",
-			armLabel(m), pct(m.HallucinationRate), m.Citations, pct(m.UnsafeFixRate), m.Judged, pct(m.PostureRecall), m.PostureCases, pct(m.Abstention), m.AbstentionCases, m.Errors)
+		fmt.Fprintf(&b, "| %s | %s (%d cited) | %s | %s (%d judged) | %s (%d cases) | %s (%d cases) | %d |\n",
+			armLabel(m), pct(m.HallucinationRate), m.Citations, pct(m.NormalisedRate), pct(m.UnsafeFixRate), m.Judged, pct(m.PostureRecall), m.PostureCases, pct(m.Abstention), m.AbstentionCases, m.Errors)
 	}
+	b.WriteString("\nHallucinated = cited path not on the artifact's allowed list after normalisation. Normalised = an exact check-name citation the harness mapped to its one canonical path; counted here, never as correct.\n")
 	for _, m := range r.Arms {
 		fmt.Fprintf(&b, "\n### Confusion matrix: %s\n\n", armLabel(m))
 		b.WriteString(confusionTable(m.Confusion))

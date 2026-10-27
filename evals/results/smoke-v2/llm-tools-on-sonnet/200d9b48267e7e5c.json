@@ -1,0 +1,190 @@
+{
+  "case_id": "healthy-samlresponse-01",
+  "case_hash": "200d9b48267e7e5c",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [],
+    "fix_keys": [
+      "no change needed",
+      "the artifact validates"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "healthy-samlresponse-01",
+    "kind": "saml_response",
+    "dialect": "okta",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 1,
+    "hash": "200d9b48267e7e5c"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature",
+        "actual": "Assertion signed; signature verified against the configured idp_cert_pem"
+      },
+      {
+        "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+        "actual": "matches sp_entity_id"
+      },
+      {
+        "path": "/Response/@Destination",
+        "actual": "matches acs_url"
+      }
+    ],
+    "fix": "No fix needed. All 14 checks passed: status, issuer, destination, InResponseTo, signature, certificate validity, audience, recipient, time window, NameID, attributes and structure. If login still fails, the cause is outside this artifact. Check the SP's clock, replay cache, and session handling. The validation used the supplied time of 2026-01-15T12:00:00Z. A live response is checked against the actual current time.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T01:36:48.64372-05:00",
+  "duration_ms": 12789,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1798,
+    "cache_creation_input_tokens": 5903,
+    "cache_read_input_tokens": 28616
+  },
+  "cost_usd": 0.044461600000000004,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1798,
+      "cacheReadInputTokens": 28616,
+      "cacheCreationInputTokens": 5903,
+      "costUSD": 0.044461600000000004,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 12699,
+    "stop_reason": "tool_use",
+    "session_id": "87cb05bb-29c5-47a1-ae4d-b3608bfde223",
+    "total_cost_usd": 0.044461600000000004,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 5903,
+      "cache_read_input_tokens": 28616,
+      "output_tokens": 1798,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 5903,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 387,
+          "cache_read_input_tokens": 16237,
+          "cache_creation_input_tokens": 2045,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2045
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1798,
+        "cacheReadInputTokens": 28616,
+        "cacheCreationInputTokens": 5903,
+        "webSearchRequests": 0,
+        "costUSD": 0.044461600000000004,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 5903,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/Response/Assertion/Signature\",\"actual\":\"Assertion signed; signature verified against the configured idp_cert_pem\"},{\"path\":\"/Response/Assertion/Conditions/AudienceRestriction/Audience\",\"actual\":\"matches sp_entity_id\"},{\"path\":\"/Response/@Destination\",\"actual\":\"matches acs_url\"}],\"fix\":\"No fix needed. All 14 checks passed: status, issuer, destination, InResponseTo, signature, certificate validity, audience, recipient, time window, NameID, attributes and structure. If login still fails, the cause is outside this artifact. Check the SP's clock, replay cache, and session handling. The validation used the supplied time of 2026-01-15T12:00:00Z. A live response is checked against the actual current time.\"}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Signature",
+          "actual": "Assertion signed; signature verified against the configured idp_cert_pem"
+        },
+        {
+          "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+          "actual": "matches sp_entity_id"
+        },
+        {
+          "path": "/Response/@Destination",
+          "actual": "matches acs_url"
+        }
+      ],
+      "fix": "No fix needed. All 14 checks passed: status, issuer, destination, InResponseTo, signature, certificate validity, audience, recipient, time window, NameID, attributes and structure. If login still fails, the cause is outside this artifact. Check the SP's clock, replay cache, and session handling. The validation used the supplied time of 2026-01-15T12:00:00Z. A live response is checked against the actual current time."
+    },
+    "ttft_ms": 7599,
+    "type": "result",
+    "duration_ms": 12789,
+    "uuid": "de1abfb8-be6f-4679-a1b7-2fce91787ef6",
+    "ttft_stream_ms": 1263,
+    "time_to_request_ms": 78,
+    "first_content_frame_ms": 1264,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

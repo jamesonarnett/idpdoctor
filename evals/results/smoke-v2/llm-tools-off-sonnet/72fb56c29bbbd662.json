@@ -1,0 +1,235 @@
+{
+  "case_id": "saml_required_attribute_missing-00",
+  "case_hash": "72fb56c29bbbd662",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_REQUIRED_ATTRIBUTE_MISSING",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/AttributeStatement/Attribute[@Name='email']",
+    "fix_keys": [
+      "missing",
+      "attribute",
+      "claim",
+      "application"
+    ],
+    "needs": [
+      "required_attributes"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_required_attribute_missing-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "attribute_missing",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "72fb56c29bbbd662"
+  },
+  "output": {
+    "root_cause_code": "SAML_REQUIRED_ATTRIBUTE_MISSING",
+    "confidence": 0.93,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/AttributeStatement/Attribute[@Name='email']",
+        "actual": "absent; only firstName and groups attributes are present",
+        "expected": "Attribute named email present with a non-empty value",
+        "note": "The SP requires email and firstName. The IdP did not release email."
+      },
+      {
+        "path": "/Response/Assertion/AttributeStatement/Attribute[@Name='firstName']/AttributeValue",
+        "actual": "[REDACTED:attr:3bc51062]",
+        "note": "firstName is present and non-empty."
+      },
+      {
+        "path": "/Response/Status/StatusCode/@Value",
+        "actual": "urn:oasis:names:tc:SAML:2.0:status:Success"
+      },
+      {
+        "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+        "actual": "https://sp.example.com/saml/metadata",
+        "expected": "https://sp.example.com/saml/metadata",
+        "note": "Audience, Destination, Recipient, InResponseTo, Issuer and the time window all match the expected values."
+      }
+    ],
+    "fix": "On the IdP, add an attribute release or mapping for the user's email address. Send it under the exact Name the SP expects, \"email\", with a non-empty value. Make sure the user profile has the email populated. The NameID is emailAddress format, so the IdP can source it from the same field. Alternatively, if the IdP uses a different attribute name such as mail or a URN, change the SP's attribute mapping to that name. Keep the assertion signed and keep signature validation on.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH",
+        "why_not": "The NameID is present and uses the expected emailAddress format. The gap is the email attribute."
+      }
+    ],
+    "questions": [
+      "Does the SP expect the attribute under the Name \"email\", or does the IdP release it under a different name such as \"mail\"?",
+      "I could not verify the signature cryptographically from the redacted artifact. Does the SP's signature validation pass against the configured IdP certificate?"
+    ]
+  },
+  "started": "2026-10-27T01:16:21.601576-05:00",
+  "duration_ms": 7754,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 845,
+    "cache_creation_input_tokens": 4765,
+    "cache_read_input_tokens": 3689
+  },
+  "cost_usd": 0.027882900000000002,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 845,
+      "cacheReadInputTokens": 3689,
+      "cacheCreationInputTokens": 4765,
+      "costUSD": 0.027882900000000002,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [
+    "/Response/Assertion/AttributeStatement/Attribute[@Name='firstName']/AttributeValue"
+  ],
+  "valid_citations": 3,
+  "envelope": {
+    "duration_api_ms": 7647,
+    "stop_reason": "tool_use",
+    "session_id": "f2f65763-add4-4f40-a584-80663d53b153",
+    "total_cost_usd": 0.027882900000000002,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 4765,
+      "cache_read_input_tokens": 3689,
+      "output_tokens": 845,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 4765,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 845,
+          "cache_read_input_tokens": 3689,
+          "cache_creation_input_tokens": 4765,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 4765
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 845,
+        "cacheReadInputTokens": 3689,
+        "cacheCreationInputTokens": 4765,
+        "webSearchRequests": 0,
+        "costUSD": 0.027882900000000002,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 4765,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_REQUIRED_ATTRIBUTE_MISSING\",\"confidence\":0.93,\"evidence\":[{\"path\":\"/Response/Assertion/AttributeStatement/Attribute[@Name='email']\",\"actual\":\"absent; only firstName and groups attributes are present\",\"expected\":\"Attribute named email present with a non-empty value\",\"note\":\"The SP requires email and firstName. The IdP did not release email.\"},{\"path\":\"/Response/Assertion/AttributeStatement/Attribute[@Name='firstName']/AttributeValue\",\"actual\":\"[REDACTED:attr:3bc51062]\",\"note\":\"firstName is present and non-empty.\"},{\"path\":\"/Response/Status/StatusCode/@Value\",\"actual\":\"urn:oasis:names:tc:SAML:2.0:status:Success\"},{\"path\":\"/Response/Assertion/Conditions/AudienceRestriction/Audience\",\"actual\":\"https://sp.example.com/saml/metadata\",\"expected\":\"https://sp.example.com/saml/metadata\",\"note\":\"Audience, Destination, Recipient, InResponseTo, Issuer and the time window all match the expected values.\"}],\"fix\":\"On the IdP, add an attribute release or mapping for the user's email address. Send it under the exact Name the SP expects, \\\"email\\\", with a non-empty value. Make sure the user profile has the email populated. The NameID is emailAddress format, so the IdP can source it from the same field. Alternatively, if the IdP uses a different attribute name such as mail or a URN, change the SP's attribute mapping to that name. Keep the assertion signed and keep signature validation on.\",\"alternatives\":[{\"code\":\"SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH\",\"why_not\":\"The NameID is present and uses the expected emailAddress format. The gap is the email attribute.\"}],\"questions\":[\"Does the SP expect the attribute under the Name \\\"email\\\", or does the IdP release it under a different name such as \\\"mail\\\"?\",\"I could not verify the signature cryptographically from the redacted artifact. Does the SP's signature validation pass against the configured IdP certificate?\"]}",
+    "structured_output": {
+      "root_cause_code": "SAML_REQUIRED_ATTRIBUTE_MISSING",
+      "confidence": 0.93,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/AttributeStatement/Attribute[@Name='email']",
+          "actual": "absent; only firstName and groups attributes are present",
+          "expected": "Attribute named email present with a non-empty value",
+          "note": "The SP requires email and firstName. The IdP did not release email."
+        },
+        {
+          "path": "/Response/Assertion/AttributeStatement/Attribute[@Name='firstName']/AttributeValue",
+          "actual": "[REDACTED:attr:3bc51062]",
+          "note": "firstName is present and non-empty."
+        },
+        {
+          "path": "/Response/Status/StatusCode/@Value",
+          "actual": "urn:oasis:names:tc:SAML:2.0:status:Success"
+        },
+        {
+          "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+          "actual": "https://sp.example.com/saml/metadata",
+          "expected": "https://sp.example.com/saml/metadata",
+          "note": "Audience, Destination, Recipient, InResponseTo, Issuer and the time window all match the expected values."
+        }
+      ],
+      "fix": "On the IdP, add an attribute release or mapping for the user's email address. Send it under the exact Name the SP expects, \"email\", with a non-empty value. Make sure the user profile has the email populated. The NameID is emailAddress format, so the IdP can source it from the same field. Alternatively, if the IdP uses a different attribute name such as mail or a URN, change the SP's attribute mapping to that name. Keep the assertion signed and keep signature validation on.",
+      "alternatives": [
+        {
+          "code": "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH",
+          "why_not": "The NameID is present and uses the expected emailAddress format. The gap is the email attribute."
+        }
+      ],
+      "questions": [
+        "Does the SP expect the attribute under the Name \"email\", or does the IdP release it under a different name such as \"mail\"?",
+        "I could not verify the signature cryptographically from the redacted artifact. Does the SP's signature validation pass against the configured IdP certificate?"
+      ]
+    },
+    "ttft_ms": 7735,
+    "type": "result",
+    "duration_ms": 7754,
+    "uuid": "90709670-641e-4759-980a-b6f9cb47af73",
+    "ttft_stream_ms": 2514,
+    "time_to_request_ms": 106,
+    "first_content_frame_ms": 2514,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

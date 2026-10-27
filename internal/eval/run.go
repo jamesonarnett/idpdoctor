@@ -89,8 +89,23 @@ type CaseResult struct {
 	ModelUsage     map[string]agent.ModelUsage `json:"model_usage,omitempty"`
 	Hallucinated   []string                    `json:"hallucinated"`
 	ValidCitations int                         `json:"valid_citations"`
+	// Normalised lists check-name citations rewritten to their canonical
+	// path (agent.ClassifyCitations); counted separately from both bins.
+	Normalised []agent.Normalised `json:"normalised,omitempty"`
+	// PromptVersion is agent.PromptVersion at the time of the call (LLM
+	// arms only); a cached result with another version is stale.
+	PromptVersion int `json:"prompt_version,omitempty"`
 	// Envelope is the raw CLI envelope for audit; it holds no artifact.
 	Envelope json.RawMessage `json:"envelope,omitempty"`
+}
+
+// promptVersion is the stamped version, with results from before the stamp
+// existed (the v1 smoke run) read as version 1.
+func (r *CaseResult) promptVersion() int {
+	if r.PromptVersion == 0 {
+		return 1
+	}
+	return r.PromptVersion
 }
 
 // Correct reports whether the root cause matches the label.
@@ -115,6 +130,7 @@ type Manifest struct {
 	Started       time.Time `json:"started"`
 	ClaudeVersion string    `json:"claude_version,omitempty"`
 	Version       string    `json:"idpdoctor_version"`
+	PromptVersion int       `json:"prompt_version,omitempty"`
 	Concurrency   int       `json:"concurrency"`
 }
 
@@ -155,6 +171,7 @@ func Run(ctx context.Context, o RunOptions) ([]*CaseResult, int, error) {
 	man := Manifest{Arm: o.Arm, Model: o.Model, Dataset: o.Dataset, Started: time.Now(), Version: Version, Concurrency: o.Concurrency}
 	if o.Arm != ArmRules {
 		man.ClaudeVersion = claudeVersion(ctx)
+		man.PromptVersion = agent.PromptVersion
 	}
 	if err := writeJSON(filepath.Join(dir, "manifest.json"), man); err != nil {
 		return nil, 0, err
@@ -173,15 +190,21 @@ func Run(ctx context.Context, o RunOptions) ([]*CaseResult, int, error) {
 	for i, c := range cases {
 		path := filepath.Join(dir, c.Meta.Hash+".json")
 		if cached, err := readResult(path); err == nil && cached.Error == "" {
-			results[i] = cached
-			mu.Lock()
-			done++
-			if cached.Correct() {
-				correct++
+			if o.Arm != ArmRules && cached.promptVersion() != agent.PromptVersion {
+				// The prompt changed since this result was cached: the cache
+				// key is case hash + prompt version, so it does not count.
+				fmt.Fprintf(o.Out, "[%d/%d] %-40s stale (prompt v%d, now v%d): re-running\n", done+1, len(cases), c.Meta.ID, cached.promptVersion(), agent.PromptVersion)
+			} else {
+				results[i] = cached
+				mu.Lock()
+				done++
+				if cached.Correct() {
+					correct++
+				}
+				fmt.Fprintf(o.Out, "[%d/%d] %-40s cached  %s  acc %.0f%%\n", done, len(cases), c.Meta.ID, mark(cached), 100*float64(correct)/float64(done))
+				mu.Unlock()
+				continue
 			}
-			fmt.Fprintf(o.Out, "[%d/%d] %-40s cached  %s  acc %.0f%%\n", done, len(cases), c.Meta.ID, mark(cached), 100*float64(correct)/float64(done))
-			mu.Unlock()
-			continue
 		}
 		mu.Lock()
 		if o.MaxCalls > 0 && o.Arm != ArmRules && calls >= o.MaxCalls {
@@ -244,6 +267,7 @@ func runOne(ctx context.Context, o RunOptions, c *Case) *CaseResult {
 	r := &CaseResult{CaseID: c.Meta.ID, CaseHash: c.Meta.Hash, Arm: o.Arm, Label: c.Label, Kind: c.Meta.Kind, Meta: c.Meta, Started: time.Now(), Hallucinated: []string{}}
 	if o.Arm != ArmRules {
 		r.Model = o.Model
+		r.PromptVersion = agent.PromptVersion
 	}
 	start := time.Now()
 	res, err := diag.Run(ctx, diag.Input{Artifact: c.Artifact, Expected: c.Expected, Keys: c.Keys, Now: fixture.FixedNow})
@@ -279,7 +303,7 @@ func runOne(ctx context.Context, o RunOptions, c *Case) *CaseResult {
 	if r.Output.Alternatives == nil {
 		r.Output.Alternatives = []agent.Alternative{}
 	}
-	r.ToolCalls, r.Hallucinated, r.ValidCitations = ex.ToolCalls, ex.Hallucinated, ex.ValidCitations
+	r.ToolCalls, r.Hallucinated, r.ValidCitations, r.Normalised = ex.ToolCalls, ex.Hallucinated, ex.ValidCitations, ex.Normalised
 	return r
 }
 

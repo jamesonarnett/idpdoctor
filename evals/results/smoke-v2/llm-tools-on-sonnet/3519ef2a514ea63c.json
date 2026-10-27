@@ -1,0 +1,211 @@
+{
+  "case_id": "posture_expired_cert_accepted-00",
+  "case_hash": "3519ef2a514ea63c",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_EXPIRED_CERT_ACCEPTED"
+    ],
+    "evidence_path": "/Signature/KeyInfo/X509Data/X509Certificate/NotAfter",
+    "fix_keys": [
+      "rotate",
+      "signing",
+      "certificate",
+      "configure"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_expired_cert_accepted-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "posture_expired_cert",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "3519ef2a514ea63c"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.6,
+    "evidence": [
+      {
+        "path": "/Signature/KeyInfo/X509Data/X509Certificate/NotAfter",
+        "actual": "2026-01-14T12:00:00Z",
+        "expected": "\u003e 2026-01-15T12:00:00Z",
+        "note": "Signing certificate expired, yet the assertion signature verifies against the configured cert and every other check passes. The SP is accepting an expired key."
+      },
+      {
+        "path": "/expected/idp_cert_pem",
+        "actual": "configured IdP cert (NotAfter 2026-01-14) is the expired one",
+        "note": "The SP's pinned certificate is itself expired, so the signature check passes against it."
+      }
+    ],
+    "fix": "Rotate the IdP signing certificate. Generate a new one in the IdP, publish updated metadata, and install the new cert on the SP before activating it (overlap both certs during the cutover). Then configure the SP to reject expired signing certificates, and use RSA-2048+ with SHA-256. Add expiry monitoring or alerts for the IdP cert, for example at 30 and 7 days before NotAfter.",
+    "posture_codes": [
+      "POSTURE_EXPIRED_CERT_ACCEPTED"
+    ],
+    "alternatives": [
+      {
+        "code": "CERT_EXPIRED_OR_WEAK",
+        "why_not": "The validator reports this as a fault, but the signature verifies and all message-level checks pass. The expired cert is an SP-side acceptance weakness, which the catalog classes as posture (POSTURE_EXPIRED_CERT_ACCEPTED). If your policy treats an expired cert as a hard failure, this is the better label."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T01:39:34.530204-05:00",
+  "duration_ms": 17534,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2500,
+    "cache_creation_input_tokens": 6913,
+    "cache_read_input_tokens": 28622
+  },
+  "cost_usd": 0.055522199999999994,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2500,
+      "cacheReadInputTokens": 28622,
+      "cacheCreationInputTokens": 6913,
+      "costUSD": 0.055522199999999994,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 2,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 17445,
+    "stop_reason": "tool_use",
+    "session_id": "12ae9e8a-c59d-4d48-ac8c-f5c6455e272e",
+    "total_cost_usd": 0.055522199999999994,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 6913,
+      "cache_read_input_tokens": 28622,
+      "output_tokens": 2500,
+      "output_tokens_details": {
+        "thinking_tokens": 380
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6913,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1063,
+          "cache_read_input_tokens": 16243,
+          "cache_creation_input_tokens": 3049,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 3049
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2500,
+        "cacheReadInputTokens": 28622,
+        "cacheCreationInputTokens": 6913,
+        "webSearchRequests": 0,
+        "costUSD": 0.055522199999999994,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 380,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6913,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.6,\"posture_codes\":[\"POSTURE_EXPIRED_CERT_ACCEPTED\"],\"evidence\":[{\"path\":\"/Signature/KeyInfo/X509Data/X509Certificate/NotAfter\",\"actual\":\"2026-01-14T12:00:00Z\",\"expected\":\"\u003e 2026-01-15T12:00:00Z\",\"note\":\"Signing certificate expired, yet the assertion signature verifies against the configured cert and every other check passes. The SP is accepting an expired key.\"},{\"path\":\"/expected/idp_cert_pem\",\"actual\":\"configured IdP cert (NotAfter 2026-01-14) is the expired one\",\"note\":\"The SP's pinned certificate is itself expired, so the signature check passes against it.\"}],\"fix\":\"Rotate the IdP signing certificate. Generate a new one in the IdP, publish updated metadata, and install the new cert on the SP before activating it (overlap both certs during the cutover). Then configure the SP to reject expired signing certificates, and use RSA-2048+ with SHA-256. Add expiry monitoring or alerts for the IdP cert, for example at 30 and 7 days before NotAfter.\",\"alternatives\":[{\"code\":\"CERT_EXPIRED_OR_WEAK\",\"why_not\":\"The validator reports this as a fault, but the signature verifies and all message-level checks pass. The expired cert is an SP-side acceptance weakness, which the catalog classes as posture (POSTURE_EXPIRED_CERT_ACCEPTED). If your policy treats an expired cert as a hard failure, this is the better label.\"}]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.6,
+      "posture_codes": [
+        "POSTURE_EXPIRED_CERT_ACCEPTED"
+      ],
+      "evidence": [
+        {
+          "path": "/Signature/KeyInfo/X509Data/X509Certificate/NotAfter",
+          "actual": "2026-01-14T12:00:00Z",
+          "expected": "\u003e 2026-01-15T12:00:00Z",
+          "note": "Signing certificate expired, yet the assertion signature verifies against the configured cert and every other check passes. The SP is accepting an expired key."
+        },
+        {
+          "path": "/expected/idp_cert_pem",
+          "actual": "configured IdP cert (NotAfter 2026-01-14) is the expired one",
+          "note": "The SP's pinned certificate is itself expired, so the signature check passes against it."
+        }
+      ],
+      "fix": "Rotate the IdP signing certificate. Generate a new one in the IdP, publish updated metadata, and install the new cert on the SP before activating it (overlap both certs during the cutover). Then configure the SP to reject expired signing certificates, and use RSA-2048+ with SHA-256. Add expiry monitoring or alerts for the IdP cert, for example at 30 and 7 days before NotAfter.",
+      "alternatives": [
+        {
+          "code": "CERT_EXPIRED_OR_WEAK",
+          "why_not": "The validator reports this as a fault, but the signature verifies and all message-level checks pass. The expired cert is an SP-side acceptance weakness, which the catalog classes as posture (POSTURE_EXPIRED_CERT_ACCEPTED). If your policy treats an expired cert as a hard failure, this is the better label."
+        }
+      ]
+    },
+    "ttft_ms": 8095,
+    "type": "result",
+    "duration_ms": 17534,
+    "uuid": "38a991a5-2190-4ff9-b06a-cc7ff5b444ea",
+    "ttft_stream_ms": 1602,
+    "time_to_request_ms": 78,
+    "first_content_frame_ms": 1602,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

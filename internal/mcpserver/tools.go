@@ -162,7 +162,7 @@ func (s *Server) samlValidate(ctx context.Context, _ *mcp.CallToolRequest, in sa
 	}
 	out := samlValidateOut{
 		OK: res.Report.OK(), Checks: res.Report.Checks, Findings: res.Report.Findings, Needs: res.Report.Needs,
-		Summary: res.SAML, Text: diag.Text(res.Report, res.TopCause), Redaction: redactionDefault,
+		Summary: res.SAML, Text: withCitablePaths(diag.Text(res.Report, res.TopCause), res.Report), Redaction: redactionDefault,
 	}
 	return textResult(out.Text), out, nil
 }
@@ -234,7 +234,7 @@ func (s *Server) jwtValidate(ctx context.Context, _ *mcp.CallToolRequest, in jwt
 	}
 	out := jwtValidateOut{
 		OK: res.Report.OK(), Checks: res.Report.Checks, Findings: res.Report.Findings, Needs: res.Report.Needs,
-		Header: res.JWT.Header, Claims: res.JWT.Claims, Text: diag.Text(res.Report, res.TopCause), Redaction: redactionDefault,
+		Header: res.JWT.Header, Claims: res.JWT.Claims, Text: withCitablePaths(diag.Text(res.Report, res.TopCause), res.Report), Redaction: redactionDefault,
 	}
 	return textResult(out.Text), out, nil
 }
@@ -303,7 +303,7 @@ func (s *Server) diagnose(ctx context.Context, _ *mcp.CallToolRequest, in diagno
 	}
 	out := diagnoseOut{
 		ArtifactKind: string(res.Kind), Findings: res.Report.Findings, TopCause: res.TopCause,
-		Checks: res.Report.Checks, Needs: res.Report.Needs, Text: diag.Text(res.Report, res.TopCause), Redaction: redactionDefault,
+		Checks: res.Report.Checks, Needs: res.Report.Needs, Text: withCitablePaths(diag.Text(res.Report, res.TopCause), res.Report), Redaction: redactionDefault,
 	}
 	return textResult(out.Text), out, nil
 }

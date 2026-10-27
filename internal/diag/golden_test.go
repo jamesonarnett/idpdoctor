@@ -19,6 +19,7 @@ import (
 	"github.com/jamesonarnett/idpdoctor/internal/finding"
 	"github.com/jamesonarnett/idpdoctor/internal/fixture"
 	"github.com/jamesonarnett/idpdoctor/internal/jwt"
+	"github.com/jamesonarnett/idpdoctor/internal/saml"
 )
 
 // -update regenerates every case directory under testdata/ from the fixture
@@ -431,6 +432,20 @@ func runGolden(t *testing.T, dir, artifactFile string) {
 			}
 		}
 	}
+	// A check name may only normalise to a path the explainer may cite,
+	// and only to a real check name of this artifact kind.
+	checkNames := map[string]bool{}
+	for _, c := range res.Report.Checks {
+		checkNames[c.Name] = true
+	}
+	for name, p := range diag.CheckPaths(res) {
+		if !known[p] {
+			t.Errorf("CheckPaths[%s] = %s is not in KnownPaths", name, p)
+		}
+		if !checkNames[name] {
+			t.Errorf("CheckPaths maps %q, which is not a check this artifact ran (%v)", name, sortedKeys(checkNames))
+		}
+	}
 	assertNoLeak(t, res, diag.RedactedText(res, 1<<20))
 }
 
@@ -516,5 +531,57 @@ func TestTextRendersTopCauseAndNeeds(t *testing.T) {
 	}
 	if _, err := diag.Run(context.Background(), diag.Input{Artifact: "hello"}); err == nil {
 		t.Error("unknown kind must error")
+	}
+}
+
+func sortedKeys(m map[string]bool) []string {
+	out := make([]string, 0, len(m))
+	for k := range m {
+		out = append(out, k)
+	}
+	sort.Strings(out)
+	return out
+}
+
+// TestCheckPathsAmbiguity pins the normaliser's rule on one fixture: a
+// check with one structural target maps, a check with two targets maps
+// only when a finding picks one of them, and an unknown name never maps.
+func TestCheckPathsAmbiguity(t *testing.T) {
+	k, _ := fixture.TestKeys()
+	m, _ := fixture.SAMLMutator("audience_mismatch")
+	minted, err := fixture.MintSAML(fixture.DefaultParams(), k, m)
+	if err != nil {
+		t.Fatal(err)
+	}
+	exp := expected.Expected{SPEntityID: minted.Params.SPEntityID, IdPCertPEM: k.CertPEM()}
+	res, err := diag.Run(context.Background(), diag.Input{Artifact: string(minted.XML), Expected: exp, Now: fixture.FixedNow})
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := diag.CheckPaths(res)
+	if got["audience"] != saml.PathAudience || got["destination"] != saml.PathResponseDestination || got["recipient"] != saml.PathRecipient {
+		t.Errorf("single-target checks: %v", got)
+	}
+	for _, ambiguous := range []string{"issuer", "time_window", "signature_verify", "name_id"} {
+		if p, ok := got[ambiguous]; ok {
+			t.Errorf("%s has two structural targets and no finding here; must not map (got %s)", ambiguous, p)
+		}
+	}
+	if _, ok := got["not_a_check"]; ok {
+		t.Error("unknown names must not map")
+	}
+	// With a finding on exactly one of the candidates, the ambiguity resolves.
+	m2, _ := fixture.SAMLMutator("issuer_mismatch")
+	minted2, err := fixture.MintSAML(fixture.DefaultParams(), k, m2)
+	if err != nil {
+		t.Fatal(err)
+	}
+	exp2 := expected.Expected{SPEntityID: minted2.Params.SPEntityID, IdPEntityID: minted2.Params.IdPEntityID, IdPCertPEM: k.CertPEM()}
+	res2, err := diag.Run(context.Background(), diag.Input{Artifact: string(minted2.XML), Expected: exp2, Now: fixture.FixedNow})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if p, ok := diag.CheckPaths(res2)["issuer"]; !ok || !strings.HasSuffix(p, "/Issuer") {
+		t.Errorf("issuer with an issuer finding should resolve to the cited Issuer path, got %q (%v)", p, res2.Report.Findings)
 	}
 }

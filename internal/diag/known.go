@@ -8,6 +8,8 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/jamesonarnett/idpdoctor/internal/oauth"
+	"github.com/jamesonarnett/idpdoctor/internal/oidc"
 	"github.com/jamesonarnett/idpdoctor/internal/redact"
 	"github.com/jamesonarnett/idpdoctor/internal/saml"
 )
@@ -125,4 +127,121 @@ func RedactedText(res *Result, max int) string {
 		return redact.Truncate(string(b), max)
 	}
 	return redact.Truncate(res.extraText, max)
+}
+
+// CheckPaths maps a validator check name (the Check.Name values a tool
+// prints, e.g. "audience") to the one evidence path it is about, for this
+// result only. Models sometimes cite the check name instead of a path; the
+// explain layer uses this map to normalise such a citation, and it only
+// maps a name when the target is unambiguous:
+//
+//   - the name has exactly one candidate path that is in KnownPaths, or
+//   - several candidates are known but exactly one of them appears in the
+//     findings' evidence for this result.
+//
+// Anything else (an unknown name, two plausible targets) is left out, so
+// the citation stays hallucinated. The candidate table mirrors the check
+// names in internal/saml, internal/jwt, internal/oidc and internal/oauth.
+func CheckPaths(res *Result) map[string]string {
+	known := map[string]bool{}
+	for _, p := range KnownPaths(res) {
+		known[p] = true
+	}
+	cited := map[string]bool{}
+	for _, f := range res.Report.Findings {
+		for _, e := range f.Evidence {
+			cited[e.Path] = true
+		}
+	}
+	out := map[string]string{}
+	for name, candidates := range checkCandidates(res) {
+		var inKnown, inCited []string
+		for _, c := range candidates {
+			if !known[c] {
+				continue
+			}
+			inKnown = append(inKnown, c)
+			if cited[c] {
+				inCited = append(inCited, c)
+			}
+		}
+		switch {
+		case len(inKnown) == 1:
+			out[name] = inKnown[0]
+		case len(inCited) == 1:
+			out[name] = inCited[0]
+		}
+	}
+	return out
+}
+
+// checkCandidates lists, per artifact kind, the paths a check name may
+// stand for. Order carries no meaning; ambiguity is resolved by evidence.
+func checkCandidates(res *Result) map[string][]string {
+	switch {
+	case res.SAML != nil:
+		certPaths := func(prefix string) []string {
+			base := prefix + saml.PathKeyInfoCertificate
+			return []string{base, base + "/NotAfter", base + "/NotBefore", base + "/PublicKey", base + "/SignatureAlgorithm"}
+		}
+		return map[string][]string{
+			"status":              {saml.PathStatusCode, saml.PathStatusSubCode, saml.PathStatusMessage},
+			"issuer":              {saml.PathResponseIssuer, saml.PathAssertionIssuer},
+			"destination":         {saml.PathResponseDestination},
+			"in_response_to":      {saml.PathResponseInResponseTo, saml.PathSCDInResponseTo},
+			"signature_present":   {saml.PathResponseSignature, saml.PathAssertionSignature},
+			"signature_placement": {saml.PathResponseSignature, saml.PathAssertionSignature},
+			"signature_verify":    {saml.PathResponseSignature, saml.PathAssertionSignature, "/Response" + saml.PathSignatureMethod, "/Response/Assertion" + saml.PathSignatureMethod},
+			"cert_validity":       append(certPaths("/Response"), certPaths("/Response/Assertion")...),
+			"audience":            {saml.PathAudience},
+			"recipient":           {saml.PathRecipient},
+			"time_window":         {saml.PathConditionsNotBefore, saml.PathConditionsNotOnOrAfter, saml.PathSCDNotOnOrAfter, saml.PathSessionNotOnOrAfter},
+			"name_id":             {saml.PathNameID, saml.PathNameIDFormat},
+			"attributes":          {saml.PathAttributeStatement},
+			"structure":           {saml.PathResponse, saml.PathAssertion},
+		}
+	case res.JWT != nil:
+		return map[string][]string{
+			"alg_allowed": {"/header/alg"},
+			"kid_found":   {"/header/kid"},
+			"signature":   {"/signature"},
+			"iss":         {"/claims/iss"},
+			"aud":         {"/claims/aud"},
+			"azp":         {"/claims/azp"},
+			"exp":         {"/claims/exp"},
+			"nbf":         {"/claims/nbf"},
+			"iat":         {"/claims/iat"},
+			"nonce":       {"/claims/nonce"},
+			"at_hash":     {"/claims/at_hash"},
+		}
+	case res.Cert != nil:
+		return map[string][]string{
+			"cert_validity": {"/Certificate/NotAfter", "/Certificate/NotBefore", "/Certificate/PublicKey", "/Certificate/SignatureAlgorithm"},
+		}
+	case res.OIDC != nil:
+		var fields []string
+		for _, p := range res.extraPaths {
+			if p != oidc.PathDiscovery {
+				fields = append(fields, p)
+			}
+		}
+		return map[string][]string{
+			"required_fields": fields,
+			"issuer_match":    {oidc.PathDiscoveryIssuer},
+			"https_only":      fields,
+			"endpoint_hosts":  fields,
+			"token_endpoint":  {oidc.PathDiscoveryField("token_endpoint")},
+			"content_type":    {oidc.PathDiscovery},
+		}
+	case res.OAuth != nil:
+		pkce := []string{oauth.PathRequestCodeVerifier, oauth.PathRequestCodeChallenge, oauth.PathRequestCodeChallengeMethod}
+		return map[string][]string{
+			"error_class":   {oauth.PathError},
+			"redirect_uri":  {oauth.PathRequestRedirectURI, oauth.PathRequestRegisteredRedirectURIs},
+			"pkce":          pkce,
+			"pkce_posture":  pkce,
+			"client_config": {oauth.PathRequestClientType},
+		}
+	}
+	return nil
 }

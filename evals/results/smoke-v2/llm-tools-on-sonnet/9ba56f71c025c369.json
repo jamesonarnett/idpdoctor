@@ -1,0 +1,226 @@
+{
+  "case_id": "idp_policy_refusal-00",
+  "case_hash": "9ba56f71c025c369",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "IDP_POLICY_REFUSAL",
+    "posture_codes": [],
+    "evidence_path": "/redirect/error",
+    "fix_keys": [
+      "resolve",
+      "side:",
+      "assign",
+      "group"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "idp_policy_refusal-00",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_consent_required",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "9ba56f71c025c369"
+  },
+  "output": {
+    "root_cause_code": "IDP_POLICY_REFUSAL",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "consent_required",
+        "note": "The IdP refused the request with a consent/policy error, not a client-side request fault."
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "The user or administrator has not consented to use the application.",
+        "note": "Consent or assignment is missing in the IdP tenant."
+      },
+      {
+        "path": "/request/redirect_uri",
+        "actual": "https://app.example.com/callback",
+        "expected": "https://app.example.com/callback",
+        "note": "The redirect_uri exactly matches a registered URI, so it is not the cause."
+      }
+    ],
+    "fix": "Fix this on the IdP side. In the IdP or Google Workspace admin console, enable the app for this user or group, or grant admin consent. Also check that any access policy is satisfied and that the request targets the correct tenant. Don't change the client's redirect_uri or PKCE settings. They already validate: the redirect_uri matches exactly, and the S256 verifier matches the challenge.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+        "why_not": "The client type and grant type are consistent, and the public client uses S256. The refusal is about user or admin consent, not the client registration."
+      },
+      {
+        "code": "OAUTH_REDIRECT_URI_MISMATCH",
+        "why_not": "The redirect_uri exactly matches the registered URI."
+      }
+    ],
+    "questions": [
+      "Is the user assigned to the app in the IdP or Google Workspace admin console, and has admin consent been granted for the tenant?"
+    ]
+  },
+  "started": "2026-10-27T01:37:01.981715-05:00",
+  "duration_ms": 12021,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1017,
+    "cache_creation_input_tokens": 14124,
+    "cache_read_input_tokens": 12563
+  },
+  "cost_usd": 0.0679303,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1017,
+      "cacheReadInputTokens": 12563,
+      "cacheCreationInputTokens": 14124,
+      "costUSD": 0.0679303,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 11924,
+    "stop_reason": "tool_use",
+    "session_id": "0111a20f-ec9a-425d-a591-69915d4c930b",
+    "total_cost_usd": 0.0679303,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 14124,
+      "cache_read_input_tokens": 12563,
+      "output_tokens": 1017,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 14124,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 665,
+          "cache_read_input_tokens": 12563,
+          "cache_creation_input_tokens": 1561,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1561
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1017,
+        "cacheReadInputTokens": 12563,
+        "cacheCreationInputTokens": 14124,
+        "webSearchRequests": 0,
+        "costUSD": 0.0679303,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 14124,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"IDP_POLICY_REFUSAL\",\"confidence\":0.8,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"consent_required\",\"note\":\"The IdP refused the request with a consent/policy error, not a client-side request fault.\"},{\"path\":\"/redirect/error_description\",\"actual\":\"The user or administrator has not consented to use the application.\",\"note\":\"Consent or assignment is missing in the IdP tenant.\"},{\"path\":\"/request/redirect_uri\",\"actual\":\"https://app.example.com/callback\",\"expected\":\"https://app.example.com/callback\",\"note\":\"The redirect_uri exactly matches a registered URI, so it is not the cause.\"}],\"fix\":\"Fix this on the IdP side. In the IdP or Google Workspace admin console, enable the app for this user or group, or grant admin consent. Also check that any access policy is satisfied and that the request targets the correct tenant. Don't change the client's redirect_uri or PKCE settings. They already validate: the redirect_uri matches exactly, and the S256 verifier matches the challenge.\",\"alternatives\":[{\"code\":\"OAUTH_CLIENT_CONFIG_REJECTED\",\"why_not\":\"The client type and grant type are consistent, and the public client uses S256. The refusal is about user or admin consent, not the client registration.\"},{\"code\":\"OAUTH_REDIRECT_URI_MISMATCH\",\"why_not\":\"The redirect_uri exactly matches the registered URI.\"}],\"questions\":[\"Is the user assigned to the app in the IdP or Google Workspace admin console, and has admin consent been granted for the tenant?\"]}",
+    "structured_output": {
+      "root_cause_code": "IDP_POLICY_REFUSAL",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "consent_required",
+          "note": "The IdP refused the request with a consent/policy error, not a client-side request fault."
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "The user or administrator has not consented to use the application.",
+          "note": "Consent or assignment is missing in the IdP tenant."
+        },
+        {
+          "path": "/request/redirect_uri",
+          "actual": "https://app.example.com/callback",
+          "expected": "https://app.example.com/callback",
+          "note": "The redirect_uri exactly matches a registered URI, so it is not the cause."
+        }
+      ],
+      "fix": "Fix this on the IdP side. In the IdP or Google Workspace admin console, enable the app for this user or group, or grant admin consent. Also check that any access policy is satisfied and that the request targets the correct tenant. Don't change the client's redirect_uri or PKCE settings. They already validate: the redirect_uri matches exactly, and the S256 verifier matches the challenge.",
+      "alternatives": [
+        {
+          "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+          "why_not": "The client type and grant type are consistent, and the public client uses S256. The refusal is about user or admin consent, not the client registration."
+        },
+        {
+          "code": "OAUTH_REDIRECT_URI_MISMATCH",
+          "why_not": "The redirect_uri exactly matches the registered URI."
+        }
+      ],
+      "questions": [
+        "Is the user assigned to the app in the IdP or Google Workspace admin console, and has admin consent been granted for the tenant?"
+      ]
+    },
+    "ttft_ms": 6225,
+    "type": "result",
+    "duration_ms": 12021,
+    "uuid": "9a07b349-e99a-4a20-ad22-30697b0ea876",
+    "ttft_stream_ms": 4745,
+    "time_to_request_ms": 86,
+    "first_content_frame_ms": 4746,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

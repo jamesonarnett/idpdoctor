@@ -1,0 +1,197 @@
+{
+  "case_id": "saml_destination_or_recipient_mismatch-00",
+  "case_hash": "0ba09ca183043aee",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_DESTINATION_OR_RECIPIENT_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/Response/@Destination",
+    "fix_keys": [
+      "application",
+      "reply",
+      "assertion",
+      "consumer"
+    ],
+    "needs": [
+      "acs_url"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_destination_or_recipient_mismatch-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "destination_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "0ba09ca183043aee"
+  },
+  "output": {
+    "root_cause_code": "SAML_DESTINATION_OR_RECIPIENT_MISMATCH",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/Response/@Destination",
+        "actual": "https://sp-staging.example.com/saml/acs",
+        "expected": "https://sp.example.com/saml/acs",
+        "note": "Response Destination points at the staging environment. The SubjectConfirmation Recipient matches the ACS URL, so only Destination is wrong."
+      }
+    ],
+    "fix": "In the IdP application, set the ACS / Reply URL to exactly https://sp.example.com/saml/acs, matching scheme, host, port and path. It is currently set to the staging host. Then re-run the login and capture a new response. Keep signature validation and the Destination check enabled on the SP. The signature, issuer, audience, time window, InResponseTo, NameID and attributes all passed.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "SAML_AUDIENCE_MISMATCH",
+        "why_not": "The audience check passed and matches sp_entity_id."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T01:41:15.542908-05:00",
+  "duration_ms": 17211,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1909,
+    "cache_creation_input_tokens": 6742,
+    "cache_read_input_tokens": 28641
+  },
+  "cost_usd": 0.0489301,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1909,
+      "cacheReadInputTokens": 28641,
+      "cacheCreationInputTokens": 6742,
+      "costUSD": 0.0489301,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 17097,
+    "stop_reason": "tool_use",
+    "session_id": "6a266b48-e3d7-4c48-a03b-57fbb9e51cd1",
+    "total_cost_usd": 0.0489301,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 6742,
+      "cache_read_input_tokens": 28641,
+      "output_tokens": 1909,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6742,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 457,
+          "cache_read_input_tokens": 16262,
+          "cache_creation_input_tokens": 2859,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2859
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1909,
+        "cacheReadInputTokens": 28641,
+        "cacheCreationInputTokens": 6742,
+        "webSearchRequests": 0,
+        "costUSD": 0.0489301,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6742,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_DESTINATION_OR_RECIPIENT_MISMATCH\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/Response/@Destination\",\"actual\":\"https://sp-staging.example.com/saml/acs\",\"expected\":\"https://sp.example.com/saml/acs\",\"note\":\"Response Destination points at the staging environment. The SubjectConfirmation Recipient matches the ACS URL, so only Destination is wrong.\"}],\"fix\":\"In the IdP application, set the ACS / Reply URL to exactly https://sp.example.com/saml/acs, matching scheme, host, port and path. It is currently set to the staging host. Then re-run the login and capture a new response. Keep signature validation and the Destination check enabled on the SP. The signature, issuer, audience, time window, InResponseTo, NameID and attributes all passed.\",\"alternatives\":[{\"code\":\"SAML_AUDIENCE_MISMATCH\",\"why_not\":\"The audience check passed and matches sp_entity_id.\"}]}",
+    "structured_output": {
+      "root_cause_code": "SAML_DESTINATION_OR_RECIPIENT_MISMATCH",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/Response/@Destination",
+          "actual": "https://sp-staging.example.com/saml/acs",
+          "expected": "https://sp.example.com/saml/acs",
+          "note": "Response Destination points at the staging environment. The SubjectConfirmation Recipient matches the ACS URL, so only Destination is wrong."
+        }
+      ],
+      "fix": "In the IdP application, set the ACS / Reply URL to exactly https://sp.example.com/saml/acs, matching scheme, host, port and path. It is currently set to the staging host. Then re-run the login and capture a new response. Keep signature validation and the Destination check enabled on the SP. The signature, issuer, audience, time window, InResponseTo, NameID and attributes all passed.",
+      "alternatives": [
+        {
+          "code": "SAML_AUDIENCE_MISMATCH",
+          "why_not": "The audience check passed and matches sp_entity_id."
+        }
+      ]
+    },
+    "ttft_ms": 11933,
+    "type": "result",
+    "duration_ms": 17211,
+    "uuid": "5caa31ae-1504-4027-92c6-8782b61429c6",
+    "ttft_stream_ms": 4785,
+    "time_to_request_ms": 105,
+    "first_content_frame_ms": 4786,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

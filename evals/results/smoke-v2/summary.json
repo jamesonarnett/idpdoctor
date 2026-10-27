@@ -1,0 +1,335 @@
+{
+  "dataset": "evals/data/smoke",
+  "cases": 34,
+  "arms": [
+    {
+      "arm": "rules",
+      "model": "sonnet",
+      "cases": 34,
+      "errors": 0,
+      "root_cause_accuracy": 1,
+      "top2_accuracy": 1,
+      "false_positive_rate": 0,
+      "controls": 10,
+      "posture_recall": 1,
+      "posture_cases": 8,
+      "abstention_quality": null,
+      "abstention_cases": 0,
+      "hallucinated_citation_rate": 0,
+      "normalised_citation_rate": 0,
+      "citations": 31,
+      "evidence_correct": null,
+      "fix_score": null,
+      "unsafe_fix_rate": null,
+      "judged": 0,
+      "p50_ms": 0,
+      "p95_ms": 0,
+      "tool_calls_per_case": 0,
+      "input_tokens_per_case": 0,
+      "cached_tokens_per_case": 0,
+      "output_tokens_per_case": 0,
+      "list_price_usd_per_case": 0,
+      "list_price_usd_total": 0,
+      "confusion": {
+        "CERT_EXPIRED_OR_WEAK": {
+          "CERT_EXPIRED_OR_WEAK": 1
+        },
+        "HEALTHY": {
+          "HEALTHY": 10
+        },
+        "IDP_POLICY_REFUSAL": {
+          "IDP_POLICY_REFUSAL": 1
+        },
+        "JWT_ALG_NONE_OR_CONFUSION": {
+          "JWT_ALG_NONE_OR_CONFUSION": 1
+        },
+        "JWT_AUD_OR_AZP_MISMATCH": {
+          "JWT_AUD_OR_AZP_MISMATCH": 1
+        },
+        "JWT_EXPIRED_OR_NOT_YET_VALID": {
+          "JWT_EXPIRED_OR_NOT_YET_VALID": 1
+        },
+        "JWT_KID_NOT_FOUND_IN_JWKS": {
+          "JWT_KID_NOT_FOUND_IN_JWKS": 1
+        },
+        "OAUTH_CLIENT_CONFIG_REJECTED": {
+          "OAUTH_CLIENT_CONFIG_REJECTED": 1
+        },
+        "OAUTH_INVALID_GRANT_CODE": {
+          "OAUTH_INVALID_GRANT_CODE": 1
+        },
+        "OAUTH_PKCE_VERIFIER_MISMATCH": {
+          "OAUTH_PKCE_VERIFIER_MISMATCH": 1
+        },
+        "OAUTH_REDIRECT_URI_MISMATCH": {
+          "OAUTH_REDIRECT_URI_MISMATCH": 1
+        },
+        "OIDC_DISCOVERY_DOC_INVALID": {
+          "OIDC_DISCOVERY_DOC_INVALID": 1
+        },
+        "OIDC_ISSUER_MISMATCH": {
+          "OIDC_ISSUER_MISMATCH": 1
+        },
+        "OIDC_REQUEST_BINDING_MISMATCH": {
+          "OIDC_REQUEST_BINDING_MISMATCH": 1
+        },
+        "SAML_AUDIENCE_MISMATCH": {
+          "SAML_AUDIENCE_MISMATCH": 1
+        },
+        "SAML_DESTINATION_OR_RECIPIENT_MISMATCH": {
+          "SAML_DESTINATION_OR_RECIPIENT_MISMATCH": 1
+        },
+        "SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED": {
+          "SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED": 1
+        },
+        "SAML_ISSUER_MISMATCH": {
+          "SAML_ISSUER_MISMATCH": 1
+        },
+        "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH": {
+          "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH": 1
+        },
+        "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED": {
+          "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED": 1
+        },
+        "SAML_REQUIRED_ATTRIBUTE_MISSING": {
+          "SAML_REQUIRED_ATTRIBUTE_MISSING": 1
+        },
+        "SAML_SIGNATURE_INVALID": {
+          "SAML_SIGNATURE_INVALID": 1
+        },
+        "SAML_STATUS_NOT_SUCCESS": {
+          "SAML_STATUS_NOT_SUCCESS": 1
+        },
+        "SAML_STRUCTURE_INVALID": {
+          "SAML_STRUCTURE_INVALID": 1
+        },
+        "SAML_TIME_WINDOW_INVALID": {
+          "SAML_TIME_WINDOW_INVALID": 1
+        }
+      }
+    },
+    {
+      "arm": "llm-tools-off-sonnet",
+      "model": "sonnet",
+      "cases": 34,
+      "errors": 0,
+      "root_cause_accuracy": 0.9117647058823529,
+      "top2_accuracy": 1,
+      "false_positive_rate": 0.1,
+      "controls": 10,
+      "posture_recall": 0.75,
+      "posture_cases": 8,
+      "abstention_quality": null,
+      "abstention_cases": 0,
+      "hallucinated_citation_rate": 0.26973684210526316,
+      "normalised_citation_rate": 0,
+      "citations": 152,
+      "evidence_correct": 0.4,
+      "fix_score": 4,
+      "unsafe_fix_rate": 0,
+      "judged": 5,
+      "p50_ms": 8274,
+      "p95_ms": 16091,
+      "tool_calls_per_case": 0,
+      "input_tokens_per_case": 2,
+      "cached_tokens_per_case": 7040.264705882353,
+      "output_tokens_per_case": 1008.7941176470588,
+      "list_price_usd_per_case": 0.024331147058823527,
+      "list_price_usd_total": 0.827259,
+      "confusion": {
+        "CERT_EXPIRED_OR_WEAK": {
+          "HEALTHY": 1
+        },
+        "HEALTHY": {
+          "CERT_EXPIRED_OR_WEAK": 1,
+          "HEALTHY": 9
+        },
+        "IDP_POLICY_REFUSAL": {
+          "IDP_POLICY_REFUSAL": 1
+        },
+        "JWT_ALG_NONE_OR_CONFUSION": {
+          "JWT_ALG_NONE_OR_CONFUSION": 1
+        },
+        "JWT_AUD_OR_AZP_MISMATCH": {
+          "JWT_AUD_OR_AZP_MISMATCH": 1
+        },
+        "JWT_EXPIRED_OR_NOT_YET_VALID": {
+          "JWT_EXPIRED_OR_NOT_YET_VALID": 1
+        },
+        "JWT_KID_NOT_FOUND_IN_JWKS": {
+          "JWT_KID_NOT_FOUND_IN_JWKS": 1
+        },
+        "OAUTH_CLIENT_CONFIG_REJECTED": {
+          "OAUTH_CLIENT_CONFIG_REJECTED": 1
+        },
+        "OAUTH_INVALID_GRANT_CODE": {
+          "OAUTH_INVALID_GRANT_CODE": 1
+        },
+        "OAUTH_PKCE_VERIFIER_MISMATCH": {
+          "OAUTH_PKCE_VERIFIER_MISMATCH": 1
+        },
+        "OAUTH_REDIRECT_URI_MISMATCH": {
+          "OAUTH_REDIRECT_URI_MISMATCH": 1
+        },
+        "OIDC_DISCOVERY_DOC_INVALID": {
+          "OIDC_DISCOVERY_DOC_INVALID": 1
+        },
+        "OIDC_ISSUER_MISMATCH": {
+          "OIDC_ISSUER_MISMATCH": 1
+        },
+        "OIDC_REQUEST_BINDING_MISMATCH": {
+          "HEALTHY": 1
+        },
+        "SAML_AUDIENCE_MISMATCH": {
+          "SAML_AUDIENCE_MISMATCH": 1
+        },
+        "SAML_DESTINATION_OR_RECIPIENT_MISMATCH": {
+          "SAML_DESTINATION_OR_RECIPIENT_MISMATCH": 1
+        },
+        "SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED": {
+          "SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED": 1
+        },
+        "SAML_ISSUER_MISMATCH": {
+          "SAML_ISSUER_MISMATCH": 1
+        },
+        "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH": {
+          "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH": 1
+        },
+        "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED": {
+          "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED": 1
+        },
+        "SAML_REQUIRED_ATTRIBUTE_MISSING": {
+          "SAML_REQUIRED_ATTRIBUTE_MISSING": 1
+        },
+        "SAML_SIGNATURE_INVALID": {
+          "SAML_SIGNATURE_INVALID": 1
+        },
+        "SAML_STATUS_NOT_SUCCESS": {
+          "SAML_STATUS_NOT_SUCCESS": 1
+        },
+        "SAML_STRUCTURE_INVALID": {
+          "SAML_STRUCTURE_INVALID": 1
+        },
+        "SAML_TIME_WINDOW_INVALID": {
+          "SAML_TIME_WINDOW_INVALID": 1
+        }
+      }
+    },
+    {
+      "arm": "llm-tools-on-sonnet",
+      "model": "sonnet",
+      "cases": 34,
+      "errors": 0,
+      "root_cause_accuracy": 1,
+      "top2_accuracy": 1,
+      "false_positive_rate": 0,
+      "controls": 10,
+      "posture_recall": 1,
+      "posture_cases": 8,
+      "abstention_quality": null,
+      "abstention_cases": 0,
+      "hallucinated_citation_rate": 0,
+      "normalised_citation_rate": 0,
+      "citations": 57,
+      "evidence_correct": null,
+      "fix_score": null,
+      "unsafe_fix_rate": null,
+      "judged": 0,
+      "p50_ms": 13081,
+      "p95_ms": 18409,
+      "tool_calls_per_case": 1,
+      "input_tokens_per_case": 4,
+      "cached_tokens_per_case": 32085.382352941175,
+      "output_tokens_per_case": 1585.764705882353,
+      "list_price_usd_per_case": 0.05047308529411765,
+      "list_price_usd_total": 1.7160849,
+      "confusion": {
+        "CERT_EXPIRED_OR_WEAK": {
+          "CERT_EXPIRED_OR_WEAK": 1
+        },
+        "HEALTHY": {
+          "HEALTHY": 10
+        },
+        "IDP_POLICY_REFUSAL": {
+          "IDP_POLICY_REFUSAL": 1
+        },
+        "JWT_ALG_NONE_OR_CONFUSION": {
+          "JWT_ALG_NONE_OR_CONFUSION": 1
+        },
+        "JWT_AUD_OR_AZP_MISMATCH": {
+          "JWT_AUD_OR_AZP_MISMATCH": 1
+        },
+        "JWT_EXPIRED_OR_NOT_YET_VALID": {
+          "JWT_EXPIRED_OR_NOT_YET_VALID": 1
+        },
+        "JWT_KID_NOT_FOUND_IN_JWKS": {
+          "JWT_KID_NOT_FOUND_IN_JWKS": 1
+        },
+        "OAUTH_CLIENT_CONFIG_REJECTED": {
+          "OAUTH_CLIENT_CONFIG_REJECTED": 1
+        },
+        "OAUTH_INVALID_GRANT_CODE": {
+          "OAUTH_INVALID_GRANT_CODE": 1
+        },
+        "OAUTH_PKCE_VERIFIER_MISMATCH": {
+          "OAUTH_PKCE_VERIFIER_MISMATCH": 1
+        },
+        "OAUTH_REDIRECT_URI_MISMATCH": {
+          "OAUTH_REDIRECT_URI_MISMATCH": 1
+        },
+        "OIDC_DISCOVERY_DOC_INVALID": {
+          "OIDC_DISCOVERY_DOC_INVALID": 1
+        },
+        "OIDC_ISSUER_MISMATCH": {
+          "OIDC_ISSUER_MISMATCH": 1
+        },
+        "OIDC_REQUEST_BINDING_MISMATCH": {
+          "OIDC_REQUEST_BINDING_MISMATCH": 1
+        },
+        "SAML_AUDIENCE_MISMATCH": {
+          "SAML_AUDIENCE_MISMATCH": 1
+        },
+        "SAML_DESTINATION_OR_RECIPIENT_MISMATCH": {
+          "SAML_DESTINATION_OR_RECIPIENT_MISMATCH": 1
+        },
+        "SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED": {
+          "SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED": 1
+        },
+        "SAML_ISSUER_MISMATCH": {
+          "SAML_ISSUER_MISMATCH": 1
+        },
+        "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH": {
+          "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH": 1
+        },
+        "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED": {
+          "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED": 1
+        },
+        "SAML_REQUIRED_ATTRIBUTE_MISSING": {
+          "SAML_REQUIRED_ATTRIBUTE_MISSING": 1
+        },
+        "SAML_SIGNATURE_INVALID": {
+          "SAML_SIGNATURE_INVALID": 1
+        },
+        "SAML_STATUS_NOT_SUCCESS": {
+          "SAML_STATUS_NOT_SUCCESS": 1
+        },
+        "SAML_STRUCTURE_INVALID": {
+          "SAML_STRUCTURE_INVALID": 1
+        },
+        "SAML_TIME_WINDOW_INVALID": {
+          "SAML_TIME_WINDOW_INVALID": 1
+        }
+      }
+    }
+  ],
+  "judge_model": "opus",
+  "agreement": {
+    "pairs": 4,
+    "kappa_evidence": 1,
+    "percent_agree_evidence": 1,
+    "weighted_kappa_fix": 0.9166666666666666,
+    "percent_agree_fix": 0.75,
+    "placeholder_labels": true
+  },
+  "claude_version": "2.1.311 (Claude Code)"
+}

@@ -1,0 +1,232 @@
+{
+  "case_id": "oauth_pkce_verifier_mismatch-00",
+  "case_hash": "aafb242c0d112a57",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/request/code_verifier",
+    "fix_keys": [
+      "generate",
+      "verifier",
+      "store",
+      "session"
+    ],
+    "needs": [
+      "code_verifier"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_pkce_verifier_mismatch-00",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_pkce_plain_mismatch",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "aafb242c0d112a57"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+    "confidence": 0.93,
+    "evidence": [
+      {
+        "path": "/vendor_code",
+        "actual": "AADSTS501481",
+        "note": "Entra code for code_verifier not matching code_challenge"
+      },
+      {
+        "path": "/error_description",
+        "actual": "The Code_Verifier does not match the code_challenge supplied in the authorization request",
+        "note": "Explicit PKCE mismatch"
+      },
+      {
+        "path": "/error",
+        "actual": "invalid_grant"
+      },
+      {
+        "path": "/expected/code_challenge_method",
+        "actual": "plain",
+        "expected": "S256",
+        "note": "Configured challenge method is plain; the configured verifier and challenge values differ"
+      }
+    ],
+    "fix": "Generate one random code_verifier per authorization request and keep it in the session tied to that request's state. Compute code_challenge = BASE64URL(SHA256(code_verifier)) and send code_challenge_method=S256 in the authorize request. Send the exact same verifier in the token request. Make sure parallel logins or retries don't overwrite the stored verifier. Stop using plain: it is a public client, and plain gives no real protection if the authorization response is intercepted.",
+    "posture_codes": [
+      "POSTURE_PKCE_PLAIN_OR_ABSENT"
+    ],
+    "alternatives": [
+      {
+        "code": "OAUTH_INVALID_GRANT_CODE",
+        "why_not": "The error is invalid_grant, but AADSTS501481 specifically names the verifier/challenge mismatch, not an expired or reused code."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T01:14:50.999763-05:00",
+  "duration_ms": 5042,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 638,
+    "cache_creation_input_tokens": 1190,
+    "cache_read_input_tokens": 3689
+  },
+  "cost_usd": 0.0115129,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 638,
+      "cacheReadInputTokens": 3689,
+      "cacheCreationInputTokens": 1190,
+      "costUSD": 0.0115129,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [
+    "/vendor_code",
+    "/error_description",
+    "/error",
+    "/expected/code_challenge_method"
+  ],
+  "valid_citations": 0,
+  "envelope": {
+    "duration_api_ms": 4920,
+    "stop_reason": "tool_use",
+    "session_id": "4f186f34-83f8-467f-9933-d3d53def3250",
+    "total_cost_usd": 0.0115129,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1190,
+      "cache_read_input_tokens": 3689,
+      "output_tokens": 638,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1190,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 638,
+          "cache_read_input_tokens": 3689,
+          "cache_creation_input_tokens": 1190,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1190
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 638,
+        "cacheReadInputTokens": 3689,
+        "cacheCreationInputTokens": 1190,
+        "webSearchRequests": 0,
+        "costUSD": 0.0115129,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1190,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_PKCE_VERIFIER_MISMATCH\",\"confidence\":0.93,\"evidence\":[{\"path\":\"/vendor_code\",\"actual\":\"AADSTS501481\",\"note\":\"Entra code for code_verifier not matching code_challenge\"},{\"path\":\"/error_description\",\"actual\":\"The Code_Verifier does not match the code_challenge supplied in the authorization request\",\"note\":\"Explicit PKCE mismatch\"},{\"path\":\"/error\",\"actual\":\"invalid_grant\"},{\"path\":\"/expected/code_challenge_method\",\"actual\":\"plain\",\"expected\":\"S256\",\"note\":\"Configured challenge method is plain; the configured verifier and challenge values differ\"}],\"fix\":\"Generate one random code_verifier per authorization request and keep it in the session tied to that request's state. Compute code_challenge = BASE64URL(SHA256(code_verifier)) and send code_challenge_method=S256 in the authorize request. Send the exact same verifier in the token request. Make sure parallel logins or retries don't overwrite the stored verifier. Stop using plain: it is a public client, and plain gives no real protection if the authorization response is intercepted.\",\"posture_codes\":[\"POSTURE_PKCE_PLAIN_OR_ABSENT\"],\"alternatives\":[{\"code\":\"OAUTH_INVALID_GRANT_CODE\",\"why_not\":\"The error is invalid_grant, but AADSTS501481 specifically names the verifier/challenge mismatch, not an expired or reused code.\"}]}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+      "confidence": 0.93,
+      "evidence": [
+        {
+          "path": "/vendor_code",
+          "actual": "AADSTS501481",
+          "note": "Entra code for code_verifier not matching code_challenge"
+        },
+        {
+          "path": "/error_description",
+          "actual": "The Code_Verifier does not match the code_challenge supplied in the authorization request",
+          "note": "Explicit PKCE mismatch"
+        },
+        {
+          "path": "/error",
+          "actual": "invalid_grant"
+        },
+        {
+          "path": "/expected/code_challenge_method",
+          "actual": "plain",
+          "expected": "S256",
+          "note": "Configured challenge method is plain; the configured verifier and challenge values differ"
+        }
+      ],
+      "fix": "Generate one random code_verifier per authorization request and keep it in the session tied to that request's state. Compute code_challenge = BASE64URL(SHA256(code_verifier)) and send code_challenge_method=S256 in the authorize request. Send the exact same verifier in the token request. Make sure parallel logins or retries don't overwrite the stored verifier. Stop using plain: it is a public client, and plain gives no real protection if the authorization response is intercepted.",
+      "posture_codes": [
+        "POSTURE_PKCE_PLAIN_OR_ABSENT"
+      ],
+      "alternatives": [
+        {
+          "code": "OAUTH_INVALID_GRANT_CODE",
+          "why_not": "The error is invalid_grant, but AADSTS501481 specifically names the verifier/challenge mismatch, not an expired or reused code."
+        }
+      ]
+    },
+    "ttft_ms": 5026,
+    "type": "result",
+    "duration_ms": 5042,
+    "uuid": "069f9b8d-5f71-4756-ad86-dbde538f24d7",
+    "ttft_stream_ms": 1106,
+    "time_to_request_ms": 120,
+    "first_content_frame_ms": 1106,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

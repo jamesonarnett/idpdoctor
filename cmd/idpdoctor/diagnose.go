@@ -124,6 +124,9 @@ func explainText(ex *agent.Explanation) string {
 	for _, q := range d.Questions {
 		fmt.Fprintf(&b, "  question: %s\n", q)
 	}
+	for _, n := range ex.Normalised {
+		fmt.Fprintf(&b, "  note: cited %q, a check name, shown above as %s\n", n.Cited, n.Path)
+	}
 	if len(ex.Hallucinated) > 0 {
 		fmt.Fprintf(&b, "  WARNING: %d cited path(s) not present in the parsed artifact: %s\n", len(ex.Hallucinated), strings.Join(ex.Hallucinated, ", "))
 	}

@@ -4,6 +4,7 @@ package agent_test
 
 import (
 	"context"
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"strings"
@@ -140,5 +141,121 @@ func TestCheckCitationsNormalises(t *testing.T) {
 	}, known)
 	if valid != 2 || len(bad) != 2 {
 		t.Errorf("valid=%d bad=%v", valid, bad)
+	}
+}
+
+// TestExplainCitationBins drives the three citation outcomes through the
+// fake claude: a verbatim path is valid, "checks/audience" is normalised to
+// the Audience path (and the diagnosis carries the mapped path), and both a
+// fabricated path and an ambiguous check name stay hallucinated. The
+// prompt v2 contract is checked on the wire too: the allowed-path list and
+// the worked examples are in the user turn, and the schema enum carries the
+// allowed paths and nothing else.
+func TestExplainCitationBins(t *testing.T) {
+	rec := agenttest.Install(t, agenttest.ModeCheckName)
+	path, _, res, exp := mintCase(t)
+	out, err := agent.Explain(context.Background(), &agent.Runner{}, agent.ExplainInput{
+		Mode: agent.ModeToolsOff, ArtifactPath: path, Result: res, Symptom: "Invalid audience", Expected: exp,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	const audience = "/Response/Assertion/Conditions/AudienceRestriction/Audience"
+
+	// 1. A correct path counts as valid and nothing else.
+	if out.ValidCitations != 1 {
+		t.Errorf("valid = %d, want 1 (the verbatim Audience path)", out.ValidCitations)
+	}
+	// 2. The check-name citation is normalised, recorded, rewritten, and not counted as valid.
+	if len(out.Normalised) != 1 || out.Normalised[0].Cited != "checks/audience" || out.Normalised[0].Path != audience {
+		t.Errorf("normalised = %+v", out.Normalised)
+	}
+	if got := out.Diagnosis.Evidence[1].Path; got != audience {
+		t.Errorf("normalised citation not rewritten in the diagnosis: %q", got)
+	}
+	// 3. The fabricated path stays hallucinated; so does "issuer", which is
+	//    ambiguous for SAML (Response/Issuer vs Assertion/Issuer, no finding).
+	if len(out.Hallucinated) != 2 || out.Hallucinated[0] != "issuer" || out.Hallucinated[1] != "/Response/Made/Up" {
+		t.Errorf("hallucinated = %v", out.Hallucinated)
+	}
+	if out.ValidCitations+len(out.Normalised)+len(out.Hallucinated) != len(out.Diagnosis.Evidence) {
+		t.Error("every citation must land in exactly one bin")
+	}
+
+	got := agenttest.Record(t, rec)
+	for _, want := range []string{
+		"Allowed evidence paths for this artifact", "  " + audience + "\n",
+		`Correct:   {"path": "` + audience + `"`, `Incorrect: {"path": "checks/audience"`, "paraphrased",
+	} {
+		if !strings.Contains(got["STDIN"], want) {
+			t.Errorf("prompt missing %q", want)
+		}
+	}
+	if !strings.Contains(agent.SystemPrompt(agent.ModeToolsOff), "copied verbatim") {
+		t.Error("system prompt must state the verbatim rule")
+	}
+	i := strings.Index(got["ARGS"], "[--json-schema] [")
+	if i < 0 {
+		t.Fatalf("no --json-schema in %s", got["ARGS"])
+	}
+	schema := got["ARGS"][i:]
+	if !strings.Contains(schema, `"enum":[`) || !strings.Contains(schema, `"`+audience+`"`) {
+		t.Errorf("schema must enumerate the allowed paths: %s", schema[:min(len(schema), 400)])
+	}
+	if strings.Contains(schema, "Made/Up") || strings.Contains(schema, "checks/") {
+		t.Error("schema enum must hold only allowed paths")
+	}
+}
+
+func TestClassifyCitationsBins(t *testing.T) {
+	allowed := []string{"/claims/aud", "/claims/iss", "/header/alg"}
+	checkPaths := map[string]string{"aud": "/claims/aud", "alg_allowed": "/header/alg", "stale": "/claims/gone"}
+	cites := []agent.Citation{
+		{Path: "/claims/aud"},         // valid
+		{Path: "checks/aud"},          // normalised
+		{Path: "/checks/alg_allowed"}, // normalised (leading slash)
+		{Path: "aud"},                 // normalised (bare name)
+		{Path: "iss"},                 // check name with no mapping: hallucinated
+		{Path: "stale"},               // mapped to a path that is not allowed: hallucinated
+		{Path: "/claims/sub"},         // fabricated: hallucinated
+		{Path: "checks/aud/value"},    // not an exact check-name shape: hallucinated
+	}
+	valid, norm, bad := agent.ClassifyCitations(cites, allowed, checkPaths)
+	if valid != 1 || len(norm) != 3 || len(bad) != 4 {
+		t.Fatalf("valid=%d normalised=%+v hallucinated=%v", valid, norm, bad)
+	}
+	for i, want := range []string{"/claims/aud", "/claims/aud", "/header/alg", "/claims/aud"} {
+		if cites[i].Path != want {
+			t.Errorf("cites[%d].Path = %q, want %q", i, cites[i].Path, want)
+		}
+	}
+	for i, want := range []string{"iss", "stale", "/claims/sub", "checks/aud/value"} {
+		if bad[i] != want {
+			t.Errorf("hallucinated[%d] = %q, want %q (must be reported as written)", i, bad[i], want)
+		}
+	}
+	// Without a map nothing is normalised and the old split is unchanged.
+	v2, b2 := agent.CheckCitations([]agent.Citation{{Path: "/claims/aud"}, {Path: "checks/aud"}}, allowed)
+	if v2 != 1 || len(b2) != 1 || b2[0] != "checks/aud" {
+		t.Errorf("CheckCitations: valid=%d bad=%v", v2, b2)
+	}
+}
+
+func TestDiagnosisSchemaForEnum(t *testing.T) {
+	var s map[string]any
+	if err := json.Unmarshal(agent.DiagnosisSchemaFor([]string{"/a", "/b"}), &s); err != nil {
+		t.Fatal(err)
+	}
+	path := s["properties"].(map[string]any)["evidence"].(map[string]any)["items"].(map[string]any)["properties"].(map[string]any)["path"].(map[string]any)
+	enum, _ := path["enum"].([]any)
+	if len(enum) != 2 || enum[0] != "/a" || enum[1] != "/b" {
+		t.Errorf("enum = %v", path["enum"])
+	}
+	if err := json.Unmarshal(agent.DiagnosisSchema(), &s); err != nil {
+		t.Fatal(err)
+	}
+	path = s["properties"].(map[string]any)["evidence"].(map[string]any)["items"].(map[string]any)["properties"].(map[string]any)["path"].(map[string]any)
+	if _, has := path["enum"]; has {
+		t.Error("the unconstrained schema must not carry an enum")
 	}
 }

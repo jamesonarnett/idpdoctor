@@ -1,0 +1,189 @@
+{
+  "case_id": "cert_expired_or_weak-00",
+  "case_hash": "262f76a306fa7dfd",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "CERT_EXPIRED_OR_WEAK",
+    "posture_codes": [],
+    "evidence_path": "/Signature/KeyInfo/X509Data/X509Certificate/PublicKey",
+    "fix_keys": [
+      "rotate",
+      "signing",
+      "certificate",
+      "generate"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "cert_expired_or_weak-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "cert_weak_key",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "262f76a306fa7dfd"
+  },
+  "output": {
+    "root_cause_code": "CERT_EXPIRED_OR_WEAK",
+    "confidence": 0.93,
+    "evidence": [
+      {
+        "path": "/Signature/KeyInfo/X509Data/X509Certificate/PublicKey",
+        "actual": "RSA 1024 bits",
+        "expected": "RSA \u003e= 2048 bits",
+        "note": "The signature verifies against the configured IdP cert, but that cert has a weak 1024-bit RSA key. cert_validity is the only failing check."
+      }
+    ],
+    "fix": "Rotate the IdP signing certificate. Generate a new RSA-2048+ key and certificate in the IdP, using SHA-256 or stronger. Publish the updated metadata and install the new certificate on the SP as the trusted cert before the IdP starts signing with it. Keep signature validation on and keep verifying against the configured certificate, not the one embedded in the message.",
+    "posture_codes": [
+      "POSTURE_WEAK_ALGORITHM"
+    ],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T01:36:02.625922-05:00",
+  "duration_ms": 13081,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1549,
+    "cache_creation_input_tokens": 18439,
+    "cache_read_input_tokens": 15940
+  },
+  "cost_usd": 0.09084799999999998,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1549,
+      "cacheReadInputTokens": 15940,
+      "cacheCreationInputTokens": 18439,
+      "costUSD": 0.09084799999999998,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 12951,
+    "stop_reason": "tool_use",
+    "session_id": "a8137b7c-b445-4ba3-a200-846b4d7a34d0",
+    "total_cost_usd": 0.09084799999999998,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 18439,
+      "cache_read_input_tokens": 15940,
+      "output_tokens": 1549,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 18439,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 473,
+          "cache_read_input_tokens": 15940,
+          "cache_creation_input_tokens": 2499,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2499
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1549,
+        "cacheReadInputTokens": 15940,
+        "cacheCreationInputTokens": 18439,
+        "webSearchRequests": 0,
+        "costUSD": 0.09084799999999998,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 18439,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"CERT_EXPIRED_OR_WEAK\",\"confidence\":0.93,\"evidence\":[{\"path\":\"/Signature/KeyInfo/X509Data/X509Certificate/PublicKey\",\"actual\":\"RSA 1024 bits\",\"expected\":\"RSA \u003e= 2048 bits\",\"note\":\"The signature verifies against the configured IdP cert, but that cert has a weak 1024-bit RSA key. cert_validity is the only failing check.\"}],\"fix\":\"Rotate the IdP signing certificate. Generate a new RSA-2048+ key and certificate in the IdP, using SHA-256 or stronger. Publish the updated metadata and install the new certificate on the SP as the trusted cert before the IdP starts signing with it. Keep signature validation on and keep verifying against the configured certificate, not the one embedded in the message.\",\"alternatives\":[],\"posture_codes\":[\"POSTURE_WEAK_ALGORITHM\"],\"questions\":[]}",
+    "structured_output": {
+      "root_cause_code": "CERT_EXPIRED_OR_WEAK",
+      "confidence": 0.93,
+      "evidence": [
+        {
+          "path": "/Signature/KeyInfo/X509Data/X509Certificate/PublicKey",
+          "actual": "RSA 1024 bits",
+          "expected": "RSA \u003e= 2048 bits",
+          "note": "The signature verifies against the configured IdP cert, but that cert has a weak 1024-bit RSA key. cert_validity is the only failing check."
+        }
+      ],
+      "fix": "Rotate the IdP signing certificate. Generate a new RSA-2048+ key and certificate in the IdP, using SHA-256 or stronger. Publish the updated metadata and install the new certificate on the SP as the trusted cert before the IdP starts signing with it. Keep signature validation on and keep verifying against the configured certificate, not the one embedded in the message.",
+      "alternatives": [],
+      "posture_codes": [
+        "POSTURE_WEAK_ALGORITHM"
+      ],
+      "questions": []
+    },
+    "ttft_ms": 9400,
+    "type": "result",
+    "duration_ms": 13081,
+    "uuid": "cee97404-23ac-4178-ad74-7d8e497199e4",
+    "ttft_stream_ms": 4512,
+    "time_to_request_ms": 120,
+    "first_content_frame_ms": 4513,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

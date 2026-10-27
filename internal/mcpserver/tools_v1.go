@@ -61,7 +61,7 @@ func (s *Server) oidcDiscoveryCheck(ctx context.Context, _ *mcp.CallToolRequest,
 	top := topCause(res.Report)
 	out := oidcDiscoveryOut{
 		OK: res.Report.OK(), Summary: res.Summary, Checks: res.Report.Checks, Findings: res.Report.Findings,
-		Needs: res.Report.Needs, Text: diag.Text(res.Report, top), Redaction: redactionDefault,
+		Needs: res.Report.Needs, Text: withCitablePaths(diag.Text(res.Report, top), res.Report), Redaction: redactionDefault,
 	}
 	return textResult(out.Text), out, nil
 }
@@ -106,7 +106,7 @@ func (s *Server) oauthErrorExplain(_ context.Context, _ *mcp.CallToolRequest, in
 	out := oauthExplainOut{
 		OK: res.Report.OK(), Error: res.Summary.Error, ErrorDescription: res.Summary.ErrorDescription, VendorCode: res.Summary.VendorCode,
 		Vendor: res.Summary.Vendor, Summary: res.Summary, Checks: res.Report.Checks, Findings: res.Report.Findings,
-		Needs: res.Report.Needs, Text: diag.Text(res.Report, top), Redaction: redactionDefault,
+		Needs: res.Report.Needs, Text: withCitablePaths(diag.Text(res.Report, top), res.Report), Redaction: redactionDefault,
 	}
 	return textResult(out.Text), out, nil
 }

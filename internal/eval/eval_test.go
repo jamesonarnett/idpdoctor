@@ -5,12 +5,15 @@ package eval_test
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"math"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"testing"
 
+	"github.com/jamesonarnett/idpdoctor/internal/agent"
 	"github.com/jamesonarnett/idpdoctor/internal/agent/agenttest"
 	"github.com/jamesonarnett/idpdoctor/internal/eval"
 	"github.com/jamesonarnett/idpdoctor/internal/finding"
@@ -319,3 +322,64 @@ func TestUnsafeFixRegex(t *testing.T) {
 		}
 	}
 }
+
+// TestStaleCacheRerunsOnPromptVersion: the cache key is case hash plus
+// prompt version. A result stamped with an older prompt is re-run and
+// counts as a real call; a current one is reused.
+func TestStaleCacheRerunsOnPromptVersion(t *testing.T) {
+	agenttest.Install(t, agenttest.ModeCheckName)
+	ds, cases := gen(t, 1, 1)
+	res := filepath.Join(t.TempDir(), "res")
+	only := []string{cases[0].Meta.ID, cases[1].Meta.ID}
+	got, calls, err := eval.Run(context.Background(), eval.RunOptions{Dataset: ds, Arm: eval.ArmToolsOff, Results: res, Only: only, ServerBin: "/bin/idpdoctor"})
+	if err != nil || calls != 2 || len(got) != 2 {
+		t.Fatalf("first run: err=%v calls=%d results=%d", err, calls, len(got))
+	}
+	for _, r := range got {
+		if r.PromptVersion != agent.PromptVersion {
+			t.Errorf("%s: prompt_version = %d, want %d", r.CaseID, r.PromptVersion, agent.PromptVersion)
+		}
+		// The fake cites: Audience (valid), checks/audience (normalised),
+		// issuer (hallucinated: ambiguous), /Response/Made/Up (hallucinated).
+		if r.ValidCitations != 1 || len(r.Normalised) != 1 || len(r.Hallucinated) != 2 {
+			t.Errorf("%s: valid=%d normalised=%+v hallucinated=%v", r.CaseID, r.ValidCitations, r.Normalised, r.Hallucinated)
+		}
+	}
+	// Age one cached result to prompt v1 (as the committed smoke results are).
+	stale := filepath.Join(eval.ArmDir(res, eval.ArmToolsOff, "sonnet"), cases[0].Meta.Hash+".json")
+	b, err := os.ReadFile(stale)
+	if err != nil {
+		t.Fatal(err)
+	}
+	b = bytes.Replace(b, []byte(`"prompt_version": `+itoa(agent.PromptVersion)), []byte(`"prompt_version": 1`), 1)
+	if err := os.WriteFile(stale, b, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	var log bytes.Buffer
+	_, calls, err = eval.Run(context.Background(), eval.RunOptions{Dataset: ds, Arm: eval.ArmToolsOff, Results: res, Only: only, ServerBin: "/bin/idpdoctor", Out: &log})
+	if err != nil || calls != 1 {
+		t.Fatalf("stale rerun: err=%v calls=%d\n%s", err, calls, log.String())
+	}
+	if !strings.Contains(log.String(), "stale (prompt v1, now v"+itoa(agent.PromptVersion)+")") || !strings.Contains(log.String(), "cached") {
+		t.Errorf("log should show one stale and one cached case:\n%s", log.String())
+	}
+	var man eval.Manifest
+	mb, _ := os.ReadFile(filepath.Join(eval.ArmDir(res, eval.ArmToolsOff, "sonnet"), "manifest.json"))
+	if err := json.Unmarshal(mb, &man); err != nil || man.PromptVersion != agent.PromptVersion {
+		t.Errorf("manifest prompt_version: %+v (%v)", man, err)
+	}
+	// Normalised citations are their own column, never folded into valid.
+	rep, err := eval.Build(eval.ReportOptions{Results: res, Dataset: ds})
+	if err != nil {
+		t.Fatal(err)
+	}
+	m := rep.Arms[0]
+	if m.Citations != 8 || math.Abs(float64(m.HallucinationRate)-0.5) > 0.001 || math.Abs(float64(m.NormalisedRate)-0.25) > 0.001 {
+		t.Errorf("citations=%d hallucinated=%v normalised=%v", m.Citations, m.HallucinationRate, m.NormalisedRate)
+	}
+	if md := rep.Markdown(); !strings.Contains(md, "| Normalised citations |") || !strings.Contains(md, "| 50.0% (8 cited) | 25.0% |") {
+		t.Errorf("markdown:\n%s", md)
+	}
+}
+
+func itoa(n int) string { return strconv.Itoa(n) }

@@ -1,0 +1,126 @@
+{
+  "case_id": "oauth_pkce_verifier_mismatch-00",
+  "case_hash": "aafb242c0d112a57",
+  "arm": "llm-tools-off-sonnet",
+  "judge_model": "opus",
+  "evidence_correct": false,
+  "fix_score": 5,
+  "fix_is_security_regression": false,
+  "rationale": "The root cause is right, but no evidence entry cites the decisive field /request/code_verifier or an equivalent path to it. The candidate only cites the error code, error description, error and /expected/code_challenge_method, so a strict reading marks the evidence wrong. The fix matches the reference: it says to generate one verifier per flow, store it in the session, use S256, and send the same verifier at the token endpoint. Dropping plain makes security stronger, not weaker.",
+  "unsafe_regex": false,
+  "cost_usd": 0.03128,
+  "duration_ms": 7998,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 466,
+    "cache_creation_input_tokens": 2744,
+    "cache_read_input_tokens": 0
+  },
+  "envelope": {
+    "duration_api_ms": 7402,
+    "stop_reason": "tool_use",
+    "session_id": "dea1d1b5-d2d5-449e-bfe5-3f2c5f9621b0",
+    "total_cost_usd": 0.03128,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 2744,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 466,
+      "output_tokens_details": {
+        "thinking_tokens": 186
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 2744,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 466,
+          "cache_read_input_tokens": 0,
+          "cache_creation_input_tokens": 2744,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2744
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-opus-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 466,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 2744,
+        "webSearchRequests": 0,
+        "costUSD": 0.03128,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 186,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 2744,
+        "canonicalModel": "claude-opus-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"evidence_correct\":false,\"fix_score\":5,\"fix_is_security_regression\":false,\"rationale\":\"The root cause is right, but no evidence entry cites the decisive field /request/code_verifier or an equivalent path to it. The candidate only cites the error code, error description, error and /expected/code_challenge_method, so a strict reading marks the evidence wrong. The fix matches the reference: it says to generate one verifier per flow, store it in the session, use S256, and send the same verifier at the token endpoint. Dropping plain makes security stronger, not weaker.\"}",
+    "structured_output": {
+      "evidence_correct": false,
+      "fix_score": 5,
+      "fix_is_security_regression": false,
+      "rationale": "The root cause is right, but no evidence entry cites the decisive field /request/code_verifier or an equivalent path to it. The candidate only cites the error code, error description, error and /expected/code_challenge_method, so a strict reading marks the evidence wrong. The fix matches the reference: it says to generate one verifier per flow, store it in the session, use S256, and send the same verifier at the token endpoint. Dropping plain makes security stronger, not weaker."
+    },
+    "ttft_ms": 6199,
+    "type": "result",
+    "duration_ms": 7998,
+    "uuid": "195c119c-6fd4-43fd-b289-3155352b9d82",
+    "ttft_stream_ms": 3932,
+    "time_to_request_ms": 596,
+    "first_content_frame_ms": 3932,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,252 @@
+{
+  "case_id": "posture_pkce_plain_or_absent-00",
+  "case_hash": "e84e74ff2403d774",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_PKCE_PLAIN_OR_ABSENT"
+    ],
+    "evidence_path": "/request/code_challenge",
+    "fix_keys": [
+      "every",
+      "public",
+      "client",
+      "confidential"
+    ],
+    "needs": [
+      "client_type"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "posture_pkce_plain_or_absent-00",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_pkce_absent_posture",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "e84e74ff2403d774"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.6,
+    "evidence": [
+      {
+        "path": "/redirect_path",
+        "actual": "/callback",
+        "expected": "/callback",
+        "note": "Redirect path matches the registered redirect_uri."
+      },
+      {
+        "path": "/redirect_host",
+        "actual": "app.example.com",
+        "expected": "app.example.com",
+        "note": "Redirect host matches."
+      },
+      {
+        "path": "/has_code",
+        "actual": "true",
+        "note": "Authorization code returned with state and no error."
+      },
+      {
+        "path": "/params",
+        "actual": "code, state",
+        "note": "Redirect carries no PKCE-related parameters. code_challenge and code_verifier belong to the authorization request and token request, so this redirect cannot show whether PKCE is enforced."
+      }
+    ],
+    "fix": "The redirect itself is valid, so nothing here is broken. The pentest finding is about posture, not a failure. This is a public client, so require PKCE with S256 on the authorization server or client registration. Reject authorization requests that lack code_challenge with code_challenge_method=S256. Reject plain. Reject token requests that lack a matching code_verifier. In the app, generate a high-entropy code_verifier for every login, send its S256 code_challenge in the authorization request, and send the verifier in the token exchange. Keep validating state, and keep the exact-match redirect_uri registration.",
+    "posture_codes": [
+      "POSTURE_PKCE_PLAIN_OR_ABSENT"
+    ],
+    "alternatives": [
+      {
+        "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+        "why_not": "Login works, and the token exchange failed nowhere in the artifact. There is no evidence of a verifier mismatch."
+      },
+      {
+        "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+        "why_not": "The redirect has no error and the authorization server accepted the client."
+      }
+    ],
+    "questions": [
+      "Can you share the authorization request URL (code_challenge and code_challenge_method) and the token request (code_verifier presence only, with values redacted)? The redirect alone cannot confirm whether PKCE is sent or enforced."
+    ]
+  },
+  "started": "2026-10-27T01:15:38.76994-05:00",
+  "duration_ms": 9665,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 827,
+    "cache_creation_input_tokens": 1036,
+    "cache_read_input_tokens": 3689
+  },
+  "cost_usd": 0.0127869,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 827,
+      "cacheReadInputTokens": 3689,
+      "cacheCreationInputTokens": 1036,
+      "costUSD": 0.0127869,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [
+    "/redirect_path",
+    "/redirect_host",
+    "/has_code",
+    "/params"
+  ],
+  "valid_citations": 0,
+  "envelope": {
+    "duration_api_ms": 9496,
+    "stop_reason": "tool_use",
+    "session_id": "cd207aee-1993-4937-b288-cdabfef000db",
+    "total_cost_usd": 0.0127869,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1036,
+      "cache_read_input_tokens": 3689,
+      "output_tokens": 827,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1036,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 827,
+          "cache_read_input_tokens": 3689,
+          "cache_creation_input_tokens": 1036,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1036
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 827,
+        "cacheReadInputTokens": 3689,
+        "cacheCreationInputTokens": 1036,
+        "webSearchRequests": 0,
+        "costUSD": 0.0127869,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1036,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.6,\"evidence\":[{\"path\":\"/redirect_path\",\"actual\":\"/callback\",\"expected\":\"/callback\",\"note\":\"Redirect path matches the registered redirect_uri.\"},{\"path\":\"/redirect_host\",\"actual\":\"app.example.com\",\"expected\":\"app.example.com\",\"note\":\"Redirect host matches.\"},{\"path\":\"/has_code\",\"actual\":\"true\",\"note\":\"Authorization code returned with state and no error.\"},{\"path\":\"/params\",\"actual\":\"code, state\",\"note\":\"Redirect carries no PKCE-related parameters. code_challenge and code_verifier belong to the authorization request and token request, so this redirect cannot show whether PKCE is enforced.\"}],\"fix\":\"The redirect itself is valid, so nothing here is broken. The pentest finding is about posture, not a failure. This is a public client, so require PKCE with S256 on the authorization server or client registration. Reject authorization requests that lack code_challenge with code_challenge_method=S256. Reject plain. Reject token requests that lack a matching code_verifier. In the app, generate a high-entropy code_verifier for every login, send its S256 code_challenge in the authorization request, and send the verifier in the token exchange. Keep validating state, and keep the exact-match redirect_uri registration.\",\"posture_codes\":[\"POSTURE_PKCE_PLAIN_OR_ABSENT\"],\"questions\":[\"Can you share the authorization request URL (code_challenge and code_challenge_method) and the token request (code_verifier presence only, with values redacted)? The redirect alone cannot confirm whether PKCE is sent or enforced.\"],\"alternatives\":[{\"code\":\"OAUTH_PKCE_VERIFIER_MISMATCH\",\"why_not\":\"Login works, and the token exchange failed nowhere in the artifact. There is no evidence of a verifier mismatch.\"},{\"code\":\"OAUTH_CLIENT_CONFIG_REJECTED\",\"why_not\":\"The redirect has no error and the authorization server accepted the client.\"}]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.6,
+      "evidence": [
+        {
+          "path": "/redirect_path",
+          "actual": "/callback",
+          "expected": "/callback",
+          "note": "Redirect path matches the registered redirect_uri."
+        },
+        {
+          "path": "/redirect_host",
+          "actual": "app.example.com",
+          "expected": "app.example.com",
+          "note": "Redirect host matches."
+        },
+        {
+          "path": "/has_code",
+          "actual": "true",
+          "note": "Authorization code returned with state and no error."
+        },
+        {
+          "path": "/params",
+          "actual": "code, state",
+          "note": "Redirect carries no PKCE-related parameters. code_challenge and code_verifier belong to the authorization request and token request, so this redirect cannot show whether PKCE is enforced."
+        }
+      ],
+      "fix": "The redirect itself is valid, so nothing here is broken. The pentest finding is about posture, not a failure. This is a public client, so require PKCE with S256 on the authorization server or client registration. Reject authorization requests that lack code_challenge with code_challenge_method=S256. Reject plain. Reject token requests that lack a matching code_verifier. In the app, generate a high-entropy code_verifier for every login, send its S256 code_challenge in the authorization request, and send the verifier in the token exchange. Keep validating state, and keep the exact-match redirect_uri registration.",
+      "posture_codes": [
+        "POSTURE_PKCE_PLAIN_OR_ABSENT"
+      ],
+      "questions": [
+        "Can you share the authorization request URL (code_challenge and code_challenge_method) and the token request (code_verifier presence only, with values redacted)? The redirect alone cannot confirm whether PKCE is sent or enforced."
+      ],
+      "alternatives": [
+        {
+          "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+          "why_not": "Login works, and the token exchange failed nowhere in the artifact. There is no evidence of a verifier mismatch."
+        },
+        {
+          "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+          "why_not": "The redirect has no error and the authorization server accepted the client."
+        }
+      ]
+    },
+    "ttft_ms": 9646,
+    "type": "result",
+    "duration_ms": 9665,
+    "uuid": "9a965f60-ad4d-4b5e-985c-6ea464133ced",
+    "ttft_stream_ms": 4493,
+    "time_to_request_ms": 168,
+    "first_content_frame_ms": 4493,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

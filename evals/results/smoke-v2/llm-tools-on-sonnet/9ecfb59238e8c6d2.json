@@ -1,0 +1,189 @@
+{
+  "case_id": "posture_parser_differential_exposure-00",
+  "case_hash": "9ecfb59238e8c6d2",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_PARSER_DIFFERENTIAL_EXPOSURE"
+    ],
+    "evidence_path": "/Response/Assertion/Subject/NameID",
+    "fix_keys": [
+      "reject",
+      "doctype",
+      "entity",
+      "declarations"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_parser_differential_exposure-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "posture_comment_in_nameid",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "9ecfb59238e8c6d2"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Subject/NameID",
+        "actual": "XML comment inside NameID value",
+        "note": "Parser-differential construct. Every functional check passed, including signature, audience, recipient, time window and attributes."
+      }
+    ],
+    "fix": "The response validates, so no functional fix is needed. To close the posture gap, reject DOCTYPE and entity declarations before parsing. Reject or strip comments inside NameID and AttributeValue. Use a single XML parser for both signature verification and data extraction. Ask the IdP why it emits a comment inside NameID. Note that the validation was replayed at 2026-01-15T12:00:00Z, not the current date.",
+    "posture_codes": [
+      "POSTURE_PARSER_DIFFERENTIAL_EXPOSURE"
+    ],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T01:39:52.47009-05:00",
+  "duration_ms": 12135,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1829,
+    "cache_creation_input_tokens": 6361,
+    "cache_read_input_tokens": 28616
+  },
+  "cost_usd": 0.046603599999999995,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1829,
+      "cacheReadInputTokens": 28616,
+      "cacheCreationInputTokens": 6361,
+      "costUSD": 0.046603599999999995,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 12049,
+    "stop_reason": "tool_use",
+    "session_id": "985d9d7b-032c-443b-b02c-d809c0485d6c",
+    "total_cost_usd": 0.046603599999999995,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 6361,
+      "cache_read_input_tokens": 28616,
+      "output_tokens": 1829,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6361,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 447,
+          "cache_read_input_tokens": 16237,
+          "cache_creation_input_tokens": 2503,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2503
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1829,
+        "cacheReadInputTokens": 28616,
+        "cacheCreationInputTokens": 6361,
+        "webSearchRequests": 0,
+        "costUSD": 0.046603599999999995,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6361,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/Response/Assertion/Subject/NameID\",\"actual\":\"XML comment inside NameID value\",\"note\":\"Parser-differential construct. Every functional check passed, including signature, audience, recipient, time window and attributes.\"}],\"fix\":\"The response validates, so no functional fix is needed. To close the posture gap, reject DOCTYPE and entity declarations before parsing. Reject or strip comments inside NameID and AttributeValue. Use a single XML parser for both signature verification and data extraction. Ask the IdP why it emits a comment inside NameID. Note that the validation was replayed at 2026-01-15T12:00:00Z, not the current date.\",\"posture_codes\":[\"POSTURE_PARSER_DIFFERENTIAL_EXPOSURE\"],\"alternatives\":[],\"questions\":[]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Subject/NameID",
+          "actual": "XML comment inside NameID value",
+          "note": "Parser-differential construct. Every functional check passed, including signature, audience, recipient, time window and attributes."
+        }
+      ],
+      "fix": "The response validates, so no functional fix is needed. To close the posture gap, reject DOCTYPE and entity declarations before parsing. Reject or strip comments inside NameID and AttributeValue. Use a single XML parser for both signature verification and data extraction. Ask the IdP why it emits a comment inside NameID. Note that the validation was replayed at 2026-01-15T12:00:00Z, not the current date.",
+      "posture_codes": [
+        "POSTURE_PARSER_DIFFERENTIAL_EXPOSURE"
+      ],
+      "alternatives": [],
+      "questions": []
+    },
+    "ttft_ms": 8012,
+    "type": "result",
+    "duration_ms": 12135,
+    "uuid": "4a252247-f82b-4fc0-8d19-d9f9a7d28a28",
+    "ttft_stream_ms": 1698,
+    "time_to_request_ms": 76,
+    "first_content_frame_ms": 1698,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

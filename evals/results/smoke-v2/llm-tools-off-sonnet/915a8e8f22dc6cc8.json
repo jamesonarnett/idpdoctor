@@ -1,0 +1,271 @@
+{
+  "case_id": "posture_validity_window_too_long-00",
+  "case_hash": "915a8e8f22dc6cc8",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_VALIDITY_WINDOW_TOO_LONG"
+    ],
+    "evidence_path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+    "fix_keys": [
+      "shorten",
+      "assertion",
+      "token",
+      "lifetimes"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_validity_window_too_long-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "posture_long_window",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "915a8e8f22dc6cc8"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.78,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Conditions/@NotBefore",
+        "actual": "2026-01-15T11:00:00.000Z",
+        "note": "Window starts 1h before IssueInstant (12:00Z)"
+      },
+      {
+        "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+        "actual": "2026-01-15T13:00:00.000Z",
+        "note": "Total window is 2h; now=12:00Z is inside it, so not a fault, but longer than typical policy (about 5 min)"
+      },
+      {
+        "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@NotOnOrAfter",
+        "actual": "2026-01-15T13:00:00.000Z",
+        "note": "Bearer confirmation is also valid for 1h past now"
+      },
+      {
+        "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+        "actual": "https://sp.example.com/saml/metadata",
+        "expected": "https://sp.example.com/saml/metadata"
+      },
+      {
+        "path": "/Response/@Destination",
+        "actual": "https://sp.example.com/saml/acs",
+        "expected": "https://sp.example.com/saml/acs"
+      },
+      {
+        "path": "/Response/Assertion/Issuer",
+        "actual": "https://idp.example.com/saml",
+        "expected": "https://idp.example.com/saml"
+      },
+      {
+        "path": "/Response/@InResponseTo",
+        "actual": "_req_1234567890abcdef",
+        "expected": "_req_1234567890abcdef"
+      },
+      {
+        "path": "/Response/Assertion/Signature/SignedInfo/Reference/@URI",
+        "actual": "#_assert_a289ac",
+        "note": "Signature covers the assertion, as required. SHA-256 algorithms used."
+      }
+    ],
+    "fix": "Yes, it is a posture issue, not a failure. The assertion validates against your expected values. The window runs from 11:00Z to 13:00Z, which is 2 hours, and the response is still usable for 1 hour after the 12:00Z check time. A bearer assertion should only need to live a few minutes. Ask the IdP to shorten Conditions NotOnOrAfter and SubjectConfirmationData NotOnOrAfter to about 5 minutes after IssueInstant. Also ask it to set NotBefore at or just before IssueInstant. On the SP, enforce your own maximum lifetime (for example 5 minutes), keep clock skew at 5 minutes or less, and keep rejecting replayed assertion IDs. Don't relax any signature checks. Always verify against the configured IdP certificate, never the KeyInfo certificate embedded in the message. SessionNotOnOrAfter (8h) controls the session length, not assertion validity, so it can stay as is.",
+    "posture_codes": [
+      "POSTURE_VALIDITY_WINDOW_TOO_LONG"
+    ],
+    "alternatives": [
+      {
+        "code": "SAML_TIME_WINDOW_INVALID",
+        "why_not": "The check time 12:00Z falls inside NotBefore 11:00Z and NotOnOrAfter 13:00Z, so the assertion is not expired or premature. The window is only longer than policy."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T01:15:48.87768-05:00",
+  "duration_ms": 11062,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1482,
+    "cache_creation_input_tokens": 4851,
+    "cache_read_input_tokens": 3689
+  },
+  "cost_usd": 0.0345969,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1482,
+      "cacheReadInputTokens": 3689,
+      "cacheCreationInputTokens": 4851,
+      "costUSD": 0.0345969,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [
+    "/Response/Assertion/Signature/SignedInfo/Reference/@URI"
+  ],
+  "valid_citations": 7,
+  "envelope": {
+    "duration_api_ms": 10929,
+    "stop_reason": "tool_use",
+    "session_id": "85375c68-9872-404d-8a53-dbfe6135b073",
+    "total_cost_usd": 0.0345969,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 4851,
+      "cache_read_input_tokens": 3689,
+      "output_tokens": 1482,
+      "output_tokens_details": {
+        "thinking_tokens": 265
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 4851,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1482,
+          "cache_read_input_tokens": 3689,
+          "cache_creation_input_tokens": 4851,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 4851
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1482,
+        "cacheReadInputTokens": 3689,
+        "cacheCreationInputTokens": 4851,
+        "webSearchRequests": 0,
+        "costUSD": 0.0345969,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 265,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 4851,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.78,\"posture_codes\":[\"POSTURE_VALIDITY_WINDOW_TOO_LONG\"],\"evidence\":[{\"path\":\"/Response/Assertion/Conditions/@NotBefore\",\"actual\":\"2026-01-15T11:00:00.000Z\",\"note\":\"Window starts 1h before IssueInstant (12:00Z)\"},{\"path\":\"/Response/Assertion/Conditions/@NotOnOrAfter\",\"actual\":\"2026-01-15T13:00:00.000Z\",\"note\":\"Total window is 2h; now=12:00Z is inside it, so not a fault, but longer than typical policy (about 5 min)\"},{\"path\":\"/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@NotOnOrAfter\",\"actual\":\"2026-01-15T13:00:00.000Z\",\"note\":\"Bearer confirmation is also valid for 1h past now\"},{\"path\":\"/Response/Assertion/Conditions/AudienceRestriction/Audience\",\"actual\":\"https://sp.example.com/saml/metadata\",\"expected\":\"https://sp.example.com/saml/metadata\"},{\"path\":\"/Response/@Destination\",\"actual\":\"https://sp.example.com/saml/acs\",\"expected\":\"https://sp.example.com/saml/acs\"},{\"path\":\"/Response/Assertion/Issuer\",\"actual\":\"https://idp.example.com/saml\",\"expected\":\"https://idp.example.com/saml\"},{\"path\":\"/Response/@InResponseTo\",\"actual\":\"_req_1234567890abcdef\",\"expected\":\"_req_1234567890abcdef\"},{\"path\":\"/Response/Assertion/Signature/SignedInfo/Reference/@URI\",\"actual\":\"#_assert_a289ac\",\"note\":\"Signature covers the assertion, as required. SHA-256 algorithms used.\"}],\"fix\":\"Yes, it is a posture issue, not a failure. The assertion validates against your expected values. The window runs from 11:00Z to 13:00Z, which is 2 hours, and the response is still usable for 1 hour after the 12:00Z check time. A bearer assertion should only need to live a few minutes. Ask the IdP to shorten Conditions NotOnOrAfter and SubjectConfirmationData NotOnOrAfter to about 5 minutes after IssueInstant. Also ask it to set NotBefore at or just before IssueInstant. On the SP, enforce your own maximum lifetime (for example 5 minutes), keep clock skew at 5 minutes or less, and keep rejecting replayed assertion IDs. Don't relax any signature checks. Always verify against the configured IdP certificate, never the KeyInfo certificate embedded in the message. SessionNotOnOrAfter (8h) controls the session length, not assertion validity, so it can stay as is.\",\"questions\":[],\"alternatives\":[{\"code\":\"SAML_TIME_WINDOW_INVALID\",\"why_not\":\"The check time 12:00Z falls inside NotBefore 11:00Z and NotOnOrAfter 13:00Z, so the assertion is not expired or premature. The window is only longer than policy.\"}]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.78,
+      "posture_codes": [
+        "POSTURE_VALIDITY_WINDOW_TOO_LONG"
+      ],
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Conditions/@NotBefore",
+          "actual": "2026-01-15T11:00:00.000Z",
+          "note": "Window starts 1h before IssueInstant (12:00Z)"
+        },
+        {
+          "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+          "actual": "2026-01-15T13:00:00.000Z",
+          "note": "Total window is 2h; now=12:00Z is inside it, so not a fault, but longer than typical policy (about 5 min)"
+        },
+        {
+          "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@NotOnOrAfter",
+          "actual": "2026-01-15T13:00:00.000Z",
+          "note": "Bearer confirmation is also valid for 1h past now"
+        },
+        {
+          "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+          "actual": "https://sp.example.com/saml/metadata",
+          "expected": "https://sp.example.com/saml/metadata"
+        },
+        {
+          "path": "/Response/@Destination",
+          "actual": "https://sp.example.com/saml/acs",
+          "expected": "https://sp.example.com/saml/acs"
+        },
+        {
+          "path": "/Response/Assertion/Issuer",
+          "actual": "https://idp.example.com/saml",
+          "expected": "https://idp.example.com/saml"
+        },
+        {
+          "path": "/Response/@InResponseTo",
+          "actual": "_req_1234567890abcdef",
+          "expected": "_req_1234567890abcdef"
+        },
+        {
+          "path": "/Response/Assertion/Signature/SignedInfo/Reference/@URI",
+          "actual": "#_assert_a289ac",
+          "note": "Signature covers the assertion, as required. SHA-256 algorithms used."
+        }
+      ],
+      "fix": "Yes, it is a posture issue, not a failure. The assertion validates against your expected values. The window runs from 11:00Z to 13:00Z, which is 2 hours, and the response is still usable for 1 hour after the 12:00Z check time. A bearer assertion should only need to live a few minutes. Ask the IdP to shorten Conditions NotOnOrAfter and SubjectConfirmationData NotOnOrAfter to about 5 minutes after IssueInstant. Also ask it to set NotBefore at or just before IssueInstant. On the SP, enforce your own maximum lifetime (for example 5 minutes), keep clock skew at 5 minutes or less, and keep rejecting replayed assertion IDs. Don't relax any signature checks. Always verify against the configured IdP certificate, never the KeyInfo certificate embedded in the message. SessionNotOnOrAfter (8h) controls the session length, not assertion validity, so it can stay as is.",
+      "questions": [],
+      "alternatives": [
+        {
+          "code": "SAML_TIME_WINDOW_INVALID",
+          "why_not": "The check time 12:00Z falls inside NotBefore 11:00Z and NotOnOrAfter 13:00Z, so the assertion is not expired or premature. The window is only longer than policy."
+        }
+      ]
+    },
+    "ttft_ms": 4160,
+    "type": "result",
+    "duration_ms": 11062,
+    "uuid": "e4aa40f6-1247-4338-9014-73701ce6e2f9",
+    "ttft_stream_ms": 1869,
+    "time_to_request_ms": 132,
+    "first_content_frame_ms": 1869,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

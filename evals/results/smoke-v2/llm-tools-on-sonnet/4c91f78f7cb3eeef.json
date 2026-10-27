@@ -1,0 +1,190 @@
+{
+  "case_id": "posture_weak_algorithm-00",
+  "case_hash": "4c91f78f7cb3eeef",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_WEAK_ALGORITHM"
+    ],
+    "evidence_path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm",
+    "fix_keys": [
+      "application",
+      "rsa-sha256",
+      "2048-bit",
+      "larger"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_weak_algorithm-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "posture_sha1",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "4c91f78f7cb3eeef"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm",
+        "actual": "http://www.w3.org/2000/09/xmldsig#rsa-sha1",
+        "expected": "RSA-SHA256 / SHA-256",
+        "note": "All 14 checks pass (signature verifies against the configured IdP cert). The only finding is a posture warning: the assertion signature uses RSA-SHA1."
+      }
+    ],
+    "fix": "Reconfigure the IdP application to sign with RSA-SHA256 (SignatureMethod rsa-sha256 and DigestMethod sha256), keeping a 2048-bit or larger key. After that, set the SP's allowed algorithms to reject SHA-1 signatures. Don't turn off signature validation or trust the certificate embedded in the message.",
+    "posture_codes": [
+      "POSTURE_WEAK_ALGORITHM"
+    ],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T01:40:43.778498-05:00",
+  "duration_ms": 13323,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1896,
+    "cache_creation_input_tokens": 6484,
+    "cache_read_input_tokens": 28639
+  },
+  "cost_usd": 0.047767899999999995,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1896,
+      "cacheReadInputTokens": 28639,
+      "cacheCreationInputTokens": 6484,
+      "costUSD": 0.047767899999999995,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 13224,
+    "stop_reason": "tool_use",
+    "session_id": "5931ce6b-6bc8-4c5d-8cae-47820d375fe6",
+    "total_cost_usd": 0.047767899999999995,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 6484,
+      "cache_read_input_tokens": 28639,
+      "output_tokens": 1896,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6484,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 442,
+          "cache_read_input_tokens": 16260,
+          "cache_creation_input_tokens": 2603,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2603
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1896,
+        "cacheReadInputTokens": 28639,
+        "cacheCreationInputTokens": 6484,
+        "webSearchRequests": 0,
+        "costUSD": 0.047767899999999995,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6484,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm\",\"actual\":\"http://www.w3.org/2000/09/xmldsig#rsa-sha1\",\"expected\":\"RSA-SHA256 / SHA-256\",\"note\":\"All 14 checks pass (signature verifies against the configured IdP cert). The only finding is a posture warning: the assertion signature uses RSA-SHA1.\"}],\"fix\":\"Reconfigure the IdP application to sign with RSA-SHA256 (SignatureMethod rsa-sha256 and DigestMethod sha256), keeping a 2048-bit or larger key. After that, set the SP's allowed algorithms to reject SHA-1 signatures. Don't turn off signature validation or trust the certificate embedded in the message.\",\"posture_codes\":[\"POSTURE_WEAK_ALGORITHM\"]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm",
+          "actual": "http://www.w3.org/2000/09/xmldsig#rsa-sha1",
+          "expected": "RSA-SHA256 / SHA-256",
+          "note": "All 14 checks pass (signature verifies against the configured IdP cert). The only finding is a posture warning: the assertion signature uses RSA-SHA1."
+        }
+      ],
+      "fix": "Reconfigure the IdP application to sign with RSA-SHA256 (SignatureMethod rsa-sha256 and DigestMethod sha256), keeping a 2048-bit or larger key. After that, set the SP's allowed algorithms to reject SHA-1 signatures. Don't turn off signature validation or trust the certificate embedded in the message.",
+      "posture_codes": [
+        "POSTURE_WEAK_ALGORITHM"
+      ]
+    },
+    "ttft_ms": 7803,
+    "type": "result",
+    "duration_ms": 13323,
+    "uuid": "25fe10eb-785e-48ab-a491-7b1cecdc44a1",
+    "ttft_stream_ms": 1491,
+    "time_to_request_ms": 88,
+    "first_content_frame_ms": 1492,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

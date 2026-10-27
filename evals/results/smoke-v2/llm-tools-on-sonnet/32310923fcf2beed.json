@@ -1,0 +1,186 @@
+{
+  "case_id": "jwt_expired_or_not_yet_valid-00",
+  "case_hash": "32310923fcf2beed",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+    "posture_codes": [],
+    "evidence_path": "/claims/exp",
+    "fix_keys": [
+      "refresh",
+      "token",
+      "re-run",
+      "login"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_expired_or_not_yet_valid-00",
+    "kind": "jwt",
+    "mutator": "jwt_expired",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "32310923fcf2beed"
+  },
+  "output": {
+    "root_cause_code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/claims/exp",
+        "actual": "2026-01-15T11:00:00Z",
+        "expected": "\u003e 2026-01-15T12:00:00Z - skew 3m0s",
+        "note": "Token expired 1h0m0s before the validation time."
+      }
+    ],
+    "fix": "Get a fresh token by re-running the login or using a refresh token. Sync clocks with NTP. Keep validation leeway at or below 3 minutes, and don't accept or cache tokens past exp.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": [
+      "access_token (optional): needed to run the at_hash check, which was skipped."
+    ]
+  },
+  "started": "2026-10-27T01:37:35.549919-05:00",
+  "duration_ms": 8687,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 987,
+    "cache_creation_input_tokens": 3828,
+    "cache_read_input_tokens": 23913
+  },
+  "cost_usd": 0.027581299999999996,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 987,
+      "cacheReadInputTokens": 23913,
+      "cacheCreationInputTokens": 3828,
+      "costUSD": 0.027581299999999996,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 8577,
+    "stop_reason": "tool_use",
+    "session_id": "9d16136f-b13a-4065-971e-1018f0a9d711",
+    "total_cost_usd": 0.027581299999999996,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3828,
+      "cache_read_input_tokens": 23913,
+      "output_tokens": 987,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3828,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 342,
+          "cache_read_input_tokens": 12840,
+          "cache_creation_input_tokens": 2061,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2061
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 987,
+        "cacheReadInputTokens": 23913,
+        "cacheCreationInputTokens": 3828,
+        "webSearchRequests": 0,
+        "costUSD": 0.027581299999999996,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3828,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"JWT_EXPIRED_OR_NOT_YET_VALID\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/claims/exp\",\"actual\":\"2026-01-15T11:00:00Z\",\"expected\":\"\u003e 2026-01-15T12:00:00Z - skew 3m0s\",\"note\":\"Token expired 1h0m0s before the validation time.\"}],\"fix\":\"Get a fresh token by re-running the login or using a refresh token. Sync clocks with NTP. Keep validation leeway at or below 3 minutes, and don't accept or cache tokens past exp.\",\"questions\":[\"access_token (optional): needed to run the at_hash check, which was skipped.\"]}",
+    "structured_output": {
+      "root_cause_code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/claims/exp",
+          "actual": "2026-01-15T11:00:00Z",
+          "expected": "\u003e 2026-01-15T12:00:00Z - skew 3m0s",
+          "note": "Token expired 1h0m0s before the validation time."
+        }
+      ],
+      "fix": "Get a fresh token by re-running the login or using a refresh token. Sync clocks with NTP. Keep validation leeway at or below 3 minutes, and don't accept or cache tokens past exp.",
+      "questions": [
+        "access_token (optional): needed to run the at_hash check, which was skipped."
+      ]
+    },
+    "ttft_ms": 5070,
+    "type": "result",
+    "duration_ms": 8687,
+    "uuid": "39e0ba0f-e029-42f5-bcaf-eb9fc8f6cf98",
+    "ttft_stream_ms": 1997,
+    "time_to_request_ms": 98,
+    "first_content_frame_ms": 1997,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

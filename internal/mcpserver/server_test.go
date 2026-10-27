@@ -140,6 +140,14 @@ func TestSAMLToolsEndToEnd(t *testing.T) {
 	if dout["artifact_kind"] != "saml_response" {
 		t.Errorf("kind = %v", dout["artifact_kind"])
 	}
+	// The text result names the citable paths on one labelled line, so a
+	// model copies them instead of a check name.
+	if !strings.Contains(textOf(diag), "Evidence paths (cite verbatim in evidence[].path): /Response/Assertion/Conditions/AudienceRestriction/Audience") {
+		t.Errorf("diagnose text lacks the citable-paths line:\n%s", textOf(diag))
+	}
+	if !strings.Contains(textOf(val), "Evidence paths (cite verbatim in evidence[].path): ") {
+		t.Errorf("saml_validate text lacks the citable-paths line:\n%s", textOf(val))
+	}
 }
 
 func TestStashFileHandleFlow(t *testing.T) {

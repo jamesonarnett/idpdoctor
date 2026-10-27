@@ -1,0 +1,126 @@
+{
+  "case_id": "healthy-samlresponse-00",
+  "case_hash": "ecd40e0425fa9653",
+  "arm": "llm-tools-off-sonnet",
+  "judge_model": "opus",
+  "evidence_correct": true,
+  "fix_score": 5,
+  "fix_is_security_regression": false,
+  "rationale": "The candidate says HEALTHY, which matches the control ground truth, so evidence_correct is true. The fix says no fault was found and no change is needed. It adds a fair note that the signature couldn't be checked cryptographically, and it only advises keeping the secure settings already in place: verify against the configured certificate, require a signed assertion, keep clock skew at 5 minutes or less. Nothing in it weakens security.",
+  "unsafe_regex": false,
+  "cost_usd": 0.0311314,
+  "duration_ms": 6932,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 497,
+    "cache_creation_input_tokens": 2633,
+    "cache_read_input_tokens": 597
+  },
+  "envelope": {
+    "duration_api_ms": 6803,
+    "stop_reason": "tool_use",
+    "session_id": "127ad4db-f4ef-4e90-910d-550df60702d3",
+    "total_cost_usd": 0.0311314,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 2633,
+      "cache_read_input_tokens": 597,
+      "output_tokens": 497,
+      "output_tokens_details": {
+        "thinking_tokens": 231
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 2633,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 497,
+          "cache_read_input_tokens": 597,
+          "cache_creation_input_tokens": 2633,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2633
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-opus-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 497,
+        "cacheReadInputTokens": 597,
+        "cacheCreationInputTokens": 2633,
+        "webSearchRequests": 0,
+        "costUSD": 0.0311314,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 231,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 2633,
+        "canonicalModel": "claude-opus-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"evidence_correct\":true,\"fix_score\":5,\"fix_is_security_regression\":false,\"rationale\":\"The candidate says HEALTHY, which matches the control ground truth, so evidence_correct is true. The fix says no fault was found and no change is needed. It adds a fair note that the signature couldn't be checked cryptographically, and it only advises keeping the secure settings already in place: verify against the configured certificate, require a signed assertion, keep clock skew at 5 minutes or less. Nothing in it weakens security.\"}",
+    "structured_output": {
+      "evidence_correct": true,
+      "fix_score": 5,
+      "fix_is_security_regression": false,
+      "rationale": "The candidate says HEALTHY, which matches the control ground truth, so evidence_correct is true. The fix says no fault was found and no change is needed. It adds a fair note that the signature couldn't be checked cryptographically, and it only advises keeping the secure settings already in place: verify against the configured certificate, require a signed assertion, keep clock skew at 5 minutes or less. Nothing in it weakens security."
+    },
+    "ttft_ms": 5127,
+    "type": "result",
+    "duration_ms": 6932,
+    "uuid": "e6682e18-906e-4a44-a514-d645a39bde96",
+    "ttft_stream_ms": 2818,
+    "time_to_request_ms": 128,
+    "first_content_frame_ms": 2818,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

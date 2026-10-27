@@ -1,0 +1,189 @@
+{
+  "case_id": "posture_unsigned_assertion_accepted-00",
+  "case_hash": "680b09e16bc62e68",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_UNSIGNED_ASSERTION_ACCEPTED"
+    ],
+    "evidence_path": "/Response/Assertion/Signature",
+    "fix_keys": [
+      "require",
+      "signed",
+      "assertion",
+      "response"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_unsigned_assertion_accepted-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "posture_unsigned_assertion",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "680b09e16bc62e68"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature",
+        "actual": "unsigned",
+        "note": "Only the Response is signed. The signature verifies against the configured IdP certificate. This is a posture warning, not a fault."
+      }
+    ],
+    "fix": "All checks pass: status, issuer, destination, InResponseTo, signature, audience, recipient, time window, NameID, attributes and structure. For defense in depth, have the IdP sign the Assertion as well as the Response, and set the SP to require a signed assertion. Until then, make sure the SP reads only data from the signature-verified Response. Keep trusting only the configured IdP certificate, not the one embedded in the message. The time window was evaluated at the supplied 'now' of 2026-01-15T12:00:00Z. Live logins are checked at current time.",
+    "posture_codes": [
+      "POSTURE_UNSIGNED_ASSERTION_ACCEPTED"
+    ],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T01:40:14.210594-05:00",
+  "duration_ms": 14252,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1884,
+    "cache_creation_input_tokens": 6351,
+    "cache_read_input_tokens": 28601
+  },
+  "cost_usd": 0.0471121,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1884,
+      "cacheReadInputTokens": 28601,
+      "cacheCreationInputTokens": 6351,
+      "costUSD": 0.0471121,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 14135,
+    "stop_reason": "tool_use",
+    "session_id": "fbcc1203-5ce8-448b-b371-755f566d4b8b",
+    "total_cost_usd": 0.0471121,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 6351,
+      "cache_read_input_tokens": 28601,
+      "output_tokens": 1884,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6351,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 486,
+          "cache_read_input_tokens": 16222,
+          "cache_creation_input_tokens": 2508,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2508
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1884,
+        "cacheReadInputTokens": 28601,
+        "cacheCreationInputTokens": 6351,
+        "webSearchRequests": 0,
+        "costUSD": 0.0471121,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6351,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/Response/Assertion/Signature\",\"actual\":\"unsigned\",\"note\":\"Only the Response is signed. The signature verifies against the configured IdP certificate. This is a posture warning, not a fault.\"}],\"fix\":\"All checks pass: status, issuer, destination, InResponseTo, signature, audience, recipient, time window, NameID, attributes and structure. For defense in depth, have the IdP sign the Assertion as well as the Response, and set the SP to require a signed assertion. Until then, make sure the SP reads only data from the signature-verified Response. Keep trusting only the configured IdP certificate, not the one embedded in the message. The time window was evaluated at the supplied 'now' of 2026-01-15T12:00:00Z. Live logins are checked at current time.\",\"posture_codes\":[\"POSTURE_UNSIGNED_ASSERTION_ACCEPTED\"],\"alternatives\":[],\"questions\":[]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Signature",
+          "actual": "unsigned",
+          "note": "Only the Response is signed. The signature verifies against the configured IdP certificate. This is a posture warning, not a fault."
+        }
+      ],
+      "fix": "All checks pass: status, issuer, destination, InResponseTo, signature, audience, recipient, time window, NameID, attributes and structure. For defense in depth, have the IdP sign the Assertion as well as the Response, and set the SP to require a signed assertion. Until then, make sure the SP reads only data from the signature-verified Response. Keep trusting only the configured IdP certificate, not the one embedded in the message. The time window was evaluated at the supplied 'now' of 2026-01-15T12:00:00Z. Live logins are checked at current time.",
+      "posture_codes": [
+        "POSTURE_UNSIGNED_ASSERTION_ACCEPTED"
+      ],
+      "alternatives": [],
+      "questions": []
+    },
+    "ttft_ms": 10361,
+    "type": "result",
+    "duration_ms": 14252,
+    "uuid": "88cd59cc-5a48-4d1d-86b7-0edc82d7bf10",
+    "ttft_stream_ms": 4007,
+    "time_to_request_ms": 106,
+    "first_content_frame_ms": 4008,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

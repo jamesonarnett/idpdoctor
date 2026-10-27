@@ -1,0 +1,196 @@
+{
+  "case_id": "oidc_discovery_doc_invalid-00",
+  "case_hash": "8411e25b47973bd0",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OIDC_DISCOVERY_DOC_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/discovery/token_endpoint",
+    "fix_keys": [
+      "point",
+      "canonical"
+    ]
+  },
+  "kind": "oidc_discovery",
+  "meta": {
+    "id": "oidc_discovery_doc_invalid-00",
+    "kind": "oidc_discovery",
+    "mutator": "discovery_http_endpoint",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "8411e25b47973bd0"
+  },
+  "output": {
+    "root_cause_code": "OIDC_DISCOVERY_DOC_INVALID",
+    "confidence": 0.85,
+    "evidence": [
+      {
+        "path": "/discovery/token_endpoint",
+        "actual": "http://login.example.com/tenant-1/oauth2/v2.0/token",
+        "expected": "an https:// URL",
+        "note": "OIDC Discovery requires https for endpoints; the token_endpoint is plain http."
+      }
+    ],
+    "fix": "Make the OP publish https-only endpoints. Fix the token_endpoint so it uses https, and don't accept an http endpoint on the SP side. Load the discovery document from the canonical https://\u003chost\u003e/\u003ctenant\u003e/v2.0/.well-known/openid-configuration URL for the correct tenant. If the OP's document can't be corrected, configure the endpoints explicitly over https. The AADSTS50049 error means Entra doesn't recognise the instance or host. Check that the authority host and tenant in the SP config are the ones Entra actually serves, and not a custom or proxy host that rewrites the document.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OIDC_ISSUER_MISMATCH",
+        "why_not": "The issuer check passed. The issuer matches the expected https://login.example.com/tenant-1/v2.0."
+      }
+    ],
+    "questions": [
+      "Is login.example.com a real Entra host or a custom proxy in front of it? AADSTS50049 can come from an unrecognised authority host, and the document wasn't fetched, so the content type and HTTP status weren't checked."
+    ]
+  },
+  "started": "2026-10-27T01:38:31.023307-05:00",
+  "duration_ms": 13468,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 799,
+    "cache_creation_input_tokens": 14083,
+    "cache_read_input_tokens": 12691
+  },
+  "cost_usd": 0.0655991,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 799,
+      "cacheReadInputTokens": 12691,
+      "cacheCreationInputTokens": 14083,
+      "costUSD": 0.0655991,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 13365,
+    "stop_reason": "tool_use",
+    "session_id": "797cd9a0-145e-47ef-b831-99ce1e3e9bf2",
+    "total_cost_usd": 0.0655991,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 14083,
+      "cache_read_input_tokens": 12691,
+      "output_tokens": 799,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 14083,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 621,
+          "cache_read_input_tokens": 12691,
+          "cache_creation_input_tokens": 1392,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1392
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 799,
+        "cacheReadInputTokens": 12691,
+        "cacheCreationInputTokens": 14083,
+        "webSearchRequests": 0,
+        "costUSD": 0.0655991,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 14083,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OIDC_DISCOVERY_DOC_INVALID\",\"confidence\":0.85,\"evidence\":[{\"path\":\"/discovery/token_endpoint\",\"actual\":\"http://login.example.com/tenant-1/oauth2/v2.0/token\",\"expected\":\"an https:// URL\",\"note\":\"OIDC Discovery requires https for endpoints; the token_endpoint is plain http.\"}],\"fix\":\"Make the OP publish https-only endpoints. Fix the token_endpoint so it uses https, and don't accept an http endpoint on the SP side. Load the discovery document from the canonical https://\u003chost\u003e/\u003ctenant\u003e/v2.0/.well-known/openid-configuration URL for the correct tenant. If the OP's document can't be corrected, configure the endpoints explicitly over https. The AADSTS50049 error means Entra doesn't recognise the instance or host. Check that the authority host and tenant in the SP config are the ones Entra actually serves, and not a custom or proxy host that rewrites the document.\",\"alternatives\":[{\"code\":\"OIDC_ISSUER_MISMATCH\",\"why_not\":\"The issuer check passed. The issuer matches the expected https://login.example.com/tenant-1/v2.0.\"}],\"questions\":[\"Is login.example.com a real Entra host or a custom proxy in front of it? AADSTS50049 can come from an unrecognised authority host, and the document wasn't fetched, so the content type and HTTP status weren't checked.\"]}",
+    "structured_output": {
+      "root_cause_code": "OIDC_DISCOVERY_DOC_INVALID",
+      "confidence": 0.85,
+      "evidence": [
+        {
+          "path": "/discovery/token_endpoint",
+          "actual": "http://login.example.com/tenant-1/oauth2/v2.0/token",
+          "expected": "an https:// URL",
+          "note": "OIDC Discovery requires https for endpoints; the token_endpoint is plain http."
+        }
+      ],
+      "fix": "Make the OP publish https-only endpoints. Fix the token_endpoint so it uses https, and don't accept an http endpoint on the SP side. Load the discovery document from the canonical https://\u003chost\u003e/\u003ctenant\u003e/v2.0/.well-known/openid-configuration URL for the correct tenant. If the OP's document can't be corrected, configure the endpoints explicitly over https. The AADSTS50049 error means Entra doesn't recognise the instance or host. Check that the authority host and tenant in the SP config are the ones Entra actually serves, and not a custom or proxy host that rewrites the document.",
+      "alternatives": [
+        {
+          "code": "OIDC_ISSUER_MISMATCH",
+          "why_not": "The issuer check passed. The issuer matches the expected https://login.example.com/tenant-1/v2.0."
+        }
+      ],
+      "questions": [
+        "Is login.example.com a real Entra host or a custom proxy in front of it? AADSTS50049 can come from an unrecognised authority host, and the document wasn't fetched, so the content type and HTTP status weren't checked."
+      ]
+    },
+    "ttft_ms": 8478,
+    "type": "result",
+    "duration_ms": 13468,
+    "uuid": "19e263c8-17de-4c8b-a551-79e99252c1e7",
+    "ttft_stream_ms": 7630,
+    "time_to_request_ms": 92,
+    "first_content_frame_ms": 7630,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

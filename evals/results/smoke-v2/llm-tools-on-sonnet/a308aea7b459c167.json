@@ -1,0 +1,207 @@
+{
+  "case_id": "jwt_kid_not_found_in_jwks-00",
+  "case_hash": "a308aea7b459c167",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_KID_NOT_FOUND_IN_JWKS",
+    "posture_codes": [],
+    "evidence_path": "/header/kid",
+    "fix_keys": [
+      "refresh",
+      "jwks_uri",
+      "rotate"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_kid_not_found_in_jwks-00",
+    "kind": "jwt",
+    "mutator": "jwt_kid_unknown",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "a308aea7b459c167"
+  },
+  "output": {
+    "root_cause_code": "JWT_KID_NOT_FOUND_IN_JWKS",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/header/kid",
+        "actual": "rotated-key-9",
+        "expected": "one of: test-key-1",
+        "note": "Token kid is not in the cached JWKS, so the signature could not be verified. This is consistent with a key rollover or a wrong tenant."
+      },
+      {
+        "path": "/keys/jwks_json",
+        "actual": "contains only kid test-key-1",
+        "note": "The cached JWKS is stale or comes from a different source than the one that issued the token."
+      }
+    ],
+    "fix": "Refetch the JWKS from the OP's jwks_uri, which you can find in the discovery document for the issuer. Confirm that you fetch it from the same tenant and issuer that minted the token. Then re-verify the signature against the refreshed key set, and check that the kid is now present. Make the cache refresh automatically when it sees an unknown kid. Rate-limit that refresh, and keep honoring the cache headers. Keep signature validation and the algorithm allow-list enforced. Do not trust keys embedded in the token, and do not skip verification.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OIDC_ISSUER_MISMATCH",
+        "why_not": "The iss claim matches the expected issuer. If the kid is still missing after a refresh, check that the JWKS comes from the right tenant."
+      }
+    ],
+    "questions": [
+      "access_token (optional, to run the at_hash check)"
+    ]
+  },
+  "started": "2026-10-27T01:37:44.834703-05:00",
+  "duration_ms": 9652,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1302,
+    "cache_creation_input_tokens": 3760,
+    "cache_read_input_tokens": 23937
+  },
+  "cost_usd": 0.0304617,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1302,
+      "cacheReadInputTokens": 23937,
+      "cacheCreationInputTokens": 3760,
+      "costUSD": 0.0304617,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 2,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 9550,
+    "stop_reason": "tool_use",
+    "session_id": "2ad91594-c0ff-46d9-a3f5-3265bc278405",
+    "total_cost_usd": 0.0304617,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3760,
+      "cache_read_input_tokens": 23937,
+      "output_tokens": 1302,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3760,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 610,
+          "cache_read_input_tokens": 12864,
+          "cache_creation_input_tokens": 1969,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1969
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1302,
+        "cacheReadInputTokens": 23937,
+        "cacheCreationInputTokens": 3760,
+        "webSearchRequests": 0,
+        "costUSD": 0.0304617,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3760,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"JWT_KID_NOT_FOUND_IN_JWKS\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/header/kid\",\"actual\":\"rotated-key-9\",\"expected\":\"one of: test-key-1\",\"note\":\"Token kid is not in the cached JWKS, so the signature could not be verified. This is consistent with a key rollover or a wrong tenant.\"},{\"path\":\"/keys/jwks_json\",\"actual\":\"contains only kid test-key-1\",\"note\":\"The cached JWKS is stale or comes from a different source than the one that issued the token.\"}],\"fix\":\"Refetch the JWKS from the OP's jwks_uri, which you can find in the discovery document for the issuer. Confirm that you fetch it from the same tenant and issuer that minted the token. Then re-verify the signature against the refreshed key set, and check that the kid is now present. Make the cache refresh automatically when it sees an unknown kid. Rate-limit that refresh, and keep honoring the cache headers. Keep signature validation and the algorithm allow-list enforced. Do not trust keys embedded in the token, and do not skip verification.\",\"alternatives\":[{\"code\":\"OIDC_ISSUER_MISMATCH\",\"why_not\":\"The iss claim matches the expected issuer. If the kid is still missing after a refresh, check that the JWKS comes from the right tenant.\"}],\"questions\":[\"access_token (optional, to run the at_hash check)\"]}",
+    "structured_output": {
+      "root_cause_code": "JWT_KID_NOT_FOUND_IN_JWKS",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/header/kid",
+          "actual": "rotated-key-9",
+          "expected": "one of: test-key-1",
+          "note": "Token kid is not in the cached JWKS, so the signature could not be verified. This is consistent with a key rollover or a wrong tenant."
+        },
+        {
+          "path": "/keys/jwks_json",
+          "actual": "contains only kid test-key-1",
+          "note": "The cached JWKS is stale or comes from a different source than the one that issued the token."
+        }
+      ],
+      "fix": "Refetch the JWKS from the OP's jwks_uri, which you can find in the discovery document for the issuer. Confirm that you fetch it from the same tenant and issuer that minted the token. Then re-verify the signature against the refreshed key set, and check that the kid is now present. Make the cache refresh automatically when it sees an unknown kid. Rate-limit that refresh, and keep honoring the cache headers. Keep signature validation and the algorithm allow-list enforced. Do not trust keys embedded in the token, and do not skip verification.",
+      "alternatives": [
+        {
+          "code": "OIDC_ISSUER_MISMATCH",
+          "why_not": "The iss claim matches the expected issuer. If the kid is still missing after a refresh, check that the JWKS comes from the right tenant."
+        }
+      ],
+      "questions": [
+        "access_token (optional, to run the at_hash check)"
+      ]
+    },
+    "ttft_ms": 4785,
+    "type": "result",
+    "duration_ms": 9652,
+    "uuid": "95ecfbd3-8b69-450b-9669-61d51ff86fdc",
+    "ttft_stream_ms": 1929,
+    "time_to_request_ms": 90,
+    "first_content_frame_ms": 1929,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

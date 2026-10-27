@@ -20,6 +20,7 @@ var script []byte
 // Modes the script understands.
 const (
 	ModeSuccess      = "success"      // SAML_AUDIENCE_MISMATCH with one real and one made-up citation
+	ModeCheckName    = "checkname"    // ModeSuccess plus a "checks/audience" citation (normalisable) and a bare "issuer" one (ambiguous for SAML)
 	ModeHealthy      = "healthy"      // HEALTHY with a posture code
 	ModeMalformed    = "malformed"    // prose on stdout, exit 1 (not logged in)
 	ModeDenial       = "denial"       // permission_denials non-empty

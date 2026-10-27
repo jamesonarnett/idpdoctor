@@ -1,0 +1,268 @@
+{
+  "case_id": "jwt_alg_none_or_confusion-00",
+  "case_hash": "c82042ed6de92962",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_ALG_NONE_OR_CONFUSION",
+    "posture_codes": [],
+    "evidence_path": "/header/alg",
+    "fix_keys": [
+      "reject",
+      "token"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_alg_none_or_confusion-00",
+    "kind": "jwt",
+    "mutator": "jwt_alg_none",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "c82042ed6de92962"
+  },
+  "output": {
+    "root_cause_code": "JWT_ALG_NONE_OR_CONFUSION",
+    "confidence": 0.93,
+    "evidence": [
+      {
+        "path": "/header/alg",
+        "actual": "none",
+        "expected": "RS256 (the only key published in the JWKS has alg RS256)",
+        "note": "The header says alg none, not HS256 as the symptom reports. Either way, it does not match the RSA key for kid test-key-1. An unsigned token must never be accepted."
+      },
+      {
+        "path": "/header/kid",
+        "actual": "test-key-1",
+        "expected": "test-key-1",
+        "note": "The kid exists in the JWKS, so this is not a missing-key problem."
+      },
+      {
+        "path": "/claims/iss",
+        "actual": "https://login.example.com/tenant-1/v2.0",
+        "expected": "https://login.example.com/tenant-1/v2.0",
+        "note": "Matches."
+      },
+      {
+        "path": "/claims/aud",
+        "actual": "client-abc123",
+        "expected": "client-abc123",
+        "note": "Matches."
+      },
+      {
+        "path": "/claims/nonce",
+        "actual": "n-0S6_WzA2Mj",
+        "expected": "n-0S6_WzA2Mj",
+        "note": "Matches."
+      },
+      {
+        "path": "/claims/exp",
+        "actual": "1768482000",
+        "expected": "later than now (2026-01-15T12:00:00Z = 1768478400)",
+        "note": "Not expired. iat and nbf equal now, so the token is valid."
+      }
+    ],
+    "fix": "Pin the allowed algorithms for this OP to the ones its JWKS publishes (RS256 here). Reject any id_token whose header alg is none or a symmetric HS* algorithm. Select the verification key by kid and require its kty to match the alg. Never verify an HS256 token using the RSA public key as the HMAC secret, because that is the classic key-confusion attack. Never accept alg none. Then find out why the token arrives this way. It may come from a misconfigured client or tenant, a different issuer or test mock, or a tampered or downgraded token. The OP should issue RS256-signed id_tokens that verify against test-key-1.",
+    "posture_codes": [
+      "POSTURE_WEAK_ALGORITHM"
+    ],
+    "alternatives": [
+      {
+        "code": "JWT_KID_NOT_FOUND_IN_JWKS",
+        "why_not": "The kid test-key-1 is present in the JWKS."
+      },
+      {
+        "code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+        "why_not": "exp is 3600s after the supplied now, and nbf and iat equal now, so the time claims are valid."
+      }
+    ],
+    "questions": [
+      "The captured header shows alg none, not HS256. Is this the same token the developer saw fail, or was it re-captured or altered?"
+    ]
+  },
+  "started": "2026-10-27T01:14:28.051744-05:00",
+  "duration_ms": 8563,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1013,
+    "cache_creation_input_tokens": 1500,
+    "cache_read_input_tokens": 3689
+  },
+  "cost_usd": 0.0165029,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1013,
+      "cacheReadInputTokens": 3689,
+      "cacheCreationInputTokens": 1500,
+      "costUSD": 0.0165029,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 6,
+  "envelope": {
+    "duration_api_ms": 8425,
+    "stop_reason": "tool_use",
+    "session_id": "e8d6df88-0fea-44d6-8e91-7dc76e1e9a62",
+    "total_cost_usd": 0.0165029,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1500,
+      "cache_read_input_tokens": 3689,
+      "output_tokens": 1013,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1500,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1013,
+          "cache_read_input_tokens": 3689,
+          "cache_creation_input_tokens": 1500,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1500
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1013,
+        "cacheReadInputTokens": 3689,
+        "cacheCreationInputTokens": 1500,
+        "webSearchRequests": 0,
+        "costUSD": 0.0165029,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1500,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"JWT_ALG_NONE_OR_CONFUSION\",\"confidence\":0.93,\"evidence\":[{\"path\":\"/header/alg\",\"actual\":\"none\",\"expected\":\"RS256 (the only key published in the JWKS has alg RS256)\",\"note\":\"The header says alg none, not HS256 as the symptom reports. Either way, it does not match the RSA key for kid test-key-1. An unsigned token must never be accepted.\"},{\"path\":\"/header/kid\",\"actual\":\"test-key-1\",\"expected\":\"test-key-1\",\"note\":\"The kid exists in the JWKS, so this is not a missing-key problem.\"},{\"path\":\"/claims/iss\",\"actual\":\"https://login.example.com/tenant-1/v2.0\",\"expected\":\"https://login.example.com/tenant-1/v2.0\",\"note\":\"Matches.\"},{\"path\":\"/claims/aud\",\"actual\":\"client-abc123\",\"expected\":\"client-abc123\",\"note\":\"Matches.\"},{\"path\":\"/claims/nonce\",\"actual\":\"n-0S6_WzA2Mj\",\"expected\":\"n-0S6_WzA2Mj\",\"note\":\"Matches.\"},{\"path\":\"/claims/exp\",\"actual\":\"1768482000\",\"expected\":\"later than now (2026-01-15T12:00:00Z = 1768478400)\",\"note\":\"Not expired. iat and nbf equal now, so the token is valid.\"}],\"fix\":\"Pin the allowed algorithms for this OP to the ones its JWKS publishes (RS256 here). Reject any id_token whose header alg is none or a symmetric HS* algorithm. Select the verification key by kid and require its kty to match the alg. Never verify an HS256 token using the RSA public key as the HMAC secret, because that is the classic key-confusion attack. Never accept alg none. Then find out why the token arrives this way. It may come from a misconfigured client or tenant, a different issuer or test mock, or a tampered or downgraded token. The OP should issue RS256-signed id_tokens that verify against test-key-1.\",\"alternatives\":[{\"code\":\"JWT_KID_NOT_FOUND_IN_JWKS\",\"why_not\":\"The kid test-key-1 is present in the JWKS.\"},{\"code\":\"JWT_EXPIRED_OR_NOT_YET_VALID\",\"why_not\":\"exp is 3600s after the supplied now, and nbf and iat equal now, so the time claims are valid.\"}],\"posture_codes\":[\"POSTURE_WEAK_ALGORITHM\"],\"questions\":[\"The captured header shows alg none, not HS256. Is this the same token the developer saw fail, or was it re-captured or altered?\"]}",
+    "structured_output": {
+      "root_cause_code": "JWT_ALG_NONE_OR_CONFUSION",
+      "confidence": 0.93,
+      "evidence": [
+        {
+          "path": "/header/alg",
+          "actual": "none",
+          "expected": "RS256 (the only key published in the JWKS has alg RS256)",
+          "note": "The header says alg none, not HS256 as the symptom reports. Either way, it does not match the RSA key for kid test-key-1. An unsigned token must never be accepted."
+        },
+        {
+          "path": "/header/kid",
+          "actual": "test-key-1",
+          "expected": "test-key-1",
+          "note": "The kid exists in the JWKS, so this is not a missing-key problem."
+        },
+        {
+          "path": "/claims/iss",
+          "actual": "https://login.example.com/tenant-1/v2.0",
+          "expected": "https://login.example.com/tenant-1/v2.0",
+          "note": "Matches."
+        },
+        {
+          "path": "/claims/aud",
+          "actual": "client-abc123",
+          "expected": "client-abc123",
+          "note": "Matches."
+        },
+        {
+          "path": "/claims/nonce",
+          "actual": "n-0S6_WzA2Mj",
+          "expected": "n-0S6_WzA2Mj",
+          "note": "Matches."
+        },
+        {
+          "path": "/claims/exp",
+          "actual": "1768482000",
+          "expected": "later than now (2026-01-15T12:00:00Z = 1768478400)",
+          "note": "Not expired. iat and nbf equal now, so the token is valid."
+        }
+      ],
+      "fix": "Pin the allowed algorithms for this OP to the ones its JWKS publishes (RS256 here). Reject any id_token whose header alg is none or a symmetric HS* algorithm. Select the verification key by kid and require its kty to match the alg. Never verify an HS256 token using the RSA public key as the HMAC secret, because that is the classic key-confusion attack. Never accept alg none. Then find out why the token arrives this way. It may come from a misconfigured client or tenant, a different issuer or test mock, or a tampered or downgraded token. The OP should issue RS256-signed id_tokens that verify against test-key-1.",
+      "alternatives": [
+        {
+          "code": "JWT_KID_NOT_FOUND_IN_JWKS",
+          "why_not": "The kid test-key-1 is present in the JWKS."
+        },
+        {
+          "code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+          "why_not": "exp is 3600s after the supplied now, and nbf and iat equal now, so the time claims are valid."
+        }
+      ],
+      "posture_codes": [
+        "POSTURE_WEAK_ALGORITHM"
+      ],
+      "questions": [
+        "The captured header shows alg none, not HS256. Is this the same token the developer saw fail, or was it re-captured or altered?"
+      ]
+    },
+    "ttft_ms": 8546,
+    "type": "result",
+    "duration_ms": 8563,
+    "uuid": "1a9f8650-30e2-49bc-8d2c-211f04f87643",
+    "ttft_stream_ms": 2004,
+    "time_to_request_ms": 138,
+    "first_content_frame_ms": 2004,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

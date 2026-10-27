@@ -108,9 +108,15 @@ Two modes:
 | `tools-off` | the **redacted** structure (NameID, attribute values, PII claims, signature values masked), the symptom, `expected` | none |
 
 The model must return the structured object `{root_cause_code, confidence, evidence[{path, actual, ...}],
-fix, posture_codes, alternatives, questions}`. Every cited `path` is checked against the parsed artifact; a path
-that does not exist is reported as a hallucinated citation (`WARNING: n cited path(s) not present`), and the
-deterministic findings are always printed first and never overridden. The envelope's `usage`, `num_turns`,
+fix, posture_codes, alternatives, questions}`. The user turn enumerates the **allowed evidence paths** for this
+artifact (the validators' evidence plus its parsed structure, `diag.KnownPaths`), with one correct and two
+incorrect examples, and the schema makes `evidence[].path` an enum of exactly that list, so the CLI's
+structured-output enforcement rejects a check name or a paraphrased path. In tools-on mode every tool result
+ends with `Evidence paths (cite verbatim in evidence[].path): ...`. After parsing, an exact check-name citation
+(`audience`, `checks/audience`) is normalised to its one canonical path only when `diag.CheckPaths` maps it
+unambiguously (`note: cited "checks/audience", a check name, shown above as ...`); anything else not on the list
+is a hallucinated citation (`WARNING: n cited path(s) not present`), and the deterministic findings are always
+printed first and never overridden. The envelope's `usage`, `num_turns`,
 `duration_ms` and `total_cost_usd` (list-price basis; nothing is billed) are printed on the last line, and any
 `permission_denials` fail the call. Tests never call the real CLI: a fake `claude` on `PATH` emits canned
 envelopes; `go test -tags live ./internal/agent -run Live` makes exactly one real call.
@@ -212,11 +218,16 @@ Judge: opus, calibrated on 50 hand-labelled cases: kappa(evidence)=, weighted ka
 Diagnoser: sonnet via Claude Code 2.1.311 headless. Per-class confusion matrix: `evals/results/v1/report.md`.
 
 The numbers above are blank on purpose: they are filled from `eval report` output only, never typed by hand.
-`report` also emits hallucinated-citation rate (cited paths not present in the parsed artifact), unsafe-fix
-rate (judge verdict or the banned-phrase regex), posture recall, abstention quality and a per-class confusion
-matrix per arm. A 34-case smoke run (1 per class) is committed under `evals/results/smoke/` to prove the
-plumbing; its judge calibration uses 8 placeholder labels written by the harness author, not hand labels, and
-the report says so.
+`report` also emits hallucinated-citation rate (cited paths not on the artifact's allowed list after
+normalisation), normalised-citation rate (exact check-name citations mapped to their canonical path; counted on
+their own, never as correct), unsafe-fix rate (judge verdict or the banned-phrase regex), posture recall,
+abstention quality and a per-class confusion matrix per arm. A 34-case smoke run (1 per class) is committed
+under `evals/results/smoke/` (prompt v1) to prove the plumbing, and `evals/results/smoke-v2/` re-runs the
+tools-on arm with prompt v2 (allowed-path list + schema enum) next to the unchanged rules and tools-off results;
+the judge calibration uses 8 placeholder labels written by the harness author, not hand labels, and the report
+says so. The cache key is the case hash **and** `agent.PromptVersion`: `run` stamps `prompt_version` into every
+LLM-arm result and manifest and re-runs a cached case whose version differs (printed as `stale`), so a results
+directory never silently mixes prompts. Bump the constant whenever the prompt or schema changes.
 
 ## Threat model: local-only, redact-by-default, zero-persistence
 
@@ -313,6 +324,13 @@ Decisions recorded while building v1 (where the plan met a real API):
   fault case through the pipeline and refuses to emit a label the validators would not produce.
 - `goreleaser check` could not be run on the build machine (binary not installed, and running the module via
   `go run` was not permitted); the release workflow runs it in CI.
+- The v1 smoke run hallucinated citations 20.3% (tools-on) / 27.0% (tools-off) of the time, almost all check
+  names (`checks/audience`) or paraphrased paths rather than the exact evidence paths the validators returned.
+  Fixed at the source, not in the metric: the prompt enumerates the allowed paths with examples, the schema
+  constrains `evidence[].path` to that enum per call (Claude Code 2.1.311 enforces it), tool results print
+  their evidence paths on a labelled line, and a post-parse normaliser maps an exact check name to its canonical
+  path only when unambiguous, reported as "normalised", never as correct. `agent.PromptVersion` joined the cache
+  key so the v1 results could not be reused by accident.
 
 See [LEARNING.md](LEARNING.md) for a reading order through the code and the Go concepts each package exercises.
 

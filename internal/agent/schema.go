@@ -68,9 +68,23 @@ func PostureCodes() []string {
 	return out
 }
 
-// DiagnosisSchema is the --json-schema document. It is built from the
-// catalog at runtime so adding a class to codes.go is enough.
-func DiagnosisSchema() json.RawMessage {
+// DiagnosisSchema is the unconstrained --json-schema document: any string
+// is accepted as an evidence path. Explain uses DiagnosisSchemaFor so the
+// path is an enum of this artifact's allowed paths.
+func DiagnosisSchema() json.RawMessage { return DiagnosisSchemaFor(nil) }
+
+// DiagnosisSchemaFor is the --json-schema document, built from the catalog
+// at runtime so adding a class to codes.go is enough. When allowedPaths is
+// non-empty, evidence[].path becomes an enum of exactly those strings, so
+// the CLI's structured-output enforcement rejects a check name or a
+// paraphrased path before it ever reaches the harness (prompt v2).
+func DiagnosisSchemaFor(allowedPaths []string) json.RawMessage {
+	path := map[string]any{"type": "string", "description": "an allowed evidence path, copied verbatim from the list in the task; never a check name"}
+	if len(allowedPaths) > 0 {
+		path["enum"] = allowedPaths
+	} else {
+		path["description"] = "a path returned by a tool or present in the redacted artifact, e.g. /Response/Assertion/Conditions/AudienceRestriction/Audience"
+	}
 	schema := map[string]any{
 		"type":                 "object",
 		"additionalProperties": false,
@@ -85,7 +99,7 @@ func DiagnosisSchema() json.RawMessage {
 					"additionalProperties": false,
 					"required":             []string{"path", "actual"},
 					"properties": map[string]any{
-						"path":     map[string]any{"type": "string", "description": "a path returned by a tool or present in the redacted artifact, e.g. /Response/Assertion/Conditions/AudienceRestriction/Audience"},
+						"path":     path,
 						"actual":   map[string]any{"type": "string"},
 						"expected": map[string]any{"type": "string"},
 						"note":     map[string]any{"type": "string"},

@@ -1,0 +1,201 @@
+{
+  "case_id": "saml_structure_invalid-00",
+  "case_hash": "36d19acc5eca5210",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_STRUCTURE_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion",
+    "fix_keys": [
+      "treat",
+      "response",
+      "hostile",
+      "unless"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_structure_invalid-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "structure_multi_assertion",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "36d19acc5eca5210"
+  },
+  "output": {
+    "root_cause_code": "SAML_STRUCTURE_INVALID",
+    "confidence": 0.85,
+    "evidence": [
+      {
+        "path": "/Response/Assertion",
+        "actual": "2 assertions",
+        "expected": "1",
+        "note": "Multiple assertions in one Response is a signature-wrapping pattern. Every other check passed: status, issuer, destination, InResponseTo, signature, audience, recipient, time window, NameID and attributes."
+      }
+    ],
+    "fix": "Make the SP consume only the assertion whose signature verified against the configured IdP certificate. Reject any Response that contains more than one assertion. Have the IdP emit a single assertion with the Signature as a direct child of the signed element. Separately, AADSTS75003 is raised by Entra when the AuthnRequest uses a binding that Entra does not support for that app (for example an HTTP-POST AuthnRequest, or an ACS binding that the app registration does not allow). Entra accepts HTTP-Redirect for AuthnRequests. Change the SP's AuthnRequest binding to HTTP-Redirect and make sure the ACS URL is registered with the HTTP-POST binding in the SP metadata.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "UNKNOWN",
+        "why_not": "The validators found a concrete structural fault, so a class is supported. The AADSTS75003 error itself happens at request time, before this response was issued, and this artifact doesn't explain it."
+      }
+    ],
+    "questions": [
+      "Which binding does the SP use to send the AuthnRequest to Entra (Redirect or POST)? The captured response can't show this.",
+      "Does the IdP normally emit two assertions in one Response? If it doesn't, treat this capture as tampered."
+    ]
+  },
+  "started": "2026-10-27T01:43:17.620335-05:00",
+  "duration_ms": 18834,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2135,
+    "cache_creation_input_tokens": 6825,
+    "cache_read_input_tokens": 28643
+  },
+  "cost_usd": 0.05152230000000001,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2135,
+      "cacheReadInputTokens": 28643,
+      "cacheCreationInputTokens": 6825,
+      "costUSD": 0.05152230000000001,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 18701,
+    "stop_reason": "tool_use",
+    "session_id": "0bea789c-15d4-48d2-a3a9-c2f118552e13",
+    "total_cost_usd": 0.05152230000000001,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 6825,
+      "cache_read_input_tokens": 28643,
+      "output_tokens": 2135,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6825,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 682,
+          "cache_read_input_tokens": 16264,
+          "cache_creation_input_tokens": 2940,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2940
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2135,
+        "cacheReadInputTokens": 28643,
+        "cacheCreationInputTokens": 6825,
+        "webSearchRequests": 0,
+        "costUSD": 0.05152230000000001,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6825,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_STRUCTURE_INVALID\",\"confidence\":0.85,\"evidence\":[{\"path\":\"/Response/Assertion\",\"actual\":\"2 assertions\",\"expected\":\"1\",\"note\":\"Multiple assertions in one Response is a signature-wrapping pattern. Every other check passed: status, issuer, destination, InResponseTo, signature, audience, recipient, time window, NameID and attributes.\"}],\"fix\":\"Make the SP consume only the assertion whose signature verified against the configured IdP certificate. Reject any Response that contains more than one assertion. Have the IdP emit a single assertion with the Signature as a direct child of the signed element. Separately, AADSTS75003 is raised by Entra when the AuthnRequest uses a binding that Entra does not support for that app (for example an HTTP-POST AuthnRequest, or an ACS binding that the app registration does not allow). Entra accepts HTTP-Redirect for AuthnRequests. Change the SP's AuthnRequest binding to HTTP-Redirect and make sure the ACS URL is registered with the HTTP-POST binding in the SP metadata.\",\"alternatives\":[{\"code\":\"UNKNOWN\",\"why_not\":\"The validators found a concrete structural fault, so a class is supported. The AADSTS75003 error itself happens at request time, before this response was issued, and this artifact doesn't explain it.\"}],\"questions\":[\"Which binding does the SP use to send the AuthnRequest to Entra (Redirect or POST)? The captured response can't show this.\",\"Does the IdP normally emit two assertions in one Response? If it doesn't, treat this capture as tampered.\"]}",
+    "structured_output": {
+      "root_cause_code": "SAML_STRUCTURE_INVALID",
+      "confidence": 0.85,
+      "evidence": [
+        {
+          "path": "/Response/Assertion",
+          "actual": "2 assertions",
+          "expected": "1",
+          "note": "Multiple assertions in one Response is a signature-wrapping pattern. Every other check passed: status, issuer, destination, InResponseTo, signature, audience, recipient, time window, NameID and attributes."
+        }
+      ],
+      "fix": "Make the SP consume only the assertion whose signature verified against the configured IdP certificate. Reject any Response that contains more than one assertion. Have the IdP emit a single assertion with the Signature as a direct child of the signed element. Separately, AADSTS75003 is raised by Entra when the AuthnRequest uses a binding that Entra does not support for that app (for example an HTTP-POST AuthnRequest, or an ACS binding that the app registration does not allow). Entra accepts HTTP-Redirect for AuthnRequests. Change the SP's AuthnRequest binding to HTTP-Redirect and make sure the ACS URL is registered with the HTTP-POST binding in the SP metadata.",
+      "alternatives": [
+        {
+          "code": "UNKNOWN",
+          "why_not": "The validators found a concrete structural fault, so a class is supported. The AADSTS75003 error itself happens at request time, before this response was issued, and this artifact doesn't explain it."
+        }
+      ],
+      "questions": [
+        "Which binding does the SP use to send the AuthnRequest to Entra (Redirect or POST)? The captured response can't show this.",
+        "Does the IdP normally emit two assertions in one Response? If it doesn't, treat this capture as tampered."
+      ]
+    },
+    "ttft_ms": 8704,
+    "type": "result",
+    "duration_ms": 18834,
+    "uuid": "3eca3964-e990-4b76-9429-7329fabd4285",
+    "ttft_stream_ms": 2146,
+    "time_to_request_ms": 122,
+    "first_content_frame_ms": 2146,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

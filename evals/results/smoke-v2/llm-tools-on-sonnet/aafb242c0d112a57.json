@@ -1,0 +1,238 @@
+{
+  "case_id": "oauth_pkce_verifier_mismatch-00",
+  "case_hash": "aafb242c0d112a57",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/request/code_verifier",
+    "fix_keys": [
+      "generate",
+      "verifier",
+      "store",
+      "session"
+    ],
+    "needs": [
+      "code_verifier"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_pkce_verifier_mismatch-00",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_pkce_plain_mismatch",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "aafb242c0d112a57"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+    "confidence": 0.97,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_grant",
+        "note": "Classified by vendor code AADSTS501481 (code_verifier does not match code_challenge)"
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "AADSTS501481: The Code_Verifier does not match the code_challenge supplied in the authorization request."
+      },
+      {
+        "path": "/request/code_verifier",
+        "actual": "[REDACTED:code_verifier:623deb68]",
+        "expected": "[REDACTED:code_challenge:ddbc472d]",
+        "note": "With the plain method the verifier must equal the challenge byte for byte, and it does not."
+      },
+      {
+        "path": "/request/code_challenge_method",
+        "actual": "plain",
+        "expected": "S256",
+        "note": "A public client is using plain PKCE, which is also a posture weakness."
+      }
+    ],
+    "fix": "Generate the code_verifier once per authorization flow and store it with the session. Derive the code_challenge from that same verifier with S256 (BASE64URL(SHA256(verifier))). Send the stored verifier unchanged at the token endpoint. Don't regenerate the verifier between the authorization request and the token request. Check that concurrent logins or tabs don't overwrite each other's stored verifier. Move off the plain method to S256 on this public client.",
+    "posture_codes": [
+      "POSTURE_PKCE_PLAIN_OR_ABSENT"
+    ],
+    "alternatives": [
+      {
+        "code": "OAUTH_INVALID_GRANT_CODE",
+        "why_not": "The error is invalid_grant, but the vendor code AADSTS501481 and the plain-method check both point to a verifier/challenge mismatch, not an expired or reused code."
+      },
+      {
+        "code": "OAUTH_REDIRECT_URI_MISMATCH",
+        "why_not": "The redirect_uri exactly matches the registered URI."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T01:38:11.600252-05:00",
+  "duration_ms": 8706,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1075,
+    "cache_creation_input_tokens": 4178,
+    "cache_read_input_tokens": 23569
+  },
+  "cost_usd": 0.029826900000000003,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1075,
+      "cacheReadInputTokens": 23569,
+      "cacheCreationInputTokens": 4178,
+      "costUSD": 0.029826900000000003,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 8632,
+    "stop_reason": "tool_use",
+    "session_id": "265e4ca0-9b1d-438c-b625-bf0d7ce04161",
+    "total_cost_usd": 0.029826900000000003,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 4178,
+      "cache_read_input_tokens": 23569,
+      "output_tokens": 1075,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 4178,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 773,
+          "cache_read_input_tokens": 12518,
+          "cache_creation_input_tokens": 2711,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2711
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1075,
+        "cacheReadInputTokens": 23569,
+        "cacheCreationInputTokens": 4178,
+        "webSearchRequests": 0,
+        "costUSD": 0.029826900000000003,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 4178,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_PKCE_VERIFIER_MISMATCH\",\"confidence\":0.97,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"invalid_grant\",\"note\":\"Classified by vendor code AADSTS501481 (code_verifier does not match code_challenge)\"},{\"path\":\"/redirect/error_description\",\"actual\":\"AADSTS501481: The Code_Verifier does not match the code_challenge supplied in the authorization request.\"},{\"path\":\"/request/code_verifier\",\"actual\":\"[REDACTED:code_verifier:623deb68]\",\"expected\":\"[REDACTED:code_challenge:ddbc472d]\",\"note\":\"With the plain method the verifier must equal the challenge byte for byte, and it does not.\"},{\"path\":\"/request/code_challenge_method\",\"actual\":\"plain\",\"expected\":\"S256\",\"note\":\"A public client is using plain PKCE, which is also a posture weakness.\"}],\"fix\":\"Generate the code_verifier once per authorization flow and store it with the session. Derive the code_challenge from that same verifier with S256 (BASE64URL(SHA256(verifier))). Send the stored verifier unchanged at the token endpoint. Don't regenerate the verifier between the authorization request and the token request. Check that concurrent logins or tabs don't overwrite each other's stored verifier. Move off the plain method to S256 on this public client.\",\"alternatives\":[{\"code\":\"OAUTH_INVALID_GRANT_CODE\",\"why_not\":\"The error is invalid_grant, but the vendor code AADSTS501481 and the plain-method check both point to a verifier/challenge mismatch, not an expired or reused code.\"},{\"code\":\"OAUTH_REDIRECT_URI_MISMATCH\",\"why_not\":\"The redirect_uri exactly matches the registered URI.\"}],\"posture_codes\":[\"POSTURE_PKCE_PLAIN_OR_ABSENT\"]}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+      "confidence": 0.97,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "invalid_grant",
+          "note": "Classified by vendor code AADSTS501481 (code_verifier does not match code_challenge)"
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "AADSTS501481: The Code_Verifier does not match the code_challenge supplied in the authorization request."
+        },
+        {
+          "path": "/request/code_verifier",
+          "actual": "[REDACTED:code_verifier:623deb68]",
+          "expected": "[REDACTED:code_challenge:ddbc472d]",
+          "note": "With the plain method the verifier must equal the challenge byte for byte, and it does not."
+        },
+        {
+          "path": "/request/code_challenge_method",
+          "actual": "plain",
+          "expected": "S256",
+          "note": "A public client is using plain PKCE, which is also a posture weakness."
+        }
+      ],
+      "fix": "Generate the code_verifier once per authorization flow and store it with the session. Derive the code_challenge from that same verifier with S256 (BASE64URL(SHA256(verifier))). Send the stored verifier unchanged at the token endpoint. Don't regenerate the verifier between the authorization request and the token request. Check that concurrent logins or tabs don't overwrite each other's stored verifier. Move off the plain method to S256 on this public client.",
+      "alternatives": [
+        {
+          "code": "OAUTH_INVALID_GRANT_CODE",
+          "why_not": "The error is invalid_grant, but the vendor code AADSTS501481 and the plain-method check both point to a verifier/challenge mismatch, not an expired or reused code."
+        },
+        {
+          "code": "OAUTH_REDIRECT_URI_MISMATCH",
+          "why_not": "The redirect_uri exactly matches the registered URI."
+        }
+      ],
+      "posture_codes": [
+        "POSTURE_PKCE_PLAIN_OR_ABSENT"
+      ]
+    },
+    "ttft_ms": 3546,
+    "type": "result",
+    "duration_ms": 8706,
+    "uuid": "63367ded-3042-485d-9e3f-66db5ede0286",
+    "ttft_stream_ms": 2152,
+    "time_to_request_ms": 61,
+    "first_content_frame_ms": 2152,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

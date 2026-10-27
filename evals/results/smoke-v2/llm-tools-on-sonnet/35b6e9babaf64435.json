@@ -1,0 +1,213 @@
+{
+  "case_id": "posture_decrypt_before_verify-00",
+  "case_hash": "35b6e9babaf64435",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_DECRYPT_BEFORE_VERIFY"
+    ],
+    "evidence_path": "/Response/Assertion",
+    "fix_keys": [
+      "response",
+      "assertion",
+      "encrypting",
+      "verify"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_decrypt_before_verify-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "posture_encrypted_unsigned",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "35b6e9babaf64435"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.6,
+    "evidence": [
+      {
+        "path": "/Response/Assertion",
+        "actual": "EncryptedAssertion inside an unsigned Response",
+        "expected": "signed Response or signed-then-encrypted Assertion",
+        "note": "Status, issuer, destination and InResponseTo pass. The assertion is encrypted, so audience, recipient, time window, NameID, attributes and signature could not be checked."
+      }
+    ],
+    "fix": "Have the IdP sign the Response, or sign the assertion before encrypting it. The SP can then verify a signature before it decrypts. Keep signature validation against the configured IdP certificate. After that, re-run the check on the decrypted assertion to confirm audience, recipient, time window, NameID format and the required attributes.",
+    "posture_codes": [
+      "POSTURE_DECRYPT_BEFORE_VERIFY"
+    ],
+    "alternatives": [
+      {
+        "code": "SAML_ENCRYPTED_ASSERTION_UNDECRYPTABLE",
+        "why_not": "Nothing shows that decryption failed. The validator does not decrypt in this version, so the assertion was simply not inspected."
+      },
+      {
+        "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+        "why_not": "The expected values do not say a signature is required (require_signed_response and require_signed_assertion are unset). The tool also skipped the signature checks because there is no assertion to inspect."
+      }
+    ],
+    "questions": [
+      "Can you provide the decrypted assertion, or the SP decryption key, so audience, recipient, time window, NameID and attributes can be validated?"
+    ]
+  },
+  "started": "2026-10-27T01:39:09.885236-05:00",
+  "duration_ms": 14765,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2084,
+    "cache_creation_input_tokens": 18468,
+    "cache_read_input_tokens": 16038
+  },
+  "cost_usd": 0.0963238,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2084,
+      "cacheReadInputTokens": 16038,
+      "cacheCreationInputTokens": 18468,
+      "costUSD": 0.0963238,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 14680,
+    "stop_reason": "tool_use",
+    "session_id": "4ef8b4d2-6f9f-45a5-8f4d-8e6535dcc818",
+    "total_cost_usd": 0.0963238,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 18468,
+      "cache_read_input_tokens": 16038,
+      "output_tokens": 2084,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 18468,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 684,
+          "cache_read_input_tokens": 16038,
+          "cache_creation_input_tokens": 2430,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2430
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2084,
+        "cacheReadInputTokens": 16038,
+        "cacheCreationInputTokens": 18468,
+        "webSearchRequests": 0,
+        "costUSD": 0.0963238,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 18468,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.6,\"evidence\":[{\"path\":\"/Response/Assertion\",\"actual\":\"EncryptedAssertion inside an unsigned Response\",\"expected\":\"signed Response or signed-then-encrypted Assertion\",\"note\":\"Status, issuer, destination and InResponseTo pass. The assertion is encrypted, so audience, recipient, time window, NameID, attributes and signature could not be checked.\"}],\"fix\":\"Have the IdP sign the Response, or sign the assertion before encrypting it. The SP can then verify a signature before it decrypts. Keep signature validation against the configured IdP certificate. After that, re-run the check on the decrypted assertion to confirm audience, recipient, time window, NameID format and the required attributes.\",\"posture_codes\":[\"POSTURE_DECRYPT_BEFORE_VERIFY\"],\"questions\":[\"Can you provide the decrypted assertion, or the SP decryption key, so audience, recipient, time window, NameID and attributes can be validated?\"],\"alternatives\":[{\"code\":\"SAML_ENCRYPTED_ASSERTION_UNDECRYPTABLE\",\"why_not\":\"Nothing shows that decryption failed. The validator does not decrypt in this version, so the assertion was simply not inspected.\"},{\"code\":\"SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED\",\"why_not\":\"The expected values do not say a signature is required (require_signed_response and require_signed_assertion are unset). The tool also skipped the signature checks because there is no assertion to inspect.\"}]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.6,
+      "evidence": [
+        {
+          "path": "/Response/Assertion",
+          "actual": "EncryptedAssertion inside an unsigned Response",
+          "expected": "signed Response or signed-then-encrypted Assertion",
+          "note": "Status, issuer, destination and InResponseTo pass. The assertion is encrypted, so audience, recipient, time window, NameID, attributes and signature could not be checked."
+        }
+      ],
+      "fix": "Have the IdP sign the Response, or sign the assertion before encrypting it. The SP can then verify a signature before it decrypts. Keep signature validation against the configured IdP certificate. After that, re-run the check on the decrypted assertion to confirm audience, recipient, time window, NameID format and the required attributes.",
+      "posture_codes": [
+        "POSTURE_DECRYPT_BEFORE_VERIFY"
+      ],
+      "questions": [
+        "Can you provide the decrypted assertion, or the SP decryption key, so audience, recipient, time window, NameID and attributes can be validated?"
+      ],
+      "alternatives": [
+        {
+          "code": "SAML_ENCRYPTED_ASSERTION_UNDECRYPTABLE",
+          "why_not": "Nothing shows that decryption failed. The validator does not decrypt in this version, so the assertion was simply not inspected."
+        },
+        {
+          "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+          "why_not": "The expected values do not say a signature is required (require_signed_response and require_signed_assertion are unset). The tool also skipped the signature checks because there is no assertion to inspect."
+        }
+      ]
+    },
+    "ttft_ms": 9653,
+    "type": "result",
+    "duration_ms": 14765,
+    "uuid": "ce15bd99-48a9-42e5-9e0c-bc3155cd5266",
+    "ttft_stream_ms": 3308,
+    "time_to_request_ms": 78,
+    "first_content_frame_ms": 3309,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

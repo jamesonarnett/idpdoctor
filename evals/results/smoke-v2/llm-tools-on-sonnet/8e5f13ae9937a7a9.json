@@ -1,0 +1,204 @@
+{
+  "case_id": "posture_embedded_key_trust-00",
+  "case_hash": "8e5f13ae9937a7a9",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_EMBEDDED_KEY_TRUST"
+    ],
+    "evidence_path": "/Signature/KeyInfo/X509Data/X509Certificate",
+    "fix_keys": [
+      "configure",
+      "signing",
+      "certificate",
+      "metadata"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_embedded_key_trust-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "posture_embedded_key",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "8e5f13ae9937a7a9"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.7,
+    "evidence": [
+      {
+        "path": "/Signature/KeyInfo/X509Data/X509Certificate",
+        "actual": "fingerprint 2B:39:20:62:...:D9:D9 (embedded in message)",
+        "note": "No idp_cert_pem was configured, so the signature was only checked against the certificate carried in the message. That proves the message is internally consistent. It doesn't prove the IdP sent it."
+      }
+    ],
+    "fix": "No, this isn't fine. Login works because the SP trusts whatever certificate arrives inside the message, so anyone can sign their own assertion with their own key and be accepted. Get the IdP signing certificate from the IdP's metadata (check the fingerprint out-of-band) and configure it on the SP. Verify the Assertion signature only against that certificate. Never fall back to the embedded KeyInfo. Then re-run the validation with idp_cert_pem supplied to confirm the signature verifies. The other checks (status, issuer, destination, InResponseTo, audience, recipient, time window, NameID, attributes, structure) all pass.",
+    "posture_codes": [
+      "POSTURE_EMBEDDED_KEY_TRUST"
+    ],
+    "alternatives": [
+      {
+        "code": "SAML_SIGNATURE_INVALID",
+        "why_not": "The signature check was skipped because no trusted certificate was supplied. It is self-consistent against the embedded certificate, so there is no evidence it fails."
+      }
+    ],
+    "questions": [
+      "idp_cert_pem: what is the IdP signing certificate from the IdP's metadata? Trust in the signature can't be confirmed without it."
+    ]
+  },
+  "started": "2026-10-27T01:39:25.211846-05:00",
+  "duration_ms": 8768,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1029,
+    "cache_creation_input_tokens": 4424,
+    "cache_read_input_tokens": 27524
+  },
+  "cost_usd": 0.0307464,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1029,
+      "cacheReadInputTokens": 27524,
+      "cacheCreationInputTokens": 4424,
+      "costUSD": 0.0307464,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 8625,
+    "stop_reason": "tool_use",
+    "session_id": "e02f1fc2-eb2c-47b7-9a03-2165879b42bb",
+    "total_cost_usd": 0.0307464,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 4424,
+      "cache_read_input_tokens": 27524,
+      "output_tokens": 1029,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 4424,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 687,
+          "cache_read_input_tokens": 15145,
+          "cache_creation_input_tokens": 1658,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1658
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1029,
+        "cacheReadInputTokens": 27524,
+        "cacheCreationInputTokens": 4424,
+        "webSearchRequests": 0,
+        "costUSD": 0.0307464,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 4424,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.7,\"evidence\":[{\"path\":\"/Signature/KeyInfo/X509Data/X509Certificate\",\"actual\":\"fingerprint 2B:39:20:62:...:D9:D9 (embedded in message)\",\"note\":\"No idp_cert_pem was configured, so the signature was only checked against the certificate carried in the message. That proves the message is internally consistent. It doesn't prove the IdP sent it.\"}],\"fix\":\"No, this isn't fine. Login works because the SP trusts whatever certificate arrives inside the message, so anyone can sign their own assertion with their own key and be accepted. Get the IdP signing certificate from the IdP's metadata (check the fingerprint out-of-band) and configure it on the SP. Verify the Assertion signature only against that certificate. Never fall back to the embedded KeyInfo. Then re-run the validation with idp_cert_pem supplied to confirm the signature verifies. The other checks (status, issuer, destination, InResponseTo, audience, recipient, time window, NameID, attributes, structure) all pass.\",\"posture_codes\":[\"POSTURE_EMBEDDED_KEY_TRUST\"],\"questions\":[\"idp_cert_pem: what is the IdP signing certificate from the IdP's metadata? Trust in the signature can't be confirmed without it.\"],\"alternatives\":[{\"code\":\"SAML_SIGNATURE_INVALID\",\"why_not\":\"The signature check was skipped because no trusted certificate was supplied. It is self-consistent against the embedded certificate, so there is no evidence it fails.\"}]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.7,
+      "evidence": [
+        {
+          "path": "/Signature/KeyInfo/X509Data/X509Certificate",
+          "actual": "fingerprint 2B:39:20:62:...:D9:D9 (embedded in message)",
+          "note": "No idp_cert_pem was configured, so the signature was only checked against the certificate carried in the message. That proves the message is internally consistent. It doesn't prove the IdP sent it."
+        }
+      ],
+      "fix": "No, this isn't fine. Login works because the SP trusts whatever certificate arrives inside the message, so anyone can sign their own assertion with their own key and be accepted. Get the IdP signing certificate from the IdP's metadata (check the fingerprint out-of-band) and configure it on the SP. Verify the Assertion signature only against that certificate. Never fall back to the embedded KeyInfo. Then re-run the validation with idp_cert_pem supplied to confirm the signature verifies. The other checks (status, issuer, destination, InResponseTo, audience, recipient, time window, NameID, attributes, structure) all pass.",
+      "posture_codes": [
+        "POSTURE_EMBEDDED_KEY_TRUST"
+      ],
+      "questions": [
+        "idp_cert_pem: what is the IdP signing certificate from the IdP's metadata? Trust in the signature can't be confirmed without it."
+      ],
+      "alternatives": [
+        {
+          "code": "SAML_SIGNATURE_INVALID",
+          "why_not": "The signature check was skipped because no trusted certificate was supplied. It is self-consistent against the embedded certificate, so there is no evidence it fails."
+        }
+      ]
+    },
+    "ttft_ms": 3444,
+    "type": "result",
+    "duration_ms": 8768,
+    "uuid": "0348f5cc-2537-44d0-9d58-0c4919db10c0",
+    "ttft_stream_ms": 1854,
+    "time_to_request_ms": 137,
+    "first_content_frame_ms": 1854,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,246 @@
+{
+  "case_id": "saml_signature_invalid-00",
+  "case_hash": "cb820e39d5930245",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_SIGNATURE_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/Signature",
+    "fix_keys": [
+      "download",
+      "current",
+      "signing",
+      "certificate"
+    ],
+    "needs": [
+      "idp_cert_pem"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_signature_invalid-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "signature_tampered",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "cb820e39d5930245"
+  },
+  "output": {
+    "root_cause_code": "SAML_SIGNATURE_INVALID",
+    "confidence": 0.55,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature/SignedInfo/Reference/DigestValue",
+        "actual": "ma2pOofO1hjdHF+II24Wsi2S+vYB4J8iLMLke29+ZSk=",
+        "note": "Digest over assertion _assert_a289ac; cannot be recomputed without tools. Reported library digest mismatch implies the signed content differs from what was digested."
+      },
+      {
+        "path": "/Response/Assertion/Signature/SignedInfo/Reference@URI",
+        "actual": "#_assert_a289ac",
+        "expected": "#_assert_a289ac",
+        "note": "Reference points at the assertion ID, which is correct."
+      },
+      {
+        "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate",
+        "actual": "Same certificate as the configured idp_cert_pem",
+        "note": "The key is not the problem. The digest is checked before the signature value."
+      },
+      {
+        "path": "/Response/Assertion/Conditions",
+        "actual": "Audience, time window, Destination, Recipient, InResponseTo, Issuer, NameID format and required attributes all match the expected values",
+        "note": "No other fault class is supported."
+      }
+    ],
+    "fix": "Check whether the assertion bytes were altered between the IdP and the SP's signature verification. Capture the raw, unmodified POSTed SAMLResponse (base64-decoded) at the SP edge and verify that exact payload. Remove or bypass any proxy, WAF, middleware or logger that re-serializes, pretty-prints or edits the XML before verification. Make sure your library validates the signed element with exclusive c14n on the original document and doesn't re-serialize it. If the raw bytes still fail, ask the IdP to re-issue the assertion and confirm that nothing is modified after signing. Keep signature validation on, keep the pinned IdP certificate, and don't trust the embedded KeyInfo certificate.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "HEALTHY",
+        "why_not": "The structure and claims validate. However, the reported digest mismatch is a concrete failure, and I couldn't recompute the digest to rule it out."
+      },
+      {
+        "code": "SAML_STRUCTURE_INVALID",
+        "why_not": "There is a single assertion with a single signature, and the Reference ID matches the assertion ID. There are no signs of signature wrapping or duplicate IDs."
+      }
+    ],
+    "questions": [
+      "Does the digest still fail when you verify the raw, unmodified base64-decoded SAMLResponse bytes?",
+      "Is there a proxy, gateway or middleware between the IdP and your SAML library that could re-serialize the XML?",
+      "Did the IdP change its signing or attribute-release configuration recently?"
+    ]
+  },
+  "started": "2026-10-27T01:16:23.656773-05:00",
+  "duration_ms": 14266,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1739,
+    "cache_creation_input_tokens": 4858,
+    "cache_read_input_tokens": 3689
+  },
+  "cost_usd": 0.0371949,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1739,
+      "cacheReadInputTokens": 3689,
+      "cacheCreationInputTokens": 4858,
+      "costUSD": 0.0371949,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [
+    "/Response/Assertion/Signature/SignedInfo/Reference/DigestValue",
+    "/Response/Assertion/Signature/SignedInfo/Reference@URI"
+  ],
+  "valid_citations": 2,
+  "envelope": {
+    "duration_api_ms": 14137,
+    "stop_reason": "tool_use",
+    "session_id": "363ef26a-e694-4f58-865e-ba68870bad26",
+    "total_cost_usd": 0.0371949,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 4858,
+      "cache_read_input_tokens": 3689,
+      "output_tokens": 1739,
+      "output_tokens_details": {
+        "thinking_tokens": 406
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 4858,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1739,
+          "cache_read_input_tokens": 3689,
+          "cache_creation_input_tokens": 4858,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 4858
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1739,
+        "cacheReadInputTokens": 3689,
+        "cacheCreationInputTokens": 4858,
+        "webSearchRequests": 0,
+        "costUSD": 0.0371949,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 406,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 4858,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_SIGNATURE_INVALID\",\"confidence\":0.55,\"evidence\":[{\"path\":\"/Response/Assertion/Signature/SignedInfo/Reference/DigestValue\",\"actual\":\"ma2pOofO1hjdHF+II24Wsi2S+vYB4J8iLMLke29+ZSk=\",\"note\":\"Digest over assertion _assert_a289ac; cannot be recomputed without tools. Reported library digest mismatch implies the signed content differs from what was digested.\"},{\"path\":\"/Response/Assertion/Signature/SignedInfo/Reference@URI\",\"actual\":\"#_assert_a289ac\",\"expected\":\"#_assert_a289ac\",\"note\":\"Reference points at the assertion ID, which is correct.\"},{\"path\":\"/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate\",\"actual\":\"Same certificate as the configured idp_cert_pem\",\"note\":\"The key is not the problem. The digest is checked before the signature value.\"},{\"path\":\"/Response/Assertion/Conditions\",\"actual\":\"Audience, time window, Destination, Recipient, InResponseTo, Issuer, NameID format and required attributes all match the expected values\",\"note\":\"No other fault class is supported.\"}],\"fix\":\"Check whether the assertion bytes were altered between the IdP and the SP's signature verification. Capture the raw, unmodified POSTed SAMLResponse (base64-decoded) at the SP edge and verify that exact payload. Remove or bypass any proxy, WAF, middleware or logger that re-serializes, pretty-prints or edits the XML before verification. Make sure your library validates the signed element with exclusive c14n on the original document and doesn't re-serialize it. If the raw bytes still fail, ask the IdP to re-issue the assertion and confirm that nothing is modified after signing. Keep signature validation on, keep the pinned IdP certificate, and don't trust the embedded KeyInfo certificate.\",\"alternatives\":[{\"code\":\"HEALTHY\",\"why_not\":\"The structure and claims validate. However, the reported digest mismatch is a concrete failure, and I couldn't recompute the digest to rule it out.\"},{\"code\":\"SAML_STRUCTURE_INVALID\",\"why_not\":\"There is a single assertion with a single signature, and the Reference ID matches the assertion ID. There are no signs of signature wrapping or duplicate IDs.\"}],\"questions\":[\"Does the digest still fail when you verify the raw, unmodified base64-decoded SAMLResponse bytes?\",\"Is there a proxy, gateway or middleware between the IdP and your SAML library that could re-serialize the XML?\",\"Did the IdP change its signing or attribute-release configuration recently?\"]}",
+    "structured_output": {
+      "root_cause_code": "SAML_SIGNATURE_INVALID",
+      "confidence": 0.55,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Signature/SignedInfo/Reference/DigestValue",
+          "actual": "ma2pOofO1hjdHF+II24Wsi2S+vYB4J8iLMLke29+ZSk=",
+          "note": "Digest over assertion _assert_a289ac; cannot be recomputed without tools. Reported library digest mismatch implies the signed content differs from what was digested."
+        },
+        {
+          "path": "/Response/Assertion/Signature/SignedInfo/Reference@URI",
+          "actual": "#_assert_a289ac",
+          "expected": "#_assert_a289ac",
+          "note": "Reference points at the assertion ID, which is correct."
+        },
+        {
+          "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate",
+          "actual": "Same certificate as the configured idp_cert_pem",
+          "note": "The key is not the problem. The digest is checked before the signature value."
+        },
+        {
+          "path": "/Response/Assertion/Conditions",
+          "actual": "Audience, time window, Destination, Recipient, InResponseTo, Issuer, NameID format and required attributes all match the expected values",
+          "note": "No other fault class is supported."
+        }
+      ],
+      "fix": "Check whether the assertion bytes were altered between the IdP and the SP's signature verification. Capture the raw, unmodified POSTed SAMLResponse (base64-decoded) at the SP edge and verify that exact payload. Remove or bypass any proxy, WAF, middleware or logger that re-serializes, pretty-prints or edits the XML before verification. Make sure your library validates the signed element with exclusive c14n on the original document and doesn't re-serialize it. If the raw bytes still fail, ask the IdP to re-issue the assertion and confirm that nothing is modified after signing. Keep signature validation on, keep the pinned IdP certificate, and don't trust the embedded KeyInfo certificate.",
+      "alternatives": [
+        {
+          "code": "HEALTHY",
+          "why_not": "The structure and claims validate. However, the reported digest mismatch is a concrete failure, and I couldn't recompute the digest to rule it out."
+        },
+        {
+          "code": "SAML_STRUCTURE_INVALID",
+          "why_not": "There is a single assertion with a single signature, and the Reference ID matches the assertion ID. There are no signs of signature wrapping or duplicate IDs."
+        }
+      ],
+      "questions": [
+        "Does the digest still fail when you verify the raw, unmodified base64-decoded SAMLResponse bytes?",
+        "Is there a proxy, gateway or middleware between the IdP and your SAML library that could re-serialize the XML?",
+        "Did the IdP change its signing or attribute-release configuration recently?"
+      ]
+    },
+    "ttft_ms": 5299,
+    "type": "result",
+    "duration_ms": 14266,
+    "uuid": "1de079c9-c56e-4130-84c0-655384ee5b0c",
+    "ttft_stream_ms": 2214,
+    "time_to_request_ms": 128,
+    "first_content_frame_ms": 2215,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

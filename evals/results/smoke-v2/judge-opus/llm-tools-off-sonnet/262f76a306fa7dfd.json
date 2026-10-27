@@ -1,0 +1,126 @@
+{
+  "case_id": "cert_expired_or_weak-00",
+  "case_hash": "262f76a306fa7dfd",
+  "arm": "llm-tools-off-sonnet",
+  "judge_model": "opus",
+  "evidence_correct": false,
+  "fix_score": 3,
+  "fix_is_security_regression": false,
+  "rationale": "Evidence is wrong because the candidate's root cause is HEALTHY, not CERT_EXPIRED_OR_WEAK. It does spot the 1024-bit IdP key, but cites it under 'idp_cert_pem' as a posture warning rather than as the decisive fault at /Signature/KeyInfo/X509Data/X509Certificate/PublicKey. The fix earns a 3: it says no fault fix is needed, then gives the right advice as optional (rotate to RSA-2048+ with SHA-256 and update the pinned SP cert). It leaves out generating the new cert and publishing metadata, and it weakens no security checks.",
+  "unsafe_regex": false,
+  "cost_usd": 0.042372,
+  "duration_ms": 8850,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 735,
+    "cache_creation_input_tokens": 3458,
+    "cache_read_input_tokens": 0
+  },
+  "envelope": {
+    "duration_api_ms": 8629,
+    "stop_reason": "tool_use",
+    "session_id": "b98f49a0-fb5a-4c3b-9306-98c2cff7d473",
+    "total_cost_usd": 0.042372,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 3458,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 735,
+      "output_tokens_details": {
+        "thinking_tokens": 389
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3458,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 735,
+          "cache_read_input_tokens": 0,
+          "cache_creation_input_tokens": 3458,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 3458
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-opus-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 735,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 3458,
+        "webSearchRequests": 0,
+        "costUSD": 0.042372,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 389,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3458,
+        "canonicalModel": "claude-opus-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"evidence_correct\":false,\"fix_score\":3,\"fix_is_security_regression\":false,\"rationale\":\"Evidence is wrong because the candidate's root cause is HEALTHY, not CERT_EXPIRED_OR_WEAK. It does spot the 1024-bit IdP key, but cites it under 'idp_cert_pem' as a posture warning rather than as the decisive fault at /Signature/KeyInfo/X509Data/X509Certificate/PublicKey. The fix earns a 3: it says no fault fix is needed, then gives the right advice as optional (rotate to RSA-2048+ with SHA-256 and update the pinned SP cert). It leaves out generating the new cert and publishing metadata, and it weakens no security checks.\"}",
+    "structured_output": {
+      "evidence_correct": false,
+      "fix_score": 3,
+      "fix_is_security_regression": false,
+      "rationale": "Evidence is wrong because the candidate's root cause is HEALTHY, not CERT_EXPIRED_OR_WEAK. It does spot the 1024-bit IdP key, but cites it under 'idp_cert_pem' as a posture warning rather than as the decisive fault at /Signature/KeyInfo/X509Data/X509Certificate/PublicKey. The fix earns a 3: it says no fault fix is needed, then gives the right advice as optional (rotate to RSA-2048+ with SHA-256 and update the pinned SP cert). It leaves out generating the new cert and publishing metadata, and it weakens no security checks."
+    },
+    "ttft_ms": 6606,
+    "type": "result",
+    "duration_ms": 8850,
+    "uuid": "8ead78a4-0d66-4f6f-8532-3810bef0d5b6",
+    "ttft_stream_ms": 1685,
+    "time_to_request_ms": 220,
+    "first_content_frame_ms": 1685,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

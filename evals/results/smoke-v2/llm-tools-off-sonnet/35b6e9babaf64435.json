@@ -1,0 +1,264 @@
+{
+  "case_id": "posture_decrypt_before_verify-00",
+  "case_hash": "35b6e9babaf64435",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_DECRYPT_BEFORE_VERIFY"
+    ],
+    "evidence_path": "/Response/Assertion",
+    "fix_keys": [
+      "response",
+      "assertion",
+      "encrypting",
+      "verify"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_decrypt_before_verify-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "posture_encrypted_unsigned",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "35b6e9babaf64435"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.35,
+    "evidence": [
+      {
+        "path": "/Response/Status/StatusCode/@Value",
+        "actual": "urn:oasis:names:tc:SAML:2.0:status:Success",
+        "expected": "Success",
+        "note": "Status OK"
+      },
+      {
+        "path": "/Response/Issuer",
+        "actual": "https://idp.example.com/saml",
+        "expected": "https://idp.example.com/saml",
+        "note": "Issuer matches"
+      },
+      {
+        "path": "/Response/@Destination",
+        "actual": "https://sp.example.com/saml/acs",
+        "expected": "https://sp.example.com/saml/acs",
+        "note": "Destination matches"
+      },
+      {
+        "path": "/Response/@InResponseTo",
+        "actual": "_req_1234567890abcdef",
+        "expected": "_req_1234567890abcdef",
+        "note": "Matches request"
+      },
+      {
+        "path": "/Response/EncryptedAssertion",
+        "actual": "EncryptedData (aes256-cbc) inside a Response with no ds:Signature",
+        "note": "Inner assertion cannot be inspected from the redacted artifact; the outer response is unsigned, so decrypt-before-verify applies"
+      }
+    ],
+    "fix": "The outer Response checks pass (status, issuer, destination, InResponseTo). The assertion is encrypted and the Response is unsigned, so the real checks must happen after decryption. Decrypt with the SP private key. Then require a valid signature on the inner Assertion, made by the configured IdP certificate and not by any key embedded in the message. Reject the response if that signature is missing. Then validate Audience, Recipient, NotBefore/NotOnOrAfter (clock skew of 5 minutes or less), the NameID format, and the required attributes email and firstName. Ask the IdP to sign the Assertion, and preferably the Response too, before encrypting. Use AES-GCM instead of aes256-cbc if the IdP supports it, to reduce padding-oracle risk.",
+    "posture_codes": [
+      "POSTURE_DECRYPT_BEFORE_VERIFY"
+    ],
+    "alternatives": [
+      {
+        "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+        "why_not": "The Response has no signature, but the encrypted assertion may carry its own signature. That can't be seen without decrypting it."
+      },
+      {
+        "code": "SAML_ENCRYPTED_ASSERTION_UNDECRYPTABLE",
+        "why_not": "No symptom or decryption error was reported, and I have no evidence the SP key is wrong."
+      }
+    ],
+    "questions": [
+      "Is the decrypted inner Assertion signed by the configured IdP certificate?",
+      "What is the decrypted Assertion's Audience, Recipient, validity window, NameID format and attribute set?",
+      "Is a failure actually occurring? No symptom was given."
+    ]
+  },
+  "started": "2026-10-27T01:15:09.929305-05:00",
+  "duration_ms": 16091,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1558,
+    "cache_creation_input_tokens": 2546,
+    "cache_read_input_tokens": 3689
+  },
+  "cost_usd": 0.026136899999999998,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1558,
+      "cacheReadInputTokens": 3689,
+      "cacheCreationInputTokens": 2546,
+      "costUSD": 0.026136899999999998,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [
+    "/Response/EncryptedAssertion"
+  ],
+  "valid_citations": 4,
+  "envelope": {
+    "duration_api_ms": 15918,
+    "stop_reason": "tool_use",
+    "session_id": "818d641f-50cb-4fc2-92a8-118c1f34c63b",
+    "total_cost_usd": 0.026136899999999998,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 2546,
+      "cache_read_input_tokens": 3689,
+      "output_tokens": 1558,
+      "output_tokens_details": {
+        "thinking_tokens": 488
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 2546,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1558,
+          "cache_read_input_tokens": 3689,
+          "cache_creation_input_tokens": 2546,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2546
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1558,
+        "cacheReadInputTokens": 3689,
+        "cacheCreationInputTokens": 2546,
+        "webSearchRequests": 0,
+        "costUSD": 0.026136899999999998,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 488,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 2546,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.35,\"evidence\":[{\"path\":\"/Response/Status/StatusCode/@Value\",\"actual\":\"urn:oasis:names:tc:SAML:2.0:status:Success\",\"expected\":\"Success\",\"note\":\"Status OK\"},{\"path\":\"/Response/Issuer\",\"actual\":\"https://idp.example.com/saml\",\"expected\":\"https://idp.example.com/saml\",\"note\":\"Issuer matches\"},{\"path\":\"/Response/@Destination\",\"actual\":\"https://sp.example.com/saml/acs\",\"expected\":\"https://sp.example.com/saml/acs\",\"note\":\"Destination matches\"},{\"path\":\"/Response/@InResponseTo\",\"actual\":\"_req_1234567890abcdef\",\"expected\":\"_req_1234567890abcdef\",\"note\":\"Matches request\"},{\"path\":\"/Response/EncryptedAssertion\",\"actual\":\"EncryptedData (aes256-cbc) inside a Response with no ds:Signature\",\"note\":\"Inner assertion cannot be inspected from the redacted artifact; the outer response is unsigned, so decrypt-before-verify applies\"}],\"fix\":\"The outer Response checks pass (status, issuer, destination, InResponseTo). The assertion is encrypted and the Response is unsigned, so the real checks must happen after decryption. Decrypt with the SP private key. Then require a valid signature on the inner Assertion, made by the configured IdP certificate and not by any key embedded in the message. Reject the response if that signature is missing. Then validate Audience, Recipient, NotBefore/NotOnOrAfter (clock skew of 5 minutes or less), the NameID format, and the required attributes email and firstName. Ask the IdP to sign the Assertion, and preferably the Response too, before encrypting. Use AES-GCM instead of aes256-cbc if the IdP supports it, to reduce padding-oracle risk.\",\"posture_codes\":[\"POSTURE_DECRYPT_BEFORE_VERIFY\"],\"questions\":[\"Is the decrypted inner Assertion signed by the configured IdP certificate?\",\"What is the decrypted Assertion's Audience, Recipient, validity window, NameID format and attribute set?\",\"Is a failure actually occurring? No symptom was given.\"],\"alternatives\":[{\"code\":\"SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED\",\"why_not\":\"The Response has no signature, but the encrypted assertion may carry its own signature. That can't be seen without decrypting it.\"},{\"code\":\"SAML_ENCRYPTED_ASSERTION_UNDECRYPTABLE\",\"why_not\":\"No symptom or decryption error was reported, and I have no evidence the SP key is wrong.\"}]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.35,
+      "evidence": [
+        {
+          "path": "/Response/Status/StatusCode/@Value",
+          "actual": "urn:oasis:names:tc:SAML:2.0:status:Success",
+          "expected": "Success",
+          "note": "Status OK"
+        },
+        {
+          "path": "/Response/Issuer",
+          "actual": "https://idp.example.com/saml",
+          "expected": "https://idp.example.com/saml",
+          "note": "Issuer matches"
+        },
+        {
+          "path": "/Response/@Destination",
+          "actual": "https://sp.example.com/saml/acs",
+          "expected": "https://sp.example.com/saml/acs",
+          "note": "Destination matches"
+        },
+        {
+          "path": "/Response/@InResponseTo",
+          "actual": "_req_1234567890abcdef",
+          "expected": "_req_1234567890abcdef",
+          "note": "Matches request"
+        },
+        {
+          "path": "/Response/EncryptedAssertion",
+          "actual": "EncryptedData (aes256-cbc) inside a Response with no ds:Signature",
+          "note": "Inner assertion cannot be inspected from the redacted artifact; the outer response is unsigned, so decrypt-before-verify applies"
+        }
+      ],
+      "fix": "The outer Response checks pass (status, issuer, destination, InResponseTo). The assertion is encrypted and the Response is unsigned, so the real checks must happen after decryption. Decrypt with the SP private key. Then require a valid signature on the inner Assertion, made by the configured IdP certificate and not by any key embedded in the message. Reject the response if that signature is missing. Then validate Audience, Recipient, NotBefore/NotOnOrAfter (clock skew of 5 minutes or less), the NameID format, and the required attributes email and firstName. Ask the IdP to sign the Assertion, and preferably the Response too, before encrypting. Use AES-GCM instead of aes256-cbc if the IdP supports it, to reduce padding-oracle risk.",
+      "posture_codes": [
+        "POSTURE_DECRYPT_BEFORE_VERIFY"
+      ],
+      "questions": [
+        "Is the decrypted inner Assertion signed by the configured IdP certificate?",
+        "What is the decrypted Assertion's Audience, Recipient, validity window, NameID format and attribute set?",
+        "Is a failure actually occurring? No symptom was given."
+      ],
+      "alternatives": [
+        {
+          "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+          "why_not": "The Response has no signature, but the encrypted assertion may carry its own signature. That can't be seen without decrypting it."
+        },
+        {
+          "code": "SAML_ENCRYPTED_ASSERTION_UNDECRYPTABLE",
+          "why_not": "No symptom or decryption error was reported, and I have no evidence the SP key is wrong."
+        }
+      ]
+    },
+    "ttft_ms": 9812,
+    "type": "result",
+    "duration_ms": 16091,
+    "uuid": "cb5c3cc6-7d59-4cab-921f-aeefed94e4b6",
+    "ttft_stream_ms": 5466,
+    "time_to_request_ms": 172,
+    "first_content_frame_ms": 5467,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

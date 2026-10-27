@@ -1,0 +1,291 @@
+{
+  "case_id": "healthy-samlresponse-00",
+  "case_hash": "ecd40e0425fa9653",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [],
+    "fix_keys": [
+      "no change needed",
+      "the artifact validates"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "healthy-samlresponse-00",
+    "kind": "saml_response",
+    "dialect": "generic",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "ecd40e0425fa9653"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "path": "/Response/Status/StatusCode/@Value",
+        "actual": "urn:oasis:names:tc:SAML:2.0:status:Success",
+        "expected": "Success"
+      },
+      {
+        "path": "/Response/Issuer",
+        "actual": "https://idp.example.com/saml",
+        "expected": "https://idp.example.com/saml"
+      },
+      {
+        "path": "/Response/@Destination",
+        "actual": "https://sp.example.com/saml/acs",
+        "expected": "https://sp.example.com/saml/acs"
+      },
+      {
+        "path": "/Response/@InResponseTo",
+        "actual": "_req_1234567890abcdef",
+        "expected": "_req_1234567890abcdef"
+      },
+      {
+        "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+        "actual": "https://sp.example.com/saml/metadata",
+        "expected": "https://sp.example.com/saml/metadata"
+      },
+      {
+        "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+        "actual": "2026-01-15T12:02:30.000Z",
+        "expected": "after now 2026-01-15T12:00:00Z",
+        "note": "Window is 5 minutes, within policy"
+      },
+      {
+        "path": "/Response/Assertion/Signature/SignedInfo/Reference/@URI",
+        "actual": "#_assert_a289ac",
+        "expected": "assertion ID",
+        "note": "Signature covers the assertion, as required"
+      },
+      {
+        "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@Recipient",
+        "actual": "https://sp.example.com/saml/acs",
+        "expected": "https://sp.example.com/saml/acs"
+      },
+      {
+        "path": "/Response/Assertion/Subject/NameID/@Format",
+        "actual": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+        "expected": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress"
+      },
+      {
+        "path": "/Response/Assertion/AttributeStatement/Attribute/@Name",
+        "actual": "email, firstName, groups",
+        "expected": "email, firstName"
+      }
+    ],
+    "fix": "No fault found in the structure or the claims. Keep verifying the assertion signature against the configured IdP certificate (idp_cert_pem), not the certificate embedded in KeyInfo. Keep requiring a signed assertion and keep the clock skew at 5 minutes or less. I couldn't check the signature value or digest cryptographically. The signature value is redacted and I had no validator tool. Confirm that your SP library reports a successful verification.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "SAML_SIGNATURE_INVALID",
+        "why_not": "Nothing in the artifact points to a bad signature. The signature value is redacted, so it can't be ruled out. The embedded certificate looks identical to the configured one."
+      }
+    ],
+    "questions": [
+      "Does your SP library report successful signature verification against the configured certificate? I couldn't check this myself.",
+      "What error or symptom are you seeing? None was given."
+    ]
+  },
+  "started": "2026-10-27T01:14:09.158488-05:00",
+  "duration_ms": 11020,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1419,
+    "cache_creation_input_tokens": 6990,
+    "cache_read_input_tokens": 1661
+  },
+  "cost_usd": 0.0423201,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1419,
+      "cacheReadInputTokens": 1661,
+      "cacheCreationInputTokens": 6990,
+      "costUSD": 0.0423201,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [
+    "/Response/Assertion/Signature/SignedInfo/Reference/@URI",
+    "/Response/Assertion/AttributeStatement/Attribute/@Name"
+  ],
+  "valid_citations": 8,
+  "envelope": {
+    "duration_api_ms": 10869,
+    "stop_reason": "tool_use",
+    "session_id": "c820a1e9-34dc-48aa-bd3e-faa8c9ac624f",
+    "total_cost_usd": 0.0423201,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6990,
+      "cache_read_input_tokens": 1661,
+      "output_tokens": 1419,
+      "output_tokens_details": {
+        "thinking_tokens": 254
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6990,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1419,
+          "cache_read_input_tokens": 1661,
+          "cache_creation_input_tokens": 6990,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 6990
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1419,
+        "cacheReadInputTokens": 1661,
+        "cacheCreationInputTokens": 6990,
+        "webSearchRequests": 0,
+        "costUSD": 0.0423201,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 254,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6990,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.8,\"evidence\":[{\"path\":\"/Response/Status/StatusCode/@Value\",\"actual\":\"urn:oasis:names:tc:SAML:2.0:status:Success\",\"expected\":\"Success\"},{\"path\":\"/Response/Issuer\",\"actual\":\"https://idp.example.com/saml\",\"expected\":\"https://idp.example.com/saml\"},{\"path\":\"/Response/@Destination\",\"actual\":\"https://sp.example.com/saml/acs\",\"expected\":\"https://sp.example.com/saml/acs\"},{\"path\":\"/Response/@InResponseTo\",\"actual\":\"_req_1234567890abcdef\",\"expected\":\"_req_1234567890abcdef\"},{\"path\":\"/Response/Assertion/Conditions/AudienceRestriction/Audience\",\"actual\":\"https://sp.example.com/saml/metadata\",\"expected\":\"https://sp.example.com/saml/metadata\"},{\"path\":\"/Response/Assertion/Conditions/@NotOnOrAfter\",\"actual\":\"2026-01-15T12:02:30.000Z\",\"expected\":\"after now 2026-01-15T12:00:00Z\",\"note\":\"Window is 5 minutes, within policy\"},{\"path\":\"/Response/Assertion/Signature/SignedInfo/Reference/@URI\",\"actual\":\"#_assert_a289ac\",\"expected\":\"assertion ID\",\"note\":\"Signature covers the assertion, as required\"},{\"path\":\"/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@Recipient\",\"actual\":\"https://sp.example.com/saml/acs\",\"expected\":\"https://sp.example.com/saml/acs\"},{\"path\":\"/Response/Assertion/Subject/NameID/@Format\",\"actual\":\"urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress\",\"expected\":\"urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress\"},{\"path\":\"/Response/Assertion/AttributeStatement/Attribute/@Name\",\"actual\":\"email, firstName, groups\",\"expected\":\"email, firstName\"}],\"fix\":\"No fault found in the structure or the claims. Keep verifying the assertion signature against the configured IdP certificate (idp_cert_pem), not the certificate embedded in KeyInfo. Keep requiring a signed assertion and keep the clock skew at 5 minutes or less. I couldn't check the signature value or digest cryptographically. The signature value is redacted and I had no validator tool. Confirm that your SP library reports a successful verification.\",\"alternatives\":[{\"code\":\"SAML_SIGNATURE_INVALID\",\"why_not\":\"Nothing in the artifact points to a bad signature. The signature value is redacted, so it can't be ruled out. The embedded certificate looks identical to the configured one.\"}],\"questions\":[\"Does your SP library report successful signature verification against the configured certificate? I couldn't check this myself.\",\"What error or symptom are you seeing? None was given.\"],\"posture_codes\":[]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "path": "/Response/Status/StatusCode/@Value",
+          "actual": "urn:oasis:names:tc:SAML:2.0:status:Success",
+          "expected": "Success"
+        },
+        {
+          "path": "/Response/Issuer",
+          "actual": "https://idp.example.com/saml",
+          "expected": "https://idp.example.com/saml"
+        },
+        {
+          "path": "/Response/@Destination",
+          "actual": "https://sp.example.com/saml/acs",
+          "expected": "https://sp.example.com/saml/acs"
+        },
+        {
+          "path": "/Response/@InResponseTo",
+          "actual": "_req_1234567890abcdef",
+          "expected": "_req_1234567890abcdef"
+        },
+        {
+          "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+          "actual": "https://sp.example.com/saml/metadata",
+          "expected": "https://sp.example.com/saml/metadata"
+        },
+        {
+          "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+          "actual": "2026-01-15T12:02:30.000Z",
+          "expected": "after now 2026-01-15T12:00:00Z",
+          "note": "Window is 5 minutes, within policy"
+        },
+        {
+          "path": "/Response/Assertion/Signature/SignedInfo/Reference/@URI",
+          "actual": "#_assert_a289ac",
+          "expected": "assertion ID",
+          "note": "Signature covers the assertion, as required"
+        },
+        {
+          "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@Recipient",
+          "actual": "https://sp.example.com/saml/acs",
+          "expected": "https://sp.example.com/saml/acs"
+        },
+        {
+          "path": "/Response/Assertion/Subject/NameID/@Format",
+          "actual": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+          "expected": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress"
+        },
+        {
+          "path": "/Response/Assertion/AttributeStatement/Attribute/@Name",
+          "actual": "email, firstName, groups",
+          "expected": "email, firstName"
+        }
+      ],
+      "fix": "No fault found in the structure or the claims. Keep verifying the assertion signature against the configured IdP certificate (idp_cert_pem), not the certificate embedded in KeyInfo. Keep requiring a signed assertion and keep the clock skew at 5 minutes or less. I couldn't check the signature value or digest cryptographically. The signature value is redacted and I had no validator tool. Confirm that your SP library reports a successful verification.",
+      "alternatives": [
+        {
+          "code": "SAML_SIGNATURE_INVALID",
+          "why_not": "Nothing in the artifact points to a bad signature. The signature value is redacted, so it can't be ruled out. The embedded certificate looks identical to the configured one."
+        }
+      ],
+      "questions": [
+        "Does your SP library report successful signature verification against the configured certificate? I couldn't check this myself.",
+        "What error or symptom are you seeing? None was given."
+      ],
+      "posture_codes": []
+    },
+    "ttft_ms": 5114,
+    "type": "result",
+    "duration_ms": 11020,
+    "uuid": "36595765-ad7e-4a67-a1bb-d93977407faf",
+    "ttft_stream_ms": 2875,
+    "time_to_request_ms": 150,
+    "first_content_frame_ms": 2876,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

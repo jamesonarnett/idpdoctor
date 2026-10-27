@@ -1,0 +1,222 @@
+{
+  "case_id": "saml_issuer_mismatch-00",
+  "case_hash": "2c7db55000ea5dd5",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_ISSUER_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/Response/Issuer",
+    "fix_keys": [
+      "entityid",
+      "metadata",
+      "verbatim",
+      "issuer"
+    ],
+    "needs": [
+      "idp_entity_id"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_issuer_mismatch-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "issuer_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "2c7db55000ea5dd5"
+  },
+  "output": {
+    "root_cause_code": "SAML_ISSUER_MISMATCH",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "path": "/Response/Issuer",
+        "actual": "https://idp.example.com/saml/",
+        "expected": "https://idp.example.com/saml",
+        "note": "Trailing slash differs; issuer comparison is exact"
+      },
+      {
+        "path": "/Response/Assertion/Issuer",
+        "actual": "https://idp.example.com/saml/",
+        "expected": "https://idp.example.com/saml",
+        "note": "Same trailing-slash difference on the assertion issuer"
+      }
+    ],
+    "fix": "Make the IdP entity ID identical on both sides, including the trailing slash. Either set the IdP's entity ID to https://idp.example.com/saml, or set the SP's configured IdP entity ID to the exact value in the IdP metadata. Do not loosen the issuer comparison. Keep signature validation on and verify against the configured IdP certificate, not the one embedded in the message.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "SAML_SIGNATURE_INVALID",
+        "why_not": "I could not run a signature check. The embedded certificate looks the same as the configured one, and nothing in the artifact points to a signature fault."
+      },
+      {
+        "code": "SAML_AUDIENCE_MISMATCH",
+        "why_not": "The Audience matches the SP entity ID exactly."
+      }
+    ],
+    "questions": [
+      "Does the IdP metadata entityID include a trailing slash?"
+    ]
+  },
+  "started": "2026-10-27T01:16:11.454532-05:00",
+  "duration_ms": 9723,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1405,
+    "cache_creation_input_tokens": 4860,
+    "cache_read_input_tokens": 3689
+  },
+  "cost_usd": 0.0338629,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1405,
+      "cacheReadInputTokens": 3689,
+      "cacheCreationInputTokens": 4860,
+      "costUSD": 0.0338629,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 2,
+  "envelope": {
+    "duration_api_ms": 9602,
+    "stop_reason": "tool_use",
+    "session_id": "fc100a56-3cb4-4908-b805-29220ca1525c",
+    "total_cost_usd": 0.0338629,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 4860,
+      "cache_read_input_tokens": 3689,
+      "output_tokens": 1405,
+      "output_tokens_details": {
+        "thinking_tokens": 188
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 4860,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1405,
+          "cache_read_input_tokens": 3689,
+          "cache_creation_input_tokens": 4860,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 4860
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1405,
+        "cacheReadInputTokens": 3689,
+        "cacheCreationInputTokens": 4860,
+        "webSearchRequests": 0,
+        "costUSD": 0.0338629,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 188,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 4860,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_ISSUER_MISMATCH\",\"confidence\":0.8,\"evidence\":[{\"path\":\"/Response/Issuer\",\"actual\":\"https://idp.example.com/saml/\",\"expected\":\"https://idp.example.com/saml\",\"note\":\"Trailing slash differs; issuer comparison is exact\"},{\"path\":\"/Response/Assertion/Issuer\",\"actual\":\"https://idp.example.com/saml/\",\"expected\":\"https://idp.example.com/saml\",\"note\":\"Same trailing-slash difference on the assertion issuer\"}],\"fix\":\"Make the IdP entity ID identical on both sides, including the trailing slash. Either set the IdP's entity ID to https://idp.example.com/saml, or set the SP's configured IdP entity ID to the exact value in the IdP metadata. Do not loosen the issuer comparison. Keep signature validation on and verify against the configured IdP certificate, not the one embedded in the message.\",\"alternatives\":[{\"code\":\"SAML_SIGNATURE_INVALID\",\"why_not\":\"I could not run a signature check. The embedded certificate looks the same as the configured one, and nothing in the artifact points to a signature fault.\"},{\"code\":\"SAML_AUDIENCE_MISMATCH\",\"why_not\":\"The Audience matches the SP entity ID exactly.\"}],\"posture_codes\":[],\"questions\":[\"Does the IdP metadata entityID include a trailing slash?\"]}",
+    "structured_output": {
+      "root_cause_code": "SAML_ISSUER_MISMATCH",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "path": "/Response/Issuer",
+          "actual": "https://idp.example.com/saml/",
+          "expected": "https://idp.example.com/saml",
+          "note": "Trailing slash differs; issuer comparison is exact"
+        },
+        {
+          "path": "/Response/Assertion/Issuer",
+          "actual": "https://idp.example.com/saml/",
+          "expected": "https://idp.example.com/saml",
+          "note": "Same trailing-slash difference on the assertion issuer"
+        }
+      ],
+      "fix": "Make the IdP entity ID identical on both sides, including the trailing slash. Either set the IdP's entity ID to https://idp.example.com/saml, or set the SP's configured IdP entity ID to the exact value in the IdP metadata. Do not loosen the issuer comparison. Keep signature validation on and verify against the configured IdP certificate, not the one embedded in the message.",
+      "alternatives": [
+        {
+          "code": "SAML_SIGNATURE_INVALID",
+          "why_not": "I could not run a signature check. The embedded certificate looks the same as the configured one, and nothing in the artifact points to a signature fault."
+        },
+        {
+          "code": "SAML_AUDIENCE_MISMATCH",
+          "why_not": "The Audience matches the SP entity ID exactly."
+        }
+      ],
+      "posture_codes": [],
+      "questions": [
+        "Does the IdP metadata entityID include a trailing slash?"
+      ]
+    },
+    "ttft_ms": 2582,
+    "type": "result",
+    "duration_ms": 9723,
+    "uuid": "7ec95bba-ea4e-47c7-8887-775bb6d2c2bc",
+    "ttft_stream_ms": 1183,
+    "time_to_request_ms": 119,
+    "first_content_frame_ms": 1184,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

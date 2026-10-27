@@ -1,0 +1,210 @@
+{
+  "case_id": "jwt_alg_none_or_confusion-00",
+  "case_hash": "c82042ed6de92962",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_ALG_NONE_OR_CONFUSION",
+    "posture_codes": [],
+    "evidence_path": "/header/alg",
+    "fix_keys": [
+      "reject",
+      "token"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_alg_none_or_confusion-00",
+    "kind": "jwt",
+    "mutator": "jwt_alg_none",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "c82042ed6de92962"
+  },
+  "output": {
+    "root_cause_code": "JWT_ALG_NONE_OR_CONFUSION",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/header/alg",
+        "actual": "none",
+        "expected": "an asymmetric algorithm such as RS256",
+        "note": "The token header says alg=none, so it is unsigned. The reported symptom said HS256. Either way the algorithm is not one the OP publishes, since the JWKS has only an RSA RS256 key."
+      },
+      {
+        "path": "/signature",
+        "actual": "unsigned token",
+        "expected": "RS256 signature verifying against kid test-key-1",
+        "note": "The signature check failed."
+      }
+    ],
+    "fix": "Reject this token. Pin the SP's allowed algorithms to the asymmetric ones the OP publishes (RS256 here). Never take the algorithm from the token header, and never use the RSA public key or any shared secret as an HMAC key. Every other check passed: kid, iss, aud, exp, nbf, iat and nonce. A correctly RS256-signed token from the OP should therefore validate. If the OP really issues HS256 or unsigned tokens, fix the OP or client registration. Don't loosen validation on the SP.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "JWT_KID_NOT_FOUND_IN_JWKS",
+        "why_not": "The kid test-key-1 is present in the JWKS and the kid check passed."
+      }
+    ],
+    "questions": [
+      "The developer reported HS256, but the decoded header shows alg=none. Was the captured token modified, or is it a different token from the one that failed?",
+      "Optionally supply access_token to run the at_hash check, which was skipped."
+    ]
+  },
+  "started": "2026-10-27T01:37:14.570095-05:00",
+  "duration_ms": 13151,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1381,
+    "cache_creation_input_tokens": 14747,
+    "cache_read_input_tokens": 12861
+  },
+  "cost_usd": 0.0740921,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1381,
+      "cacheReadInputTokens": 12861,
+      "cacheCreationInputTokens": 14747,
+      "costUSD": 0.0740921,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 2,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 13041,
+    "stop_reason": "tool_use",
+    "session_id": "5d21fd30-9c96-4287-a68f-94e6d5ed2e7a",
+    "total_cost_usd": 0.0740921,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 14747,
+      "cache_read_input_tokens": 12861,
+      "output_tokens": 1381,
+      "output_tokens_details": {
+        "thinking_tokens": 39
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 14747,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 693,
+          "cache_read_input_tokens": 12861,
+          "cache_creation_input_tokens": 1886,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1886
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1381,
+        "cacheReadInputTokens": 12861,
+        "cacheCreationInputTokens": 14747,
+        "webSearchRequests": 0,
+        "costUSD": 0.0740921,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 39,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 14747,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"JWT_ALG_NONE_OR_CONFUSION\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/header/alg\",\"actual\":\"none\",\"expected\":\"an asymmetric algorithm such as RS256\",\"note\":\"The token header says alg=none, so it is unsigned. The reported symptom said HS256. Either way the algorithm is not one the OP publishes, since the JWKS has only an RSA RS256 key.\"},{\"path\":\"/signature\",\"actual\":\"unsigned token\",\"expected\":\"RS256 signature verifying against kid test-key-1\",\"note\":\"The signature check failed.\"}],\"fix\":\"Reject this token. Pin the SP's allowed algorithms to the asymmetric ones the OP publishes (RS256 here). Never take the algorithm from the token header, and never use the RSA public key or any shared secret as an HMAC key. Every other check passed: kid, iss, aud, exp, nbf, iat and nonce. A correctly RS256-signed token from the OP should therefore validate. If the OP really issues HS256 or unsigned tokens, fix the OP or client registration. Don't loosen validation on the SP.\",\"alternatives\":[{\"code\":\"JWT_KID_NOT_FOUND_IN_JWKS\",\"why_not\":\"The kid test-key-1 is present in the JWKS and the kid check passed.\"}],\"questions\":[\"The developer reported HS256, but the decoded header shows alg=none. Was the captured token modified, or is it a different token from the one that failed?\",\"Optionally supply access_token to run the at_hash check, which was skipped.\"]}",
+    "structured_output": {
+      "root_cause_code": "JWT_ALG_NONE_OR_CONFUSION",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/header/alg",
+          "actual": "none",
+          "expected": "an asymmetric algorithm such as RS256",
+          "note": "The token header says alg=none, so it is unsigned. The reported symptom said HS256. Either way the algorithm is not one the OP publishes, since the JWKS has only an RSA RS256 key."
+        },
+        {
+          "path": "/signature",
+          "actual": "unsigned token",
+          "expected": "RS256 signature verifying against kid test-key-1",
+          "note": "The signature check failed."
+        }
+      ],
+      "fix": "Reject this token. Pin the SP's allowed algorithms to the asymmetric ones the OP publishes (RS256 here). Never take the algorithm from the token header, and never use the RSA public key or any shared secret as an HMAC key. Every other check passed: kid, iss, aud, exp, nbf, iat and nonce. A correctly RS256-signed token from the OP should therefore validate. If the OP really issues HS256 or unsigned tokens, fix the OP or client registration. Don't loosen validation on the SP.",
+      "alternatives": [
+        {
+          "code": "JWT_KID_NOT_FOUND_IN_JWKS",
+          "why_not": "The kid test-key-1 is present in the JWKS and the kid check passed."
+        }
+      ],
+      "questions": [
+        "The developer reported HS256, but the decoded header shows alg=none. Was the captured token modified, or is it a different token from the one that failed?",
+        "Optionally supply access_token to run the at_hash check, which was skipped."
+      ]
+    },
+    "ttft_ms": 5307,
+    "type": "result",
+    "duration_ms": 13151,
+    "uuid": "e5102b94-9b60-47b7-ad5a-3aae09e7f326",
+    "ttft_stream_ms": 2300,
+    "time_to_request_ms": 100,
+    "first_content_frame_ms": 2300,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "case_id": "saml_nameid_missing_or_format_mismatch-00",
+  "case_hash": "8b49bb368da127ca",
+  "arm": "rules",
+  "label": {
+    "code": "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/Subject/NameID/@Format",
+    "fix_keys": [
+      "stable",
+      "identifier",
+      "nameid",
+      "application"
+    ],
+    "needs": [
+      "name_id_format"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_nameid_missing_or_format_mismatch-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "nameid_format_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "8b49bb368da127ca"
+  },
+  "output": {
+    "root_cause_code": "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH",
+    "confidence": 1,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Subject/NameID/@Format",
+        "actual": "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
+        "expected": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress"
+      }
+    ],
+    "fix": "Map a stable user identifier to NameID in the IdP application and set its format to what the SP expects (typically emailAddress or persistent).",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T01:14:08.934459-05:00",
+  "duration_ms": 0,
+  "tool_calls": 0,
+  "num_turns": 0,
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0
+  },
+  "cost_usd": 0,
+  "hallucinated": [],
+  "valid_citations": 1
+}

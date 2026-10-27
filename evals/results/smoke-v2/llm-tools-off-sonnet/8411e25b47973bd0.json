@@ -1,0 +1,251 @@
+{
+  "case_id": "oidc_discovery_doc_invalid-00",
+  "case_hash": "8411e25b47973bd0",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "OIDC_DISCOVERY_DOC_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/discovery/token_endpoint",
+    "fix_keys": [
+      "point",
+      "canonical"
+    ]
+  },
+  "kind": "oidc_discovery",
+  "meta": {
+    "id": "oidc_discovery_doc_invalid-00",
+    "kind": "oidc_discovery",
+    "mutator": "discovery_http_endpoint",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "8411e25b47973bd0"
+  },
+  "output": {
+    "root_cause_code": "OIDC_DISCOVERY_DOC_INVALID",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "path": "/endpoints/token_endpoint",
+        "actual": "http://login.example.com/tenant-1/oauth2/v2.0/token",
+        "expected": "https:// URL",
+        "note": "Token endpoint uses plaintext HTTP, which is unsafe."
+      },
+      {
+        "path": "/endpoints/userinfo_endpoint",
+        "actual": "https://login.example.com/oidc/userinfo",
+        "expected": "https://login.example.com/tenant-1/...",
+        "note": "Userinfo path is not under the tenant path used by the other endpoints."
+      },
+      {
+        "path": "/code_challenge_methods_supported",
+        "actual": "[\"S256\",\"plain\"]",
+        "expected": "S256 only",
+        "note": "Advertises plain PKCE."
+      },
+      {
+        "path": "/issuer",
+        "actual": "https://login.example.com/tenant-1/v2.0",
+        "expected": "https://login.example.com/tenant-1/v2.0",
+        "note": "Issuer matches the configured value, so this is not an issuer mismatch."
+      }
+    ],
+    "fix": "Fix the discovery document at the source so that every endpoint, token_endpoint included, is an https URL on the same tenant-scoped authority as the issuer. Check that the userinfo_endpoint belongs to this tenant. Remove 'plain' from code_challenge_methods_supported and have clients use S256 only. Then reload the document. AADSTS50049 means Entra doesn't recognise the instance or authority. Confirm that the host is a real Entra authority (login.microsoftonline.com) or a registered custom domain, and that the tenant ID in the path is valid. Don't relax the https requirement or the issuer check to get around the error.",
+    "posture_codes": [
+      "POSTURE_PKCE_PLAIN_OR_ABSENT"
+    ],
+    "alternatives": [
+      {
+        "code": "OIDC_ISSUER_MISMATCH",
+        "why_not": "The issuer in the document equals the configured issuer."
+      },
+      {
+        "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+        "why_not": "The error is raised while loading the discovery document, before any client configuration is evaluated."
+      }
+    ],
+    "questions": [
+      "Is login.example.com a registered custom domain or authority for this Entra tenant, or is it a proxy or mock?",
+      "Was the document fetched directly from the authority's /.well-known/openid-configuration, or has it been rewritten by an intermediary?"
+    ]
+  },
+  "started": "2026-10-27T01:14:56.561083-05:00",
+  "duration_ms": 7360,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 961,
+    "cache_creation_input_tokens": 1448,
+    "cache_read_input_tokens": 3689
+  },
+  "cost_usd": 0.0157749,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 961,
+      "cacheReadInputTokens": 3689,
+      "cacheCreationInputTokens": 1448,
+      "costUSD": 0.0157749,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [
+    "/endpoints/token_endpoint",
+    "/endpoints/userinfo_endpoint",
+    "/code_challenge_methods_supported",
+    "/issuer"
+  ],
+  "valid_citations": 0,
+  "envelope": {
+    "duration_api_ms": 7201,
+    "stop_reason": "tool_use",
+    "session_id": "f195c345-9263-4c59-8ac8-29738610a4db",
+    "total_cost_usd": 0.0157749,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1448,
+      "cache_read_input_tokens": 3689,
+      "output_tokens": 961,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1448,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 961,
+          "cache_read_input_tokens": 3689,
+          "cache_creation_input_tokens": 1448,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1448
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 961,
+        "cacheReadInputTokens": 3689,
+        "cacheCreationInputTokens": 1448,
+        "webSearchRequests": 0,
+        "costUSD": 0.0157749,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1448,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OIDC_DISCOVERY_DOC_INVALID\",\"confidence\":0.8,\"evidence\":[{\"path\":\"/endpoints/token_endpoint\",\"actual\":\"http://login.example.com/tenant-1/oauth2/v2.0/token\",\"expected\":\"https:// URL\",\"note\":\"Token endpoint uses plaintext HTTP, which is unsafe.\"},{\"path\":\"/endpoints/userinfo_endpoint\",\"actual\":\"https://login.example.com/oidc/userinfo\",\"expected\":\"https://login.example.com/tenant-1/...\",\"note\":\"Userinfo path is not under the tenant path used by the other endpoints.\"},{\"path\":\"/code_challenge_methods_supported\",\"actual\":\"[\\\"S256\\\",\\\"plain\\\"]\",\"expected\":\"S256 only\",\"note\":\"Advertises plain PKCE.\"},{\"path\":\"/issuer\",\"actual\":\"https://login.example.com/tenant-1/v2.0\",\"expected\":\"https://login.example.com/tenant-1/v2.0\",\"note\":\"Issuer matches the configured value, so this is not an issuer mismatch.\"}],\"fix\":\"Fix the discovery document at the source so that every endpoint, token_endpoint included, is an https URL on the same tenant-scoped authority as the issuer. Check that the userinfo_endpoint belongs to this tenant. Remove 'plain' from code_challenge_methods_supported and have clients use S256 only. Then reload the document. AADSTS50049 means Entra doesn't recognise the instance or authority. Confirm that the host is a real Entra authority (login.microsoftonline.com) or a registered custom domain, and that the tenant ID in the path is valid. Don't relax the https requirement or the issuer check to get around the error.\",\"alternatives\":[{\"code\":\"OIDC_ISSUER_MISMATCH\",\"why_not\":\"The issuer in the document equals the configured issuer.\"},{\"code\":\"OAUTH_CLIENT_CONFIG_REJECTED\",\"why_not\":\"The error is raised while loading the discovery document, before any client configuration is evaluated.\"}],\"questions\":[\"Is login.example.com a registered custom domain or authority for this Entra tenant, or is it a proxy or mock?\",\"Was the document fetched directly from the authority's /.well-known/openid-configuration, or has it been rewritten by an intermediary?\"],\"posture_codes\":[\"POSTURE_PKCE_PLAIN_OR_ABSENT\"]}",
+    "structured_output": {
+      "root_cause_code": "OIDC_DISCOVERY_DOC_INVALID",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "path": "/endpoints/token_endpoint",
+          "actual": "http://login.example.com/tenant-1/oauth2/v2.0/token",
+          "expected": "https:// URL",
+          "note": "Token endpoint uses plaintext HTTP, which is unsafe."
+        },
+        {
+          "path": "/endpoints/userinfo_endpoint",
+          "actual": "https://login.example.com/oidc/userinfo",
+          "expected": "https://login.example.com/tenant-1/...",
+          "note": "Userinfo path is not under the tenant path used by the other endpoints."
+        },
+        {
+          "path": "/code_challenge_methods_supported",
+          "actual": "[\"S256\",\"plain\"]",
+          "expected": "S256 only",
+          "note": "Advertises plain PKCE."
+        },
+        {
+          "path": "/issuer",
+          "actual": "https://login.example.com/tenant-1/v2.0",
+          "expected": "https://login.example.com/tenant-1/v2.0",
+          "note": "Issuer matches the configured value, so this is not an issuer mismatch."
+        }
+      ],
+      "fix": "Fix the discovery document at the source so that every endpoint, token_endpoint included, is an https URL on the same tenant-scoped authority as the issuer. Check that the userinfo_endpoint belongs to this tenant. Remove 'plain' from code_challenge_methods_supported and have clients use S256 only. Then reload the document. AADSTS50049 means Entra doesn't recognise the instance or authority. Confirm that the host is a real Entra authority (login.microsoftonline.com) or a registered custom domain, and that the tenant ID in the path is valid. Don't relax the https requirement or the issuer check to get around the error.",
+      "alternatives": [
+        {
+          "code": "OIDC_ISSUER_MISMATCH",
+          "why_not": "The issuer in the document equals the configured issuer."
+        },
+        {
+          "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+          "why_not": "The error is raised while loading the discovery document, before any client configuration is evaluated."
+        }
+      ],
+      "questions": [
+        "Is login.example.com a registered custom domain or authority for this Entra tenant, or is it a proxy or mock?",
+        "Was the document fetched directly from the authority's /.well-known/openid-configuration, or has it been rewritten by an intermediary?"
+      ],
+      "posture_codes": [
+        "POSTURE_PKCE_PLAIN_OR_ABSENT"
+      ]
+    },
+    "ttft_ms": 7342,
+    "type": "result",
+    "duration_ms": 7360,
+    "uuid": "c32627f5-879c-4a81-a3e0-2752c50b23c6",
+    "ttft_stream_ms": 2133,
+    "time_to_request_ms": 158,
+    "first_content_frame_ms": 2134,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

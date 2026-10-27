@@ -1,0 +1,212 @@
+{
+  "case_id": "saml_signature_invalid-00",
+  "case_hash": "cb820e39d5930245",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_SIGNATURE_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/Signature",
+    "fix_keys": [
+      "download",
+      "current",
+      "signing",
+      "certificate"
+    ],
+    "needs": [
+      "idp_cert_pem"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_signature_invalid-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "signature_tampered",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "cb820e39d5930245"
+  },
+  "output": {
+    "root_cause_code": "SAML_SIGNATURE_INVALID",
+    "confidence": 0.85,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature",
+        "actual": "digest or signature mismatch",
+        "expected": "verifies with the configured IdP certificate (SHA-256 fingerprint 2B:39:20:62:...:D9:D9)",
+        "note": "All other checks pass: status, issuer, destination, InResponseTo, audience, recipient, time window, NameID, attributes and structure. Only signature verification fails."
+      }
+    ],
+    "fix": "The assertion's signature or digest doesn't verify against the configured IdP certificate. There are two likely explanations. (1) The IdP rotated its signing key, and the SP still has the old certificate. Fetch the current signing certificate from the IdP's metadata over a trusted channel and replace the SP's configured certificate. (2) The assertion was modified after signing, or something between the IdP and your library re-serialized it. This could be a proxy, a gateway, or XML pretty-printing or canonicalization changes. Compare the raw POST payload with what your library receives. Keep signature validation on, and don't trust the certificate embedded in the message. If the certificate is current and the payload is untouched, ask the IdP to re-issue the response and confirm which key signs it.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "CERT_EXPIRED_OR_WEAK",
+        "why_not": "The configured certificate is valid until 2126, so it is not expired or weak."
+      },
+      {
+        "code": "SAML_STRUCTURE_INVALID",
+        "why_not": "The structure check passed: there is a single Assertion and the version is SAML 2.0, so there is no sign of signature wrapping."
+      }
+    ],
+    "questions": [
+      "Did the IdP recently rotate its signing certificate, and does the configured certificate match its current metadata?",
+      "Does any proxy or gateway sit between the IdP and the SP and alter the POST body?"
+    ]
+  },
+  "started": "2026-10-27T01:42:45.403279-05:00",
+  "duration_ms": 18409,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2218,
+    "cache_creation_input_tokens": 7045,
+    "cache_read_input_tokens": 28648
+  },
+  "cost_usd": 0.0532328,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2218,
+      "cacheReadInputTokens": 28648,
+      "cacheCreationInputTokens": 7045,
+      "costUSD": 0.0532328,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 18279,
+    "stop_reason": "tool_use",
+    "session_id": "10688a87-5921-4e0c-a286-bef26bc2ee54",
+    "total_cost_usd": 0.0532328,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 7045,
+      "cache_read_input_tokens": 28648,
+      "output_tokens": 2218,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 7045,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 760,
+          "cache_read_input_tokens": 16269,
+          "cache_creation_input_tokens": 3155,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 3155
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2218,
+        "cacheReadInputTokens": 28648,
+        "cacheCreationInputTokens": 7045,
+        "webSearchRequests": 0,
+        "costUSD": 0.0532328,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 7045,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_SIGNATURE_INVALID\",\"confidence\":0.85,\"evidence\":[{\"path\":\"/Response/Assertion/Signature\",\"actual\":\"digest or signature mismatch\",\"expected\":\"verifies with the configured IdP certificate (SHA-256 fingerprint 2B:39:20:62:...:D9:D9)\",\"note\":\"All other checks pass: status, issuer, destination, InResponseTo, audience, recipient, time window, NameID, attributes and structure. Only signature verification fails.\"}],\"fix\":\"The assertion's signature or digest doesn't verify against the configured IdP certificate. There are two likely explanations. (1) The IdP rotated its signing key, and the SP still has the old certificate. Fetch the current signing certificate from the IdP's metadata over a trusted channel and replace the SP's configured certificate. (2) The assertion was modified after signing, or something between the IdP and your library re-serialized it. This could be a proxy, a gateway, or XML pretty-printing or canonicalization changes. Compare the raw POST payload with what your library receives. Keep signature validation on, and don't trust the certificate embedded in the message. If the certificate is current and the payload is untouched, ask the IdP to re-issue the response and confirm which key signs it.\",\"alternatives\":[{\"code\":\"CERT_EXPIRED_OR_WEAK\",\"why_not\":\"The configured certificate is valid until 2126, so it is not expired or weak.\"},{\"code\":\"SAML_STRUCTURE_INVALID\",\"why_not\":\"The structure check passed: there is a single Assertion and the version is SAML 2.0, so there is no sign of signature wrapping.\"}],\"questions\":[\"Did the IdP recently rotate its signing certificate, and does the configured certificate match its current metadata?\",\"Does any proxy or gateway sit between the IdP and the SP and alter the POST body?\"]}",
+    "structured_output": {
+      "root_cause_code": "SAML_SIGNATURE_INVALID",
+      "confidence": 0.85,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Signature",
+          "actual": "digest or signature mismatch",
+          "expected": "verifies with the configured IdP certificate (SHA-256 fingerprint 2B:39:20:62:...:D9:D9)",
+          "note": "All other checks pass: status, issuer, destination, InResponseTo, audience, recipient, time window, NameID, attributes and structure. Only signature verification fails."
+        }
+      ],
+      "fix": "The assertion's signature or digest doesn't verify against the configured IdP certificate. There are two likely explanations. (1) The IdP rotated its signing key, and the SP still has the old certificate. Fetch the current signing certificate from the IdP's metadata over a trusted channel and replace the SP's configured certificate. (2) The assertion was modified after signing, or something between the IdP and your library re-serialized it. This could be a proxy, a gateway, or XML pretty-printing or canonicalization changes. Compare the raw POST payload with what your library receives. Keep signature validation on, and don't trust the certificate embedded in the message. If the certificate is current and the payload is untouched, ask the IdP to re-issue the response and confirm which key signs it.",
+      "alternatives": [
+        {
+          "code": "CERT_EXPIRED_OR_WEAK",
+          "why_not": "The configured certificate is valid until 2126, so it is not expired or weak."
+        },
+        {
+          "code": "SAML_STRUCTURE_INVALID",
+          "why_not": "The structure check passed: there is a single Assertion and the version is SAML 2.0, so there is no sign of signature wrapping."
+        }
+      ],
+      "questions": [
+        "Did the IdP recently rotate its signing certificate, and does the configured certificate match its current metadata?",
+        "Does any proxy or gateway sit between the IdP and the SP and alter the POST body?"
+      ]
+    },
+    "ttft_ms": 11851,
+    "type": "result",
+    "duration_ms": 18409,
+    "uuid": "58721239-567b-430e-b4dc-0dcd8144b7fc",
+    "ttft_stream_ms": 4987,
+    "time_to_request_ms": 107,
+    "first_content_frame_ms": 4987,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

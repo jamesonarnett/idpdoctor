@@ -27,7 +27,8 @@ for k, f in [("sp_entity_id","--sp-entity-id"),("acs_url","--acs-url"),("idp_ent
     if e.get(k): args += [f, str(e[k])]
 if e.get("idp_cert_pem"):
     t = tempfile.NamedTemporaryFile("w", suffix=".pem", delete=False); t.write(e["idp_cert_pem"]); t.close(); args += ["--idp-cert", t.name]
-if e.get("jwks"):
+if os.path.exists(f"{c}/keys.json"): args += ["--jwks", f"{c}/keys.json"]
+elif e.get("jwks"):
     t = tempfile.NamedTemporaryFile("w", suffix=".json", delete=False); json.dump(e["jwks"], t); t.close(); args += ["--jwks", t.name]
 r = subprocess.run(args); print(f"exit={r.returncode}")
 PY

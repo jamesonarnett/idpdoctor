@@ -9,6 +9,9 @@ Before starting: `go version` (1.27 on this machine; `go.mod` says `go 1.25.0`, 
 promises to compile with), `make check`, and read `go.mod` + `go.sum` once. `go.sum` is a lockfile of
 hashes, not a dependency list; `go mod tidy` rewrites both.
 
+Packages added in v1 (`agent`, `eval`, `oidc`, `oauth`, `bundle`, `web`) are sections 10-13; they lean on
+everything before them, so finish 1-9 first.
+
 ## 0. `cmd/idpdoctor` (skim first, read last)
 
 `main.go` is twelve lines: build a signal-aware `context.Context`, run the cobra root with
@@ -212,7 +215,113 @@ Exercises:
 3. Register one tool with the non-generic `s.mcp.AddTool` and unmarshal the arguments yourself; note what
    you lose.
 
-## 10. Build tags and CI (no package to read)
+## 10. `internal/oidc`, `internal/oauth`, `internal/bundle`, `internal/web` (v1 breadth)
+
+Read `oidc/check.go`, `oauth/classify.go` + `oauth/pkce.go`, `bundle/bundle.go`, `web/server.go`.
+
+Concepts:
+- The same validator pattern as `saml`, applied to JSON (`map[string]any` with small typed accessors) and to
+  URLs (`net/url`: query vs fragment parameters, `url.Values`).
+- A table-driven classifier (`oauth/classify.go`): rules as data with a precedence order (vendor code, then
+  description phrase, then bare error value). Compare with a chain of `if`s and decide which you would
+  rather extend.
+- `crypto/sha256` + `base64.RawURLEncoding` for PKCE S256 (RFC 7636 Appendix B is the test vector).
+- `archive/zip` streaming with `CreateHeader`; why the bundle carries a hash of the artifact, not the artifact.
+- `net/http` server hygiene: `http.MaxBytesReader`, `ReadHeaderTimeout`, `ErrorLog` to `io.Discard`, `Host`
+  checks against DNS rebinding, `Shutdown` with a context. `net.ParseIP(host).IsLoopback()` is the whole
+  "local only" rule.
+
+Exercises:
+1. Add `code_challenge_methods_supported` to the discovery checks: warn when `S256` is absent.
+2. Add an Okta-shaped rule to `oauth/classify.go` (`E0000004` is an authentication failure) and a test.
+3. Make `web.CheckAddr` accept a Unix socket path and explain why that is still "local only".
+
+## 11. `internal/agent`: `os/exec`, pipes and context timeouts
+
+Read `runner.go`, `envelope.go`, `explain.go`, `agenttest/agenttest.go`, then `runner_test.go`.
+
+Concepts:
+- `exec.CommandContext(ctx, bin, args...)`: when `ctx` is cancelled the child gets SIGKILL. `cmd.WaitDelay`
+  is the subtle part: without it, `Wait` blocks until every pipe closes, and a grandchild (the MCP server
+  the CLI spawned) that inherited stdout keeps the pipe open after the CLI died. Read the `os/exec` doc
+  comment on `WaitDelay` and `Cancel`.
+- `cmd.Env` is the whole environment, not a delta: `ScrubEnv` copies `os.Environ()` minus the banned keys.
+  `exec.LookPath` happens at call time so a test can prepend a fake to `PATH` with `t.Setenv`.
+- Stdin as `strings.NewReader(prompt)`, stdout/stderr into `bytes.Buffer`s. Why the prompt goes on stdin and
+  not in `args` (process listings).
+- `context.WithTimeout` only when the caller's context has no deadline (`ctx.Deadline()`), so an outer
+  cancellation still wins.
+- Error design: sentinels (`ErrTimeout`, `ErrDenied`) plus one typed error (`MalformedError`) carrying the
+  head of stdout; `errors.Is` for the sentinel, `errors.As` for the payload. The envelope is returned
+  alongside the error when it parsed, so usage can still be recorded.
+- `encoding/json` on an evolving external schema: `json.RawMessage` for the parts you pass through
+  (`structured_output`), ignored unknown fields for forward compatibility, `camelCase` vs `snake_case` tags
+  because the CLI mixes both.
+
+Exercises:
+1. Remove `cmd.WaitDelay`, make the fake `claude` spawn `sleep 60 &` that inherits stdout, and watch
+   `TestRunTimeout` hang. Put it back.
+2. Add a `Retries int` to `Runner` that retries once on `ErrTimeout` only, and test it with a fake mode that
+   sleeps on the first call and succeeds on the second (hint: a counter file in `FAKE_CLAUDE_RECORD`'s dir).
+3. Replace the `bytes.Buffer` stdout with `cmd.StdoutPipe()` and a streaming JSON decoder; explain what you
+   gain for `--output-format stream-json` and what you must now do about `Wait` ordering.
+
+## 12. `encoding/json` v2 on Go 1.27 (no package to read; a probe)
+
+This machine's Go 1.27 ships `encoding/json/v2` importable without a `GOEXPERIMENT`. `go.mod` says
+`go 1.25.0`, so product code stays on v1; use v2 in a scratch module to learn where the semantics moved.
+Measured here (write the probe yourself, it is 40 lines):
+
+- A nil slice marshals as `[]` in v2 and `null` in v1. `finding.NewReport` initialises its slices precisely
+  because v1 would otherwise emit `null` where the MCP output schema says array.
+- v2 field matching is case-sensitive: `{"code":"X"}` does not fill a field tagged `json:"Code"`. v1 matches
+  case-insensitively. Every struct that crosses a tool or model boundary in this repo has explicit lowercase
+  tags for that reason.
+- v2 rejects duplicate object keys (`jsontext: duplicate object member name`); v1 silently keeps the last. That
+  is the JSON cousin of the SAML parser-differential class: two parsers, two answers.
+- v2 refuses to marshal `time.Duration` without a `format` tag; v1 writes nanoseconds. v2 also does not
+  coerce a JSON string into a `float64` field.
+- `omitempty` on a zero `time.Time` omits nothing in either version; `omitzero` (v1 since 1.24, v2) does.
+
+Exercises:
+1. Write the probe module and reproduce each bullet; add one more difference you find in the v2 package doc
+   ("Migrating to v2" section).
+2. Port `internal/eval/report.go` to v2 in a scratch branch. Which `Ratio` workaround becomes unnecessary and
+   which new option (`jsonv2.FormatNilSliceAsNull`, `jsontext.AllowDuplicateNames`, ...) would you need to keep
+   byte-identical output?
+3. Explain why `saml.Summary.MarshalJSON` (the redaction hook) keeps working under v2 and what the v2
+   `json.MarshalerTo` interface would buy.
+
+## 13. `embed` and `internal/eval`
+
+Read `web/server.go` (the `//go:embed index.html` directive), `agent/agenttest/agenttest.go` (`//go:embed
+fake-claude.sh` into a `[]byte`), then `eval/case.go`, `gen.go`, `run.go`, `judge.go`, `kappa.go`,
+`report.go`, `eval_test.go`.
+
+Concepts:
+- `//go:embed` turns a file into a `string`, `[]byte` or `embed.FS` at compile time; the path is relative to
+  the package directory and cannot reach `..`, which is why the fake script lives inside `agenttest/` and not
+  in a shared `testdata/`. The binary is self-contained: `idpdoctor web` needs no files next to it.
+- `math/rand/v2` with `rand.NewPCG(seed, stream)`: a stream per decision (`rng(label, i)`) so adding a class
+  does not reshuffle another class's cases. Compare with one global generator consumed in order.
+- A worker pool with a buffered channel as a semaphore, `sync.WaitGroup`, and one mutex around the tally and
+  the shared counters; why the concurrency cap is 2 (subscription etiquette, not throughput).
+- Content hashing for a cache key (`Case.Hash`): what is in it (artifact, expected, keys, symptom) and what is
+  deliberately not (label, meta), so a relabel keeps cached model outputs.
+- Cohen's kappa from a confusion matrix with a weight function; the quadratic weights make a one-step Likert
+  disagreement cheap and a four-step one expensive. `NaN` as "undefined" and the `Ratio` type that renders it
+  as `null`.
+- Tests that use the fake `claude` for every arm, including the hard cap (`ErrMaxCalls`) and resume.
+
+Exercises:
+1. Embed `evals/rubric.md` into `internal/eval` as the default when `--rubric` is not given, keeping the file
+   on disk as the editable source (hint: `embed.FS` + a `go:generate` copy, or move the file).
+2. Add a `--shuffle` flag to `eval run` that randomises case order with a seed and show that cached results
+   make the order irrelevant.
+3. Write `TestKappaMatchesSklearn`: compute weighted kappa for a 5x5 matrix by hand (or from a published
+   example) and assert to 1e-9.
+
+## 14. Build tags and CI (no package to read)
 
 The plan reserves `-tags e2e` for the Keycloak smoke test (v2). To practise now: create
 `internal/diag/keycloak_e2e_test.go` with `//go:build e2e` on line 1 and a test that `t.Skip`s; confirm
@@ -230,4 +339,10 @@ The plan reserves `-tags e2e` for the Keycloak smoke test (v2). To practise now:
   with an `-update` flag so a behaviour change is a reviewed diff."
 - "`context.Context` carries cancellation and deadlines down the call stack; every blocking call takes
   one first."
-- "Build tags select files at compile time; we use them to keep a slow Docker test out of `go test ./...`."
+- "Build tags select files at compile time; we use them to keep a slow Docker test and the one real
+  `claude -p` call (`-tags live`) out of `go test ./...`."
+- "`exec.CommandContext` kills the child on cancellation; `WaitDelay` is what stops a grandchild's inherited
+  pipe from hanging `Wait`."
+- "`//go:embed` makes the binary self-contained; the path cannot escape the package directory."
+- "Cohen's kappa is agreement corrected for chance; weighted kappa makes near-misses on an ordinal scale
+  cheaper than far misses."

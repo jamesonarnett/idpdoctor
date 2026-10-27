@@ -56,9 +56,9 @@
       "sig_alg": "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
       "digest_alg": "http://www.w3.org/2001/04/xmlenc#sha256",
       "reference_uri": "#_assert_a289ac",
-      "cert_sha256": "6C:E2:4D:1D:83:87:79:31:4C:35:0F:AE:1D:87:F9:4C:58:CD:DB:05:28:05:3A:1A:42:9A:35:95:63:D6:E6:ED",
-      "cert_subject": "CN=TEST ONLY rotated idp",
-      "cert_not_after": "2026-01-16T12:00:00Z"
+      "cert_sha256": "C1:E0:C2:26:A4:54:34:7F:BA:05:32:F8:55:DE:81:06:92:D1:AC:20:FF:DC:B0:75:13:8C:66:FF:C8:15:88:78",
+      "cert_subject": "CN=TEST ONLY rotated fixture IdP,O=idpdoctor TEST ONLY",
+      "cert_not_after": "2126-01-01T00:00:00Z"
     }
   ]
 }

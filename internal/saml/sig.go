@@ -80,13 +80,4 @@ func classify(err error) error {
 	return fmt.Errorf("%w: %v", ErrSigInvalid, err)
 }
 
-// embeddedCert returns the KeyInfo certificate of the first signature on el.
-func embeddedCert(el *etree.Element) *x509.Certificate {
-	sig := child(el, NSDSig, "Signature")
-	if sig == nil {
-		return nil
-	}
-	return signatureInfo(sig, "").Cert
-}
-
 func isSHA1Alg(uri string) bool { return uri == algRSASHA1 || uri == algDigestSHA1 }

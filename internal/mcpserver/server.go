@@ -8,7 +8,6 @@ package mcpserver
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -103,13 +102,4 @@ func (s *Server) resolve(inline, ref string) (string, error) {
 // Out value becomes structuredContent automatically.
 func textResult(text string) *mcp.CallToolResult {
 	return &mcp.CallToolResult{Content: []mcp.Content{&mcp.TextContent{Text: text}}}
-}
-
-// jsonText renders a value for the text channel when no better prose exists.
-func jsonText(v any) string {
-	b, err := json.MarshalIndent(v, "", "  ")
-	if err != nil {
-		return err.Error()
-	}
-	return redact.Truncate(string(b), MaxToolOutput)
 }

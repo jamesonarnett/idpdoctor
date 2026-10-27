@@ -205,8 +205,10 @@ func (k jwk) publicKey() (crypto.PublicKey, error) {
 			return nil, err
 		}
 		pub := &ecdsa.PublicKey{Curve: curve, X: new(big.Int).SetBytes(x), Y: new(big.Int).SetBytes(y)}
-		if !curve.IsOnCurve(pub.X, pub.Y) {
-			return nil, fmt.Errorf("EC point not on curve")
+		// ECDH() rebuilds the point through crypto/ecdh, which rejects
+		// off-curve coordinates; it replaces the deprecated IsOnCurve.
+		if _, err := pub.ECDH(); err != nil {
+			return nil, fmt.Errorf("EC point invalid: %w", err)
 		}
 		return pub, nil
 	}

@@ -229,13 +229,13 @@ func init() {
 	register(Mutator{Name: "wrong_cert", Code: finding.SAMLSignatureInvalid, Phase: PhasePreSign,
 		Apply: func(doc *etree.Document, p *Params) Label {
 			// Signed by a key the SP has never seen (IdP rotated, SP did not).
-			p.Keys = mustKeys("rotated idp", p.Now.Add(-24*time.Hour), p.Now.Add(24*time.Hour), 2048)
+			p.Keys = mustKeys(TestKeysRotated)
 			return Label{Code: finding.SAMLSignatureInvalid, Path: saml.PathKeyInfoCertificate, Needs: []string{"idp_cert_pem"}}
 		}})
 
 	register(Mutator{Name: "cert_expired", Code: finding.CertExpiredOrWeak, Phase: PhasePreSign,
 		Apply: func(doc *etree.Document, p *Params) Label {
-			p.Keys = mustKeys("expired idp", p.Now.Add(-48*time.Hour), p.Now.Add(-24*time.Hour), 2048)
+			p.Keys = mustKeys(TestKeysExpired)
 			return Label{Code: finding.CertExpiredOrWeak, Path: saml.PathKeyInfoCertificate + "/NotAfter"}
 		}})
 
@@ -254,7 +254,7 @@ func init() {
 
 	register(Mutator{Name: "posture_expired_cert", Code: finding.PostureExpiredCertAccepted, Phase: PhasePreSign,
 		Apply: func(doc *etree.Document, p *Params) Label {
-			p.Keys = mustKeys("expired idp", p.Now.Add(-48*time.Hour), p.Now.Add(-24*time.Hour), 2048)
+			p.Keys = mustKeys(TestKeysExpired)
 			return Label{Code: finding.PostureExpiredCertAccepted, Path: saml.PathKeyInfoCertificate + "/NotAfter", Note: "validate with this expired cert as idp_cert_pem"}
 		}})
 
@@ -285,10 +285,12 @@ func init() {
 		}})
 }
 
-func mustKeys(cn string, nb, na time.Time, bits int) *Keys {
-	k, err := GenerateKeys(cn, nb, na, bits)
+// mustKeys unwraps a committed keypair; a failure is a broken repo, not a
+// runtime condition.
+func mustKeys(load func() (*Keys, error)) *Keys {
+	k, err := load()
 	if err != nil {
-		panic("fixture: generate keys: " + err.Error())
+		panic("fixture: " + err.Error())
 	}
 	return k
 }

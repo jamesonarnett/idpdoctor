@@ -14,7 +14,7 @@ vet:
 
 # staticcheck is installed on demand into GOPATH/bin; pinned so CI is reproducible.
 lint:
-	go run honnef.co/go/tools/cmd/staticcheck@2025.1.1 ./...
+	go run honnef.co/go/tools/cmd/staticcheck@v0.8.2 ./...
 
 check: vet test lint
 

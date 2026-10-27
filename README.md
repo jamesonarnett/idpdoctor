@@ -8,8 +8,10 @@ and a vague error from their own library. It runs every applicable check, never 
 returns machine-readable findings with evidence paths and a vendor-neutral fix. The same validators power the
 CLI and the MCP server, so a Claude Code or Cursor session can call `saml_validate` mid-debug.
 
-Status: **v0 in progress** (deterministic core + MCP server). No LLM code exists in this tree yet; `idpdoctor
-diagnose` is rules-only and must stay fully useful that way.
+Status: **v0 deterministic core + MCP server, first slice complete** (2026-10-27). 16 of the 25 catalog
+classes are caught deterministically (SAML #1-11, JWT/OIDC #14-18), plus 7 of the 8 posture codes. No LLM
+code exists in this tree; `idpdoctor diagnose` is rules-only and must stay fully useful that way. The
+benchmark table and the `--explain` layer are v1.
 
 ## Why this exists
 
@@ -43,19 +45,32 @@ make build && ./bin/idpdoctor version
 ## CLI
 
 ```sh
-idpdoctor saml decode  -f response.b64                   # binding auto-detected; redacted summary
-idpdoctor saml validate -f response.b64 --sp-entity-id https://sp.example.com/metadata \
-    --acs-url https://sp.example.com/acs --idp-cert idp.pem
-idpdoctor jwt decode   -f id_token.txt
-idpdoctor jwt validate -f id_token.txt --issuer https://login.example.com --audience my-client --jwks jwks.json
-idpdoctor cert inspect -f idp.pem
-idpdoctor diagnose     -f response.b64 --sp-entity-id ... --acs-url ... [--json]
-idpdoctor mcp                                             # MCP server over stdio
+idpdoctor saml decode   -f response.b64                  # any binding; redacted pretty XML (--json for the summary)
+idpdoctor saml validate -f response.b64 --sp-entity-id https://sp.example.com/saml/metadata \
+    --acs-url https://sp.example.com/saml/acs --idp-entity-id https://idp.example.com/saml \
+    --idp-cert idp.pem --request-id _req123 --required-attr email --require-signed-assertion
+idpdoctor jwt decode    -f id_token.txt
+idpdoctor jwt validate  -f id_token.txt --issuer https://login.example.com/t/v2.0 --client-id my-client --jwks jwks.json
+idpdoctor cert inspect  -f idp.pem
+idpdoctor diagnose      -f response.b64 --sp-entity-id ... --acs-url ... [--now 2026-01-15T12:00:00Z] [--json]
+idpdoctor mcp                                            # MCP server over stdio
+```
+
+`--now` replays a capture at its capture time. `diagnose` exits 2 when a fault-lane error was found, 0 when
+the artifact validates (posture warnings do not change the exit code), 1 on usage or decode errors. Every
+check that lacks its expected value reports `skip` and the output ends with `Supply to unskip checks: ...`.
+
+Try it on a committed fixture:
+
+```sh
+make build
+./bin/idpdoctor diagnose -f testdata/saml/audience_mismatch/response.xml \
+    --sp-entity-id https://sp.example.com/saml/metadata --now 2026-01-15T12:00:00Z
 ```
 
 ## MCP
 
-Add to a project's `.mcp.json` (Claude Code) or the equivalent in Cursor:
+Add to a project's `.mcp.json` (Claude Code) or the equivalent in Cursor. With the binary on `PATH`:
 
 ```json
 {
@@ -68,8 +83,27 @@ Add to a project's `.mcp.json` (Claude Code) or the equivalent in Cursor:
 }
 ```
 
+From a checkout without installing (this is the committed `.mcp.json` in this repo):
+
+```json
+{
+  "mcpServers": {
+    "idpdoctor": {
+      "command": "go",
+      "args": ["run", "./cmd/idpdoctor", "mcp"]
+    }
+  }
+}
+```
+
+The server prints one line to stderr on start and nothing else; stdout is the protocol channel. It is
+verified end to end by `cmd/idpdoctor/mcp_e2e_test.go`, which builds the binary, launches `idpdoctor mcp`
+with the go-sdk `CommandTransport`, lists the tools and calls `saml_decode` on a minted fixture.
+
 Tools (v0): `saml_decode`, `saml_validate`, `jwt_decode`, `jwt_validate`, `cert_inspect`, `diagnose`,
-`stash_file`. Every artifact parameter is either `input` (inline) or `input_ref` (an opaque handle returned by
+`stash_file`. A typical agent session: `stash_file {"path": "capture.txt"}` -> `diagnose {"input_ref":
+"art_...", "expected": {"sp_entity_id": "..."}}` -> read `needs`, ask the human, call `saml_validate` with
+the fuller `expected`. Every artifact parameter is either `input` (inline) or `input_ref` (an opaque handle returned by
 `stash_file`), so an agent can work on an assertion it has never seen in its own context. Every response carries
 `"redaction": "default"`; there is no parameter that turns redaction off.
 
@@ -130,9 +164,22 @@ for the fixture set: crewjam/saml, gosaml2, python3-saml, node-saml, go-oidc, Mi
 ## Development
 
 ```sh
-make check      # go vet, go test, staticcheck
-make generate   # re-render docs/TAXONOMY.md from codes.go
+make build                              # ./bin/idpdoctor
+make check                              # go vet, go test, staticcheck (pinned v0.8.2)
+make generate                           # re-render docs/TAXONOMY.md from codes.go
+go test ./internal/diag -update         # regenerate testdata/{saml,jwt}/<case>/ from the fixture mutators
 ```
+
+Layout follows BUILD_PLAN 2.1: `cmd/idpdoctor` (cobra, adapters only), `internal/finding` (types + catalog),
+`internal/redact` (policy + handle store), `internal/saml`, `internal/jwt`, `internal/cert`, `internal/expected`,
+`internal/fixture` (in-process test IdP and mutators), `internal/diag` (pipeline), `internal/mcpserver` (go-sdk
+adapters). Nothing under `internal/` imports `cmd/` or `mcpserver`; the only network call in the product is
+`jwt_validate` with `jwks_url`. Tests make no network calls (`httptest` only). Every fixture is synthetic and
+minted by the repo; the committed keys in `internal/fixture/testkey.go` are TEST ONLY.
+
+Fixture engine decision: assertions are signed with goxmldsig `SignEnveloped` on an etree template rather
+than crewjam's IdP (BUILD_PLAN 8.6 option b), which keeps a dormant dependency out and gives direct control
+over which element is signed.
 
 See [LEARNING.md](LEARNING.md) for a reading order through the code and the Go concepts each package exercises.
 

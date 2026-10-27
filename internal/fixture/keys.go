@@ -33,9 +33,19 @@ func (k *Keys) CertPEM() string {
 
 // TestKeys returns the committed TEST ONLY keypair (testkey.go). Use it for
 // anything that is golden-tested so fingerprints stay stable.
-func TestKeys() (*Keys, error) {
-	cb, _ := pem.Decode([]byte(testCertPEM))
-	kb, _ := pem.Decode([]byte(testKeyPEM))
+func TestKeys() (*Keys, error) { return parseKeys(testCertPEM, testKeyPEM) }
+
+// TestKeysExpired is a committed keypair whose cert expired the day before
+// FixedNow (cert_expired / posture_expired_cert fixtures).
+func TestKeysExpired() (*Keys, error) { return parseKeys(testExpiredCertPEM, testExpiredKeyPEM) }
+
+// TestKeysRotated is a committed, valid keypair the SP does not trust
+// (wrong_cert fixture).
+func TestKeysRotated() (*Keys, error) { return parseKeys(testRotatedCertPEM, testRotatedKeyPEM) }
+
+func parseKeys(certPEM, keyPEM string) (*Keys, error) {
+	cb, _ := pem.Decode([]byte(certPEM))
+	kb, _ := pem.Decode([]byte(keyPEM))
 	if cb == nil || kb == nil {
 		return nil, errors.New("fixture: embedded test key is malformed")
 	}

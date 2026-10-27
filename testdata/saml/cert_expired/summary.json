@@ -56,8 +56,8 @@
       "sig_alg": "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
       "digest_alg": "http://www.w3.org/2001/04/xmlenc#sha256",
       "reference_uri": "#_assert_a289ac",
-      "cert_sha256": "B2:B6:33:03:FC:A5:24:76:EA:A8:B3:BB:02:26:39:42:98:6F:23:C7:E3:9D:66:68:FF:A6:89:AF:71:FD:9D:D6",
-      "cert_subject": "CN=TEST ONLY expired idp",
+      "cert_sha256": "46:DD:BF:EE:FD:39:BF:6F:0C:1E:B8:32:63:A5:6B:08:BE:98:82:A1:80:FA:34:83:22:D3:13:54:73:9E:FA:63",
+      "cert_subject": "CN=TEST ONLY expired fixture IdP,O=idpdoctor TEST ONLY",
       "cert_not_after": "2026-01-14T12:00:00Z"
     }
   ]

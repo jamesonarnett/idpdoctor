@@ -31,16 +31,16 @@ func TestMintSAMLVerifiesInEveryDialect(t *testing.T) {
 			t.Run(dialect+"/"+sign, func(t *testing.T) {
 				p := DefaultParams()
 				p.Dialect, p.Sign = dialect, sign
-				xml, labels, err := MintSAML(p, keys)
+				m, err := MintSAML(p, keys)
 				if err != nil {
 					t.Fatal(err)
 				}
-				if len(labels) != 0 {
-					t.Errorf("healthy mint produced labels %v", labels)
+				if len(m.Labels) != 0 {
+					t.Errorf("healthy mint produced labels %v", m.Labels)
 				}
-				parsed, err := saml.Parse(xml)
+				parsed, err := saml.Parse(m.XML)
 				if err != nil {
-					t.Fatalf("parse: %v\n%s", err, xml)
+					t.Fatalf("parse: %v\n%s", err, m.XML)
 				}
 				s := parsed.Summary
 				if s.Issuer != p.IdPEntityID || s.Assertion == nil || s.Assertion.Subject.NameID != p.NameID {
@@ -82,14 +82,14 @@ func TestTamperBreaksSignature(t *testing.T) {
 	if !ok {
 		t.Fatal("mutator missing")
 	}
-	xml, labels, err := MintSAML(DefaultParams(), keys, m)
+	minted, err := MintSAML(DefaultParams(), keys, m)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(labels) != 1 || labels[0].Code != finding.SAMLSignatureInvalid {
-		t.Fatalf("labels = %v", labels)
+	if len(minted.Labels) != 1 || minted.Labels[0].Code != finding.SAMLSignatureInvalid {
+		t.Fatalf("labels = %v", minted.Labels)
 	}
-	parsed, err := saml.Parse(xml)
+	parsed, err := saml.Parse(minted.XML)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -130,14 +130,14 @@ func TestAllSAMLMutatorsProduceParsableXML(t *testing.T) {
 	keys := mustTestKeys(t)
 	for _, m := range SAMLMutators() {
 		t.Run(m.Name, func(t *testing.T) {
-			xml, labels, err := MintSAML(DefaultParams(), keys, m)
+			minted, err := MintSAML(DefaultParams(), keys, m)
 			if err != nil {
 				t.Fatal(err)
 			}
-			if len(labels) != 1 || labels[0].Code != m.Code || labels[0].Path == "" {
-				t.Errorf("label = %+v", labels)
+			if len(minted.Labels) != 1 || minted.Labels[0].Code != m.Code || minted.Labels[0].Path == "" {
+				t.Errorf("label = %+v", minted.Labels)
 			}
-			if _, err := saml.Parse(xml); err != nil {
+			if _, err := saml.Parse(minted.XML); err != nil {
 				t.Fatalf("parse: %v", err)
 			}
 		})

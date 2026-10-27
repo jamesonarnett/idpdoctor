@@ -194,56 +194,54 @@ func Sign(doc *etree.Document, p Params, keys *Keys) error {
 	root := doc.Root()
 	if p.Sign == "assertion" || p.Sign == "both" {
 		for _, a := range findChildren(root, saml.NSAssertion, "Assertion") {
-			if err := signInPlace(ctx, root, a); err != nil {
+			if err := attachSignature(ctx, a); err != nil {
 				return fmt.Errorf("sign assertion: %w", err)
 			}
 		}
 	}
 	if p.Sign == "response" || p.Sign == "both" {
-		signed, err := ctx.SignEnveloped(root)
-		if err != nil {
+		if err := attachSignature(ctx, root); err != nil {
 			return fmt.Errorf("sign response: %w", err)
 		}
-		moveSignatureAfterIssuer(signed)
-		doc.SetRoot(signed)
 	}
 	return nil
 }
 
-// signInPlace replaces child el of parent with its signed copy.
-func signInPlace(ctx *dsig.SigningContext, parent, el *etree.Element) error {
-	signed, err := ctx.SignEnveloped(el)
+// attachSignature signs a copy of el and grafts only the resulting
+// ds:Signature into el at index 1 (right after Issuer, where real IdPs put
+// it). Signing a copy matters: goxmldsig's exclusive canonicaliser rewrites
+// the element it is given in place, which would strip the very comment
+// nodes the parser-differential fixture relies on. The verifier
+// canonicalises the same way, so the signature still verifies.
+func attachSignature(ctx *dsig.SigningContext, el *etree.Element) error {
+	signed, err := ctx.SignEnveloped(el.Copy())
 	if err != nil {
 		return err
 	}
-	moveSignatureAfterIssuer(signed)
-	idx := el.Index()
-	parent.RemoveChildAt(idx)
-	parent.InsertChildAt(idx, signed)
+	n := len(signed.Child)
+	sig, ok := signed.Child[n-1].(*etree.Element)
+	if !ok || sig.Tag != "Signature" {
+		return fmt.Errorf("SignEnveloped did not append a Signature")
+	}
+	el.InsertChildAt(1, sig.Copy())
 	return nil
 }
 
-// moveSignatureAfterIssuer relocates the trailing ds:Signature that
-// SignEnveloped appends to index 1 (after Issuer). Position does not affect
-// verification; it affects how realistic the fixture looks to a developer.
-func moveSignatureAfterIssuer(el *etree.Element) {
-	n := len(el.Child)
-	if n == 0 {
-		return
-	}
-	last, ok := el.Child[n-1].(*etree.Element)
-	if !ok || last.Tag != "Signature" {
-		return
-	}
-	el.RemoveChildAt(n - 1)
-	el.InsertChildAt(1, last)
+// Minted is MintSAML's result: the bytes plus everything a test needs to
+// build the matching Expected (the keys actually used, the final params).
+type Minted struct {
+	XML    []byte
+	Labels []Label
+	Params Params
+	Keys   *Keys
 }
 
 // MintSAML builds, mutates and signs a Response in one call. Mutators with
-// PhasePreSign run before signing; PhasePostSign ones after.
-func MintSAML(p Params, keys *Keys, muts ...Mutator) ([]byte, []Label, error) {
+// PhasePreSign run before signing; PhasePostSign ones after. Mutators may
+// change Params (signing mode, keys), so the effective Params come back.
+func MintSAML(p Params, keys *Keys, muts ...Mutator) (*Minted, error) {
 	doc := BuildResponse(p)
-	var labels []Label
+	labels := []Label{}
 	for _, m := range muts {
 		if m.Phase == PhasePreSign {
 			labels = append(labels, m.Apply(doc, &p))
@@ -253,7 +251,7 @@ func MintSAML(p Params, keys *Keys, muts ...Mutator) ([]byte, []Label, error) {
 		keys = p.Keys
 	}
 	if err := Sign(doc, p, keys); err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 	for _, m := range muts {
 		if m.Phase == PhasePostSign {
@@ -262,9 +260,9 @@ func MintSAML(p Params, keys *Keys, muts ...Mutator) ([]byte, []Label, error) {
 	}
 	out, err := doc.WriteToBytes()
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
-	return out, labels, nil
+	return &Minted{XML: out, Labels: labels, Params: p, Keys: keys}, nil
 }
 
 func qn(prefix, local string) string {

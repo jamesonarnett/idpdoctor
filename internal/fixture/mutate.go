@@ -236,7 +236,7 @@ func init() {
 	register(Mutator{Name: "cert_expired", Code: finding.CertExpiredOrWeak, Phase: PhasePreSign,
 		Apply: func(doc *etree.Document, p *Params) Label {
 			p.Keys = mustKeys("expired idp", p.Now.Add(-48*time.Hour), p.Now.Add(-24*time.Hour), 2048)
-			return Label{Code: finding.CertExpiredOrWeak, Path: saml.PathKeyInfoCertificate}
+			return Label{Code: finding.CertExpiredOrWeak, Path: saml.PathKeyInfoCertificate + "/NotAfter"}
 		}})
 
 	register(Mutator{Name: "posture_unsigned_assertion", Code: finding.PostureUnsignedAssertionAccepted, Phase: PhasePreSign,
@@ -255,7 +255,7 @@ func init() {
 	register(Mutator{Name: "posture_expired_cert", Code: finding.PostureExpiredCertAccepted, Phase: PhasePreSign,
 		Apply: func(doc *etree.Document, p *Params) Label {
 			p.Keys = mustKeys("expired idp", p.Now.Add(-48*time.Hour), p.Now.Add(-24*time.Hour), 2048)
-			return Label{Code: finding.PostureExpiredCertAccepted, Path: saml.PathKeyInfoCertificate, Note: "validate with this expired cert as idp_cert_pem"}
+			return Label{Code: finding.PostureExpiredCertAccepted, Path: saml.PathKeyInfoCertificate + "/NotAfter", Note: "validate with this expired cert as idp_cert_pem"}
 		}})
 
 	register(Mutator{Name: "posture_comment_in_nameid", Code: finding.PostureParserDifferentialExposure, Phase: PhasePreSign,
@@ -264,7 +264,7 @@ func init() {
 			// exactly the condition under which parser differentials bite.
 			nid := first(doc.Root(), saml.NSAssertion, "NameID")
 			nid.SetText("alice@example.com")
-			nid.AddChild(etree.NewComment(""))
+			nid.AddChild(etree.NewComment(" "))
 			nid.AddChild(etree.NewText(".evil.example"))
 			return Label{Code: finding.PostureParserDifferentialExposure, Path: saml.PathNameID}
 		}})
@@ -272,7 +272,7 @@ func init() {
 	register(Mutator{Name: "posture_sha1", Code: finding.PostureWeakAlgorithm, Phase: PhasePreSign,
 		Apply: func(doc *etree.Document, p *Params) Label {
 			p.SigAlg = dsig.RSASHA1SignatureMethod
-			return Label{Code: finding.PostureWeakAlgorithm, Path: saml.PathSignatureMethod}
+			return Label{Code: finding.PostureWeakAlgorithm, Path: "/Response/Assertion" + saml.PathSignatureMethod}
 		}})
 
 	register(Mutator{Name: "posture_long_window", Code: finding.PostureValidityWindowTooLong, Phase: PhasePreSign,

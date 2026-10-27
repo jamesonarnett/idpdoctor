@@ -45,8 +45,15 @@ type Result struct {
 	SAML *saml.Summary
 	JWT  *jwt.Decoded
 	Cert *cert.Info
+	// SAMLParsed keeps the tree for callers that need the redacted pretty
+	// XML (the tools-off explain mode, the redacted bundle).
+	SAMLParsed *saml.Parsed
 	// Binding is set for SAML.
 	Binding saml.Binding
+	// extraPaths and extraText are filled by kinds whose summary type does
+	// not live in this package's Result (discovery, OAuth); see known.go.
+	extraPaths []string
+	extraText  string
 }
 
 // Run executes sniff -> decode -> parse -> validate -> rank.
@@ -85,7 +92,7 @@ func runSAML(in Input) (*Result, error) {
 	if err != nil {
 		return nil, err
 	}
-	return finish(&Result{Kind: KindSAMLResponse, Report: r, SAML: &p.Summary, Binding: dec.Binding}), nil
+	return finish(&Result{Kind: KindSAMLResponse, Report: r, SAML: &p.Summary, SAMLParsed: p, Binding: dec.Binding}), nil
 }
 
 func runJWT(ctx context.Context, in Input) (*Result, error) {

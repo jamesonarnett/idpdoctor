@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>idpdoctor (local)</title>
+<style>
+  :root { --bg: #fdfdfc; --fg: #1d1d1b; --muted: #66665f; --line: #d8d8d2; --panel: #f3f3ef;
+          --warn-bg: #fff4d6; --warn-fg: #5c4300; --err: #b3261e; --accent: #1f5fbf; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #161615; --fg: #e8e8e3; --muted: #a0a097; --line: #3a3a36; --panel: #20201e;
+            --warn-bg: #3d3214; --warn-fg: #f4dc9a; --err: #ff8a80; --accent: #8ab4f8; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg);
+         font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 960px; margin: 0 auto; padding: 16px; }
+  h1 { font-size: 1.3rem; margin: 8px 0 12px; }
+  h2 { font-size: 1.05rem; margin: 20px 0 8px; }
+  .banner { background: var(--warn-bg); color: var(--warn-fg); border: 1px solid var(--line);
+            border-radius: 6px; padding: 10px 12px; font-weight: 600; }
+  label { display: block; font-size: 0.85rem; color: var(--muted); margin: 10px 0 4px; }
+  textarea, input { width: 100%; background: var(--panel); color: var(--fg); border: 1px solid var(--line);
+                    border-radius: 4px; padding: 6px 8px; font: 13px/1.4 ui-monospace, Menlo, Consolas, monospace; }
+  textarea { resize: vertical; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0 16px; }
+  fieldset { border: 1px solid var(--line); border-radius: 6px; margin: 16px 0 0; padding: 4px 12px 12px; }
+  legend { color: var(--muted); font-size: 0.85rem; padding: 0 4px; }
+  button { margin-top: 16px; padding: 8px 20px; font: inherit; font-weight: 600; border-radius: 4px;
+           border: 1px solid var(--accent); background: var(--accent); color: var(--bg); cursor: pointer; }
+  button:disabled { opacity: 0.6; cursor: wait; }
+  pre { background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 10px;
+        overflow-x: auto; font: 12.5px/1.45 ui-monospace, Menlo, Consolas, monospace; }
+  .error { color: var(--err); font-weight: 600; }
+  ol.findings { padding-left: 20px; }
+  ol.findings li { margin-bottom: 14px; }
+  .code { font-family: ui-monospace, Menlo, Consolas, monospace; font-weight: 700; }
+  .tag { font-size: 0.8rem; color: var(--muted); margin-left: 6px; }
+  .ev { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12.5px; color: var(--muted);
+        margin: 2px 0 0 12px; overflow-wrap: anywhere; }
+  .fix { margin: 4px 0 0 12px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>idpdoctor</h1>
+  <p class="banner" role="note">Local only. Everything stays in this process; nothing is logged or stored. Output is redacted. Never deploy this page.</p>
+
+  <form id="f" autocomplete="off">
+    <label for="artifact">Artifact (SAML response in any binding, JWT, or certificate)</label>
+    <textarea id="artifact" rows="8" spellcheck="false" required></textarea>
+
+    <label for="symptom">Symptom (the error you see; optional)</label>
+    <textarea id="symptom" rows="2"></textarea>
+
+    <fieldset>
+      <legend>Expected (what the SP / RP is configured for; every field optional)</legend>
+      <div class="grid">
+        <div><label for="sp_entity_id">sp_entity_id</label><input id="sp_entity_id" data-exp></div>
+        <div><label for="acs_url">acs_url</label><input id="acs_url" data-exp></div>
+        <div><label for="idp_entity_id">idp_entity_id</label><input id="idp_entity_id" data-exp></div>
+        <div><label for="request_id">request_id</label><input id="request_id" data-exp></div>
+        <div><label for="issuer">issuer</label><input id="issuer" data-exp></div>
+        <div><label for="client_id">client_id</label><input id="client_id" data-exp></div>
+        <div><label for="now">now (RFC 3339, to replay a capture)</label><input id="now" data-exp placeholder="2026-01-15T12:00:00Z"></div>
+      </div>
+      <label for="idp_cert_pem">idp_cert_pem</label>
+      <textarea id="idp_cert_pem" rows="4" spellcheck="false" data-exp></textarea>
+    </fieldset>
+
+    <button id="go" type="submit">Diagnose</button>
+  </form>
+
+  <div id="out" hidden>
+    <h2>Summary</h2>
+    <p id="err" class="error" hidden></p>
+    <pre id="text"></pre>
+    <h2>Findings</h2>
+    <ol id="findings" class="findings"></ol>
+  </div>
+</main>
+<script>
+// Everything is rendered with textContent, never innerHTML: evidence values
+// come from the artifact, so they are treated as untrusted text.
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text !== undefined) e.textContent = text;
+    return e;
+  }
+
+  function collect() {
+    var exp = {};
+    document.querySelectorAll("[data-exp]").forEach(function (i) {
+      var v = i.value.trim();
+      if (v) exp[i.id] = v;
+    });
+    var body = { artifact: $("artifact").value, expected: exp };
+    var sym = $("symptom").value.trim();
+    if (sym) body.symptom = sym;
+    return body;
+  }
+
+  function renderFinding(f) {
+    var li = el("li");
+    var head = el("div");
+    head.appendChild(el("span", "code", f.code));
+    head.appendChild(el("span", "tag", "[" + f.lane + "/" + f.severity + "]"));
+    li.appendChild(head);
+    li.appendChild(el("div", "", f.title));
+    (f.evidence || []).forEach(function (ev) {
+      var parts = [ev.path];
+      if (ev.actual) parts.push("actual=" + JSON.stringify(ev.actual));
+      if (ev.expected) parts.push("expected=" + JSON.stringify(ev.expected));
+      if (ev.note) parts.push("(" + ev.note + ")");
+      li.appendChild(el("div", "ev", parts.join("  ")));
+    });
+    li.appendChild(el("div", "fix", "Fix: " + f.fix));
+    return li;
+  }
+
+  function show(err, text, findings) {
+    $("out").hidden = false;
+    $("err").hidden = !err;
+    $("err").textContent = err || "";
+    $("text").hidden = !text;
+    $("text").textContent = text || "";
+    var ol = $("findings");
+    ol.replaceChildren();
+    (findings || []).forEach(function (f) { ol.appendChild(renderFinding(f)); });
+    if (!err && (!findings || findings.length === 0)) ol.appendChild(el("li", "", "No findings."));
+  }
+
+  $("f").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var btn = $("go");
+    btn.disabled = true;
+    fetch("/api/diagnose", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(collect()),
+      cache: "no-store",
+      credentials: "omit"
+    }).then(function (r) {
+      return r.json().then(function (j) { return { ok: r.ok, status: r.status, j: j }; },
+                           function () { return { ok: false, status: r.status, j: {} }; });
+    }).then(function (res) {
+      if (!res.ok) { show(res.j.error || ("HTTP " + res.status)); return; }
+      show("", res.j.text, res.j.findings);
+    }).catch(function (e) {
+      show("Request failed: " + e.message);
+    }).finally(function () { btn.disabled = false; });
+  });
+})();
+</script>
+</body>
+</html>

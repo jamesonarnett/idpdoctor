@@ -78,6 +78,22 @@ func (f *expectedFlags) bindJWT(cmd *cobra.Command) {
 	fs.StringVar(&f.pemFile, "pem", "", "file holding a PEM public key or certificate")
 }
 
+// bindOAuth binds the OAuth request context used by oauth_error_explain and
+// by diagnose on an error redirect or token-endpoint body.
+func (f *expectedFlags) bindOAuth(cmd *cobra.Command) {
+	fs := cmd.Flags()
+	fs.StringVar(&f.exp.RedirectURI, "redirect-uri", "", "redirect_uri the client sent")
+	fs.StringSliceVar(&f.exp.RegisteredRedirectURIs, "registered-redirect-uri", nil, "redirect URI registered on the client (repeatable)")
+	fs.StringVar(&f.exp.CodeVerifier, "code-verifier", "", "PKCE code_verifier sent to the token endpoint (never echoed)")
+	fs.StringVar(&f.exp.CodeChallenge, "code-challenge", "", "PKCE code_challenge sent in the authorization request")
+	fs.StringVar(&f.exp.CodeChallengeMethod, "code-challenge-method", "", "S256 or plain")
+	fs.StringVar(&f.exp.ClientType, "client-type", "", "public or confidential")
+	fs.StringVar(&f.exp.ResponseType, "response-type", "", "response_type the client sent")
+	fs.StringVar(&f.exp.GrantType, "grant-type", "", "grant_type sent to the token endpoint")
+	fs.StringSliceVar(&f.exp.Scopes, "scope", nil, "scope the client requested (repeatable)")
+	fs.StringVar(&f.exp.AccessToken, "access-token", "", "access token for the id_token at_hash check (hashed, never echoed)")
+}
+
 // bindClock is bound once per command (diagnose binds SAML and JWT flags).
 func (f *expectedFlags) bindClock(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&f.exp.Now, "now", "", "RFC 3339 time to validate at (replay a capture at its capture time)")

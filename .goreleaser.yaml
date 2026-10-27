@@ -1,0 +1,59 @@
+# Dry-run only in CI (goreleaser check); publishing is a manual, credentialed step this repo does not perform.
+# Nothing below needs a credential: no Homebrew tap, no signing, no Docker, no announce.
+version: 2
+
+project_name: idpdoctor
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: idpdoctor
+    main: ./cmd/idpdoctor
+    binary: idpdoctor
+    env:
+      - CGO_ENABLED=0
+    goos: [linux, darwin, windows]
+    goarch: [amd64, arm64]
+    # main.version is what `idpdoctor version` prints (see cmd/idpdoctor/root.go).
+    ldflags:
+      - -s -w -X main.version={{.Version}}
+
+archives:
+  - id: idpdoctor
+    formats: [tar.gz]
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+    files:
+      - README.md
+      - LICENSE
+      - docs/TAXONOMY.md
+
+checksum:
+  name_template: checksums.txt
+
+changelog:
+  sort: asc
+  use: git
+  filters:
+    exclude:
+      - "^docs"
+      - "^test"
+  groups:
+    - title: Features
+      regexp: '^.*?feat(\(.+\))??!?:.+$'
+      order: 0
+    - title: Fixes
+      regexp: '^.*?fix(\(.+\))??!?:.+$'
+      order: 1
+    - title: Other
+      order: 999
+
+release:
+  github:
+    owner: jamesonarnett
+    name: idpdoctor
+  draft: true
+  prerelease: auto

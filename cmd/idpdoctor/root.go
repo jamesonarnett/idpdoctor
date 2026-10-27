@@ -22,7 +22,7 @@ redacted by default and nothing is persisted.`,
 		SilenceUsage:  true,
 		SilenceErrors: true,
 	}
-	root.AddCommand(newVersionCmd(), newSAMLCmd(), newJWTCmd(), newCertCmd(), newDiagnoseCmd(), newMCPCmd())
+	root.AddCommand(newVersionCmd(), newSAMLCmd(), newJWTCmd(), newCertCmd(), newDiagnoseCmd(), newMCPCmd(), newWebCmd())
 	return root
 }
 

@@ -4,6 +4,7 @@ package redact
 
 import (
 	"crypto/rand"
+	"crypto/sha256"
 	"encoding/hex"
 	"errors"
 	"sync"
@@ -33,6 +34,27 @@ func (s *Store) Put(data []byte) string {
 	s.m[ref] = cp
 	s.mu.Unlock()
 	return ref
+}
+
+// PutRef stores data under a caller-chosen handle. The CLI uses it when it
+// pre-registers an artifact for an agent: the handle must be known to the
+// prompt before the server process exists, so it is derived from the bytes
+// (see RefFor) rather than drawn at random. An existing handle is replaced.
+func (s *Store) PutRef(ref string, data []byte) {
+	cp := make([]byte, len(data))
+	copy(cp, data)
+	s.mu.Lock()
+	s.m[ref] = cp
+	s.mu.Unlock()
+}
+
+// RefFor derives the deterministic handle PutRef and the CLI agree on:
+// "art_" + the first 16 hex chars of SHA-256(data). Deterministic is fine
+// here because the handle is a name, not a capability: the store lives in
+// one process the caller already owns.
+func RefFor(data []byte) string {
+	sum := sha256.Sum256(data)
+	return "art_" + hex.EncodeToString(sum[:8])
 }
 
 // Get returns a copy of the artifact for ref.

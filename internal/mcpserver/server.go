@@ -11,6 +11,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
@@ -32,6 +33,11 @@ type Server struct {
 	client *http.Client
 	now    func() time.Time
 	mcp    *mcp.Server
+	trace  *tracer
+	// preload are files registered under deterministic handles at start,
+	// so a host (idpdoctor diagnose --explain, the eval harness) can hand
+	// an agent a handle to an artifact the agent never sees.
+	preload []string
 }
 
 // Option configures New.
@@ -43,8 +49,36 @@ func WithHTTPClient(c *http.Client) Option { return func(s *Server) { s.client =
 // WithNow pins the clock (tests pass fixture.FixedNow).
 func WithNow(f func() time.Time) Option { return func(s *Server) { s.now = f } }
 
-// New builds the server with every v0 tool registered.
+// WithTrace appends one JSON line per tool call (name, duration, finding
+// codes; never inputs) to path. The CLI sets it from $IDPDOCTOR_TRACE.
+func WithTrace(path string) Option {
+	return func(s *Server) {
+		if path != "" {
+			s.trace = &tracer{path: path}
+		}
+	}
+}
+
+// WithPreload registers the file's bytes under redact.RefFor(bytes) before
+// the first request, so the handle can be computed by the host ahead of
+// time and placed in the agent's prompt.
+func WithPreload(paths ...string) Option {
+	return func(s *Server) { s.preload = append(s.preload, paths...) }
+}
+
+// New builds the server with every tool registered. It returns an error
+// only when a preload file cannot be read.
 func New(opts ...Option) *Server {
+	s, err := NewE(opts...)
+	if err != nil {
+		panic("mcpserver: " + err.Error())
+	}
+	return s
+}
+
+// NewE is New with the preload error surfaced instead of panicking; the
+// CLI uses it because a missing file is a user error, not a bug.
+func NewE(opts ...Option) (*Server, error) {
 	s := &Server{
 		store:  redact.NewStore(),
 		client: &http.Client{Timeout: 10 * time.Second},
@@ -53,11 +87,18 @@ func New(opts ...Option) *Server {
 	for _, o := range opts {
 		o(s)
 	}
+	for _, p := range s.preload {
+		data, err := os.ReadFile(p)
+		if err != nil {
+			return nil, fmt.Errorf("preload %s: %w", p, err)
+		}
+		s.store.PutRef(redact.RefFor(data), data)
+	}
 	s.mcp = mcp.NewServer(&mcp.Implementation{Name: "idpdoctor", Version: Version}, &mcp.ServerOptions{
 		Instructions: instructions,
 	})
 	s.registerTools()
-	return s
+	return s, nil
 }
 
 // MCP returns the underlying go-sdk server (tests connect it in-memory).

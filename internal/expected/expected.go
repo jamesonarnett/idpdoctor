@@ -43,6 +43,21 @@ type Expected struct {
 	ClientID    string   `json:"client_id,omitempty" jsonschema:"this relying party's client_id"`
 	Nonce       string   `json:"nonce,omitempty" jsonschema:"the nonce sent in the authorization request"`
 	AllowedAlgs []string `json:"allowed_algs,omitempty" jsonschema:"signing algorithms the SP accepts; default RS256 ES256 PS256 families"`
+	// AccessToken lets the at_hash check run. It is a bearer credential:
+	// never echoed, only hashed and compared.
+	AccessToken string `json:"access_token,omitempty" jsonschema:"the access token returned alongside the id_token, for the at_hash check; never echoed"`
+
+	// OAuth request context (oauth_error_explain). What the client sent, so
+	// an error redirect or token-endpoint body can be explained against it.
+	RedirectURI            string   `json:"redirect_uri,omitempty" jsonschema:"the redirect_uri the client sent in the authorization request"`
+	RegisteredRedirectURIs []string `json:"registered_redirect_uris,omitempty" jsonschema:"redirect URIs registered on the client at the authorization server"`
+	CodeVerifier           string   `json:"code_verifier,omitempty" jsonschema:"PKCE code_verifier the client sent to the token endpoint; never echoed"`
+	CodeChallenge          string   `json:"code_challenge,omitempty" jsonschema:"PKCE code_challenge the client sent in the authorization request; never echoed"`
+	CodeChallengeMethod    string   `json:"code_challenge_method,omitempty" jsonschema:"S256 or plain; empty means no PKCE was used"`
+	Scopes                 []string `json:"scopes,omitempty" jsonschema:"scopes the client requested"`
+	ResponseType           string   `json:"response_type,omitempty" jsonschema:"response_type the client sent (code, id_token, ...)"`
+	GrantType              string   `json:"grant_type,omitempty" jsonschema:"grant_type sent to the token endpoint"`
+	ClientType             string   `json:"client_type,omitempty" jsonschema:"public or confidential"`
 
 	// Clock
 	Now              string `json:"now,omitempty" jsonschema:"RFC 3339 time to validate against instead of wall-clock, for replaying captures"`

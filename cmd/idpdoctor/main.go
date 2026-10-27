@@ -7,6 +7,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"os/signal"
@@ -20,6 +21,10 @@ func main() {
 	defer stop()
 
 	if err := newRootCmd().ExecuteContext(ctx); err != nil {
+		var ee exitError
+		if errors.As(err, &ee) {
+			os.Exit(ee.code)
+		}
 		fmt.Fprintln(os.Stderr, "idpdoctor:", err)
 		os.Exit(1)
 	}

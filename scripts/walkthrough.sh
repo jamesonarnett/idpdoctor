@@ -15,9 +15,23 @@ case "${1:-}" in
   2b) json $AUD/params.json idp_cert_pem > /tmp/idp.pem
       $B diagnose -f $AUD/response.xml --sp-entity-id $SP --now $NOW --idp-cert /tmp/idp.pem; echo "exit=$?" ;;
   3)  $B eval gen --seed 7 --per-class 1 --controls 2 --out /tmp/mini; ls /tmp/mini/cases ;;
-  3b) C=/tmp/mini/cases/${2:-saml_time_window_invalid-00}; echo "--- label ---"; cat $C/label.json; echo; echo "--- diagnose ---"
-      ART=$(ls $C | grep -vE 'json$' | head -1)
-      $B diagnose -f $C/$ART --sp-entity-id "$(json $C/params.json sp_entity_id)" --now "$(json $C/params.json now)" || true ;;
+  3b) C=/tmp/mini/cases/${2:-saml_time_window_invalid-00}; echo "--- label (the truth) ---"; cat $C/label.json; echo
+      echo "--- symptom the user would report ---"; cat $C/symptom.txt; echo; echo "--- diagnose with the case's expected values ---"
+      ART=$(ls $C | grep -vE 'json$|txt$' | head -1); [ -z "$ART" ] && ART=artifact.txt
+      python3 - "$C" "$B" "$ART" <<'PY'
+import json, subprocess, sys, tempfile, os
+c, b, art = sys.argv[1:4]; e = json.load(open(f"{c}/expected.json"))
+args = [b, "diagnose", "-f", f"{c}/{art}"]
+for k, f in [("sp_entity_id","--sp-entity-id"),("acs_url","--acs-url"),("idp_entity_id","--idp-entity-id"),("now","--now"),
+             ("issuer","--issuer"),("client_id","--client-id"),("redirect_uri","--redirect-uri"),("nonce","--nonce"),("request_id","--request-id")]:
+    if e.get(k): args += [f, str(e[k])]
+if e.get("idp_cert_pem"):
+    t = tempfile.NamedTemporaryFile("w", suffix=".pem", delete=False); t.write(e["idp_cert_pem"]); t.close(); args += ["--idp-cert", t.name]
+if e.get("jwks"):
+    t = tempfile.NamedTemporaryFile("w", suffix=".json", delete=False); json.dump(e["jwks"], t); t.close(); args += ["--jwks", t.name]
+r = subprocess.run(args); print(f"exit={r.returncode}")
+PY
+      ;;
   4)  $B jwt validate -f testdata/jwt/jwt_expired/token.txt --issuer https://login.example.com/tenant-1/v2.0 --client-id client-abc123 --now $NOW || true
       echo; echo "--- oidc case dirs ---"; ls testdata/oidc; echo "--- oauth case dirs ---"; ls testdata/oauth ;;
   6)  $B diagnose -f $AUD/response.xml --sp-entity-id $SP --now $NOW --symptom "Okta login works but our SP says Invalid audience" --explain --explain-mode tools-on ;;

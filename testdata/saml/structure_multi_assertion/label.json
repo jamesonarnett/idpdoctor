@@ -1,0 +1,6 @@
+[
+  {
+    "code": "SAML_STRUCTURE_INVALID",
+    "path": "/Response/Assertion"
+  }
+]

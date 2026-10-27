@@ -1,0 +1,6 @@
+[
+  {
+    "code": "OIDC_DISCOVERY_DOC_INVALID",
+    "path": "/discovery/id_token_signing_alg_values_supported"
+  }
+]

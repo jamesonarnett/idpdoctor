@@ -1,0 +1,32 @@
+{
+  "ok": false,
+  "top_cause": "OAUTH_REDIRECT_URI_MISMATCH",
+  "findings": [
+    {
+      "code": "OAUTH_REDIRECT_URI_MISMATCH",
+      "lane": "fault",
+      "severity": "error",
+      "paths": [
+        "/redirect/error",
+        "/redirect/error_description"
+      ]
+    },
+    {
+      "code": "OAUTH_REDIRECT_URI_MISMATCH",
+      "lane": "fault",
+      "severity": "error",
+      "paths": [
+        "/request/redirect_uri",
+        "/request/registered_redirect_uris"
+      ]
+    }
+  ],
+  "checks": {
+    "client_config": "pass",
+    "error_class": "fail",
+    "pkce": "pass",
+    "pkce_posture": "pass",
+    "redirect_uri": "fail"
+  },
+  "needs": []
+}

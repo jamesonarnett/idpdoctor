@@ -6,8 +6,12 @@ import (
 	"context"
 	"crypto/ecdsa"
 	"crypto/rsa"
+	"crypto/sha256"
+	"crypto/sha512"
+	"encoding/base64"
 	"errors"
 	"fmt"
+	"hash"
 	"net/http"
 	"strings"
 	"time"
@@ -67,7 +71,7 @@ func Validate(ctx context.Context, d *Decoded, exp expected.Expected, opts Optio
 	v.checkAudience()
 	v.checkTimes()
 	v.checkNonce()
-	v.r.AddCheck(finding.Check{Name: "at_hash", Status: finding.CheckSkip, Detail: "not implemented in v0"})
+	v.checkAtHash()
 	finding.Sort(v.r.Findings)
 	return &Result{Decoded: d, Report: v.r}, nil
 }
@@ -354,6 +358,60 @@ func (v *validator) checkNonce() {
 	}
 	v.add("nonce", finding.CheckFail, "does not match the request nonce", "")
 	v.r.Add(finding.New(finding.OIDCRequestBindingMismatch, finding.Evidence{Path: "/claims/nonce", Actual: redact.Value("nonce", got), Expected: redact.Value("nonce", want), Note: "nonce " + presence(got)}))
+}
+
+// --- at_hash -------------------------------------------------------------------
+
+// checkAtHash binds the id_token to the access token issued with it (OIDC
+// Core 3.1.3.6 / 3.2.2.9): at_hash is the left half of hash(access_token)
+// where the hash family comes from alg (RS256 -> SHA-256, ES384 -> SHA-384,
+// ...). The access token is a bearer credential: it is hashed here and
+// never written anywhere.
+func (v *validator) checkAtHash() {
+	got, _ := v.claims()["at_hash"].(string)
+	if v.exp.AccessToken == "" {
+		v.add("at_hash", finding.CheckSkip, "at_hash "+presence(got), "access_token")
+		return
+	}
+	want, err := AtHash(v.d.Alg, v.exp.AccessToken)
+	if err != nil {
+		v.add("at_hash", finding.CheckSkip, err.Error(), "")
+		return
+	}
+	switch {
+	case got == "" && strings.Contains(v.exp.ResponseType, "token"):
+		// Required when the access token came from the authorization endpoint.
+		v.add("at_hash", finding.CheckFail, "absent but response_type includes token", "")
+		v.r.Add(finding.New(finding.OIDCRequestBindingMismatch, finding.Evidence{Path: "/claims/at_hash", Actual: "", Expected: "present", Note: "at_hash is REQUIRED for response_type " + v.exp.ResponseType}))
+	case got == "":
+		v.add("at_hash", finding.CheckWarn, "absent (optional for the code flow)", "")
+	case got == want:
+		v.add("at_hash", finding.CheckPass, "matches access_token", "")
+	default:
+		v.add("at_hash", finding.CheckFail, "does not match access_token", "")
+		v.r.Add(finding.New(finding.OIDCRequestBindingMismatch, finding.Evidence{
+			Path: "/claims/at_hash", Actual: redact.Value("at_hash", got), Expected: redact.Value("at_hash", want),
+			Note: "the access token presented is not the one issued with this id_token (different response, or hash family mismatch for " + v.d.Alg + ")",
+		}))
+	}
+}
+
+// AtHash computes the at_hash (or c_hash) value for alg over token.
+func AtHash(alg, token string) (string, error) {
+	var h hash.Hash
+	switch {
+	case strings.HasSuffix(alg, "256"):
+		h = sha256.New()
+	case strings.HasSuffix(alg, "384"):
+		h = sha512.New384()
+	case strings.HasSuffix(alg, "512"):
+		h = sha512.New()
+	default:
+		return "", fmt.Errorf("no hash family for alg %q", alg)
+	}
+	h.Write([]byte(token))
+	sum := h.Sum(nil)
+	return base64.RawURLEncoding.EncodeToString(sum[:len(sum)/2]), nil
 }
 
 func presence(s string) string {

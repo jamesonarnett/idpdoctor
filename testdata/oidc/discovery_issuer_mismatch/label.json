@@ -1,0 +1,10 @@
+[
+  {
+    "code": "OIDC_ISSUER_MISMATCH",
+    "path": "/discovery/issuer",
+    "note": "trailing slash",
+    "needs": [
+      "issuer"
+    ]
+  }
+]

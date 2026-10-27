@@ -131,11 +131,12 @@ func TestMutatorsAreCaught(t *testing.T) {
 	exp := expected.Expected{Issuer: p.Issuer, ClientID: p.Audience, Nonce: p.Nonce}
 	for _, m := range fixture.JWTMutators() {
 		t.Run(m.Name, func(t *testing.T) {
-			tok, labels, err := fixture.MintJWT(p, k.Key, m)
+			tok, labels, eff, err := fixture.MintJWTFull(p, k.Key, m)
 			if err != nil {
 				t.Fatal(err)
 			}
 			label := labels[0]
+			exp.AccessToken = eff.AccessToken
 			res := run(t, tok, exp, jwt.Keys{JWKSJSON: jwks(k, p)}, nil)
 			if !hasCode(res.Report, label.Code) {
 				t.Fatalf("want %s, got %+v", label.Code, res.Report.Findings)

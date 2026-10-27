@@ -16,6 +16,7 @@
     "signature": "skip"
   },
   "needs": [
-    "jwks_url"
+    "jwks_url",
+    "access_token"
   ]
 }

@@ -110,7 +110,9 @@ func TestEveryCatalogMutatorExists(t *testing.T) {
 		}
 		_, saml := SAMLMutator(s.Mutator)
 		_, jwt := JWTMutatorByName(s.Mutator)
-		if !saml && !jwt {
+		_, disc := DiscoveryMutatorByName(s.Mutator)
+		_, oa := OAuthMutatorByName(s.Mutator)
+		if !saml && !jwt && !disc && !oa {
 			t.Errorf("%s names mutator %q which does not exist", s.Code, s.Mutator)
 		}
 	}

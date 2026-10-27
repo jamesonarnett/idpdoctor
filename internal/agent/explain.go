@@ -53,8 +53,8 @@ type Explanation struct {
 	ToolCalls int `json:"tool_calls"`
 	// Hallucinated lists cited paths that are not in diag.KnownPaths for
 	// this result; ValidCitations counts the rest.
-	Hallucinated   []string `json:"hallucinated"`
-	ValidCitations int      `json:"valid_citations"`
+	Hallucinated   []string  `json:"hallucinated"`
+	ValidCitations int       `json:"valid_citations"`
 	Envelope       *Envelope `json:"envelope"`
 	// Prompt is kept so tests (and the eval cache) can prove no raw value
 	// ever reached the model.

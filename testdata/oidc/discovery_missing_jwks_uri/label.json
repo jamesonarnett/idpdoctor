@@ -1,0 +1,6 @@
+[
+  {
+    "code": "OIDC_DISCOVERY_DOC_INVALID",
+    "path": "/discovery/jwks_uri"
+  }
+]

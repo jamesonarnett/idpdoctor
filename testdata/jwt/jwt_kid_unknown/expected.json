@@ -24,5 +24,7 @@
     "nonce": "pass",
     "signature": "skip"
   },
-  "needs": []
+  "needs": [
+    "access_token"
+  ]
 }

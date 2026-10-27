@@ -1,0 +1,9 @@
+[
+  {
+    "code": "OIDC_REQUEST_BINDING_MISMATCH",
+    "path": "/claims/at_hash",
+    "needs": [
+      "access_token"
+    ]
+  }
+]

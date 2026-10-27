@@ -1,0 +1,1 @@
+https://app.example.com/callback?error=invalid_scope&error_description=The+requested+scope+is+invalid%2C+unknown%2C+or+malformed.&state=st-7Hq2Lx9P

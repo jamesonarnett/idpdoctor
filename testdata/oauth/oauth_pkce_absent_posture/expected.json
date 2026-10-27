@@ -1,0 +1,24 @@
+{
+  "ok": true,
+  "top_cause": "",
+  "findings": [
+    {
+      "code": "POSTURE_PKCE_PLAIN_OR_ABSENT",
+      "lane": "posture",
+      "severity": "warn",
+      "paths": [
+        "/request/code_challenge"
+      ]
+    }
+  ],
+  "checks": {
+    "client_config": "pass",
+    "error_class": "pass",
+    "pkce": "skip",
+    "pkce_posture": "warn",
+    "redirect_uri": "pass"
+  },
+  "needs": [
+    "code_verifier"
+  ]
+}

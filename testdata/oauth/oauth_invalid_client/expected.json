@@ -1,0 +1,23 @@
+{
+  "ok": false,
+  "top_cause": "OAUTH_CLIENT_CONFIG_REJECTED",
+  "findings": [
+    {
+      "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+      "lane": "fault",
+      "severity": "error",
+      "paths": [
+        "/redirect/error",
+        "/redirect/error_description"
+      ]
+    }
+  ],
+  "checks": {
+    "client_config": "pass",
+    "error_class": "fail",
+    "pkce": "pass",
+    "pkce_posture": "pass",
+    "redirect_uri": "pass"
+  },
+  "needs": []
+}

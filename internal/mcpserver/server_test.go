@@ -74,7 +74,8 @@ func TestToolList(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	want := map[string]bool{"saml_decode": true, "saml_validate": true, "jwt_decode": true, "jwt_validate": true, "cert_inspect": true, "diagnose": true, "stash_file": true}
+	want := map[string]bool{"saml_decode": true, "saml_validate": true, "jwt_decode": true, "jwt_validate": true, "cert_inspect": true, "diagnose": true, "stash_file": true,
+		"oidc_discovery_check": true, "oauth_error_explain": true}
 	for _, tool := range res.Tools {
 		if !want[tool.Name] {
 			t.Errorf("unexpected tool %s", tool.Name)
@@ -269,5 +270,71 @@ func TestNoFixtureSecretLeaksFromAnyTool(t *testing.T) {
 		scan(name+"/jwt_decode", call(t, cs, "jwt_decode", map[string]any{"token": tok}))
 		scan(name+"/jwt_validate", call(t, cs, "jwt_validate", map[string]any{"token": tok, "expected": map[string]any{"issuer": jp.Issuer, "client_id": jp.Audience, "nonce": jp.Nonce}, "keys": map[string]any{"jwks_json": jwks}}))
 		scan(name+"/diagnose", call(t, cs, "diagnose", map[string]any{"artifact": tok, "keys": map[string]any{"jwks_json": jwks}}))
+	}
+	// OAuth: the authorization code and PKCE verifier are the secrets.
+	op := fixture.DefaultOAuthParams()
+	secrets = append(secrets, op.Code, op.CodeVerifier)
+	ocases := []*fixture.OAuthMutator{nil}
+	for _, m := range fixture.OAuthMutators() {
+		m := m
+		ocases = append(ocases, &m)
+	}
+	for _, m := range ocases {
+		var muts []fixture.OAuthMutator
+		name := "healthy"
+		if m != nil {
+			muts = append(muts, *m)
+			name = m.Name
+		}
+		art, exp, _, err := fixture.MintOAuth(op, muts...)
+		if err != nil {
+			t.Fatal(err)
+		}
+		scan(name+"/oauth_error_explain", call(t, cs, "oauth_error_explain", map[string]any{"redirect_url": art, "request": exp}))
+		scan(name+"/diagnose", call(t, cs, "diagnose", map[string]any{"artifact": art, "expected": exp}))
+	}
+	_, dp := fixture.DefaultDiscovery()
+	for _, m := range fixture.DiscoveryMutators() {
+		doc, _, err := fixture.MintDiscovery(dp, m)
+		if err != nil {
+			t.Fatal(err)
+		}
+		scan(m.Name+"/oidc_discovery_check", call(t, cs, "oidc_discovery_check", map[string]any{"document_json": string(doc), "expected_issuer": dp.Issuer}))
+		scan(m.Name+"/diagnose", call(t, cs, "diagnose", map[string]any{"artifact": string(doc), "expected": map[string]any{"issuer": dp.Issuer}}))
+	}
+}
+
+func TestV1Tools(t *testing.T) {
+	cs := connect(t)
+	doc, dp := fixture.DefaultDiscovery()
+	raw, _ := json.Marshal(doc)
+	out := structured(t, call(t, cs, "oidc_discovery_check", map[string]any{"document_json": string(raw), "expected_issuer": dp.Issuer}))
+	if out["ok"] != true || out["redaction"] != "default" {
+		t.Errorf("healthy discovery: %v", out)
+	}
+	m, _ := fixture.DiscoveryMutatorByName("discovery_missing_jwks_uri")
+	bad, _, _ := fixture.MintDiscovery(dp, m)
+	res := call(t, cs, "oidc_discovery_check", map[string]any{"document_json": string(bad)})
+	if !strings.Contains(textOf(res), "OIDC_DISCOVERY_DOC_INVALID") {
+		t.Errorf("missing jwks_uri not reported: %s", textOf(res))
+	}
+
+	om, _ := fixture.OAuthMutatorByName("oauth_redirect_uri_mismatch")
+	art, exp, _, err := fixture.MintOAuth(fixture.DefaultOAuthParams(), om)
+	if err != nil {
+		t.Fatal(err)
+	}
+	oout := structured(t, call(t, cs, "oauth_error_explain", map[string]any{"redirect_url": art, "request": exp}))
+	if oout["vendor"] != "entra" || oout["vendor_code"] != "AADSTS50011" || oout["ok"] != false {
+		t.Errorf("oauth explain: %v", oout)
+	}
+	// diagnose sniffs the same artifact without being told the kind.
+	d := structured(t, call(t, cs, "diagnose", map[string]any{"artifact": art, "expected": exp}))
+	if top, _ := d["top_cause"].(map[string]any); d["artifact_kind"] != "oauth_redirect" || top == nil || top["code"] != "OAUTH_REDIRECT_URI_MISMATCH" {
+		t.Errorf("diagnose on redirect: %v", d)
+	}
+	none := call(t, cs, "oauth_error_explain", map[string]any{})
+	if !none.IsError {
+		t.Error("no input must be a tool error")
 	}
 }

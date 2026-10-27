@@ -43,8 +43,8 @@ func TestMCPOverStdio(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(tools.Tools) != 7 {
-		t.Errorf("want 7 tools, got %d", len(tools.Tools))
+	if len(tools.Tools) != 9 {
+		t.Errorf("want 9 tools, got %d", len(tools.Tools))
 	}
 
 	k, err := fixture.TestKeys()

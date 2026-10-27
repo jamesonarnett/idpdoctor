@@ -1,0 +1,7 @@
+[
+  {
+    "code": "IDP_POLICY_REFUSAL",
+    "path": "/redirect/error",
+    "note": "user not assigned"
+  }
+]

@@ -1,0 +1,7 @@
+[
+  {
+    "code": "OAUTH_INVALID_GRANT_CODE",
+    "path": "/redirect/error",
+    "note": "expired code"
+  }
+]

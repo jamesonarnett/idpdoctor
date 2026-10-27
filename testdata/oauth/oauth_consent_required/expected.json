@@ -1,0 +1,23 @@
+{
+  "ok": false,
+  "top_cause": "IDP_POLICY_REFUSAL",
+  "findings": [
+    {
+      "code": "IDP_POLICY_REFUSAL",
+      "lane": "fault",
+      "severity": "error",
+      "paths": [
+        "/redirect/error",
+        "/redirect/error_description"
+      ]
+    }
+  ],
+  "checks": {
+    "client_config": "pass",
+    "error_class": "fail",
+    "pkce": "pass",
+    "pkce_posture": "pass",
+    "redirect_uri": "pass"
+  },
+  "needs": []
+}

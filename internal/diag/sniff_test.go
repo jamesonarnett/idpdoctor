@@ -36,3 +36,21 @@ func TestSniff(t *testing.T) {
 		})
 	}
 }
+
+func TestSniffV1Kinds(t *testing.T) {
+	cases := map[string]Kind{
+		`{"error":"invalid_grant","error_description":"AADSTS70008: expired"}`:                   KindOAuthRedirect,
+		"https://app.example.com/cb?error=access_denied&state=abc":                               KindOAuthRedirect,
+		"https://app.example.com/cb#error=login_required":                                        KindOAuthRedirect,
+		"https://app.example.com/cb?code=AUTH&state=abc":                                         KindOAuthRedirect,
+		"error=invalid_scope&error_description=x":                                                KindOAuthRedirect,
+		`{"issuer":"https://x","authorization_endpoint":"https://x/a","jwks_uri":"https://x/j"}`: KindOIDCDiscovery,
+		`{"foo":"bar"}`: KindUnknown,
+		"https://idp.example.com/sso?SAMLRequest=abc&RelayState=code=1": KindSAMLResponse,
+	}
+	for in, want := range cases {
+		if got := Sniff(in); got != want {
+			t.Errorf("Sniff(%q) = %s, want %s", in, got, want)
+		}
+	}
+}

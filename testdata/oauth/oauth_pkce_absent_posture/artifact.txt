@@ -1,0 +1,1 @@
+https://app.example.com/callback?code=AUTHCODE-secret-0000&state=st-7Hq2Lx9P

@@ -135,8 +135,6 @@ func explainText(ex *agent.Explanation) string {
 	return b.String()
 }
 
-
-
 // exitError carries a process exit code without printing anything.
 type exitError struct{ code int }
 

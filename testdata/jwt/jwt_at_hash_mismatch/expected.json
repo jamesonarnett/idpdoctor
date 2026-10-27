@@ -1,0 +1,28 @@
+{
+  "ok": false,
+  "top_cause": "OIDC_REQUEST_BINDING_MISMATCH",
+  "findings": [
+    {
+      "code": "OIDC_REQUEST_BINDING_MISMATCH",
+      "lane": "fault",
+      "severity": "error",
+      "paths": [
+        "/claims/at_hash"
+      ]
+    }
+  ],
+  "checks": {
+    "alg_allowed": "pass",
+    "at_hash": "fail",
+    "aud": "pass",
+    "azp": "pass",
+    "exp": "pass",
+    "iat": "pass",
+    "iss": "pass",
+    "kid_found": "pass",
+    "nbf": "pass",
+    "nonce": "pass",
+    "signature": "pass"
+  },
+  "needs": []
+}

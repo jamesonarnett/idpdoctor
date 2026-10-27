@@ -1,0 +1,14 @@
+{
+  "id": "_resp_r289ac",
+  "issuer": "https://idp.example.com/saml",
+  "destination": "https://sp.example.com/saml/acs",
+  "in_response_to": "_req_1234567890abcdef",
+  "issue_instant": "2026-01-15T12:00:00.000Z",
+  "version": "2.0",
+  "status": {
+    "code": "urn:oasis:names:tc:SAML:2.0:status:Success"
+  },
+  "assertion_count": 0,
+  "encrypted": true,
+  "signatures": []
+}

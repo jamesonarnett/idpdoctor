@@ -1,0 +1,1 @@
+https://app.example.com/callback?error=consent_required&error_description=The+user+or+administrator+has+not+consented+to+use+the+application.&state=st-7Hq2Lx9P

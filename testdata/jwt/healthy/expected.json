@@ -15,5 +15,7 @@
     "nonce": "pass",
     "signature": "pass"
   },
-  "needs": []
+  "needs": [
+    "access_token"
+  ]
 }

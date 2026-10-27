@@ -239,6 +239,47 @@ func init() {
 			return Label{Code: finding.CertExpiredOrWeak, Path: saml.PathKeyInfoCertificate + "/NotAfter"}
 		}})
 
+	register(Mutator{Name: "structure_multi_assertion", Code: finding.SAMLStructureInvalid, Phase: PhasePostSign,
+		Apply: func(doc *etree.Document, p *Params) Label {
+			// Signature wrapping shape: a second, unsigned assertion for a
+			// different user is appended after signing. The signed one still
+			// verifies; an SP that reads "the" assertion may read the wrong one
+			// (crewjam CVE-2022-41912 class).
+			root := doc.Root()
+			orig := first(root, saml.NSAssertion, "Assertion")
+			evil := orig.Copy()
+			setAttr(evil, "ID", orig.SelectAttrValue("ID", "")+"_wrapped")
+			if sig := first(evil, saml.NSDSig, "Signature"); sig != nil {
+				sig.Parent().RemoveChild(sig)
+			}
+			if nid := first(evil, saml.NSAssertion, "NameID"); nid != nil {
+				nid.SetText("Mallory")
+			}
+			root.AddChild(evil)
+			return Label{Code: finding.SAMLStructureInvalid, Path: saml.PathAssertion}
+		}})
+
+	register(Mutator{Name: "posture_encrypted_unsigned", Code: finding.PostureDecryptBeforeVerify, Phase: PhasePreSign,
+		Apply: func(doc *etree.Document, p *Params) Label {
+			// The IdP encrypts the assertion but signs nothing, so the SP has
+			// to decrypt before it can verify anything (Spring CVE-2026-41694
+			// shape). The ciphertext is opaque filler: decryption is out of
+			// scope and the posture finding comes from the shape alone.
+			root := doc.Root()
+			a := first(root, saml.NSAssertion, "Assertion")
+			px := dialectPrefixes(p.Dialect)
+			enc := etree.NewElement(qn(px.assertion, "EncryptedAssertion"))
+			data := enc.CreateElement("xenc:EncryptedData")
+			data.CreateAttr("xmlns:xenc", saml.NSXMLEnc)
+			data.CreateAttr("Type", "http://www.w3.org/2001/04/xmlenc#Element")
+			data.CreateElement("xenc:EncryptionMethod").CreateAttr("Algorithm", "http://www.w3.org/2001/04/xmlenc#aes256-cbc")
+			data.CreateElement("xenc:CipherData").CreateElement("xenc:CipherValue").SetText("b3BhcXVlLWNpcGhlcnRleHQtZmlsbGVyLW5vdC1yZWFsLWVuY3J5cHRpb24=")
+			root.InsertChildAt(indexOf(root, a), enc)
+			root.RemoveChild(a)
+			p.Sign = "none"
+			return Label{Code: finding.PostureDecryptBeforeVerify, Path: saml.PathAssertion}
+		}})
+
 	register(Mutator{Name: "posture_unsigned_assertion", Code: finding.PostureUnsignedAssertionAccepted, Phase: PhasePreSign,
 		Apply: func(doc *etree.Document, p *Params) Label {
 			p.Sign = "response"
@@ -283,6 +324,17 @@ func init() {
 			setAttr(first(doc.Root(), saml.NSAssertion, "SubjectConfirmationData"), "NotOnOrAfter", ts(p.Now.Add(time.Hour)))
 			return Label{Code: finding.PostureValidityWindowTooLong, Path: saml.PathConditionsNotOnOrAfter}
 		}})
+}
+
+// indexOf returns el's position among parent's child tokens (elements,
+// text, comments), which is what InsertChildAt counts.
+func indexOf(parent, el *etree.Element) int {
+	for i, c := range parent.Child {
+		if c == el {
+			return i
+		}
+	}
+	return len(parent.Child)
 }
 
 // mustKeys unwraps a committed keypair; a failure is a broken repo, not a

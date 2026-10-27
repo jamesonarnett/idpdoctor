@@ -1,0 +1,24 @@
+{
+  "ok": false,
+  "top_cause": "OIDC_DISCOVERY_DOC_INVALID",
+  "findings": [
+    {
+      "code": "OIDC_DISCOVERY_DOC_INVALID",
+      "lane": "fault",
+      "severity": "error",
+      "paths": [
+        "/discovery/subject_types_supported"
+      ]
+    }
+  ],
+  "checks": {
+    "content_type": "skip",
+    "endpoint_hosts": "pass",
+    "https_only": "pass",
+    "issuer_match": "pass",
+    "required_fields": "fail",
+    "rs256_present": "pass",
+    "token_endpoint": "pass"
+  },
+  "needs": []
+}

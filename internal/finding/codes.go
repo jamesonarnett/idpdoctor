@@ -220,6 +220,7 @@ var Catalog = []Spec{
 			"https://github.com/crewjam/saml/security/advisories",
 		},
 		MergedFrom: []string{"OWASP SAML cheat sheet", "Duo PSA-2017-003 comment injection", "crewjam CVE-2022-41912 multi-assertion", "Entra AADSTS75003 binding"},
+		Mutator:    "structure_multi_assertion",
 	},
 	{
 		Code: SAMLEncryptedAssertionUndecryptable, Number: 13, Protocol: "SAML", Lane: LaneFault, Severity: SeverityError, Kind: "D+C", Tier: "v2",
@@ -301,6 +302,7 @@ var Catalog = []Spec{
 			"https://openid.net/specs/openid-connect-core-1_0.html",
 		},
 		MergedFrom: []string{"OIDC Core 3.1.3.6 / 3.1.3.7", "go-oidc 'access token hash does not match'", "Entra AADSTS50027"},
+		Mutator:    "jwt_nonce_mismatch",
 	},
 	{
 		Code: OIDCDiscoveryDocInvalid, Number: 20, Protocol: "OIDC", Lane: LaneFault, Severity: SeverityError, Kind: "D", Tier: "v1",
@@ -311,6 +313,7 @@ var Catalog = []Spec{
 			"https://openid.net/specs/openid-connect-discovery-1_0.html",
 		},
 		MergedFrom: []string{"OIDC Discovery 3", "go-oidc 'failed to decode provider discovery object'", "Entra AADSTS50049"},
+		Mutator:    "discovery_missing_jwks_uri",
 	},
 	{
 		Code: OAuthRedirectURIMismatch, Number: 21, Protocol: "OAuth/OIDC", Lane: LaneFault, Severity: SeverityError, Kind: "D+C", Tier: "v1",
@@ -323,6 +326,7 @@ var Catalog = []Spec{
 			"https://workos.com/docs/sso/troubleshooting",
 		},
 		MergedFrom: []string{"Entra AADSTS50011", "Auth0 'Callback URL mismatch'", "WorkOS 'Redirect URI not allowed'"},
+		Mutator:    "oauth_redirect_uri_mismatch",
 	},
 	{
 		Code: OAuthPKCEVerifierMismatch, Number: 22, Protocol: "OAuth", Lane: LaneFault, Severity: SeverityError, Kind: "D", Tier: "v1",
@@ -334,6 +338,7 @@ var Catalog = []Spec{
 			"https://support.auth0.com/center/s/article/Invalid-code-verifier",
 		},
 		MergedFrom: []string{"RFC 7636 4.6", "Auth0 'Failed to verify code verifier'"},
+		Mutator:    "oauth_pkce_verifier_mismatch",
 	},
 	{
 		Code: OAuthInvalidGrantCode, Number: 23, Protocol: "OAuth", Lane: LaneFault, Severity: SeverityError, Kind: "D+C", Tier: "v1",
@@ -344,6 +349,7 @@ var Catalog = []Spec{
 			"https://datatracker.ietf.org/doc/html/rfc6749#section-5.2",
 		},
 		MergedFrom: []string{"RFC 6749 5.2 / 10.5", "Entra AADSTS70000 / 70008 / 50173", "WorkOS 'code is valid for 10 minutes'"},
+		Mutator:    "oauth_invalid_grant_expired",
 	},
 	{
 		Code: OAuthClientConfigRejected, Number: 24, Protocol: "OAuth", Lane: LaneFault, Severity: SeverityError, Kind: "D classify / C fix", Tier: "v1",
@@ -354,6 +360,7 @@ var Catalog = []Spec{
 			"https://auth0.com/docs/get-started/applications/application-grant-types",
 		},
 		MergedFrom: []string{"Entra AADSTS7000215 / 7000222 / 700025 / 70011 / 700054", "Scalekit failed_to_exchange_token", "Auth0 grant types"},
+		Mutator:    "oauth_invalid_client",
 	},
 	{
 		Code: IdPPolicyRefusal, Number: 25, Protocol: "SAML/OIDC", Lane: LaneFault, Severity: SeverityError, Kind: "C", Tier: "v2",
@@ -365,6 +372,7 @@ var Catalog = []Spec{
 			"https://learn.microsoft.com/en-us/entra/identity-platform/reference-error-codes",
 		},
 		MergedFrom: []string{"Entra AADSTS50105 / 65001 / 90094 / 50076 / 53003 / 700016 / 500011 / 50194", "OIDC Core 3.1.2.6", "Google app_not_enabled_for_user", "Scalekit user_not_active"},
+		Mutator:    "oauth_policy_refusal",
 	},
 
 	// Posture lane (section 3.1): the artifact validates, or would under the
@@ -403,6 +411,7 @@ var Catalog = []Spec{
 		Fix:        "Have the IdP sign the Response (or the assertion before encrypting) so the SP can verify a signature before decrypting.",
 		Refs:       []string{"https://spring.io/security/cve-2026-41694"},
 		MergedFrom: []string{"Spring Security CVE-2026-41694"},
+		Mutator:    "posture_encrypted_unsigned",
 	},
 	{
 		Code: PostureParserDifferentialExposure, Protocol: "SAML", Lane: LanePosture, Severity: SeverityWarn, Kind: "D", Tier: "v0",
@@ -441,5 +450,6 @@ var Catalog = []Spec{
 		Fix:        "Use PKCE with S256 on every public client (and on confidential clients too; it is cheap).",
 		Refs:       []string{"https://datatracker.ietf.org/doc/html/rfc7636"},
 		MergedFrom: []string{"RFC 7636 4.2"},
+		Mutator:    "oauth_pkce_plain_posture",
 	},
 }

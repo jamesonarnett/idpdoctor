@@ -1,0 +1,1 @@
+{"error":"invalid_client","error_description":"AADSTS7000215: Invalid client secret provided. Ensure the secret being sent in the request is the client secret value, not the client secret ID, for a secret added to app 'client-abc123'. Trace ID: 0f3c2a1e-0000-4000-8000-000000000001 Correlation ID: 7d9e4b2c-0000-4000-8000-000000000002 Timestamp: 2026-01-15 12:00:00Z"}

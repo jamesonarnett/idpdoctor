@@ -1,0 +1,1 @@
+{"error":"invalid_grant","error_description":"AADSTS501481: The Code_Verifier does not match the code_challenge supplied in the authorization request. Trace ID: 0f3c2a1e-0000-4000-8000-000000000001 Correlation ID: 7d9e4b2c-0000-4000-8000-000000000002 Timestamp: 2026-01-15 12:00:00Z"}

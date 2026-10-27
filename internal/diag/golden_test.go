@@ -73,6 +73,32 @@ func jwtCases() []jwtCase {
 	return cases
 }
 
+type discoveryCase struct {
+	Name    string
+	Mutator string
+}
+
+func discoveryCases() []discoveryCase {
+	cases := []discoveryCase{{Name: "healthy"}}
+	for _, m := range fixture.DiscoveryMutators() {
+		cases = append(cases, discoveryCase{Name: m.Name, Mutator: m.Name})
+	}
+	return cases
+}
+
+type oauthCase struct {
+	Name    string
+	Mutator string
+}
+
+func oauthCases() []oauthCase {
+	cases := []oauthCase{{Name: "healthy"}}
+	for _, m := range fixture.OAuthMutators() {
+		cases = append(cases, oauthCase{Name: m.Name, Mutator: m.Name})
+	}
+	return cases
+}
+
 // golden is the stable projection of a Report: codes, lanes, paths and
 // check statuses. Volatile values (fingerprints of freshly generated certs,
 // prose) are deliberately excluded so -update is a no-op unless behaviour
@@ -244,11 +270,11 @@ func TestGoldenJWT(t *testing.T) {
 					}
 					muts = append(muts, m)
 				}
-				tok, labels, err := fixture.MintJWT(p, k.Key, muts...)
+				tok, labels, eff, err := fixture.MintJWTFull(p, k.Key, muts...)
 				if err != nil {
 					t.Fatal(err)
 				}
-				exp := expected.Expected{Issuer: p.Issuer, ClientID: p.Audience, Nonce: p.Nonce, Now: fixture.FixedNow.Format("2006-01-02T15:04:05Z")}
+				exp := expected.Expected{Issuer: p.Issuer, ClientID: p.Audience, Nonce: p.Nonce, AccessToken: eff.AccessToken, Now: fixture.FixedNow.Format("2006-01-02T15:04:05Z")}
 				params := map[string]any{"expected": exp}
 				if !c.NoKeys {
 					params["keys"] = jwt.Keys{JWKSJSON: jwks}
@@ -297,6 +323,117 @@ func TestGoldenJWT(t *testing.T) {
 	}
 }
 
+// TestGoldenDiscovery and TestGoldenOAuth follow the SAML/JWT harness for
+// the v1 kinds: the artifact and params are regenerated with -update, the
+// projection must match, and the labelled code must be found.
+func TestGoldenDiscovery(t *testing.T) {
+	_, dp := fixture.DefaultDiscovery()
+	for _, c := range discoveryCases() {
+		t.Run(c.Name, func(t *testing.T) {
+			dir := filepath.Join(testdataRoot, "oidc", c.Name)
+			if *update {
+				var muts []fixture.DiscoveryMutator
+				if c.Mutator != "" {
+					m, ok := fixture.DiscoveryMutatorByName(c.Mutator)
+					if !ok {
+						t.Fatalf("no mutator %s", c.Mutator)
+					}
+					muts = append(muts, m)
+				}
+				doc, labels, err := fixture.MintDiscovery(dp, muts...)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if err := os.MkdirAll(dir, 0o755); err != nil {
+					t.Fatal(err)
+				}
+				if err := os.WriteFile(filepath.Join(dir, "document.json"), append(doc, '\n'), 0o644); err != nil {
+					t.Fatal(err)
+				}
+				writeJSON(t, filepath.Join(dir, "params.json"), expected.Expected{Issuer: dp.Issuer})
+				writeJSON(t, filepath.Join(dir, "label.json"), labels)
+			}
+			runGolden(t, dir, "document.json")
+		})
+	}
+}
+
+func TestGoldenOAuth(t *testing.T) {
+	for _, c := range oauthCases() {
+		t.Run(c.Name, func(t *testing.T) {
+			dir := filepath.Join(testdataRoot, "oauth", c.Name)
+			if *update {
+				var muts []fixture.OAuthMutator
+				if c.Mutator != "" {
+					m, ok := fixture.OAuthMutatorByName(c.Mutator)
+					if !ok {
+						t.Fatalf("no mutator %s", c.Mutator)
+					}
+					muts = append(muts, m)
+				}
+				art, exp, labels, err := fixture.MintOAuth(fixture.DefaultOAuthParams(), muts...)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if err := os.MkdirAll(dir, 0o755); err != nil {
+					t.Fatal(err)
+				}
+				if err := os.WriteFile(filepath.Join(dir, "artifact.txt"), []byte(art+"\n"), 0o644); err != nil {
+					t.Fatal(err)
+				}
+				writeJSON(t, filepath.Join(dir, "params.json"), exp)
+				writeJSON(t, filepath.Join(dir, "label.json"), labels)
+			}
+			runGolden(t, dir, "artifact.txt")
+		})
+	}
+}
+
+// runGolden is the shared read-run-compare half for kinds whose params.json
+// is a bare Expected.
+func runGolden(t *testing.T, dir, artifactFile string) {
+	t.Helper()
+	art, err := os.ReadFile(filepath.Join(dir, artifactFile))
+	if err != nil {
+		t.Fatalf("%v (run with -update)", err)
+	}
+	var exp expected.Expected
+	readJSON(t, filepath.Join(dir, "params.json"), &exp)
+	res, err := diag.Run(context.Background(), diag.Input{Artifact: string(art), Expected: exp, Now: fixture.FixedNow})
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := project(res)
+	if *update {
+		writeJSON(t, filepath.Join(dir, "expected.json"), got)
+	}
+	var want golden
+	readJSON(t, filepath.Join(dir, "expected.json"), &want)
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("expected.json mismatch (-want +got):\n%s", diff)
+	}
+	var labels []fixture.Label
+	readJSON(t, filepath.Join(dir, "label.json"), &labels)
+	for _, l := range labels {
+		if !hasCode(res.Report, l.Code) {
+			t.Errorf("label %s not found in %v", l.Code, codes(res.Report))
+		}
+	}
+	// Every path a validator cited must be one an explainer may cite.
+	known := map[string]bool{}
+	for _, p := range diag.KnownPaths(res) {
+		known[p] = true
+	}
+	for _, f := range res.Report.Findings {
+		for _, e := range f.Evidence {
+			if !known[e.Path] {
+				t.Errorf("evidence path %s missing from KnownPaths", e.Path)
+			}
+		}
+	}
+	assertNoLeak(t, res, diag.RedactedText(res, 1<<20))
+}
+
 // TestNoStrayCaseDirs: every directory under testdata must be in the case
 // list, so a renamed mutator cannot leave a stale case behind.
 func TestNoStrayCaseDirs(t *testing.T) {
@@ -307,7 +444,13 @@ func TestNoStrayCaseDirs(t *testing.T) {
 	for _, c := range jwtCases() {
 		want["jwt/"+c.Name] = true
 	}
-	for _, proto := range []string{"saml", "jwt"} {
+	for _, c := range discoveryCases() {
+		want["oidc/"+c.Name] = true
+	}
+	for _, c := range oauthCases() {
+		want["oauth/"+c.Name] = true
+	}
+	for _, proto := range []string{"saml", "jwt", "oidc", "oauth"} {
 		entries, err := os.ReadDir(filepath.Join(testdataRoot, proto))
 		if err != nil {
 			t.Fatal(err)
@@ -323,7 +466,8 @@ func TestNoStrayCaseDirs(t *testing.T) {
 // fixtureSecrets are the identity values every fixture carries. None may
 // appear in any output of the pipeline.
 var fixtureSecrets = []string{"alice@example.com", "Alice", "Admins", "Everyone", "Mallory",
-	"user-00000000-1111-2222-3333-444444444444"}
+	"user-00000000-1111-2222-3333-444444444444", "access-token-secret",
+	fixture.DefaultOAuthParams().Code, fixture.DefaultOAuthParams().CodeVerifier}
 
 func assertNoLeak(t *testing.T, res *diag.Result, extra string) {
 	t.Helper()

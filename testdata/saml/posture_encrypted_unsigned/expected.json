@@ -1,0 +1,31 @@
+{
+  "ok": true,
+  "top_cause": "",
+  "findings": [
+    {
+      "code": "POSTURE_DECRYPT_BEFORE_VERIFY",
+      "lane": "posture",
+      "severity": "warn",
+      "paths": [
+        "/Response/Assertion"
+      ]
+    }
+  ],
+  "checks": {
+    "attributes": "skip",
+    "audience": "skip",
+    "cert_validity": "skip",
+    "destination": "pass",
+    "in_response_to": "pass",
+    "issuer": "pass",
+    "name_id": "skip",
+    "recipient": "skip",
+    "signature_placement": "skip",
+    "signature_present": "skip",
+    "signature_verify": "skip",
+    "status": "pass",
+    "structure": "warn",
+    "time_window": "skip"
+  },
+  "needs": []
+}

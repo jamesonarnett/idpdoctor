@@ -4,6 +4,7 @@ package fixture
 
 import (
 	"crypto/rsa"
+	"crypto/sha256"
 	"encoding/base64"
 	"encoding/json"
 	"math/big"
@@ -29,6 +30,9 @@ type JWTParams struct {
 	TTL      time.Duration
 	// Alg is RS256 unless a mutator changes it ("none", "HS256").
 	Alg string
+	// AccessToken, when set, adds a matching at_hash claim; the at_hash
+	// mutator then breaks the match.
+	AccessToken string
 	// ExtraHeader lets a mutator inject jwk/jku/x5u.
 	ExtraHeader map[string]any
 }
@@ -50,7 +54,7 @@ func DefaultJWTParams() JWTParams {
 
 // Claims builds the claim set for p.
 func (p JWTParams) Claims() jwt.MapClaims {
-	return jwt.MapClaims{
+	c := jwt.MapClaims{
 		"iss":   p.Issuer,
 		"aud":   p.Audience,
 		"sub":   p.Subject,
@@ -60,6 +64,18 @@ func (p JWTParams) Claims() jwt.MapClaims {
 		"nbf":   p.Now.Unix(),
 		"exp":   p.Now.Add(p.TTL).Unix(),
 	}
+	if p.AccessToken != "" {
+		c["at_hash"] = AtHash256(p.AccessToken)
+	}
+	return c
+}
+
+// AtHash256 is the OIDC at_hash for an RS256/ES256 token: base64url of the
+// left 16 bytes of SHA-256(access_token). Kept local so fixture does not
+// import the validator it exists to test.
+func AtHash256(token string) string {
+	sum := sha256.Sum256([]byte(token))
+	return base64.RawURLEncoding.EncodeToString(sum[:16])
 }
 
 // JWTMutator edits the claims/header/params before signing.
@@ -93,6 +109,14 @@ func JWTMutators() []JWTMutator {
 // none it emits header.payload. (empty signature); for HS256 it signs with
 // the PEM public key bytes as the secret, the classic confusion attack.
 func MintJWT(p JWTParams, key *rsa.PrivateKey, muts ...JWTMutator) (string, []Label, error) {
+	tok, labels, _, err := MintJWTFull(p, key, muts...)
+	return tok, labels, err
+}
+
+// MintJWTFull is MintJWT plus the effective params: mutators may change
+// them (alg, kid, the access token behind at_hash) and a caller building
+// the matching Expected needs the final values.
+func MintJWTFull(p JWTParams, key *rsa.PrivateKey, muts ...JWTMutator) (string, []Label, JWTParams, error) {
 	claims := p.Claims()
 	var labels []Label
 	for _, m := range muts {
@@ -117,9 +141,9 @@ func MintJWT(p JWTParams, key *rsa.PrivateKey, muts ...JWTMutator) (string, []La
 		signed, err = tok.SignedString(key)
 	}
 	if err != nil {
-		return "", nil, err
+		return "", nil, p, err
 	}
-	return signed, labels, nil
+	return signed, labels, p, nil
 }
 
 func setHeader(tok *jwt.Token, p JWTParams) {
@@ -222,6 +246,21 @@ func init() {
 		Apply: func(c jwt.MapClaims, p *JWTParams) Label {
 			p.Alg = "HS256"
 			return Label{Code: finding.JWTAlgNoneOrConfusion, Path: "/header/alg"}
+		}})
+	registerJWT(JWTMutator{Name: "jwt_nonce_mismatch", Code: finding.OIDCRequestBindingMismatch,
+		Apply: func(c jwt.MapClaims, p *JWTParams) Label {
+			// A stale tab replays an older authorization: the session nonce
+			// no longer matches the one baked into the id_token.
+			c["nonce"] = "n-stale-from-older-request"
+			return Label{Code: finding.OIDCRequestBindingMismatch, Path: "/claims/nonce", Needs: []string{"nonce"}}
+		}})
+	registerJWT(JWTMutator{Name: "jwt_at_hash_mismatch", Code: finding.OIDCRequestBindingMismatch,
+		Apply: func(c jwt.MapClaims, p *JWTParams) Label {
+			// The id_token was issued with a different access token than the
+			// one the client presents (mixed-up responses).
+			p.AccessToken = "access-token-secret-presented"
+			c["at_hash"] = AtHash256("access-token-secret-issued-with-the-id-token")
+			return Label{Code: finding.OIDCRequestBindingMismatch, Path: "/claims/at_hash", Needs: []string{"access_token"}}
 		}})
 	registerJWT(JWTMutator{Name: "jwt_jku_header", Code: finding.JWTAlgNoneOrConfusion,
 		Apply: func(c jwt.MapClaims, p *JWTParams) Label {

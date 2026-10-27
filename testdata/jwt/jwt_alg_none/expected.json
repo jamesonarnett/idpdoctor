@@ -24,5 +24,7 @@
     "nonce": "pass",
     "signature": "fail"
   },
-  "needs": []
+  "needs": [
+    "access_token"
+  ]
 }

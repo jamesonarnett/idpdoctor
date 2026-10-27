@@ -1,0 +1,9 @@
+[
+  {
+    "code": "POSTURE_PKCE_PLAIN_OR_ABSENT",
+    "path": "/request/code_challenge_method",
+    "needs": [
+      "client_type"
+    ]
+  }
+]

@@ -51,10 +51,17 @@ func Sniff(input string) Kind {
 		if strings.Contains(s, `"authorization_endpoint"`) || strings.Contains(s, `"jwks_uri"`) {
 			return KindOIDCDiscovery
 		}
+		if strings.Contains(s, `"error"`) {
+			// A token-endpoint error body (RFC 6749 5.2).
+			return KindOAuthRedirect
+		}
 		return KindUnknown
 	case strings.Contains(s, "SAMLResponse=") || strings.Contains(s, "SAMLRequest="):
 		return KindSAMLResponse
-	case (strings.HasPrefix(s, "http://") || strings.HasPrefix(s, "https://")) && strings.Contains(s, "error="):
+	case (strings.HasPrefix(s, "http://") || strings.HasPrefix(s, "https://")) && hasParam(s, "error", "code"):
+		return KindOAuthRedirect
+	case !strings.ContainsAny(s, " <\n") && hasParam("?"+s, "error", "code") && strings.Contains(s, "="):
+		// A bare query string pasted from the address bar ("error=...&...").
 		return KindOAuthRedirect
 	case jwtShape.MatchString(s):
 		return KindJWT
@@ -97,4 +104,17 @@ func inflatesToXML(raw []byte) bool {
 	n, _ := io.ReadFull(r, head)
 	head = bytes.TrimLeft(head[:n], " \t\r\n\xEF\xBB\xBF")
 	return len(head) > 0 && head[0] == '<'
+}
+
+// hasParam reports whether s carries one of the named query (or fragment)
+// parameters, as a whole name: "error=" but not "error_uri=" alone.
+func hasParam(s string, names ...string) bool {
+	for _, n := range names {
+		for _, sep := range []string{"?", "&", "#"} {
+			if strings.Contains(s, sep+n+"=") {
+				return true
+			}
+		}
+	}
+	return false
 }

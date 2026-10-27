@@ -1,0 +1,9 @@
+[
+  {
+    "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+    "path": "/request/code_verifier",
+    "needs": [
+      "code_verifier"
+    ]
+  }
+]

@@ -1,0 +1,31 @@
+{
+  "ok": false,
+  "top_cause": "SAML_STRUCTURE_INVALID",
+  "findings": [
+    {
+      "code": "SAML_STRUCTURE_INVALID",
+      "lane": "fault",
+      "severity": "error",
+      "paths": [
+        "/Response/Assertion"
+      ]
+    }
+  ],
+  "checks": {
+    "attributes": "pass",
+    "audience": "pass",
+    "cert_validity": "pass",
+    "destination": "pass",
+    "in_response_to": "pass",
+    "issuer": "pass",
+    "name_id": "pass",
+    "recipient": "pass",
+    "signature_placement": "pass",
+    "signature_present": "pass",
+    "signature_verify": "pass",
+    "status": "pass",
+    "structure": "fail",
+    "time_window": "pass"
+  },
+  "needs": []
+}

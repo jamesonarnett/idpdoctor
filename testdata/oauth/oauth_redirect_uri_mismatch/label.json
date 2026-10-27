@@ -1,0 +1,10 @@
+[
+  {
+    "code": "OAUTH_REDIRECT_URI_MISMATCH",
+    "path": "/request/redirect_uri",
+    "note": "trailing slash",
+    "needs": [
+      "registered_redirect_uris"
+    ]
+  }
+]

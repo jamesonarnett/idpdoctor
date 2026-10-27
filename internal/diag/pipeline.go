@@ -4,6 +4,7 @@ package diag
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -13,13 +14,15 @@ import (
 	"github.com/jamesonarnett/idpdoctor/internal/expected"
 	"github.com/jamesonarnett/idpdoctor/internal/finding"
 	"github.com/jamesonarnett/idpdoctor/internal/jwt"
+	"github.com/jamesonarnett/idpdoctor/internal/oauth"
+	"github.com/jamesonarnett/idpdoctor/internal/oidc"
 	"github.com/jamesonarnett/idpdoctor/internal/saml"
 )
 
 // Pipeline errors.
 var (
 	ErrUnknownKind     = errors.New("diag: could not determine artifact kind")
-	ErrUnsupportedKind = errors.New("diag: artifact kind not supported in v0")
+	ErrUnsupportedKind = errors.New("diag: artifact kind not supported yet")
 )
 
 // Input is everything the pipeline may use. Symptom is carried through for
@@ -42,9 +45,11 @@ type Result struct {
 	// artifact validates (posture findings do not count).
 	TopCause *finding.Finding
 	// Exactly one of these is set, matching Kind.
-	SAML *saml.Summary
-	JWT  *jwt.Decoded
-	Cert *cert.Info
+	SAML  *saml.Summary
+	JWT   *jwt.Decoded
+	Cert  *cert.Info
+	OIDC  *oidc.Summary
+	OAuth *oauth.Summary
 	// SAMLParsed keeps the tree for callers that need the redacted pretty
 	// XML (the tools-off explain mode, the redacted bundle).
 	SAMLParsed *saml.Parsed
@@ -72,6 +77,10 @@ func Run(ctx context.Context, in Input) (*Result, error) {
 		return runJWT(ctx, in)
 	case KindCert:
 		return runCert(in)
+	case KindOIDCDiscovery:
+		return runDiscovery(in)
+	case KindOAuthRedirect:
+		return runOAuth(in)
 	case KindUnknown:
 		return nil, ErrUnknownKind
 	}
@@ -131,6 +140,31 @@ func runCert(in Input) (*Result, error) {
 	}
 	r.AddCheck(finding.Check{Name: "cert_validity", Status: status, Detail: fmt.Sprintf("%s, %d days remaining", info.SigAlg, info.DaysRemaining)})
 	return finish(&Result{Kind: KindCert, Report: r, Cert: &info}), nil
+}
+
+// runDiscovery checks a pasted discovery document. Fetching by issuer_url
+// is the MCP tool's job (it is the one explicit network call); here the
+// document is already in hand, so only expected.issuer applies.
+func runDiscovery(in Input) (*Result, error) {
+	res, err := oidc.Check([]byte(in.Artifact), oidc.Options{ExpectedIssuer: in.Expected.Issuer})
+	if err != nil {
+		return nil, err
+	}
+	sum := res.Summary
+	b, _ := json.MarshalIndent(sum, "", "  ")
+	return finish(&Result{Kind: KindOIDCDiscovery, Report: res.Report, OIDC: &sum, extraPaths: oidc.KnownPaths(sum), extraText: string(b)}), nil
+}
+
+// runOAuth explains an error redirect or token-endpoint error body against
+// the request context carried in Expected.
+func runOAuth(in Input) (*Result, error) {
+	res, err := oauth.Explain(in.Artifact, in.Expected)
+	if err != nil {
+		return nil, err
+	}
+	sum := res.Summary
+	b, _ := json.MarshalIndent(sum, "", "  ")
+	return finish(&Result{Kind: KindOAuthRedirect, Report: res.Report, OAuth: &sum, extraPaths: oauth.KnownPaths(sum, in.Expected), extraText: string(b)}), nil
 }
 
 // finish ranks and picks the top cause. finding.Sort already encodes the

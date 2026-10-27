@@ -1,0 +1,6 @@
+[
+  {
+    "code": "POSTURE_DECRYPT_BEFORE_VERIFY",
+    "path": "/Response/Assertion"
+  }
+]

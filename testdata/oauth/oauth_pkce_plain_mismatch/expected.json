@@ -1,0 +1,40 @@
+{
+  "ok": false,
+  "top_cause": "OAUTH_PKCE_VERIFIER_MISMATCH",
+  "findings": [
+    {
+      "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+      "lane": "fault",
+      "severity": "error",
+      "paths": [
+        "/redirect/error",
+        "/redirect/error_description"
+      ]
+    },
+    {
+      "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+      "lane": "fault",
+      "severity": "error",
+      "paths": [
+        "/request/code_verifier",
+        "/request/code_challenge_method"
+      ]
+    },
+    {
+      "code": "POSTURE_PKCE_PLAIN_OR_ABSENT",
+      "lane": "posture",
+      "severity": "warn",
+      "paths": [
+        "/request/code_challenge_method"
+      ]
+    }
+  ],
+  "checks": {
+    "client_config": "pass",
+    "error_class": "fail",
+    "pkce": "fail",
+    "pkce_posture": "warn",
+    "redirect_uri": "pass"
+  },
+  "needs": []
+}

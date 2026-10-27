@@ -1,0 +1,7 @@
+[
+  {
+    "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+    "path": "/redirect/error",
+    "note": "implicit id_token not enabled"
+  }
+]

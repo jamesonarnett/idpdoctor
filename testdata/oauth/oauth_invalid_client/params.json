@@ -1,0 +1,19 @@
+{
+  "issuer": "https://login.example.com/tenant-1/v2.0",
+  "client_id": "client-abc123",
+  "redirect_uri": "https://app.example.com/callback",
+  "registered_redirect_uris": [
+    "https://app.example.com/callback"
+  ],
+  "code_verifier": "verifier-secret-0123456789abcdefghijklmnopqrstuvwxyz",
+  "code_challenge": "SYLbalu-wWybziK-RUsLowFmT7U93E2ayjy1YKzbds4",
+  "code_challenge_method": "S256",
+  "scopes": [
+    "openid",
+    "profile",
+    "email"
+  ],
+  "response_type": "code",
+  "grant_type": "authorization_code",
+  "client_type": "confidential"
+}

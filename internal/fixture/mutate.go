@@ -269,6 +269,11 @@ func init() {
 			a := first(root, saml.NSAssertion, "Assertion")
 			px := dialectPrefixes(p.Dialect)
 			enc := etree.NewElement(qn(px.assertion, "EncryptedAssertion"))
+			if px.assertion == "" {
+				// Default-namespace dialect (Entra): the element must declare
+				// the assertion namespace itself, as the Assertion did.
+				enc.CreateAttr("xmlns", saml.NSAssertion)
+			}
 			data := enc.CreateElement("xenc:EncryptedData")
 			data.CreateAttr("xmlns:xenc", saml.NSXMLEnc)
 			data.CreateAttr("Type", "http://www.w3.org/2001/04/xmlenc#Element")
@@ -278,6 +283,14 @@ func init() {
 			root.RemoveChild(a)
 			p.Sign = "none"
 			return Label{Code: finding.PostureDecryptBeforeVerify, Path: saml.PathAssertion}
+		}})
+
+	register(Mutator{Name: "cert_weak_key", Code: finding.CertExpiredOrWeak, Phase: PhasePreSign,
+		Apply: func(doc *etree.Document, p *Params) Label {
+			// A 1024-bit signing key: verifies, but below the floor every
+			// current SP library and the catalog enforce.
+			p.Keys = mustKeys(TestKeysWeak)
+			return Label{Code: finding.CertExpiredOrWeak, Path: saml.PathKeyInfoCertificate + "/PublicKey", Note: "validate with this weak cert as idp_cert_pem"}
 		}})
 
 	register(Mutator{Name: "posture_unsigned_assertion", Code: finding.PostureUnsignedAssertionAccepted, Phase: PhasePreSign,

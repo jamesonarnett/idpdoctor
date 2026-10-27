@@ -9,6 +9,7 @@ import (
 
 	"github.com/jamesonarnett/idpdoctor/internal/expected"
 	"github.com/jamesonarnett/idpdoctor/internal/finding"
+	"github.com/jamesonarnett/idpdoctor/internal/jwt"
 	"github.com/jamesonarnett/idpdoctor/internal/redact"
 )
 
@@ -56,31 +57,37 @@ Rules:
 }
 
 // ToolsOnPrompt is the user turn for ModeToolsOn: a handle, never bytes.
-func ToolsOnPrompt(handle, kind, symptom string, exp expected.Expected) string {
+func ToolsOnPrompt(handle, kind, symptom string, exp expected.Expected, keys jwt.Keys) string {
 	var b strings.Builder
 	fmt.Fprintf(&b, "Artifact handle (input_ref): %s\nArtifact kind: %s\n", handle, kind)
-	writeSymptomAndExpected(&b, symptom, exp)
-	b.WriteString("\nCall diagnose with this input_ref and these expected values first, then answer.\n")
+	writeSymptomAndExpected(&b, symptom, exp, keys)
+	b.WriteString("\nCall diagnose with this input_ref, these expected values (and keys, if given) first, then answer.\n")
 	return b.String()
 }
 
 // ToolsOffPrompt is the user turn for ModeToolsOff: the redacted structure.
-func ToolsOffPrompt(redactedText, kind, symptom string, exp expected.Expected) string {
+func ToolsOffPrompt(redactedText, kind, symptom string, exp expected.Expected, keys jwt.Keys) string {
 	var b strings.Builder
 	fmt.Fprintf(&b, "Artifact kind: %s\n", kind)
-	writeSymptomAndExpected(&b, symptom, exp)
+	writeSymptomAndExpected(&b, symptom, exp, keys)
 	fmt.Fprintf(&b, "\nRedacted artifact (identity values masked, structure intact):\n```\n%s\n```\n", redactedText)
 	b.WriteString("\nYou have no tools. Diagnose from the redacted artifact, the symptom and the expected values alone.\n")
 	return b.String()
 }
 
-func writeSymptomAndExpected(b *strings.Builder, symptom string, exp expected.Expected) {
+func writeSymptomAndExpected(b *strings.Builder, symptom string, exp expected.Expected, keys jwt.Keys) {
 	if strings.TrimSpace(symptom) == "" {
 		b.WriteString("Symptom: (none given)\n")
 	} else {
 		fmt.Fprintf(b, "Symptom reported by the developer: %s\n", strings.TrimSpace(symptom))
 	}
 	fmt.Fprintf(b, "Expected (what the SP is configured for; missing fields mean the developer did not say):\n%s\n", ExpectedJSON(exp))
+	if !keys.Empty() {
+		// Public key material only (a JWKS or PEM public key); the model
+		// passes it to jwt_validate / diagnose as "keys".
+		kb, _ := json.MarshalIndent(keys, "", "  ")
+		fmt.Fprintf(b, "Keys (the OP's public verification material; pass as keys):\n%s\n", kb)
+	}
 }
 
 // ExpectedJSON renders expected for a prompt with its one true secret

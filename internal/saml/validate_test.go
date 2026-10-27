@@ -117,7 +117,7 @@ func TestMutatorsAreCaught(t *testing.T) {
 			switch m.Name {
 			case "posture_embedded_key":
 				exp.IdPCertPEM = ""
-			case "posture_expired_cert", "cert_expired":
+			case "posture_expired_cert", "cert_expired", "cert_weak_key":
 				// The SP is configured with the (expired) cert the IdP really used;
 				// wrong_cert keeps the old one, which is the whole failure.
 				exp.IdPCertPEM = minted.Keys.CertPEM()

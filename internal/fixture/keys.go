@@ -43,6 +43,9 @@ func TestKeysExpired() (*Keys, error) { return parseKeys(testExpiredCertPEM, tes
 // (wrong_cert fixture).
 func TestKeysRotated() (*Keys, error) { return parseKeys(testRotatedCertPEM, testRotatedKeyPEM) }
 
+// TestKeysWeak is a committed 1024-bit keypair (cert_weak_key fixture).
+func TestKeysWeak() (*Keys, error) { return parseKeys(testWeakCertPEM, testWeakKeyPEM) }
+
 func parseKeys(certPEM, keyPEM string) (*Keys, error) {
 	cb, _ := pem.Decode([]byte(certPEM))
 	kb, _ := pem.Decode([]byte(keyPEM))

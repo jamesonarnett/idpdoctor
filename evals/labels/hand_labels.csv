@@ -1,0 +1,4 @@
+case_id,arm,evidence_correct,fix_score,notes
+# One row per (case, arm) scored by a human on the rubric in evals/rubric.md, blind to the judge.
+# evidence_correct: 1/0. fix_score: 1-5. Rows whose notes contain "placeholder" were not hand-labelled
+# and the report says so; replace them with real labels (BUILD_PLAN 6.3: 50 stratified cases).

@@ -1,0 +1,158 @@
+{
+  "SAML_AUDIENCE_MISMATCH": [
+    "Okta login succeeds but our SP returns 'Invalid audience'.",
+    "Snowflake-style error 390169: SAML_RESPONSE_INVALID_AUDIENCE after switching the IdP app.",
+    "GitHub Enterprise says 'Audience is invalid' for every user since the IdP admin edited the app.",
+    "Entra returns the assertion fine; our library throws AADSTS50010-like audience URI mismatch."
+  ],
+  "SAML_SIGNATURE_INVALID": [
+    "The digital signature in the SAML response did not validate with the Identity Provider's certificate.",
+    "GitLab reports 'Fingerprint mismatch' since the IdP rotated certificates yesterday.",
+    "Scalekit: signature_validation_failed on every login attempt.",
+    "Digest mismatch from our SAML library; nothing changed on our side."
+  ],
+  "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED": [
+    "SAML Response is not signed or has been modified.",
+    "Auth0 says 'SAML assertion not signed' but the IdP admin swears signing is on.",
+    "Our SP requires a signed assertion and the Entra app only signs the response."
+  ],
+  "SAML_DESTINATION_OR_RECIPIENT_MISMATCH": [
+    "Google Workspace: 'ACS URL in request doesn't match' after we moved the SP to a new hostname.",
+    "GitHub: Recipient in the SAML response was not valid.",
+    "Snowflake 390168 invalid destination; the IdP app still points at staging."
+  ],
+  "SAML_TIME_WINDOW_INVALID": [
+    "WorkOS-style 'Expired Response Error' but only for users on one office network.",
+    "GitHub: Current time is earlier than NotBefore condition.",
+    "Scalekit assertion_expired, intermittently, mostly in the morning.",
+    "Logins worked an hour ago; now the SP rejects every response as expired."
+  ],
+  "SAML_ISSUER_MISMATCH": [
+    "Okta: The Issuer in the SAML response did not match the Issuer configured.",
+    "Snowflake 390184: issuer mismatch after migrating the IdP to Entra.",
+    "Google: app_not_configured_for_user even though the user is assigned."
+  ],
+  "SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED": [
+    "Okta: 'InResponseTo=...' does not match the ID of a SAML authentication request.",
+    "Auth0: IdP-Initiated login is not enabled for connection.",
+    "WorkOS idp_initiated_sso_disabled when users click the tile in the IdP portal.",
+    "Users who open the app in two tabs get rejected on the second login."
+  ],
+  "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH": [
+    "GitLab: SAML NameID is missing from your SAML response.",
+    "Google: saml_invalid_user_id_mapping.",
+    "Entra AADSTS75016 about the NameID format after the admin changed the claim.",
+    "Second login for every user fails with 'Extern uid has already been taken'."
+  ],
+  "SAML_REQUIRED_ATTRIBUTE_MISSING": [
+    "GitLab: Email can't be blank on first SSO login.",
+    "Scalekit mandatory_attribute_missing: email.",
+    "Our SP needs firstName and email; one of them never arrives from the IdP."
+  ],
+  "SAML_STATUS_NOT_SUCCESS": [
+    "IdP returned a Responder status with no assertion; the SP shows a generic error.",
+    "Scalekit invalid_status on the SAML response.",
+    "ADFS answers with Responder / RequestDenied for one group of users.",
+    "Entra AADSTS75005: the request is not a valid SAML 2.0 protocol message (from the IdP side)."
+  ],
+  "CERT_EXPIRED_OR_WEAK": [
+    "Scalekit: Certificate Expired.",
+    "Snowflake 390177 SAML_RESPONSE_INVALID_BAD_CERT.",
+    "Entra note: the application expects the SHA-1 signing algorithm.",
+    "Logins stopped at midnight; the IdP certificate expiry date was today."
+  ],
+  "SAML_STRUCTURE_INVALID": [
+    "Our library logs 'multiple assertions found' and rejects the response.",
+    "Pentest report says the SP accepted a response with a second, unsigned assertion.",
+    "Entra AADSTS75003: unsupported binding."
+  ],
+  "JWT_EXPIRED_OR_NOT_YET_VALID": [
+    "IDX10223: Lifetime validation failed. The token is expired.",
+    "go-oidc: token is expired.",
+    "Entra AADSTS500133: assertion is not within its valid time range.",
+    "API rejects tokens issued by the new OP as 'not yet valid'."
+  ],
+  "JWT_AUD_OR_AZP_MISMATCH": [
+    "IDX10214: Audience validation failed.",
+    "The id_token aud is a different client ID than ours after we created a second app registration.",
+    "Validator complains about azp; the token has two audiences."
+  ],
+  "OIDC_ISSUER_MISMATCH": [
+    "go-oidc: id token issued by a different provider.",
+    "IDX10205: Issuer validation failed; we moved from sts.windows.net to login.microsoftonline.com/v2.0.",
+    "Issuer in the discovery document has a trailing slash our config does not."
+  ],
+  "JWT_KID_NOT_FOUND_IN_JWKS": [
+    "IDX10503: Signature validation failed. Keys tried: ... kid not found.",
+    "jwks-rsa SigningKeyNotFoundError after the OP rotated keys.",
+    "Entra signing key rollover: our cached JWKS no longer has the kid."
+  ],
+  "JWT_ALG_NONE_OR_CONFUSION": [
+    "Security scan: the SP accepted a token with alg none.",
+    "Token header carries a jku pointing at another host; should we trust it?",
+    "HS256 id_token from an OP that publishes only RSA keys."
+  ],
+  "OIDC_REQUEST_BINDING_MISMATCH": [
+    "Entra AADSTS50027: the id_token doesn't contain the expected nonce claim.",
+    "go-oidc: access token hash does not match value in ID token.",
+    "Nonce mismatch for users who leave the login page open overnight."
+  ],
+  "OIDC_DISCOVERY_DOC_INVALID": [
+    "go-oidc: failed to decode provider discovery object.",
+    "Entra AADSTS50049: unknown or invalid instance when loading the discovery document.",
+    "The OP's discovery document lacks jwks_uri; our library refuses to start."
+  ],
+  "OAUTH_REDIRECT_URI_MISMATCH": [
+    "Entra AADSTS50011: the redirect URI specified in the request does not match the redirect URIs configured for the application.",
+    "Auth0: Callback URL mismatch.",
+    "WorkOS: Redirect URI not allowed.",
+    "Works on localhost:3000 but not on 127.0.0.1:3000."
+  ],
+  "OAUTH_PKCE_VERIFIER_MISMATCH": [
+    "Auth0: Failed to verify code verifier.",
+    "Entra AADSTS501481: the code_verifier does not match the code_challenge.",
+    "Token exchange fails with invalid_grant only when the SPA is served from the CDN."
+  ],
+  "OAUTH_INVALID_GRANT_CODE": [
+    "Entra AADSTS70008: the provided authorization code has expired.",
+    "AADSTS54005: the authorization code has already been redeemed.",
+    "invalid_grant on the token endpoint, intermittently, since we enabled React StrictMode."
+  ],
+  "OAUTH_CLIENT_CONFIG_REJECTED": [
+    "Entra AADSTS7000215: invalid client secret provided.",
+    "AADSTS700054: response_type id_token is not enabled for the application.",
+    "invalid_scope from the token endpoint for a scope that exists in the console.",
+    "Scalekit failed_to_exchange_token."
+  ],
+  "IDP_POLICY_REFUSAL": [
+    "Entra AADSTS50105: the signed in user is not assigned to a role for the application.",
+    "AADSTS65001: the user or administrator has not consented to use the application.",
+    "Google: app_not_enabled_for_user.",
+    "prompt=none returns login_required for every user."
+  ],
+  "POSTURE_PKCE_PLAIN_OR_ABSENT": [
+    "Security review flagged our mobile app's authorization request.",
+    "Login works; the pentest says PKCE is not enforced."
+  ],
+  "POSTURE_UNSIGNED_ASSERTION_ACCEPTED": [
+    "Everything works; the security team asks why only the response is signed."
+  ],
+  "POSTURE_EMBEDDED_KEY_TRUST": [
+    "Login works without us ever configuring an IdP certificate. Is that fine?"
+  ],
+  "POSTURE_EXPIRED_CERT_ACCEPTED": [
+    "The IdP cert expired last week and nobody noticed; logins still work."
+  ],
+  "POSTURE_DECRYPT_BEFORE_VERIFY": [
+    "Encrypted assertions, unsigned response; the Spring advisory worried us."
+  ],
+  "POSTURE_PARSER_DIFFERENTIAL_EXPOSURE": [
+    "Pentest mentioned XML comments in NameID; login works normally."
+  ],
+  "POSTURE_WEAK_ALGORITHM": [
+    "Compliance scan: SAML signatures use SHA-1."
+  ],
+  "POSTURE_VALIDITY_WINDOW_TOO_LONG": [
+    "Assertions stay valid for an hour; is that a problem?"
+  ]
+}

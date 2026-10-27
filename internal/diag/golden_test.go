@@ -49,7 +49,7 @@ func samlCases() []samlCase {
 		switch m.Name {
 		case "posture_embedded_key":
 			c.Tweak = func(e *expected.Expected, _ *fixture.Minted) { e.IdPCertPEM = "" }
-		case "posture_expired_cert", "cert_expired":
+		case "posture_expired_cert", "cert_expired", "cert_weak_key":
 			c.Tweak = func(e *expected.Expected, m *fixture.Minted) { e.IdPCertPEM = m.Keys.CertPEM() }
 		case "posture_unsigned_assertion":
 			c.Tweak = func(e *expected.Expected, _ *fixture.Minted) { e.RequireSignedAssertion = nil }

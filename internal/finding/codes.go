@@ -207,7 +207,7 @@ var Catalog = []Spec{
 			"https://docs.snowflake.com/user-guide/errors-saml",
 		},
 		MergedFrom: []string{"Scalekit 'Certificate Expired'", "Snowflake 390177 SAML_RESPONSE_INVALID_BAD_CERT, 390166 / 390167", "Entra 'expects the SHA-1 signing algorithm'", "WorkOS certificate rotation"},
-		Mutator:    "cert_expired",
+		Mutator:    "cert_weak_key",
 	},
 	{
 		Code: SAMLStructureInvalid, Number: 12, Protocol: "SAML", Lane: LaneFault, Severity: SeverityError, Kind: "D", Tier: "v1",

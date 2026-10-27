@@ -1,0 +1,7 @@
+[
+  {
+    "code": "CERT_EXPIRED_OR_WEAK",
+    "path": "/Signature/KeyInfo/X509Data/X509Certificate/PublicKey",
+    "note": "validate with this weak cert as idp_cert_pem"
+  }
+]

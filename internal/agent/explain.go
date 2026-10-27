@@ -13,6 +13,7 @@ import (
 
 	"github.com/jamesonarnett/idpdoctor/internal/diag"
 	"github.com/jamesonarnett/idpdoctor/internal/expected"
+	"github.com/jamesonarnett/idpdoctor/internal/jwt"
 	"github.com/jamesonarnett/idpdoctor/internal/mcpserver"
 	"github.com/jamesonarnett/idpdoctor/internal/redact"
 )
@@ -35,7 +36,10 @@ type ExplainInput struct {
 	Result   *diag.Result
 	Symptom  string
 	Expected expected.Expected
-	Model    string
+	// Keys is the OP's public verification material (JWKS / PEM) for a JWT;
+	// public, so it goes in the prompt in clear.
+	Keys  jwt.Keys
+	Model string
 	// ServerBin is the idpdoctor executable the MCP server runs as; ""
 	// means os.Executable().
 	ServerBin string
@@ -101,10 +105,10 @@ func Explain(ctx context.Context, r *Runner, in ExplainInput) (*Explanation, err
 		req.AllowedTools = []string{"mcp__idpdoctor__*"}
 		req.MaxTurns = ToolsOnPlannedCalls + StructuredOutputTurns
 		req.Env = map[string]string{"IDPDOCTOR_TRACE": trace}
-		req.Prompt = ToolsOnPrompt(redact.RefFor(data), kind, in.Symptom, in.Expected)
+		req.Prompt = ToolsOnPrompt(redact.RefFor(data), kind, in.Symptom, in.Expected, in.Keys)
 	case ModeToolsOff:
 		req.MaxTurns = 1 + StructuredOutputTurns
-		req.Prompt = ToolsOffPrompt(diag.RedactedText(in.Result, mcpserver.MaxToolOutput), kind, in.Symptom, in.Expected)
+		req.Prompt = ToolsOffPrompt(diag.RedactedText(in.Result, mcpserver.MaxToolOutput), kind, in.Symptom, in.Expected, in.Keys)
 	default:
 		return nil, fmt.Errorf("agent: unknown mode %q", in.Mode)
 	}

@@ -1,0 +1,6 @@
+[
+  {
+    "code": "POSTURE_WEAK_ALGORITHM",
+    "path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm"
+  }
+]

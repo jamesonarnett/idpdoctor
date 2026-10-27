@@ -1,0 +1,6 @@
+[
+  {
+    "code": "JWT_KID_NOT_FOUND_IN_JWKS",
+    "path": "/header/kid"
+  }
+]

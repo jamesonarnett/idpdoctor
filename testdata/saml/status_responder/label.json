@@ -1,0 +1,6 @@
+[
+  {
+    "code": "SAML_STATUS_NOT_SUCCESS",
+    "path": "/Response/Status/StatusCode/@Value"
+  }
+]

@@ -1,0 +1,7 @@
+[
+  {
+    "code": "POSTURE_EXPIRED_CERT_ACCEPTED",
+    "path": "/Signature/KeyInfo/X509Data/X509Certificate/NotAfter",
+    "note": "validate with this expired cert as idp_cert_pem"
+  }
+]

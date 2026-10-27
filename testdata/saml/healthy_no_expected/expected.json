@@ -1,0 +1,38 @@
+{
+  "ok": true,
+  "top_cause": "",
+  "findings": [
+    {
+      "code": "POSTURE_EMBEDDED_KEY_TRUST",
+      "lane": "posture",
+      "severity": "warn",
+      "paths": [
+        "/Signature/KeyInfo/X509Data/X509Certificate"
+      ]
+    }
+  ],
+  "checks": {
+    "attributes": "skip",
+    "audience": "skip",
+    "cert_validity": "pass",
+    "destination": "skip",
+    "in_response_to": "skip",
+    "issuer": "skip",
+    "name_id": "pass",
+    "recipient": "skip",
+    "signature_placement": "pass",
+    "signature_present": "pass",
+    "signature_verify": "skip",
+    "status": "pass",
+    "structure": "pass",
+    "time_window": "pass"
+  },
+  "needs": [
+    "idp_entity_id",
+    "acs_url",
+    "request_id",
+    "idp_cert_pem",
+    "sp_entity_id",
+    "required_attributes"
+  ]
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "code": "SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED",
+    "path": "/Response/@InResponseTo",
+    "note": "IdP-initiated response arriving at an SP that expects SP-initiated",
+    "needs": [
+      "request_id"
+    ]
+  }
+]

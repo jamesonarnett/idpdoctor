@@ -1,0 +1,6 @@
+[
+  {
+    "code": "CERT_EXPIRED_OR_WEAK",
+    "path": "/Signature/KeyInfo/X509Data/X509Certificate/NotAfter"
+  }
+]

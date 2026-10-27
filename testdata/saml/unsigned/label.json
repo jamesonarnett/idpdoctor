@@ -1,0 +1,6 @@
+[
+  {
+    "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+    "path": "/Response/Assertion/Signature"
+  }
+]

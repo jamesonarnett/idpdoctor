@@ -1,0 +1,28 @@
+{
+  "ok": false,
+  "top_cause": "OIDC_ISSUER_MISMATCH",
+  "findings": [
+    {
+      "code": "OIDC_ISSUER_MISMATCH",
+      "lane": "fault",
+      "severity": "error",
+      "paths": [
+        "/claims/iss"
+      ]
+    }
+  ],
+  "checks": {
+    "alg_allowed": "pass",
+    "at_hash": "skip",
+    "aud": "pass",
+    "azp": "pass",
+    "exp": "pass",
+    "iat": "pass",
+    "iss": "fail",
+    "kid_found": "pass",
+    "nbf": "pass",
+    "nonce": "pass",
+    "signature": "pass"
+  },
+  "needs": []
+}

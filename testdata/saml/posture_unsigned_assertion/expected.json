@@ -1,0 +1,31 @@
+{
+  "ok": true,
+  "top_cause": "",
+  "findings": [
+    {
+      "code": "POSTURE_UNSIGNED_ASSERTION_ACCEPTED",
+      "lane": "posture",
+      "severity": "warn",
+      "paths": [
+        "/Response/Assertion/Signature"
+      ]
+    }
+  ],
+  "checks": {
+    "attributes": "pass",
+    "audience": "pass",
+    "cert_validity": "pass",
+    "destination": "pass",
+    "in_response_to": "pass",
+    "issuer": "pass",
+    "name_id": "pass",
+    "recipient": "pass",
+    "signature_placement": "warn",
+    "signature_present": "pass",
+    "signature_verify": "pass",
+    "status": "pass",
+    "structure": "pass",
+    "time_window": "pass"
+  },
+  "needs": []
+}

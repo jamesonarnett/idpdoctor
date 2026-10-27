@@ -1,0 +1,11 @@
+{
+  "expected": {
+    "issuer": "https://login.example.com/tenant-1/v2.0",
+    "client_id": "client-abc123",
+    "nonce": "n-0S6_WzA2Mj",
+    "now": "2026-01-15T12:00:00Z"
+  },
+  "keys": {
+    "jwks_json": "{\"keys\":[{\"kty\":\"RSA\",\"use\":\"sig\",\"kid\":\"test-key-1\",\"alg\":\"RS256\",\"n\":\"yPM3y8KMxj4QPZKA5JK03Gs8fm3p8Ww4RLBxmyIsL1o7Cp90U0GrdrKr4p7kU3j9IKI9kKfXT7DaW9LQlsdpeHVwKJya79wrHHvzW0UV9nM2P6r2Ea6rgOJj62ElK-8oVVe8qeJEWu2PuJRufHLKXPY8vb39x2d0vsCOiRbiHTqRxELcJsKaubFEmebQxsf28s7fabiJajkk6BOGAXGMNle7FiWzOlEAlSYuVsDtdO_4Ul6ewVpbxDgrg4rTbFu_3vk-xfarElKMbv8nh-JWBP2VcfiDqGJbjvLgpZOVl08X78VJM8icLD-yOZrqHCSRJ8RbHAAeBPY_LX-zkkOgyQ\",\"e\":\"AQAB\"}]}"
+  }
+}

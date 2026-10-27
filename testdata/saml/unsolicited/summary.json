@@ -1,0 +1,62 @@
+{
+  "id": "_resp_r289ac",
+  "issuer": "https://idp.example.com/saml",
+  "destination": "https://sp.example.com/saml/acs",
+  "issue_instant": "2026-01-15T12:00:00.000Z",
+  "version": "2.0",
+  "status": {
+    "code": "urn:oasis:names:tc:SAML:2.0:status:Success"
+  },
+  "assertion": {
+    "id": "_assert_a289ac",
+    "issuer": "https://idp.example.com/saml",
+    "issue_instant": "2026-01-15T12:00:00.000Z",
+    "subject": {
+      "name_id": "[REDACTED:nameid:ff8d9819]",
+      "name_id_format": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+      "name_id_present": true
+    },
+    "conditions": {
+      "not_before": "2026-01-15T11:57:30.000Z",
+      "not_on_or_after": "2026-01-15T12:02:30.000Z",
+      "audiences": [
+        "https://sp.example.com/saml/metadata"
+      ]
+    },
+    "subject_confirmation": {
+      "method": "urn:oasis:names:tc:SAML:2.0:cm:bearer",
+      "recipient": "https://sp.example.com/saml/acs",
+      "not_on_or_after": "2026-01-15T12:02:30.000Z"
+    },
+    "authn_context_class_ref": "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport",
+    "session_index": "_sess_s289ac",
+    "session_not_on_or_after": "2026-01-15T20:00:00.000Z",
+    "authn_instant": "2026-01-15T11:59:00.000Z",
+    "attributes": {
+      "email": [
+        "[REDACTED:attr:ff8d9819]"
+      ],
+      "firstName": [
+        "[REDACTED:attr:3bc51062]"
+      ],
+      "groups": [
+        "[REDACTED:attr:da2e5dc5]",
+        "[REDACTED:attr:8273a67b]"
+      ]
+    },
+    "attribute_statement_present": true
+  },
+  "assertion_count": 1,
+  "encrypted": false,
+  "signatures": [
+    {
+      "on": "assertion",
+      "sig_alg": "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
+      "digest_alg": "http://www.w3.org/2001/04/xmlenc#sha256",
+      "reference_uri": "#_assert_a289ac",
+      "cert_sha256": "2B:39:20:62:E2:10:4F:4C:82:20:A5:28:13:BA:02:A3:2A:39:4F:5E:4D:71:0F:64:E1:39:F2:88:BF:FA:D9:D9",
+      "cert_subject": "CN=TEST ONLY idpdoctor fixture IdP,O=idpdoctor TEST ONLY",
+      "cert_not_after": "2126-01-01T00:00:00Z"
+    }
+  ]
+}

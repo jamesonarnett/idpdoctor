@@ -1,0 +1,28 @@
+{
+  "ok": false,
+  "top_cause": "JWT_ALG_NONE_OR_CONFUSION",
+  "findings": [
+    {
+      "code": "JWT_ALG_NONE_OR_CONFUSION",
+      "lane": "fault",
+      "severity": "error",
+      "paths": [
+        "/header/alg"
+      ]
+    }
+  ],
+  "checks": {
+    "alg_allowed": "fail",
+    "at_hash": "skip",
+    "aud": "pass",
+    "azp": "pass",
+    "exp": "pass",
+    "iat": "pass",
+    "iss": "pass",
+    "kid_found": "pass",
+    "nbf": "pass",
+    "nonce": "pass",
+    "signature": "fail"
+  },
+  "needs": []
+}

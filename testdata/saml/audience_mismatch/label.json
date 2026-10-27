@@ -1,0 +1,9 @@
+[
+  {
+    "code": "SAML_AUDIENCE_MISMATCH",
+    "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+    "needs": [
+      "sp_entity_id"
+    ]
+  }
+]

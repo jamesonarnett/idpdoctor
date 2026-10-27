@@ -1,0 +1,31 @@
+{
+  "ok": false,
+  "top_cause": "SAML_DESTINATION_OR_RECIPIENT_MISMATCH",
+  "findings": [
+    {
+      "code": "SAML_DESTINATION_OR_RECIPIENT_MISMATCH",
+      "lane": "fault",
+      "severity": "error",
+      "paths": [
+        "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@Recipient"
+      ]
+    }
+  ],
+  "checks": {
+    "attributes": "pass",
+    "audience": "pass",
+    "cert_validity": "pass",
+    "destination": "pass",
+    "in_response_to": "pass",
+    "issuer": "pass",
+    "name_id": "pass",
+    "recipient": "fail",
+    "signature_placement": "pass",
+    "signature_present": "pass",
+    "signature_verify": "pass",
+    "status": "pass",
+    "structure": "pass",
+    "time_window": "pass"
+  },
+  "needs": []
+}

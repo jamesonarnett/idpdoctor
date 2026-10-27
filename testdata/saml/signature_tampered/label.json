@@ -1,0 +1,9 @@
+[
+  {
+    "code": "SAML_SIGNATURE_INVALID",
+    "path": "/Response/Assertion/Signature",
+    "needs": [
+      "idp_cert_pem"
+    ]
+  }
+]

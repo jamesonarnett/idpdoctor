@@ -1,0 +1,31 @@
+{
+  "ok": false,
+  "top_cause": "SAML_REQUIRED_ATTRIBUTE_MISSING",
+  "findings": [
+    {
+      "code": "SAML_REQUIRED_ATTRIBUTE_MISSING",
+      "lane": "fault",
+      "severity": "error",
+      "paths": [
+        "/Response/Assertion/AttributeStatement/Attribute[@Name='email']"
+      ]
+    }
+  ],
+  "checks": {
+    "attributes": "fail",
+    "audience": "pass",
+    "cert_validity": "pass",
+    "destination": "pass",
+    "in_response_to": "pass",
+    "issuer": "pass",
+    "name_id": "pass",
+    "recipient": "pass",
+    "signature_placement": "pass",
+    "signature_present": "pass",
+    "signature_verify": "pass",
+    "status": "pass",
+    "structure": "pass",
+    "time_window": "pass"
+  },
+  "needs": []
+}

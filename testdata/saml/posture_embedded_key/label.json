@@ -1,0 +1,7 @@
+[
+  {
+    "code": "POSTURE_EMBEDDED_KEY_TRUST",
+    "path": "/Signature/KeyInfo/X509Data/X509Certificate",
+    "note": "validate without idp_cert_pem"
+  }
+]

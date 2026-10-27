@@ -1,0 +1,9 @@
+[
+  {
+    "code": "SAML_SIGNATURE_INVALID",
+    "path": "/Signature/KeyInfo/X509Data/X509Certificate",
+    "needs": [
+      "idp_cert_pem"
+    ]
+  }
+]

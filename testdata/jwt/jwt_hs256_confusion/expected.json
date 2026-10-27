@@ -1,0 +1,36 @@
+{
+  "ok": false,
+  "top_cause": "JWT_KID_NOT_FOUND_IN_JWKS",
+  "findings": [
+    {
+      "code": "JWT_KID_NOT_FOUND_IN_JWKS",
+      "lane": "fault",
+      "severity": "error",
+      "paths": [
+        "/signature"
+      ]
+    },
+    {
+      "code": "JWT_ALG_NONE_OR_CONFUSION",
+      "lane": "fault",
+      "severity": "error",
+      "paths": [
+        "/header/alg"
+      ]
+    }
+  ],
+  "checks": {
+    "alg_allowed": "fail",
+    "at_hash": "skip",
+    "aud": "pass",
+    "azp": "pass",
+    "exp": "pass",
+    "iat": "pass",
+    "iss": "pass",
+    "kid_found": "pass",
+    "nbf": "pass",
+    "nonce": "pass",
+    "signature": "fail"
+  },
+  "needs": []
+}

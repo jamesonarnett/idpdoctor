@@ -1,0 +1,39 @@
+{
+  "ok": true,
+  "top_cause": "",
+  "findings": [
+    {
+      "code": "CERT_EXPIRED_OR_WEAK",
+      "lane": "fault",
+      "severity": "warn",
+      "paths": [
+        "/Signature/KeyInfo/X509Data/X509Certificate/NotAfter"
+      ]
+    },
+    {
+      "code": "POSTURE_EXPIRED_CERT_ACCEPTED",
+      "lane": "posture",
+      "severity": "warn",
+      "paths": [
+        "/Signature/KeyInfo/X509Data/X509Certificate/NotAfter"
+      ]
+    }
+  ],
+  "checks": {
+    "attributes": "pass",
+    "audience": "pass",
+    "cert_validity": "fail",
+    "destination": "pass",
+    "in_response_to": "pass",
+    "issuer": "pass",
+    "name_id": "pass",
+    "recipient": "pass",
+    "signature_placement": "pass",
+    "signature_present": "pass",
+    "signature_verify": "pass",
+    "status": "pass",
+    "structure": "pass",
+    "time_window": "pass"
+  },
+  "needs": []
+}

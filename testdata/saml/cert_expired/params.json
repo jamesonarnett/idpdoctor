@@ -1,0 +1,14 @@
+{
+  "sp_entity_id": "https://sp.example.com/saml/metadata",
+  "acs_url": "https://sp.example.com/saml/acs",
+  "idp_entity_id": "https://idp.example.com/saml",
+  "idp_cert_pem": "-----BEGIN CERTIFICATE-----\nMIIC1DCCAbygAwIBAgIIGOJLbk4wYXAwDQYJKoZIhvcNAQELBQAwIDEeMBwGA1UE\nAxMVVEVTVCBPTkxZIGV4cGlyZWQgaWRwMB4XDTI2MDExMzEyMDAwMFoXDTI2MDEx\nNDEyMDAwMFowIDEeMBwGA1UEAxMVVEVTVCBPTkxZIGV4cGlyZWQgaWRwMIIBIjAN\nBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAunkjjNNHIPIV7v/A2GBj7WcMQR7V\n/iQYy9iSyC/pqaItPtMD+nIS0ualAolsrgizHdzpfCujIZBaSag8aEn7dE0qRR9W\nO00wOTChrHectbCs8x72k51UJ73ITEm3e1Z6SI/cNIPNSCKl2STEHOPqNDvA64QK\nHzgHW71QS3oDTeimvE/T4hHmiW46U1t/E2XmJNAUJ0SDdIsGiV8TBvH8aUPC/AJ9\nXULft9Rd8uoVjeIHf3QHuxQh+NBFSZT6Dx0dPsi0ox/V4HePjsFYtbYOdcv41ihN\nm82Vi7xqvc3L69xBa+H9KXTvMI9ekLsGky0QFJMSsSJh9zEyDA/uNGtrgQIDAQAB\noxIwEDAOBgNVHQ8BAf8EBAMCB4AwDQYJKoZIhvcNAQELBQADggEBAIQf1KyWvYme\n2CoqCNKCjhY2ke1iRZ35hc6AYv4yum5INwLcV7YwwEJ0Vh99Pcs9n6HXBnqZ86sK\n5uiHnH34+Ta0B0QlFhqHyhCgwBhnytBaDLprp1xQgVtEgOGtXnHW/Z5alrfFQRdf\n7xTkmBKLV4s2Ltr9UmwUtTmlCd1lv3aoPfjkUt1fsh5vvZrOBU5l05ki5pOTE/J1\n2WWaelWJK6Qy5ajxcHwt/lVq9bFuttVvvIyH+jW/Ha3Lq+qO/9W7xmjtFh+m0jDL\nGQQQK8agPbNWlLG8oO52bGrxX/409pIxlcHWdJ0Al3LsjtaBjbCHcBp9D2hDcCmU\nTCNidzjDpsA=\n-----END CERTIFICATE-----\n",
+  "request_id": "_req_1234567890abcdef",
+  "name_id_format": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+  "required_attributes": [
+    "email",
+    "firstName"
+  ],
+  "require_signed_assertion": true,
+  "now": "2026-01-15T12:00:00Z"
+}

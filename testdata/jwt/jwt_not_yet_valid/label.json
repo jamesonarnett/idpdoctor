@@ -1,0 +1,6 @@
+[
+  {
+    "code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+    "path": "/claims/nbf"
+  }
+]

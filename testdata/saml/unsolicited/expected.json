@@ -1,0 +1,31 @@
+{
+  "ok": false,
+  "top_cause": "SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED",
+  "findings": [
+    {
+      "code": "SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED",
+      "lane": "fault",
+      "severity": "error",
+      "paths": [
+        "/Response/@InResponseTo"
+      ]
+    }
+  ],
+  "checks": {
+    "attributes": "pass",
+    "audience": "pass",
+    "cert_validity": "pass",
+    "destination": "pass",
+    "in_response_to": "fail",
+    "issuer": "pass",
+    "name_id": "pass",
+    "recipient": "pass",
+    "signature_placement": "pass",
+    "signature_present": "pass",
+    "signature_verify": "pass",
+    "status": "pass",
+    "structure": "pass",
+    "time_window": "pass"
+  },
+  "needs": []
+}

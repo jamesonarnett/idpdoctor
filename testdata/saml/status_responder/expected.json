@@ -1,0 +1,33 @@
+{
+  "ok": false,
+  "top_cause": "SAML_STATUS_NOT_SUCCESS",
+  "findings": [
+    {
+      "code": "SAML_STATUS_NOT_SUCCESS",
+      "lane": "fault",
+      "severity": "error",
+      "paths": [
+        "/Response/Status/StatusCode/@Value",
+        "/Response/Status/StatusCode/StatusCode/@Value",
+        "/Response/Status/StatusMessage"
+      ]
+    }
+  ],
+  "checks": {
+    "attributes": "skip",
+    "audience": "skip",
+    "cert_validity": "skip",
+    "destination": "pass",
+    "in_response_to": "pass",
+    "issuer": "pass",
+    "name_id": "skip",
+    "recipient": "skip",
+    "signature_placement": "skip",
+    "signature_present": "skip",
+    "signature_verify": "skip",
+    "status": "fail",
+    "structure": "pass",
+    "time_window": "skip"
+  },
+  "needs": []
+}

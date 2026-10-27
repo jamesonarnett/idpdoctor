@@ -1,0 +1,9 @@
+[
+  {
+    "code": "SAML_ISSUER_MISMATCH",
+    "path": "/Response/Issuer",
+    "needs": [
+      "idp_entity_id"
+    ]
+  }
+]

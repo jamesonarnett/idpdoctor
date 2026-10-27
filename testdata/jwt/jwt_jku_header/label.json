@@ -1,0 +1,6 @@
+[
+  {
+    "code": "JWT_ALG_NONE_OR_CONFUSION",
+    "path": "/header/jku"
+  }
+]

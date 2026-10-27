@@ -1,0 +1,28 @@
+{
+  "ok": false,
+  "top_cause": "JWT_AUD_OR_AZP_MISMATCH",
+  "findings": [
+    {
+      "code": "JWT_AUD_OR_AZP_MISMATCH",
+      "lane": "fault",
+      "severity": "error",
+      "paths": [
+        "/claims/aud"
+      ]
+    }
+  ],
+  "checks": {
+    "alg_allowed": "pass",
+    "at_hash": "skip",
+    "aud": "fail",
+    "azp": "pass",
+    "exp": "pass",
+    "iat": "pass",
+    "iss": "pass",
+    "kid_found": "pass",
+    "nbf": "pass",
+    "nonce": "pass",
+    "signature": "pass"
+  },
+  "needs": []
+}

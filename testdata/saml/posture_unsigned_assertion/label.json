@@ -1,0 +1,6 @@
+[
+  {
+    "code": "POSTURE_UNSIGNED_ASSERTION_ACCEPTED",
+    "path": "/Response/Assertion/Signature"
+  }
+]

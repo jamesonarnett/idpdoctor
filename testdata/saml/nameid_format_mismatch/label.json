@@ -1,0 +1,9 @@
+[
+  {
+    "code": "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH",
+    "path": "/Response/Assertion/Subject/NameID/@Format",
+    "needs": [
+      "name_id_format"
+    ]
+  }
+]

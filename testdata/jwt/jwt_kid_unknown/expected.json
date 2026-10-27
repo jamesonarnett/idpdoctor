@@ -1,0 +1,28 @@
+{
+  "ok": false,
+  "top_cause": "JWT_KID_NOT_FOUND_IN_JWKS",
+  "findings": [
+    {
+      "code": "JWT_KID_NOT_FOUND_IN_JWKS",
+      "lane": "fault",
+      "severity": "error",
+      "paths": [
+        "/header/kid"
+      ]
+    }
+  ],
+  "checks": {
+    "alg_allowed": "pass",
+    "at_hash": "skip",
+    "aud": "pass",
+    "azp": "pass",
+    "exp": "pass",
+    "iat": "pass",
+    "iss": "pass",
+    "kid_found": "fail",
+    "nbf": "pass",
+    "nonce": "pass",
+    "signature": "skip"
+  },
+  "needs": []
+}

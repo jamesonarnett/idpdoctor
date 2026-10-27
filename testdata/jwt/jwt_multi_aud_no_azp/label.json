@@ -1,0 +1,9 @@
+[
+  {
+    "code": "JWT_AUD_OR_AZP_MISMATCH",
+    "path": "/claims/azp",
+    "needs": [
+      "client_id"
+    ]
+  }
+]

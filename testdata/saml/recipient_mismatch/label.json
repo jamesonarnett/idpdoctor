@@ -1,0 +1,9 @@
+[
+  {
+    "code": "SAML_DESTINATION_OR_RECIPIENT_MISMATCH",
+    "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@Recipient",
+    "needs": [
+      "acs_url"
+    ]
+  }
+]

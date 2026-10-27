@@ -1,0 +1,31 @@
+{
+  "ok": false,
+  "top_cause": "SAML_AUDIENCE_MISMATCH",
+  "findings": [
+    {
+      "code": "SAML_AUDIENCE_MISMATCH",
+      "lane": "fault",
+      "severity": "error",
+      "paths": [
+        "/Response/Assertion/Conditions/AudienceRestriction/Audience"
+      ]
+    }
+  ],
+  "checks": {
+    "attributes": "pass",
+    "audience": "fail",
+    "cert_validity": "pass",
+    "destination": "pass",
+    "in_response_to": "pass",
+    "issuer": "pass",
+    "name_id": "pass",
+    "recipient": "pass",
+    "signature_placement": "pass",
+    "signature_present": "pass",
+    "signature_verify": "pass",
+    "status": "pass",
+    "structure": "pass",
+    "time_window": "pass"
+  },
+  "needs": []
+}

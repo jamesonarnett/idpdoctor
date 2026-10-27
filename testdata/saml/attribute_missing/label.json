@@ -1,0 +1,9 @@
+[
+  {
+    "code": "SAML_REQUIRED_ATTRIBUTE_MISSING",
+    "path": "/Response/Assertion/AttributeStatement/Attribute[@Name='email']",
+    "needs": [
+      "required_attributes"
+    ]
+  }
+]

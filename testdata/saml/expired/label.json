@@ -1,0 +1,6 @@
+[
+  {
+    "code": "SAML_TIME_WINDOW_INVALID",
+    "path": "/Response/Assertion/Conditions/@NotOnOrAfter"
+  }
+]

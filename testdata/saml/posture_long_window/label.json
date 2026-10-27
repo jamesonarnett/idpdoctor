@@ -1,0 +1,6 @@
+[
+  {
+    "code": "POSTURE_VALIDITY_WINDOW_TOO_LONG",
+    "path": "/Response/Assertion/Conditions/@NotOnOrAfter"
+  }
+]

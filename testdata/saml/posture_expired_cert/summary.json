@@ -1,0 +1,64 @@
+{
+  "id": "_resp_r289ac",
+  "issuer": "https://idp.example.com/saml",
+  "destination": "https://sp.example.com/saml/acs",
+  "in_response_to": "_req_1234567890abcdef",
+  "issue_instant": "2026-01-15T12:00:00.000Z",
+  "version": "2.0",
+  "status": {
+    "code": "urn:oasis:names:tc:SAML:2.0:status:Success"
+  },
+  "assertion": {
+    "id": "_assert_a289ac",
+    "issuer": "https://idp.example.com/saml",
+    "issue_instant": "2026-01-15T12:00:00.000Z",
+    "subject": {
+      "name_id": "[REDACTED:nameid:ff8d9819]",
+      "name_id_format": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+      "name_id_present": true
+    },
+    "conditions": {
+      "not_before": "2026-01-15T11:57:30.000Z",
+      "not_on_or_after": "2026-01-15T12:02:30.000Z",
+      "audiences": [
+        "https://sp.example.com/saml/metadata"
+      ]
+    },
+    "subject_confirmation": {
+      "method": "urn:oasis:names:tc:SAML:2.0:cm:bearer",
+      "recipient": "https://sp.example.com/saml/acs",
+      "not_on_or_after": "2026-01-15T12:02:30.000Z",
+      "in_response_to": "_req_1234567890abcdef"
+    },
+    "authn_context_class_ref": "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport",
+    "session_index": "_sess_s289ac",
+    "session_not_on_or_after": "2026-01-15T20:00:00.000Z",
+    "authn_instant": "2026-01-15T11:59:00.000Z",
+    "attributes": {
+      "email": [
+        "[REDACTED:attr:ff8d9819]"
+      ],
+      "firstName": [
+        "[REDACTED:attr:3bc51062]"
+      ],
+      "groups": [
+        "[REDACTED:attr:da2e5dc5]",
+        "[REDACTED:attr:8273a67b]"
+      ]
+    },
+    "attribute_statement_present": true
+  },
+  "assertion_count": 1,
+  "encrypted": false,
+  "signatures": [
+    {
+      "on": "assertion",
+      "sig_alg": "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
+      "digest_alg": "http://www.w3.org/2001/04/xmlenc#sha256",
+      "reference_uri": "#_assert_a289ac",
+      "cert_sha256": "C8:E2:84:1A:68:A9:A7:D2:DB:B1:C6:1F:C8:DA:3D:82:E1:7A:AD:A7:95:CA:A9:C1:2A:22:1A:8E:8E:C0:A2:1A",
+      "cert_subject": "CN=TEST ONLY expired idp",
+      "cert_not_after": "2026-01-14T12:00:00Z"
+    }
+  ]
+}

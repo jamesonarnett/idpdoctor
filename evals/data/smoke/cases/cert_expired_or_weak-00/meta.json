@@ -1,0 +1,10 @@
+{
+  "id": "cert_expired_or_weak-00",
+  "kind": "saml_response",
+  "dialect": "entra",
+  "mutator": "cert_weak_key",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 0,
+  "hash": "262f76a306fa7dfd"
+}

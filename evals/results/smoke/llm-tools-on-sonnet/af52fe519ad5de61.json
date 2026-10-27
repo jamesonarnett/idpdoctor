@@ -1,0 +1,186 @@
+{
+  "case_id": "oidc_request_binding_mismatch-00",
+  "case_hash": "af52fe519ad5de61",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OIDC_REQUEST_BINDING_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/claims/at_hash",
+    "fix_keys": [
+      "generate",
+      "fresh",
+      "nonce",
+      "authorization"
+    ],
+    "needs": [
+      "access_token"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "oidc_request_binding_mismatch-00",
+    "kind": "jwt",
+    "mutator": "jwt_at_hash_mismatch",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "af52fe519ad5de61"
+  },
+  "output": {
+    "root_cause_code": "OIDC_REQUEST_BINDING_MISMATCH",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/claims/at_hash",
+        "actual": "[REDACTED:at_hash:ab7aac87]",
+        "expected": "[REDACTED:at_hash:627e2ed6]",
+        "note": "The at_hash in the id_token does not match the hash computed from the access_token supplied. The signature, iss, aud, exp, nbf, iat and nonce checks all passed."
+      }
+    ],
+    "fix": "Compute at_hash from the exact access_token returned in the same token response as this id_token. at_hash is the base64url encoding of the left half of the SHA-256 digest of the ASCII access token, because the alg is RS256. Make sure the client isn't pairing an id_token with an access token from a different response, such as a refresh or an earlier login. Also make sure it hasn't altered or truncated the token. Keep at_hash validation on. Don't skip it to make the error go away.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T01:18:04.356215-05:00",
+  "duration_ms": 10880,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1162,
+    "cache_creation_input_tokens": 3445,
+    "cache_read_input_tokens": 23258
+  },
+  "cost_usd": 0.027733799999999996,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1162,
+      "cacheReadInputTokens": 23258,
+      "cacheCreationInputTokens": 3445,
+      "costUSD": 0.027733799999999996,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "envelope": {
+    "duration_api_ms": 10788,
+    "stop_reason": "tool_use",
+    "session_id": "0352fc20-dbb7-4bd7-8fa0-e5f9e137b7c6",
+    "total_cost_usd": 0.027733799999999996,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3445,
+      "cache_read_input_tokens": 23258,
+      "output_tokens": 1162,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3445,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 495,
+          "cache_read_input_tokens": 12382,
+          "cache_creation_input_tokens": 1939,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1939
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1162,
+        "cacheReadInputTokens": 23258,
+        "cacheCreationInputTokens": 3445,
+        "webSearchRequests": 0,
+        "costUSD": 0.027733799999999996,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3445,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OIDC_REQUEST_BINDING_MISMATCH\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/claims/at_hash\",\"actual\":\"[REDACTED:at_hash:ab7aac87]\",\"expected\":\"[REDACTED:at_hash:627e2ed6]\",\"note\":\"The at_hash in the id_token does not match the hash computed from the access_token supplied. The signature, iss, aud, exp, nbf, iat and nonce checks all passed.\"}],\"fix\":\"Compute at_hash from the exact access_token returned in the same token response as this id_token. at_hash is the base64url encoding of the left half of the SHA-256 digest of the ASCII access token, because the alg is RS256. Make sure the client isn't pairing an id_token with an access token from a different response, such as a refresh or an earlier login. Also make sure it hasn't altered or truncated the token. Keep at_hash validation on. Don't skip it to make the error go away.\",\"alternatives\":[],\"questions\":[],\"posture_codes\":[]}",
+    "structured_output": {
+      "root_cause_code": "OIDC_REQUEST_BINDING_MISMATCH",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/claims/at_hash",
+          "actual": "[REDACTED:at_hash:ab7aac87]",
+          "expected": "[REDACTED:at_hash:627e2ed6]",
+          "note": "The at_hash in the id_token does not match the hash computed from the access_token supplied. The signature, iss, aud, exp, nbf, iat and nonce checks all passed."
+        }
+      ],
+      "fix": "Compute at_hash from the exact access_token returned in the same token response as this id_token. at_hash is the base64url encoding of the left half of the SHA-256 digest of the ASCII access token, because the alg is RS256. Make sure the client isn't pairing an id_token with an access token from a different response, such as a refresh or an earlier login. Also make sure it hasn't altered or truncated the token. Keep at_hash validation on. Don't skip it to make the error go away.",
+      "alternatives": [],
+      "questions": [],
+      "posture_codes": []
+    },
+    "ttft_ms": 5618,
+    "type": "result",
+    "duration_ms": 10880,
+    "uuid": "d2218df0-6a19-442d-b6d6-5fb575c45b93",
+    "ttft_stream_ms": 2621,
+    "time_to_request_ms": 82,
+    "first_content_frame_ms": 2621,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

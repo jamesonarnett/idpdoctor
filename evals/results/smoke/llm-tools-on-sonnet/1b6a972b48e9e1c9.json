@@ -1,0 +1,196 @@
+{
+  "case_id": "saml_not_signed_or_wrong_element_signed-00",
+  "case_hash": "1b6a972b48e9e1c9",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/Signature",
+    "fix_keys": [
+      "enable",
+      "signing",
+      "element",
+      "requires"
+    ],
+    "needs": [
+      "require_signed_assertion"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_not_signed_or_wrong_element_signed-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "response_signed_only",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "1b6a972b48e9e1c9"
+  },
+  "output": {
+    "root_cause_code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+    "confidence": 0.97,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature",
+        "actual": "Response signed, Assertion unsigned",
+        "expected": "signed Assertion",
+        "note": "signature_placement check failed. The Response signature itself verified against the configured IdP certificate."
+      }
+    ],
+    "fix": "Keep the SP requirement for a signed Assertion. In the Entra enterprise application, open Single sign-on, then SAML Certificates, then Edit. Set Signing Option to \"Sign SAML response and assertion\". Entra's default is to sign only the response. Save, then capture a new response and re-validate. The other checks (status, issuer, destination, InResponseTo, audience, recipient, time window, NameID, attributes, certificate) all passed. Don't relax the SP to accept a response-only signature, because that would weaken assertion integrity.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "SAML_SIGNATURE_INVALID",
+        "why_not": "signature_verify passed against idp_cert_pem. The problem is which element is signed, not whether the signature is valid."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T01:19:43.078329-05:00",
+  "duration_ms": 12349,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1963,
+    "cache_creation_input_tokens": 5212,
+    "cache_read_input_tokens": 24043
+  },
+  "cost_usd": 0.0428903,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1963,
+      "cacheReadInputTokens": 24043,
+      "cacheCreationInputTokens": 5212,
+      "costUSD": 0.0428903,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "envelope": {
+    "duration_api_ms": 12237,
+    "stop_reason": "tool_use",
+    "session_id": "1a50cfa4-3279-40af-a154-5e28e6a22327",
+    "total_cost_usd": 0.0428903,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 5212,
+      "cache_read_input_tokens": 24043,
+      "output_tokens": 1963,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 5212,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 507,
+          "cache_read_input_tokens": 13167,
+          "cache_creation_input_tokens": 2921,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2921
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1963,
+        "cacheReadInputTokens": 24043,
+        "cacheCreationInputTokens": 5212,
+        "webSearchRequests": 0,
+        "costUSD": 0.0428903,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 5212,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED\",\"confidence\":0.97,\"evidence\":[{\"path\":\"/Response/Assertion/Signature\",\"actual\":\"Response signed, Assertion unsigned\",\"expected\":\"signed Assertion\",\"note\":\"signature_placement check failed. The Response signature itself verified against the configured IdP certificate.\"}],\"fix\":\"Keep the SP requirement for a signed Assertion. In the Entra enterprise application, open Single sign-on, then SAML Certificates, then Edit. Set Signing Option to \\\"Sign SAML response and assertion\\\". Entra's default is to sign only the response. Save, then capture a new response and re-validate. The other checks (status, issuer, destination, InResponseTo, audience, recipient, time window, NameID, attributes, certificate) all passed. Don't relax the SP to accept a response-only signature, because that would weaken assertion integrity.\",\"alternatives\":[{\"code\":\"SAML_SIGNATURE_INVALID\",\"why_not\":\"signature_verify passed against idp_cert_pem. The problem is which element is signed, not whether the signature is valid.\"}]}",
+    "structured_output": {
+      "root_cause_code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+      "confidence": 0.97,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Signature",
+          "actual": "Response signed, Assertion unsigned",
+          "expected": "signed Assertion",
+          "note": "signature_placement check failed. The Response signature itself verified against the configured IdP certificate."
+        }
+      ],
+      "fix": "Keep the SP requirement for a signed Assertion. In the Entra enterprise application, open Single sign-on, then SAML Certificates, then Edit. Set Signing Option to \"Sign SAML response and assertion\". Entra's default is to sign only the response. Save, then capture a new response and re-validate. The other checks (status, issuer, destination, InResponseTo, audience, recipient, time window, NameID, attributes, certificate) all passed. Don't relax the SP to accept a response-only signature, because that would weaken assertion integrity.",
+      "alternatives": [
+        {
+          "code": "SAML_SIGNATURE_INVALID",
+          "why_not": "signature_verify passed against idp_cert_pem. The problem is which element is signed, not whether the signature is valid."
+        }
+      ]
+    },
+    "ttft_ms": 8152,
+    "type": "result",
+    "duration_ms": 12349,
+    "uuid": "2c2eeba7-ab18-49cc-aaea-4f59ce1358b8",
+    "ttft_stream_ms": 1746,
+    "time_to_request_ms": 102,
+    "first_content_frame_ms": 1746,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

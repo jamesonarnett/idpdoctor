@@ -1,0 +1,13 @@
+{
+  "code": "HEALTHY",
+  "posture_codes": [
+    "POSTURE_VALIDITY_WINDOW_TOO_LONG"
+  ],
+  "evidence_path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+  "fix_keys": [
+    "shorten",
+    "assertion",
+    "token",
+    "lifetimes"
+  ]
+}

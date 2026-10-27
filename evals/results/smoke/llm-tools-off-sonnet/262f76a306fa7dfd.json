@@ -1,0 +1,300 @@
+{
+  "case_id": "cert_expired_or_weak-00",
+  "case_hash": "262f76a306fa7dfd",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "CERT_EXPIRED_OR_WEAK",
+    "posture_codes": [],
+    "evidence_path": "/Signature/KeyInfo/X509Data/X509Certificate/PublicKey",
+    "fix_keys": [
+      "rotate",
+      "signing",
+      "certificate",
+      "generate"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "cert_expired_or_weak-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "cert_weak_key",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "262f76a306fa7dfd"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.6,
+    "evidence": [
+      {
+        "path": "/Response/Issuer",
+        "actual": "https://idp.example.com/saml",
+        "expected": "https://idp.example.com/saml"
+      },
+      {
+        "path": "/Response/Status/StatusCode/@Value",
+        "actual": "urn:oasis:names:tc:SAML:2.0:status:Success"
+      },
+      {
+        "path": "/Response/@Destination",
+        "actual": "https://sp.example.com/saml/acs",
+        "expected": "https://sp.example.com/saml/acs"
+      },
+      {
+        "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@InResponseTo",
+        "actual": "_req_1234567890abcdef",
+        "expected": "_req_1234567890abcdef"
+      },
+      {
+        "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+        "actual": "https://sp.example.com/saml/metadata",
+        "expected": "https://sp.example.com/saml/metadata"
+      },
+      {
+        "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+        "actual": "2026-01-15T12:02:30.000Z",
+        "note": "now 12:00:00Z is inside the window (NotBefore 11:57:30Z)"
+      },
+      {
+        "path": "/Response/Assertion/Signature/SignedInfo/Reference/@URI",
+        "actual": "#_assert_a289ac",
+        "note": "assertion is signed with rsa-sha256 and sha256 digest; embedded cert matches the configured IdP cert"
+      },
+      {
+        "path": "/Response/Assertion/Subject/NameID/@Format",
+        "actual": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress"
+      },
+      {
+        "path": "/Response/Assertion/AttributeStatement/Attribute/@Name",
+        "actual": "email, firstName, groups",
+        "note": "both required attributes are present and non-empty"
+      },
+      {
+        "path": "idp_cert_pem",
+        "actual": "1024-bit RSA public key (subject says weak 1024-bit IdP)",
+        "note": "weak key size, valid 2026-01-01 to 2126"
+      }
+    ],
+    "fix": "All checks line up, so no fault fix is needed. The IdP's signing key is 1024-bit RSA, which is weak. Ask the IdP to rotate to an RSA key of at least 2048 bits (or ECDSA P-256) with SHA-256 or stronger, then update the pinned certificate in the SP config. Keep trusting only the configured certificate, not the one embedded in the message. Keep clock skew at 5 minutes or less.",
+    "posture_codes": [
+      "POSTURE_WEAK_ALGORITHM"
+    ],
+    "alternatives": [
+      {
+        "code": "CERT_EXPIRED_OR_WEAK",
+        "why_not": "The certificate is in date and parses. The 1024-bit key is a posture warning, and no validator reported a failure. A policy that rejects keys under 2048 bits would make this the cause."
+      },
+      {
+        "code": "SAML_SIGNATURE_INVALID",
+        "why_not": "I could not run cryptographic verification here. The reference, digest and certificate match the configured values, and nothing points to a failure."
+      }
+    ],
+    "questions": [
+      "Does your SP policy reject RSA keys under 2048 bits? If so, the real failure is the weak certificate, not a validation fault.",
+      "What error did the SP actually return? No symptom was given."
+    ]
+  },
+  "started": "2026-10-27T01:14:09.158477-05:00",
+  "duration_ms": 12126,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1683,
+    "cache_creation_input_tokens": 6199,
+    "cache_read_input_tokens": 1661
+  },
+  "cost_usd": 0.0417961,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1683,
+      "cacheReadInputTokens": 1661,
+      "cacheCreationInputTokens": 6199,
+      "costUSD": 0.0417961,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [
+    "/Response/Assertion/Signature/SignedInfo/Reference/@URI",
+    "/Response/Assertion/AttributeStatement/Attribute/@Name",
+    "idp_cert_pem"
+  ],
+  "valid_citations": 7,
+  "envelope": {
+    "duration_api_ms": 12005,
+    "stop_reason": "tool_use",
+    "session_id": "a6d079dd-18a0-4e92-89f0-a28481219e8d",
+    "total_cost_usd": 0.0417961,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6199,
+      "cache_read_input_tokens": 1661,
+      "output_tokens": 1683,
+      "output_tokens_details": {
+        "thinking_tokens": 422
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6199,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1683,
+          "cache_read_input_tokens": 1661,
+          "cache_creation_input_tokens": 6199,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 6199
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1683,
+        "cacheReadInputTokens": 1661,
+        "cacheCreationInputTokens": 6199,
+        "webSearchRequests": 0,
+        "costUSD": 0.0417961,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 422,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6199,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.6,\"evidence\":[{\"path\":\"/Response/Issuer\",\"actual\":\"https://idp.example.com/saml\",\"expected\":\"https://idp.example.com/saml\"},{\"path\":\"/Response/Status/StatusCode/@Value\",\"actual\":\"urn:oasis:names:tc:SAML:2.0:status:Success\"},{\"path\":\"/Response/@Destination\",\"actual\":\"https://sp.example.com/saml/acs\",\"expected\":\"https://sp.example.com/saml/acs\"},{\"path\":\"/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@InResponseTo\",\"actual\":\"_req_1234567890abcdef\",\"expected\":\"_req_1234567890abcdef\"},{\"path\":\"/Response/Assertion/Conditions/AudienceRestriction/Audience\",\"actual\":\"https://sp.example.com/saml/metadata\",\"expected\":\"https://sp.example.com/saml/metadata\"},{\"path\":\"/Response/Assertion/Conditions/@NotOnOrAfter\",\"actual\":\"2026-01-15T12:02:30.000Z\",\"note\":\"now 12:00:00Z is inside the window (NotBefore 11:57:30Z)\"},{\"path\":\"/Response/Assertion/Signature/SignedInfo/Reference/@URI\",\"actual\":\"#_assert_a289ac\",\"note\":\"assertion is signed with rsa-sha256 and sha256 digest; embedded cert matches the configured IdP cert\"},{\"path\":\"/Response/Assertion/Subject/NameID/@Format\",\"actual\":\"urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress\"},{\"path\":\"/Response/Assertion/AttributeStatement/Attribute/@Name\",\"actual\":\"email, firstName, groups\",\"note\":\"both required attributes are present and non-empty\"},{\"path\":\"idp_cert_pem\",\"actual\":\"1024-bit RSA public key (subject says weak 1024-bit IdP)\",\"note\":\"weak key size, valid 2026-01-01 to 2126\"}],\"fix\":\"All checks line up, so no fault fix is needed. The IdP's signing key is 1024-bit RSA, which is weak. Ask the IdP to rotate to an RSA key of at least 2048 bits (or ECDSA P-256) with SHA-256 or stronger, then update the pinned certificate in the SP config. Keep trusting only the configured certificate, not the one embedded in the message. Keep clock skew at 5 minutes or less.\",\"posture_codes\":[\"POSTURE_WEAK_ALGORITHM\"],\"alternatives\":[{\"code\":\"CERT_EXPIRED_OR_WEAK\",\"why_not\":\"The certificate is in date and parses. The 1024-bit key is a posture warning, and no validator reported a failure. A policy that rejects keys under 2048 bits would make this the cause.\"},{\"code\":\"SAML_SIGNATURE_INVALID\",\"why_not\":\"I could not run cryptographic verification here. The reference, digest and certificate match the configured values, and nothing points to a failure.\"}],\"questions\":[\"Does your SP policy reject RSA keys under 2048 bits? If so, the real failure is the weak certificate, not a validation fault.\",\"What error did the SP actually return? No symptom was given.\"]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.6,
+      "evidence": [
+        {
+          "path": "/Response/Issuer",
+          "actual": "https://idp.example.com/saml",
+          "expected": "https://idp.example.com/saml"
+        },
+        {
+          "path": "/Response/Status/StatusCode/@Value",
+          "actual": "urn:oasis:names:tc:SAML:2.0:status:Success"
+        },
+        {
+          "path": "/Response/@Destination",
+          "actual": "https://sp.example.com/saml/acs",
+          "expected": "https://sp.example.com/saml/acs"
+        },
+        {
+          "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@InResponseTo",
+          "actual": "_req_1234567890abcdef",
+          "expected": "_req_1234567890abcdef"
+        },
+        {
+          "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+          "actual": "https://sp.example.com/saml/metadata",
+          "expected": "https://sp.example.com/saml/metadata"
+        },
+        {
+          "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+          "actual": "2026-01-15T12:02:30.000Z",
+          "note": "now 12:00:00Z is inside the window (NotBefore 11:57:30Z)"
+        },
+        {
+          "path": "/Response/Assertion/Signature/SignedInfo/Reference/@URI",
+          "actual": "#_assert_a289ac",
+          "note": "assertion is signed with rsa-sha256 and sha256 digest; embedded cert matches the configured IdP cert"
+        },
+        {
+          "path": "/Response/Assertion/Subject/NameID/@Format",
+          "actual": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress"
+        },
+        {
+          "path": "/Response/Assertion/AttributeStatement/Attribute/@Name",
+          "actual": "email, firstName, groups",
+          "note": "both required attributes are present and non-empty"
+        },
+        {
+          "path": "idp_cert_pem",
+          "actual": "1024-bit RSA public key (subject says weak 1024-bit IdP)",
+          "note": "weak key size, valid 2026-01-01 to 2126"
+        }
+      ],
+      "fix": "All checks line up, so no fault fix is needed. The IdP's signing key is 1024-bit RSA, which is weak. Ask the IdP to rotate to an RSA key of at least 2048 bits (or ECDSA P-256) with SHA-256 or stronger, then update the pinned certificate in the SP config. Keep trusting only the configured certificate, not the one embedded in the message. Keep clock skew at 5 minutes or less.",
+      "posture_codes": [
+        "POSTURE_WEAK_ALGORITHM"
+      ],
+      "alternatives": [
+        {
+          "code": "CERT_EXPIRED_OR_WEAK",
+          "why_not": "The certificate is in date and parses. The 1024-bit key is a posture warning, and no validator reported a failure. A policy that rejects keys under 2048 bits would make this the cause."
+        },
+        {
+          "code": "SAML_SIGNATURE_INVALID",
+          "why_not": "I could not run cryptographic verification here. The reference, digest and certificate match the configured values, and nothing points to a failure."
+        }
+      ],
+      "questions": [
+        "Does your SP policy reject RSA keys under 2048 bits? If so, the real failure is the weak certificate, not a validation fault.",
+        "What error did the SP actually return? No symptom was given."
+      ]
+    },
+    "ttft_ms": 5401,
+    "type": "result",
+    "duration_ms": 12126,
+    "uuid": "f130eacc-5aeb-476d-806b-1e57682f998f",
+    "ttft_stream_ms": 2146,
+    "time_to_request_ms": 120,
+    "first_content_frame_ms": 2146,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

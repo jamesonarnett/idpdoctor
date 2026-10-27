@@ -1,0 +1,1 @@
+HS256 id_token from an OP that publishes only RSA keys.

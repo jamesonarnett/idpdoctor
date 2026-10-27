@@ -1,0 +1,54 @@
+{
+  "case_id": "oidc_discovery_doc_invalid-00",
+  "case_hash": "8411e25b47973bd0",
+  "arm": "rules",
+  "label": {
+    "code": "OIDC_DISCOVERY_DOC_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/discovery/token_endpoint",
+    "fix_keys": [
+      "point",
+      "canonical"
+    ]
+  },
+  "kind": "oidc_discovery",
+  "meta": {
+    "id": "oidc_discovery_doc_invalid-00",
+    "kind": "oidc_discovery",
+    "mutator": "discovery_http_endpoint",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "8411e25b47973bd0"
+  },
+  "output": {
+    "root_cause_code": "OIDC_DISCOVERY_DOC_INVALID",
+    "confidence": 1,
+    "evidence": [
+      {
+        "path": "/discovery/token_endpoint",
+        "actual": "http://login.example.com/tenant-1/oauth2/v2.0/token",
+        "expected": "an https:// URL",
+        "note": "OIDC Discovery 3 requires https for the issuer and endpoints"
+      }
+    ],
+    "fix": "Point the SP at the OP's canonical /.well-known/openid-configuration URL for the correct tenant; if the OP's document is non-conformant, configure the endpoints explicitly rather than guessing.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T01:14:08.930769-05:00",
+  "duration_ms": 0,
+  "tool_calls": 0,
+  "num_turns": 0,
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0
+  },
+  "cost_usd": 0,
+  "hallucinated": [],
+  "valid_citations": 1
+}

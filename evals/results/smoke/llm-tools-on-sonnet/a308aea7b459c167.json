@@ -1,0 +1,186 @@
+{
+  "case_id": "jwt_kid_not_found_in_jwks-00",
+  "case_hash": "a308aea7b459c167",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_KID_NOT_FOUND_IN_JWKS",
+    "posture_codes": [],
+    "evidence_path": "/header/kid",
+    "fix_keys": [
+      "refresh",
+      "jwks_uri",
+      "rotate"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_kid_not_found_in_jwks-00",
+    "kind": "jwt",
+    "mutator": "jwt_kid_unknown",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "a308aea7b459c167"
+  },
+  "output": {
+    "root_cause_code": "JWT_KID_NOT_FOUND_IN_JWKS",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/header/kid",
+        "actual": "rotated-key-9",
+        "expected": "one of: test-key-1",
+        "note": "kid rotated-key-9 not present in the cached JWKS (keys rotated or wrong tenant)"
+      }
+    ],
+    "fix": "Refresh the JWKS from the OP's jwks_uri (the discovery document's jwks_uri) and re-validate the signature against the key that matches the token's kid. Make the SP re-fetch the JWKS (rate-limited) when it sees an unknown kid, and cache with a bounded TTL so future rollovers are picked up automatically. Confirm the SP fetches keys from the same tenant and issuer that minted the token. Keep signature validation on and the algorithm allow-list unchanged. Don't pin or hand-copy a key, and don't skip verification.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": [
+      "access_token (optional): supply it to run the at_hash check, which was skipped"
+    ]
+  },
+  "started": "2026-10-27T01:17:24.670987-05:00",
+  "duration_ms": 11885,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1173,
+    "cache_creation_input_tokens": 3449,
+    "cache_read_input_tokens": 23260
+  },
+  "cost_usd": 0.02786,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1173,
+      "cacheReadInputTokens": 23260,
+      "cacheCreationInputTokens": 3449,
+      "costUSD": 0.02786,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "envelope": {
+    "duration_api_ms": 11783,
+    "stop_reason": "tool_use",
+    "session_id": "df56aa05-7620-4cbb-afd6-b3cfb1b107f9",
+    "total_cost_usd": 0.02786,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3449,
+      "cache_read_input_tokens": 23260,
+      "output_tokens": 1173,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3449,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 481,
+          "cache_read_input_tokens": 12384,
+          "cache_creation_input_tokens": 1941,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1941
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1173,
+        "cacheReadInputTokens": 23260,
+        "cacheCreationInputTokens": 3449,
+        "webSearchRequests": 0,
+        "costUSD": 0.02786,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3449,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"JWT_KID_NOT_FOUND_IN_JWKS\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/header/kid\",\"actual\":\"rotated-key-9\",\"expected\":\"one of: test-key-1\",\"note\":\"kid rotated-key-9 not present in the cached JWKS (keys rotated or wrong tenant)\"}],\"fix\":\"Refresh the JWKS from the OP's jwks_uri (the discovery document's jwks_uri) and re-validate the signature against the key that matches the token's kid. Make the SP re-fetch the JWKS (rate-limited) when it sees an unknown kid, and cache with a bounded TTL so future rollovers are picked up automatically. Confirm the SP fetches keys from the same tenant and issuer that minted the token. Keep signature validation on and the algorithm allow-list unchanged. Don't pin or hand-copy a key, and don't skip verification.\",\"alternatives\":[],\"questions\":[\"access_token (optional): supply it to run the at_hash check, which was skipped\"]}",
+    "structured_output": {
+      "root_cause_code": "JWT_KID_NOT_FOUND_IN_JWKS",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/header/kid",
+          "actual": "rotated-key-9",
+          "expected": "one of: test-key-1",
+          "note": "kid rotated-key-9 not present in the cached JWKS (keys rotated or wrong tenant)"
+        }
+      ],
+      "fix": "Refresh the JWKS from the OP's jwks_uri (the discovery document's jwks_uri) and re-validate the signature against the key that matches the token's kid. Make the SP re-fetch the JWKS (rate-limited) when it sees an unknown kid, and cache with a bounded TTL so future rollovers are picked up automatically. Confirm the SP fetches keys from the same tenant and issuer that minted the token. Keep signature validation on and the algorithm allow-list unchanged. Don't pin or hand-copy a key, and don't skip verification.",
+      "alternatives": [],
+      "questions": [
+        "access_token (optional): supply it to run the at_hash check, which was skipped"
+      ]
+    },
+    "ttft_ms": 5933,
+    "type": "result",
+    "duration_ms": 11885,
+    "uuid": "e8a53cd6-032d-4916-b898-331d7bf83f4d",
+    "ttft_stream_ms": 2880,
+    "time_to_request_ms": 91,
+    "first_content_frame_ms": 2881,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,205 @@
+{
+  "case_id": "posture_expired_cert_accepted-00",
+  "case_hash": "3519ef2a514ea63c",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_EXPIRED_CERT_ACCEPTED"
+    ],
+    "evidence_path": "/Signature/KeyInfo/X509Data/X509Certificate/NotAfter",
+    "fix_keys": [
+      "rotate",
+      "signing",
+      "certificate",
+      "configure"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_expired_cert_accepted-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "posture_expired_cert",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "3519ef2a514ea63c"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.85,
+    "evidence": [
+      {
+        "path": "/Signature/KeyInfo/X509Data/X509Certificate/NotAfter",
+        "actual": "2026-01-14T12:00:00Z",
+        "expected": "\u003e 2026-01-15T12:00:00Z",
+        "note": "The signature verifies against the configured idp_cert_pem, but that certificate expired the day before the evaluation time. The SP is accepting an expired key."
+      }
+    ],
+    "fix": "Rotate the IdP signing certificate. Generate a new one in the IdP and publish updated metadata. Install the new certificate on the SP before the IdP activates it. Use RSA-2048 or larger with SHA-256. Configure the SP to reject expired signing certificates, and add expiry monitoring or alerting on the certificate NotAfter date. Don't work around this by skipping validation or trusting the certificate embedded in the message.",
+    "posture_codes": [
+      "POSTURE_EXPIRED_CERT_ACCEPTED"
+    ],
+    "alternatives": [
+      {
+        "code": "CERT_EXPIRED_OR_WEAK",
+        "why_not": "The validator lists this as a fault finding, but the assertion verifies and every other check passes. The diagnose summary treats the expired certificate as a posture issue (works, unsafe) and returns no top cause."
+      }
+    ],
+    "questions": [
+      "The validation used now=2026-01-15T12:00:00Z, but the current date is 2026-10-27. Re-run with the current time to confirm the assertion's time window and the certificate's expiry (about nine months ago, not last week)."
+    ]
+  },
+  "started": "2026-10-27T01:18:26.775339-05:00",
+  "duration_ms": 16415,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2368,
+    "cache_creation_input_tokens": 5272,
+    "cache_read_input_tokens": 24024
+  },
+  "cost_usd": 0.047178399999999995,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2368,
+      "cacheReadInputTokens": 24024,
+      "cacheCreationInputTokens": 5272,
+      "costUSD": 0.047178399999999995,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "envelope": {
+    "duration_api_ms": 16351,
+    "stop_reason": "tool_use",
+    "session_id": "f590d868-e17f-4927-ac6b-b8a9e107500c",
+    "total_cost_usd": 0.047178399999999995,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 5272,
+      "cache_read_input_tokens": 24024,
+      "output_tokens": 2368,
+      "output_tokens_details": {
+        "thinking_tokens": 217
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 5272,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 931,
+          "cache_read_input_tokens": 13148,
+          "cache_creation_input_tokens": 3000,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 3000
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2368,
+        "cacheReadInputTokens": 24024,
+        "cacheCreationInputTokens": 5272,
+        "webSearchRequests": 0,
+        "costUSD": 0.047178399999999995,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 217,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 5272,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.85,\"posture_codes\":[\"POSTURE_EXPIRED_CERT_ACCEPTED\"],\"evidence\":[{\"path\":\"/Signature/KeyInfo/X509Data/X509Certificate/NotAfter\",\"actual\":\"2026-01-14T12:00:00Z\",\"expected\":\"\u003e 2026-01-15T12:00:00Z\",\"note\":\"The signature verifies against the configured idp_cert_pem, but that certificate expired the day before the evaluation time. The SP is accepting an expired key.\"}],\"fix\":\"Rotate the IdP signing certificate. Generate a new one in the IdP and publish updated metadata. Install the new certificate on the SP before the IdP activates it. Use RSA-2048 or larger with SHA-256. Configure the SP to reject expired signing certificates, and add expiry monitoring or alerting on the certificate NotAfter date. Don't work around this by skipping validation or trusting the certificate embedded in the message.\",\"alternatives\":[{\"code\":\"CERT_EXPIRED_OR_WEAK\",\"why_not\":\"The validator lists this as a fault finding, but the assertion verifies and every other check passes. The diagnose summary treats the expired certificate as a posture issue (works, unsafe) and returns no top cause.\"}],\"questions\":[\"The validation used now=2026-01-15T12:00:00Z, but the current date is 2026-10-27. Re-run with the current time to confirm the assertion's time window and the certificate's expiry (about nine months ago, not last week).\"]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.85,
+      "posture_codes": [
+        "POSTURE_EXPIRED_CERT_ACCEPTED"
+      ],
+      "evidence": [
+        {
+          "path": "/Signature/KeyInfo/X509Data/X509Certificate/NotAfter",
+          "actual": "2026-01-14T12:00:00Z",
+          "expected": "\u003e 2026-01-15T12:00:00Z",
+          "note": "The signature verifies against the configured idp_cert_pem, but that certificate expired the day before the evaluation time. The SP is accepting an expired key."
+        }
+      ],
+      "fix": "Rotate the IdP signing certificate. Generate a new one in the IdP and publish updated metadata. Install the new certificate on the SP before the IdP activates it. Use RSA-2048 or larger with SHA-256. Configure the SP to reject expired signing certificates, and add expiry monitoring or alerting on the certificate NotAfter date. Don't work around this by skipping validation or trusting the certificate embedded in the message.",
+      "alternatives": [
+        {
+          "code": "CERT_EXPIRED_OR_WEAK",
+          "why_not": "The validator lists this as a fault finding, but the assertion verifies and every other check passes. The diagnose summary treats the expired certificate as a posture issue (works, unsafe) and returns no top cause."
+        }
+      ],
+      "questions": [
+        "The validation used now=2026-01-15T12:00:00Z, but the current date is 2026-10-27. Re-run with the current time to confirm the assertion's time window and the certificate's expiry (about nine months ago, not last week)."
+      ]
+    },
+    "ttft_ms": 8932,
+    "type": "result",
+    "duration_ms": 16415,
+    "uuid": "543c2413-b1f0-463a-8efd-7178844681ae",
+    "ttft_stream_ms": 2452,
+    "time_to_request_ms": 52,
+    "first_content_frame_ms": 2452,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

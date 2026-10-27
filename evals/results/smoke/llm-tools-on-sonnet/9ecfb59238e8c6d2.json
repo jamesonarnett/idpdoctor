@@ -1,0 +1,222 @@
+{
+  "case_id": "posture_parser_differential_exposure-00",
+  "case_hash": "9ecfb59238e8c6d2",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_PARSER_DIFFERENTIAL_EXPOSURE"
+    ],
+    "evidence_path": "/Response/Assertion/Subject/NameID",
+    "fix_keys": [
+      "reject",
+      "doctype",
+      "entity",
+      "declarations"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_parser_differential_exposure-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "posture_comment_in_nameid",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "9ecfb59238e8c6d2"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Subject/NameID",
+        "actual": "XML comment inside NameID",
+        "note": "Parser-differential risk: different XML parsers can read the NameID value differently, which is the basis of known SAML auth-bypass attacks."
+      },
+      {
+        "path": "/Response/Assertion/Signature",
+        "actual": "Assertion signed, verified against idp_cert_pem",
+        "note": "signature_present, signature_placement and signature_verify all pass."
+      },
+      {
+        "path": "/Response/Assertion/Conditions",
+        "actual": "valid at 2026-01-15T12:00:00Z",
+        "note": "time_window passes. This was evaluated at the supplied 'now', not at today's date."
+      }
+    ],
+    "fix": "The response validates, so this isn't a fault. The posture warning still needs fixing. Reject DOCTYPE and entity declarations before parsing. Reject, or strip before signature verification, any XML comment inside NameID and AttributeValue. Use the same parser and the same DOM for signature verification and for extracting the NameID. Ask the IdP to stop emitting comments in NameID. Keep signature validation, audience, recipient and time checks enabled.",
+    "posture_codes": [
+      "POSTURE_PARSER_DIFFERENTIAL_EXPOSURE"
+    ],
+    "alternatives": [
+      {
+        "code": "SAML_STRUCTURE_INVALID",
+        "why_not": "The only structure finding is a posture warning about a comment in NameID. No wrapping or duplicate-element evidence was reported, and the signature verifies."
+      }
+    ],
+    "questions": [
+      "The check used now=2026-01-15T12:00:00Z (a replayed capture). Is a live-time failure expected? If so, please share the real failure time or the error message."
+    ]
+  },
+  "started": "2026-10-27T01:18:27.682497-05:00",
+  "duration_ms": 14410,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2145,
+    "cache_creation_input_tokens": 4756,
+    "cache_read_input_tokens": 24018
+  },
+  "cost_usd": 0.0428838,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2145,
+      "cacheReadInputTokens": 24018,
+      "cacheCreationInputTokens": 4756,
+      "costUSD": 0.0428838,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "envelope": {
+    "duration_api_ms": 14317,
+    "stop_reason": "tool_use",
+    "session_id": "a5ad7c15-60bb-4ec3-8f79-34ca1134c6ce",
+    "total_cost_usd": 0.0428838,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 4756,
+      "cache_read_input_tokens": 24018,
+      "output_tokens": 2145,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 4756,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 734,
+          "cache_read_input_tokens": 13142,
+          "cache_creation_input_tokens": 2490,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2490
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2145,
+        "cacheReadInputTokens": 24018,
+        "cacheCreationInputTokens": 4756,
+        "webSearchRequests": 0,
+        "costUSD": 0.0428838,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 4756,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/Response/Assertion/Subject/NameID\",\"actual\":\"XML comment inside NameID\",\"note\":\"Parser-differential risk: different XML parsers can read the NameID value differently, which is the basis of known SAML auth-bypass attacks.\"},{\"path\":\"/Response/Assertion/Signature\",\"actual\":\"Assertion signed, verified against idp_cert_pem\",\"note\":\"signature_present, signature_placement and signature_verify all pass.\"},{\"path\":\"/Response/Assertion/Conditions\",\"actual\":\"valid at 2026-01-15T12:00:00Z\",\"note\":\"time_window passes. This was evaluated at the supplied 'now', not at today's date.\"}],\"fix\":\"The response validates, so this isn't a fault. The posture warning still needs fixing. Reject DOCTYPE and entity declarations before parsing. Reject, or strip before signature verification, any XML comment inside NameID and AttributeValue. Use the same parser and the same DOM for signature verification and for extracting the NameID. Ask the IdP to stop emitting comments in NameID. Keep signature validation, audience, recipient and time checks enabled.\",\"posture_codes\":[\"POSTURE_PARSER_DIFFERENTIAL_EXPOSURE\"],\"questions\":[\"The check used now=2026-01-15T12:00:00Z (a replayed capture). Is a live-time failure expected? If so, please share the real failure time or the error message.\"],\"alternatives\":[{\"code\":\"SAML_STRUCTURE_INVALID\",\"why_not\":\"The only structure finding is a posture warning about a comment in NameID. No wrapping or duplicate-element evidence was reported, and the signature verifies.\"}]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Subject/NameID",
+          "actual": "XML comment inside NameID",
+          "note": "Parser-differential risk: different XML parsers can read the NameID value differently, which is the basis of known SAML auth-bypass attacks."
+        },
+        {
+          "path": "/Response/Assertion/Signature",
+          "actual": "Assertion signed, verified against idp_cert_pem",
+          "note": "signature_present, signature_placement and signature_verify all pass."
+        },
+        {
+          "path": "/Response/Assertion/Conditions",
+          "actual": "valid at 2026-01-15T12:00:00Z",
+          "note": "time_window passes. This was evaluated at the supplied 'now', not at today's date."
+        }
+      ],
+      "fix": "The response validates, so this isn't a fault. The posture warning still needs fixing. Reject DOCTYPE and entity declarations before parsing. Reject, or strip before signature verification, any XML comment inside NameID and AttributeValue. Use the same parser and the same DOM for signature verification and for extracting the NameID. Ask the IdP to stop emitting comments in NameID. Keep signature validation, audience, recipient and time checks enabled.",
+      "posture_codes": [
+        "POSTURE_PARSER_DIFFERENTIAL_EXPOSURE"
+      ],
+      "questions": [
+        "The check used now=2026-01-15T12:00:00Z (a replayed capture). Is a live-time failure expected? If so, please share the real failure time or the error message."
+      ],
+      "alternatives": [
+        {
+          "code": "SAML_STRUCTURE_INVALID",
+          "why_not": "The only structure finding is a posture warning about a comment in NameID. No wrapping or duplicate-element evidence was reported, and the signature verifies."
+        }
+      ]
+    },
+    "ttft_ms": 8080,
+    "type": "result",
+    "duration_ms": 14410,
+    "uuid": "357167c6-7df7-4be0-819b-61568c4372e3",
+    "ttft_stream_ms": 1986,
+    "time_to_request_ms": 88,
+    "first_content_frame_ms": 1986,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

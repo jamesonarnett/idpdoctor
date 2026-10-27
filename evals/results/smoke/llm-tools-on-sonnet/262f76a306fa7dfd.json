@@ -1,0 +1,192 @@
+{
+  "case_id": "cert_expired_or_weak-00",
+  "case_hash": "262f76a306fa7dfd",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "CERT_EXPIRED_OR_WEAK",
+    "posture_codes": [],
+    "evidence_path": "/Signature/KeyInfo/X509Data/X509Certificate/PublicKey",
+    "fix_keys": [
+      "rotate",
+      "signing",
+      "certificate",
+      "generate"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "cert_expired_or_weak-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "cert_weak_key",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "262f76a306fa7dfd"
+  },
+  "output": {
+    "root_cause_code": "CERT_EXPIRED_OR_WEAK",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/Signature/KeyInfo/X509Data/X509Certificate/PublicKey",
+        "actual": "RSA 1024 bits",
+        "expected": "RSA \u003e= 2048 bits",
+        "note": "cert_validity check failed. Every other check passed: status, issuer, destination, InResponseTo, signature, audience, recipient, time window, NameID, attributes and structure."
+      }
+    ],
+    "fix": "Have the IdP rotate its signing certificate to RSA-2048 or stronger with SHA-256. Publish the updated metadata, then install the new certificate on the SP as the trusted IdP certificate. Keep signature validation on and don't relax the key-size requirement. Don't trust the certificate embedded in the message.",
+    "posture_codes": [
+      "POSTURE_WEAK_ALGORITHM"
+    ],
+    "alternatives": [],
+    "questions": [
+      "The validation time was pinned to 2026-01-15T12:00:00Z. Is that the capture time? The certificate's validity period is wide, so expiry is not the issue at that time."
+    ]
+  },
+  "started": "2026-10-27T01:16:47.049893-05:00",
+  "duration_ms": 12951,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1599,
+    "cache_creation_input_tokens": 4378,
+    "cache_read_input_tokens": 23682
+  },
+  "cost_usd": 0.0358782,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1599,
+      "cacheReadInputTokens": 23682,
+      "cacheCreationInputTokens": 4378,
+      "costUSD": 0.0358782,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "envelope": {
+    "duration_api_ms": 12853,
+    "stop_reason": "tool_use",
+    "session_id": "399caf4a-e482-43b9-a6bf-016df8df1dae",
+    "total_cost_usd": 0.0358782,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 4378,
+      "cache_read_input_tokens": 23682,
+      "output_tokens": 1599,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 4378,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 523,
+          "cache_read_input_tokens": 12806,
+          "cache_creation_input_tokens": 2448,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2448
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1599,
+        "cacheReadInputTokens": 23682,
+        "cacheCreationInputTokens": 4378,
+        "webSearchRequests": 0,
+        "costUSD": 0.0358782,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 4378,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"CERT_EXPIRED_OR_WEAK\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/Signature/KeyInfo/X509Data/X509Certificate/PublicKey\",\"actual\":\"RSA 1024 bits\",\"expected\":\"RSA \u003e= 2048 bits\",\"note\":\"cert_validity check failed. Every other check passed: status, issuer, destination, InResponseTo, signature, audience, recipient, time window, NameID, attributes and structure.\"}],\"fix\":\"Have the IdP rotate its signing certificate to RSA-2048 or stronger with SHA-256. Publish the updated metadata, then install the new certificate on the SP as the trusted IdP certificate. Keep signature validation on and don't relax the key-size requirement. Don't trust the certificate embedded in the message.\",\"alternatives\":[],\"posture_codes\":[\"POSTURE_WEAK_ALGORITHM\"],\"questions\":[\"The validation time was pinned to 2026-01-15T12:00:00Z. Is that the capture time? The certificate's validity period is wide, so expiry is not the issue at that time.\"]}",
+    "structured_output": {
+      "root_cause_code": "CERT_EXPIRED_OR_WEAK",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/Signature/KeyInfo/X509Data/X509Certificate/PublicKey",
+          "actual": "RSA 1024 bits",
+          "expected": "RSA \u003e= 2048 bits",
+          "note": "cert_validity check failed. Every other check passed: status, issuer, destination, InResponseTo, signature, audience, recipient, time window, NameID, attributes and structure."
+        }
+      ],
+      "fix": "Have the IdP rotate its signing certificate to RSA-2048 or stronger with SHA-256. Publish the updated metadata, then install the new certificate on the SP as the trusted IdP certificate. Keep signature validation on and don't relax the key-size requirement. Don't trust the certificate embedded in the message.",
+      "alternatives": [],
+      "posture_codes": [
+        "POSTURE_WEAK_ALGORITHM"
+      ],
+      "questions": [
+        "The validation time was pinned to 2026-01-15T12:00:00Z. Is that the capture time? The certificate's validity period is wide, so expiry is not the issue at that time."
+      ]
+    },
+    "ttft_ms": 7540,
+    "type": "result",
+    "duration_ms": 12951,
+    "uuid": "16351f14-943a-4ecc-8f78-d6e4dea6fe42",
+    "ttft_stream_ms": 2520,
+    "time_to_request_ms": 89,
+    "first_content_frame_ms": 2520,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,220 @@
+{
+  "case_id": "oauth_redirect_uri_mismatch-00",
+  "case_hash": "0baa8d96a7d3eb51",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_REDIRECT_URI_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/request/redirect_uri",
+    "fix_keys": [
+      "register",
+      "exact",
+      "redirect",
+      "scheme"
+    ],
+    "needs": [
+      "registered_redirect_uris"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_redirect_uri_mismatch-00",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_redirect_uri_mismatch",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "0baa8d96a7d3eb51"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_REDIRECT_URI_MISMATCH",
+    "confidence": 0.98,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_request",
+        "note": "classified by vendor code AADSTS50011"
+      },
+      {
+        "path": "/request/redirect_uri",
+        "actual": "https://app.example.com/callback/",
+        "expected": "https://app.example.com/callback",
+        "note": "differs only by trailing slash"
+      },
+      {
+        "path": "/request/registered_redirect_uris",
+        "actual": "https://app.example.com/callback"
+      }
+    ],
+    "fix": "The client sent redirect_uri with a trailing slash (/callback/), but only /callback is registered. Exact string matching is required. Pick one form and use it everywhere. Either change the app to send https://app.example.com/callback, or register the trailing-slash form on the client. Send the identical value in both the authorize and token requests. Don't switch to wildcard or loose redirect matching.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+        "why_not": "The S256 verifier matches the challenge (pkce check passed)."
+      },
+      {
+        "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+        "why_not": "The client_config check passed. The public client uses the authorization_code grant with S256."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T01:17:51.437674-05:00",
+  "duration_ms": 11062,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 857,
+    "cache_creation_input_tokens": 3748,
+    "cache_read_input_tokens": 22964
+  },
+  "cost_usd": 0.025866399999999998,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 857,
+      "cacheReadInputTokens": 22964,
+      "cacheCreationInputTokens": 3748,
+      "costUSD": 0.025866399999999998,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "envelope": {
+    "duration_api_ms": 10941,
+    "stop_reason": "tool_use",
+    "session_id": "d31d2b03-8d1f-472c-93e3-748503bb46a2",
+    "total_cost_usd": 0.025866399999999998,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3748,
+      "cache_read_input_tokens": 22964,
+      "output_tokens": 857,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3748,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 547,
+          "cache_read_input_tokens": 12088,
+          "cache_creation_input_tokens": 2536,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2536
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 857,
+        "cacheReadInputTokens": 22964,
+        "cacheCreationInputTokens": 3748,
+        "webSearchRequests": 0,
+        "costUSD": 0.025866399999999998,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3748,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_REDIRECT_URI_MISMATCH\",\"confidence\":0.98,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"invalid_request\",\"note\":\"classified by vendor code AADSTS50011\"},{\"path\":\"/request/redirect_uri\",\"actual\":\"https://app.example.com/callback/\",\"expected\":\"https://app.example.com/callback\",\"note\":\"differs only by trailing slash\"},{\"path\":\"/request/registered_redirect_uris\",\"actual\":\"https://app.example.com/callback\"}],\"fix\":\"The client sent redirect_uri with a trailing slash (/callback/), but only /callback is registered. Exact string matching is required. Pick one form and use it everywhere. Either change the app to send https://app.example.com/callback, or register the trailing-slash form on the client. Send the identical value in both the authorize and token requests. Don't switch to wildcard or loose redirect matching.\",\"alternatives\":[{\"code\":\"OAUTH_PKCE_VERIFIER_MISMATCH\",\"why_not\":\"The S256 verifier matches the challenge (pkce check passed).\"},{\"code\":\"OAUTH_CLIENT_CONFIG_REJECTED\",\"why_not\":\"The client_config check passed. The public client uses the authorization_code grant with S256.\"}]}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_REDIRECT_URI_MISMATCH",
+      "confidence": 0.98,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "invalid_request",
+          "note": "classified by vendor code AADSTS50011"
+        },
+        {
+          "path": "/request/redirect_uri",
+          "actual": "https://app.example.com/callback/",
+          "expected": "https://app.example.com/callback",
+          "note": "differs only by trailing slash"
+        },
+        {
+          "path": "/request/registered_redirect_uris",
+          "actual": "https://app.example.com/callback"
+        }
+      ],
+      "fix": "The client sent redirect_uri with a trailing slash (/callback/), but only /callback is registered. Exact string matching is required. Pick one form and use it everywhere. Either change the app to send https://app.example.com/callback, or register the trailing-slash form on the client. Send the identical value in both the authorize and token requests. Don't switch to wildcard or loose redirect matching.",
+      "alternatives": [
+        {
+          "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+          "why_not": "The S256 verifier matches the challenge (pkce check passed)."
+        },
+        {
+          "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+          "why_not": "The client_config check passed. The public client uses the authorization_code grant with S256."
+        }
+      ]
+    },
+    "ttft_ms": 6012,
+    "type": "result",
+    "duration_ms": 11062,
+    "uuid": "50b5a0bb-8ab5-4437-9d09-546d28b4f48d",
+    "ttft_stream_ms": 4679,
+    "time_to_request_ms": 111,
+    "first_content_frame_ms": 4679,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

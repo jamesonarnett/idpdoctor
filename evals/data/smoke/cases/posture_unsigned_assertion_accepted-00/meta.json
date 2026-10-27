@@ -1,0 +1,10 @@
+{
+  "id": "posture_unsigned_assertion_accepted-00",
+  "kind": "saml_response",
+  "dialect": "entra",
+  "mutator": "posture_unsigned_assertion",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 0,
+  "hash": "680b09e16bc62e68"
+}

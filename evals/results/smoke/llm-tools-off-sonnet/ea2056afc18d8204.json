@@ -1,0 +1,229 @@
+{
+  "case_id": "oauth_invalid_grant_code-00",
+  "case_hash": "ea2056afc18d8204",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_INVALID_GRANT_CODE",
+    "posture_codes": [],
+    "evidence_path": "/redirect/error",
+    "fix_keys": [
+      "exchange",
+      "within",
+      "minutes",
+      "issuance"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_invalid_grant_code-00",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_invalid_grant_expired",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "ea2056afc18d8204"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_INVALID_GRANT_CODE",
+    "confidence": 0.7,
+    "evidence": [
+      {
+        "path": "/error",
+        "actual": "invalid_grant",
+        "note": "Authorization code rejected by the token endpoint"
+      },
+      {
+        "path": "/vendor_code",
+        "actual": "AADSTS70008",
+        "expected": "AADSTS54005 (as reported in the symptom)",
+        "note": "The captured artifact shows code expired due to inactivity, not the already-redeemed error the developer reported. Both are invalid-code failures."
+      },
+      {
+        "path": "/error_description",
+        "actual": "AADSTS70008: The provided authorization code or refresh token has expired due to inactivity. Send a new interactive authorization request for this user and resource."
+      }
+    ],
+    "fix": "Treat each authorization code as single-use and short-lived. Exchange it exactly once, immediately after the redirect arrives. Guard the callback against double submission, such as retries, page refreshes, prefetching, or parallel handlers. Do not retry a failed exchange with the same code. On invalid_grant, start a new interactive authorization request with a fresh state, nonce and PKCE pair (S256). Also check that the code is not being held in a queue or redeemed late.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+        "why_not": "The error is about expiry or redemption of the code, not a PKCE verifier failure. The error would be AADSTS501481 for a verifier mismatch."
+      },
+      {
+        "code": "OAUTH_REDIRECT_URI_MISMATCH",
+        "why_not": "No redirect_uri error is present, and the artifact has no redirect_uri to compare."
+      }
+    ],
+    "questions": [
+      "The symptom says AADSTS54005 (already redeemed), but the captured body shows AADSTS70008 (expired). Is this the same request, or was a different attempt captured?",
+      "Is the token exchange retried or run in more than one place, for example by a double callback or a prefetch?"
+    ]
+  },
+  "started": "2026-10-27T01:14:44.110955-05:00",
+  "duration_ms": 10731,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 776,
+    "cache_creation_input_tokens": 1234,
+    "cache_read_input_tokens": 3689
+  },
+  "cost_usd": 0.013068899999999998,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 776,
+      "cacheReadInputTokens": 3689,
+      "cacheCreationInputTokens": 1234,
+      "costUSD": 0.013068899999999998,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [
+    "/error",
+    "/vendor_code",
+    "/error_description"
+  ],
+  "valid_citations": 0,
+  "envelope": {
+    "duration_api_ms": 10614,
+    "stop_reason": "tool_use",
+    "session_id": "af3c770a-70ca-49c4-8494-b5416d6fa968",
+    "total_cost_usd": 0.013068899999999998,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1234,
+      "cache_read_input_tokens": 3689,
+      "output_tokens": 776,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1234,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 776,
+          "cache_read_input_tokens": 3689,
+          "cache_creation_input_tokens": 1234,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1234
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 776,
+        "cacheReadInputTokens": 3689,
+        "cacheCreationInputTokens": 1234,
+        "webSearchRequests": 0,
+        "costUSD": 0.013068899999999998,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1234,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_INVALID_GRANT_CODE\",\"confidence\":0.7,\"evidence\":[{\"path\":\"/error\",\"actual\":\"invalid_grant\",\"note\":\"Authorization code rejected by the token endpoint\"},{\"path\":\"/vendor_code\",\"actual\":\"AADSTS70008\",\"expected\":\"AADSTS54005 (as reported in the symptom)\",\"note\":\"The captured artifact shows code expired due to inactivity, not the already-redeemed error the developer reported. Both are invalid-code failures.\"},{\"path\":\"/error_description\",\"actual\":\"AADSTS70008: The provided authorization code or refresh token has expired due to inactivity. Send a new interactive authorization request for this user and resource.\"}],\"fix\":\"Treat each authorization code as single-use and short-lived. Exchange it exactly once, immediately after the redirect arrives. Guard the callback against double submission, such as retries, page refreshes, prefetching, or parallel handlers. Do not retry a failed exchange with the same code. On invalid_grant, start a new interactive authorization request with a fresh state, nonce and PKCE pair (S256). Also check that the code is not being held in a queue or redeemed late.\",\"alternatives\":[{\"code\":\"OAUTH_PKCE_VERIFIER_MISMATCH\",\"why_not\":\"The error is about expiry or redemption of the code, not a PKCE verifier failure. The error would be AADSTS501481 for a verifier mismatch.\"},{\"code\":\"OAUTH_REDIRECT_URI_MISMATCH\",\"why_not\":\"No redirect_uri error is present, and the artifact has no redirect_uri to compare.\"}],\"questions\":[\"The symptom says AADSTS54005 (already redeemed), but the captured body shows AADSTS70008 (expired). Is this the same request, or was a different attempt captured?\",\"Is the token exchange retried or run in more than one place, for example by a double callback or a prefetch?\"]}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_INVALID_GRANT_CODE",
+      "confidence": 0.7,
+      "evidence": [
+        {
+          "path": "/error",
+          "actual": "invalid_grant",
+          "note": "Authorization code rejected by the token endpoint"
+        },
+        {
+          "path": "/vendor_code",
+          "actual": "AADSTS70008",
+          "expected": "AADSTS54005 (as reported in the symptom)",
+          "note": "The captured artifact shows code expired due to inactivity, not the already-redeemed error the developer reported. Both are invalid-code failures."
+        },
+        {
+          "path": "/error_description",
+          "actual": "AADSTS70008: The provided authorization code or refresh token has expired due to inactivity. Send a new interactive authorization request for this user and resource."
+        }
+      ],
+      "fix": "Treat each authorization code as single-use and short-lived. Exchange it exactly once, immediately after the redirect arrives. Guard the callback against double submission, such as retries, page refreshes, prefetching, or parallel handlers. Do not retry a failed exchange with the same code. On invalid_grant, start a new interactive authorization request with a fresh state, nonce and PKCE pair (S256). Also check that the code is not being held in a queue or redeemed late.",
+      "alternatives": [
+        {
+          "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+          "why_not": "The error is about expiry or redemption of the code, not a PKCE verifier failure. The error would be AADSTS501481 for a verifier mismatch."
+        },
+        {
+          "code": "OAUTH_REDIRECT_URI_MISMATCH",
+          "why_not": "No redirect_uri error is present, and the artifact has no redirect_uri to compare."
+        }
+      ],
+      "questions": [
+        "The symptom says AADSTS54005 (already redeemed), but the captured body shows AADSTS70008 (expired). Is this the same request, or was a different attempt captured?",
+        "Is the token exchange retried or run in more than one place, for example by a double callback or a prefetch?"
+      ]
+    },
+    "ttft_ms": 10712,
+    "type": "result",
+    "duration_ms": 10731,
+    "uuid": "9be1318e-8b74-4a12-b7c2-08b909c672dc",
+    "ttft_stream_ms": 5482,
+    "time_to_request_ms": 115,
+    "first_content_frame_ms": 5482,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

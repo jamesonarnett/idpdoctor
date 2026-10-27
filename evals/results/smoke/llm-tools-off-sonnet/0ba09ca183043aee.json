@@ -1,0 +1,218 @@
+{
+  "case_id": "saml_destination_or_recipient_mismatch-00",
+  "case_hash": "0ba09ca183043aee",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_DESTINATION_OR_RECIPIENT_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/Response/@Destination",
+    "fix_keys": [
+      "application",
+      "reply",
+      "assertion",
+      "consumer"
+    ],
+    "needs": [
+      "acs_url"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_destination_or_recipient_mismatch-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "destination_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "0ba09ca183043aee"
+  },
+  "output": {
+    "root_cause_code": "SAML_DESTINATION_OR_RECIPIENT_MISMATCH",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/Response/@Destination",
+        "actual": "https://sp-staging.example.com/saml/acs",
+        "expected": "https://sp.example.com/saml/acs",
+        "note": "Response Destination is the staging host, not the configured ACS URL."
+      },
+      {
+        "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@Recipient",
+        "actual": "https://sp.example.com/saml/acs",
+        "expected": "https://sp.example.com/saml/acs",
+        "note": "Recipient matches the configured ACS, so the mismatch is on the Response Destination. The Recipient itself is fine."
+      }
+    ],
+    "fix": "The IdP is sending the response with Destination set to the staging ACS (https://sp-staging.example.com/saml/acs). Fix the IdP's configuration for this SP, so the ACS URL matches the SP's registered ACS (https://sp.example.com/saml/acs). Do this either by re-importing the SP metadata or by correcting the ACS URL in the IdP app. Alternatively, if this response is meant for staging, send it to the staging SP, whose configuration should list the staging ACS. Keep strict Destination and Recipient validation on the SP. Don't loosen the checks or add the staging URL to the production SP. The symptom text mentions Recipient. However, the Recipient value here matches, so also check that the GitHub-side ACS setting is the production URL.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "SAML_AUDIENCE_MISMATCH",
+        "why_not": "Audience matches the SP entity ID https://sp.example.com/saml/metadata."
+      },
+      {
+        "code": "SAML_SIGNATURE_INVALID",
+        "why_not": "The signature value is redacted so it can't be checked here. Nothing in the artifact suggests a failure, and the embedded cert matches the configured IdP cert."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T01:16:03.029722-05:00",
+  "duration_ms": 7996,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 821,
+    "cache_creation_input_tokens": 4858,
+    "cache_read_input_tokens": 3689
+  },
+  "cost_usd": 0.028014900000000002,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 821,
+      "cacheReadInputTokens": 3689,
+      "cacheCreationInputTokens": 4858,
+      "costUSD": 0.028014900000000002,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 2,
+  "envelope": {
+    "duration_api_ms": 7896,
+    "stop_reason": "tool_use",
+    "session_id": "131c7699-dc63-4842-8462-2194576c026d",
+    "total_cost_usd": 0.028014900000000002,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 4858,
+      "cache_read_input_tokens": 3689,
+      "output_tokens": 821,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 4858,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 821,
+          "cache_read_input_tokens": 3689,
+          "cache_creation_input_tokens": 4858,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 4858
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 821,
+        "cacheReadInputTokens": 3689,
+        "cacheCreationInputTokens": 4858,
+        "webSearchRequests": 0,
+        "costUSD": 0.028014900000000002,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 4858,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_DESTINATION_OR_RECIPIENT_MISMATCH\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/Response/@Destination\",\"actual\":\"https://sp-staging.example.com/saml/acs\",\"expected\":\"https://sp.example.com/saml/acs\",\"note\":\"Response Destination is the staging host, not the configured ACS URL.\"},{\"path\":\"/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@Recipient\",\"actual\":\"https://sp.example.com/saml/acs\",\"expected\":\"https://sp.example.com/saml/acs\",\"note\":\"Recipient matches the configured ACS, so the mismatch is on the Response Destination. The Recipient itself is fine.\"}],\"fix\":\"The IdP is sending the response with Destination set to the staging ACS (https://sp-staging.example.com/saml/acs). Fix the IdP's configuration for this SP, so the ACS URL matches the SP's registered ACS (https://sp.example.com/saml/acs). Do this either by re-importing the SP metadata or by correcting the ACS URL in the IdP app. Alternatively, if this response is meant for staging, send it to the staging SP, whose configuration should list the staging ACS. Keep strict Destination and Recipient validation on the SP. Don't loosen the checks or add the staging URL to the production SP. The symptom text mentions Recipient. However, the Recipient value here matches, so also check that the GitHub-side ACS setting is the production URL.\",\"alternatives\":[{\"code\":\"SAML_AUDIENCE_MISMATCH\",\"why_not\":\"Audience matches the SP entity ID https://sp.example.com/saml/metadata.\"},{\"code\":\"SAML_SIGNATURE_INVALID\",\"why_not\":\"The signature value is redacted so it can't be checked here. Nothing in the artifact suggests a failure, and the embedded cert matches the configured IdP cert.\"}],\"questions\":[],\"posture_codes\":[]}",
+    "structured_output": {
+      "root_cause_code": "SAML_DESTINATION_OR_RECIPIENT_MISMATCH",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/Response/@Destination",
+          "actual": "https://sp-staging.example.com/saml/acs",
+          "expected": "https://sp.example.com/saml/acs",
+          "note": "Response Destination is the staging host, not the configured ACS URL."
+        },
+        {
+          "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@Recipient",
+          "actual": "https://sp.example.com/saml/acs",
+          "expected": "https://sp.example.com/saml/acs",
+          "note": "Recipient matches the configured ACS, so the mismatch is on the Response Destination. The Recipient itself is fine."
+        }
+      ],
+      "fix": "The IdP is sending the response with Destination set to the staging ACS (https://sp-staging.example.com/saml/acs). Fix the IdP's configuration for this SP, so the ACS URL matches the SP's registered ACS (https://sp.example.com/saml/acs). Do this either by re-importing the SP metadata or by correcting the ACS URL in the IdP app. Alternatively, if this response is meant for staging, send it to the staging SP, whose configuration should list the staging ACS. Keep strict Destination and Recipient validation on the SP. Don't loosen the checks or add the staging URL to the production SP. The symptom text mentions Recipient. However, the Recipient value here matches, so also check that the GitHub-side ACS setting is the production URL.",
+      "alternatives": [
+        {
+          "code": "SAML_AUDIENCE_MISMATCH",
+          "why_not": "Audience matches the SP entity ID https://sp.example.com/saml/metadata."
+        },
+        {
+          "code": "SAML_SIGNATURE_INVALID",
+          "why_not": "The signature value is redacted so it can't be checked here. Nothing in the artifact suggests a failure, and the embedded cert matches the configured IdP cert."
+        }
+      ],
+      "questions": [],
+      "posture_codes": []
+    },
+    "ttft_ms": 7976,
+    "type": "result",
+    "duration_ms": 7996,
+    "uuid": "64456184-e991-42eb-a911-0712d45dfe0e",
+    "ttft_stream_ms": 2891,
+    "time_to_request_ms": 99,
+    "first_content_frame_ms": 2891,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

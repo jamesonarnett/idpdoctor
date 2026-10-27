@@ -1,0 +1,213 @@
+{
+  "case_id": "oidc_issuer_mismatch-00",
+  "case_hash": "1865df4192556b20",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OIDC_ISSUER_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/claims/iss",
+    "fix_keys": [
+      "configure",
+      "issuer",
+      "exact",
+      "string"
+    ],
+    "needs": [
+      "issuer"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "oidc_issuer_mismatch-00",
+    "kind": "jwt",
+    "mutator": "jwt_iss_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "1865df4192556b20"
+  },
+  "output": {
+    "root_cause_code": "OIDC_ISSUER_MISMATCH",
+    "confidence": 0.97,
+    "evidence": [
+      {
+        "path": "/claims/iss",
+        "actual": "https://login.example.com/tenant-1/",
+        "expected": "https://login.example.com/tenant-1/v2.0",
+        "note": "The token's iss is the v1-style tenant URL. The configured issuer has a /v2.0 suffix. go-oidc requires an exact string match."
+      },
+      {
+        "path": "signature",
+        "actual": "pass",
+        "note": "The signature verifies against the supplied JWKS (kid test-key-1, RS256), so the key is not the problem."
+      },
+      {
+        "path": "aud",
+        "actual": "pass",
+        "note": "aud contains client-abc123. The exp, nbf, iat and nonce checks also pass."
+      }
+    ],
+    "fix": "Make the SP's configured issuer exactly equal the iss the OP puts in tokens. Copy the `issuer` value from the OP's discovery document at the endpoint version you are calling. The token's iss here is `https://login.example.com/tenant-1/`, with no `/v2.0`. Check whether the app or tenant is issuing v1 tokens while the SP is configured for the v2.0 endpoint. If so, either request tokens from the v2.0 authorize and token endpoints, or set the OP's accepted token version to 2.0 in the app registration. Alternatively, set the SP issuer to the value the OP actually publishes. Do not skip or relax the issuer check, and do not disable signature validation.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": [
+      "access_token (optional; needed only to run the at_hash check, which was skipped)"
+    ]
+  },
+  "started": "2026-10-27T01:18:03.035831-05:00",
+  "duration_ms": 9604,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1342,
+    "cache_creation_input_tokens": 3420,
+    "cache_read_input_tokens": 23253
+  },
+  "cost_usd": 0.0294333,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1342,
+      "cacheReadInputTokens": 23253,
+      "cacheCreationInputTokens": 3420,
+      "costUSD": 0.0294333,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [
+    "signature",
+    "aud"
+  ],
+  "valid_citations": 1,
+  "envelope": {
+    "duration_api_ms": 9486,
+    "stop_reason": "tool_use",
+    "session_id": "7c4fbf40-cae3-4c26-8599-49e507e33579",
+    "total_cost_usd": 0.0294333,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3420,
+      "cache_read_input_tokens": 23253,
+      "output_tokens": 1342,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3420,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 657,
+          "cache_read_input_tokens": 12377,
+          "cache_creation_input_tokens": 1919,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1919
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1342,
+        "cacheReadInputTokens": 23253,
+        "cacheCreationInputTokens": 3420,
+        "webSearchRequests": 0,
+        "costUSD": 0.0294333,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3420,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OIDC_ISSUER_MISMATCH\",\"confidence\":0.97,\"evidence\":[{\"path\":\"/claims/iss\",\"actual\":\"https://login.example.com/tenant-1/\",\"expected\":\"https://login.example.com/tenant-1/v2.0\",\"note\":\"The token's iss is the v1-style tenant URL. The configured issuer has a /v2.0 suffix. go-oidc requires an exact string match.\"},{\"path\":\"signature\",\"actual\":\"pass\",\"note\":\"The signature verifies against the supplied JWKS (kid test-key-1, RS256), so the key is not the problem.\"},{\"path\":\"aud\",\"actual\":\"pass\",\"note\":\"aud contains client-abc123. The exp, nbf, iat and nonce checks also pass.\"}],\"fix\":\"Make the SP's configured issuer exactly equal the iss the OP puts in tokens. Copy the `issuer` value from the OP's discovery document at the endpoint version you are calling. The token's iss here is `https://login.example.com/tenant-1/`, with no `/v2.0`. Check whether the app or tenant is issuing v1 tokens while the SP is configured for the v2.0 endpoint. If so, either request tokens from the v2.0 authorize and token endpoints, or set the OP's accepted token version to 2.0 in the app registration. Alternatively, set the SP issuer to the value the OP actually publishes. Do not skip or relax the issuer check, and do not disable signature validation.\",\"alternatives\":[],\"questions\":[\"access_token (optional; needed only to run the at_hash check, which was skipped)\"]}",
+    "structured_output": {
+      "root_cause_code": "OIDC_ISSUER_MISMATCH",
+      "confidence": 0.97,
+      "evidence": [
+        {
+          "path": "/claims/iss",
+          "actual": "https://login.example.com/tenant-1/",
+          "expected": "https://login.example.com/tenant-1/v2.0",
+          "note": "The token's iss is the v1-style tenant URL. The configured issuer has a /v2.0 suffix. go-oidc requires an exact string match."
+        },
+        {
+          "path": "signature",
+          "actual": "pass",
+          "note": "The signature verifies against the supplied JWKS (kid test-key-1, RS256), so the key is not the problem."
+        },
+        {
+          "path": "aud",
+          "actual": "pass",
+          "note": "aud contains client-abc123. The exp, nbf, iat and nonce checks also pass."
+        }
+      ],
+      "fix": "Make the SP's configured issuer exactly equal the iss the OP puts in tokens. Copy the `issuer` value from the OP's discovery document at the endpoint version you are calling. The token's iss here is `https://login.example.com/tenant-1/`, with no `/v2.0`. Check whether the app or tenant is issuing v1 tokens while the SP is configured for the v2.0 endpoint. If so, either request tokens from the v2.0 authorize and token endpoints, or set the OP's accepted token version to 2.0 in the app registration. Alternatively, set the SP issuer to the value the OP actually publishes. Do not skip or relax the issuer check, and do not disable signature validation.",
+      "alternatives": [],
+      "questions": [
+        "access_token (optional; needed only to run the at_hash check, which was skipped)"
+      ]
+    },
+    "ttft_ms": 4366,
+    "type": "result",
+    "duration_ms": 9604,
+    "uuid": "b9e369f7-3d55-464a-8e0f-a1fd5015bfb9",
+    "ttft_stream_ms": 1421,
+    "time_to_request_ms": 108,
+    "first_content_frame_ms": 1421,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

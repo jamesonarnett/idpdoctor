@@ -1,0 +1,196 @@
+{
+  "case_id": "saml_required_attribute_missing-00",
+  "case_hash": "72fb56c29bbbd662",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_REQUIRED_ATTRIBUTE_MISSING",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/AttributeStatement/Attribute[@Name='email']",
+    "fix_keys": [
+      "missing",
+      "attribute",
+      "claim",
+      "application"
+    ],
+    "needs": [
+      "required_attributes"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_required_attribute_missing-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "attribute_missing",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "72fb56c29bbbd662"
+  },
+  "output": {
+    "root_cause_code": "SAML_REQUIRED_ATTRIBUTE_MISSING",
+    "confidence": 0.97,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/AttributeStatement/Attribute[@Name='email']",
+        "actual": "absent; present attributes: firstName, groups",
+        "expected": "email",
+        "note": "The assertion carries firstName and groups, but no email attribute."
+      }
+    ],
+    "fix": "In the IdP application's attribute statements, add a claim named exactly `email`. The name is case-sensitive. Map it to the user's email profile field. Then confirm the test user's profile has a non-empty email value. The signature, issuer, audience, recipient, time window and InResponseTo checks all pass, so no other change is needed. Do not loosen any validation.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH",
+        "why_not": "The NameID is present and in emailAddress format, and that check passed. The SP needs a separate email attribute."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T01:19:50.356894-05:00",
+  "duration_ms": 12367,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1908,
+    "cache_creation_input_tokens": 5074,
+    "cache_read_input_tokens": 24046
+  },
+  "cost_usd": 0.0417886,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1908,
+      "cacheReadInputTokens": 24046,
+      "cacheCreationInputTokens": 5074,
+      "costUSD": 0.0417886,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "envelope": {
+    "duration_api_ms": 12246,
+    "stop_reason": "tool_use",
+    "session_id": "ca64e24e-4740-40b1-8811-7636251f3b01",
+    "total_cost_usd": 0.0417886,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 5074,
+      "cache_read_input_tokens": 24046,
+      "output_tokens": 1908,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 5074,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 449,
+          "cache_read_input_tokens": 13170,
+          "cache_creation_input_tokens": 2780,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2780
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1908,
+        "cacheReadInputTokens": 24046,
+        "cacheCreationInputTokens": 5074,
+        "webSearchRequests": 0,
+        "costUSD": 0.0417886,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 5074,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_REQUIRED_ATTRIBUTE_MISSING\",\"confidence\":0.97,\"evidence\":[{\"path\":\"/Response/Assertion/AttributeStatement/Attribute[@Name='email']\",\"actual\":\"absent; present attributes: firstName, groups\",\"expected\":\"email\",\"note\":\"The assertion carries firstName and groups, but no email attribute.\"}],\"fix\":\"In the IdP application's attribute statements, add a claim named exactly `email`. The name is case-sensitive. Map it to the user's email profile field. Then confirm the test user's profile has a non-empty email value. The signature, issuer, audience, recipient, time window and InResponseTo checks all pass, so no other change is needed. Do not loosen any validation.\",\"alternatives\":[{\"code\":\"SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH\",\"why_not\":\"The NameID is present and in emailAddress format, and that check passed. The SP needs a separate email attribute.\"}]}",
+    "structured_output": {
+      "root_cause_code": "SAML_REQUIRED_ATTRIBUTE_MISSING",
+      "confidence": 0.97,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/AttributeStatement/Attribute[@Name='email']",
+          "actual": "absent; present attributes: firstName, groups",
+          "expected": "email",
+          "note": "The assertion carries firstName and groups, but no email attribute."
+        }
+      ],
+      "fix": "In the IdP application's attribute statements, add a claim named exactly `email`. The name is case-sensitive. Map it to the user's email profile field. Then confirm the test user's profile has a non-empty email value. The signature, issuer, audience, recipient, time window and InResponseTo checks all pass, so no other change is needed. Do not loosen any validation.",
+      "alternatives": [
+        {
+          "code": "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH",
+          "why_not": "The NameID is present and in emailAddress format, and that check passed. The SP needs a separate email attribute."
+        }
+      ]
+    },
+    "ttft_ms": 8727,
+    "type": "result",
+    "duration_ms": 12367,
+    "uuid": "e4ed3ced-42cb-4ce9-af8a-fe9abfc3b43c",
+    "ttft_stream_ms": 2125,
+    "time_to_request_ms": 111,
+    "first_content_frame_ms": 2125,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

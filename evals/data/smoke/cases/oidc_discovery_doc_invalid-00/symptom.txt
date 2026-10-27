@@ -1,0 +1,1 @@
+Entra AADSTS50049: unknown or invalid instance when loading the discovery document.

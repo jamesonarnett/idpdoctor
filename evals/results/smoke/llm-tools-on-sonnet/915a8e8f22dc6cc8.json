@@ -1,0 +1,221 @@
+{
+  "case_id": "posture_validity_window_too_long-00",
+  "case_hash": "915a8e8f22dc6cc8",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_VALIDITY_WINDOW_TOO_LONG"
+    ],
+    "evidence_path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+    "fix_keys": [
+      "shorten",
+      "assertion",
+      "token",
+      "lifetimes"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_validity_window_too_long-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "posture_long_window",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "915a8e8f22dc6cc8"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+        "actual": "window of 2h0m0s",
+        "expected": "\u003c= 10m0s",
+        "note": "The window is longer than policy. The developer said one hour, but the tool measured two hours between NotBefore and NotOnOrAfter."
+      },
+      {
+        "path": "/Response/Assertion/Signature",
+        "actual": "Assertion signed, and the signature verifies against idp_cert_pem",
+        "note": "signature_verify passed"
+      },
+      {
+        "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+        "actual": "matches sp_entity_id",
+        "note": "All 14 checks passed: status, issuer, destination, InResponseTo, signature, audience, recipient, time window, NameID, attributes and structure."
+      }
+    ],
+    "fix": "The assertion validates, so nothing is broken. The long validity window is a security risk but not a failure. A window this long widens the replay surface. Ask the IdP admin to cut the assertion lifetime (NotOnOrAfter minus NotBefore) to about 5 to 10 minutes. Session length is a separate setting on the SP side, so this doesn't shorten user sessions. If you see \"not yet valid\" errors, fix clock drift with NTP. Don't widen the window or raise clock skew above 5 minutes. Also keep one-time-use tracking of assertion IDs on the SP, so a replay inside the window is rejected.",
+    "posture_codes": [
+      "POSTURE_VALIDITY_WINDOW_TOO_LONG"
+    ],
+    "alternatives": [
+      {
+        "code": "SAML_TIME_WINDOW_INVALID",
+        "why_not": "The time_window check passed at the replay time 2026-01-15T12:00:00Z. The window is too long, but it is not invalid."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T01:18:51.92398-05:00",
+  "duration_ms": 13904,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2222,
+    "cache_creation_input_tokens": 4784,
+    "cache_read_input_tokens": 24038
+  },
+  "cost_usd": 0.043767799999999996,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2222,
+      "cacheReadInputTokens": 24038,
+      "cacheCreationInputTokens": 4784,
+      "costUSD": 0.043767799999999996,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "envelope": {
+    "duration_api_ms": 13795,
+    "stop_reason": "tool_use",
+    "session_id": "5cdada79-17f7-4686-a85c-80704ba80b52",
+    "total_cost_usd": 0.043767799999999996,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 4784,
+      "cache_read_input_tokens": 24038,
+      "output_tokens": 2222,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 4784,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 770,
+          "cache_read_input_tokens": 13162,
+          "cache_creation_input_tokens": 2498,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2498
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2222,
+        "cacheReadInputTokens": 24038,
+        "cacheCreationInputTokens": 4784,
+        "webSearchRequests": 0,
+        "costUSD": 0.043767799999999996,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 4784,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/Response/Assertion/Conditions/@NotOnOrAfter\",\"actual\":\"window of 2h0m0s\",\"expected\":\"\u003c= 10m0s\",\"note\":\"The window is longer than policy. The developer said one hour, but the tool measured two hours between NotBefore and NotOnOrAfter.\"},{\"path\":\"/Response/Assertion/Signature\",\"actual\":\"Assertion signed, and the signature verifies against idp_cert_pem\",\"note\":\"signature_verify passed\"},{\"path\":\"/Response/Assertion/Conditions/AudienceRestriction/Audience\",\"actual\":\"matches sp_entity_id\",\"note\":\"All 14 checks passed: status, issuer, destination, InResponseTo, signature, audience, recipient, time window, NameID, attributes and structure.\"}],\"fix\":\"The assertion validates, so nothing is broken. The long validity window is a security risk but not a failure. A window this long widens the replay surface. Ask the IdP admin to cut the assertion lifetime (NotOnOrAfter minus NotBefore) to about 5 to 10 minutes. Session length is a separate setting on the SP side, so this doesn't shorten user sessions. If you see \\\"not yet valid\\\" errors, fix clock drift with NTP. Don't widen the window or raise clock skew above 5 minutes. Also keep one-time-use tracking of assertion IDs on the SP, so a replay inside the window is rejected.\",\"posture_codes\":[\"POSTURE_VALIDITY_WINDOW_TOO_LONG\"],\"questions\":[],\"alternatives\":[{\"code\":\"SAML_TIME_WINDOW_INVALID\",\"why_not\":\"The time_window check passed at the replay time 2026-01-15T12:00:00Z. The window is too long, but it is not invalid.\"}]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+          "actual": "window of 2h0m0s",
+          "expected": "\u003c= 10m0s",
+          "note": "The window is longer than policy. The developer said one hour, but the tool measured two hours between NotBefore and NotOnOrAfter."
+        },
+        {
+          "path": "/Response/Assertion/Signature",
+          "actual": "Assertion signed, and the signature verifies against idp_cert_pem",
+          "note": "signature_verify passed"
+        },
+        {
+          "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+          "actual": "matches sp_entity_id",
+          "note": "All 14 checks passed: status, issuer, destination, InResponseTo, signature, audience, recipient, time window, NameID, attributes and structure."
+        }
+      ],
+      "fix": "The assertion validates, so nothing is broken. The long validity window is a security risk but not a failure. A window this long widens the replay surface. Ask the IdP admin to cut the assertion lifetime (NotOnOrAfter minus NotBefore) to about 5 to 10 minutes. Session length is a separate setting on the SP side, so this doesn't shorten user sessions. If you see \"not yet valid\" errors, fix clock drift with NTP. Don't widen the window or raise clock skew above 5 minutes. Also keep one-time-use tracking of assertion IDs on the SP, so a replay inside the window is rejected.",
+      "posture_codes": [
+        "POSTURE_VALIDITY_WINDOW_TOO_LONG"
+      ],
+      "questions": [],
+      "alternatives": [
+        {
+          "code": "SAML_TIME_WINDOW_INVALID",
+          "why_not": "The time_window check passed at the replay time 2026-01-15T12:00:00Z. The window is too long, but it is not invalid."
+        }
+      ]
+    },
+    "ttft_ms": 7800,
+    "type": "result",
+    "duration_ms": 13904,
+    "uuid": "4d886801-35e2-416a-a0e3-90fae9900be9",
+    "ttft_stream_ms": 1257,
+    "time_to_request_ms": 99,
+    "first_content_frame_ms": 1257,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

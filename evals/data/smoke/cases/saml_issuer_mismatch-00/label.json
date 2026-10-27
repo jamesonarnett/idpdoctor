@@ -1,0 +1,14 @@
+{
+  "code": "SAML_ISSUER_MISMATCH",
+  "posture_codes": [],
+  "evidence_path": "/Response/Issuer",
+  "fix_keys": [
+    "entityid",
+    "metadata",
+    "verbatim",
+    "issuer"
+  ],
+  "needs": [
+    "idp_entity_id"
+  ]
+}

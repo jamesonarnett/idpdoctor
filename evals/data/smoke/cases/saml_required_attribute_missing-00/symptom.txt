@@ -1,0 +1,1 @@
+Our SP needs firstName and email; one of them never arrives from the IdP.

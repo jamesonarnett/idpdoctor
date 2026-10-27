@@ -1,0 +1,206 @@
+{
+  "case_id": "saml_status_not_success-00",
+  "case_hash": "6e0e4d48758794a8",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_STATUS_NOT_SUCCESS",
+    "posture_codes": [],
+    "evidence_path": "/Response/Status/StatusCode/@Value",
+    "fix_keys": [
+      "statuscode",
+      "sub-code",
+      "statusmessage:",
+      "responder"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_status_not_success-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "status_responder",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "6e0e4d48758794a8"
+  },
+  "output": {
+    "root_cause_code": "SAML_STATUS_NOT_SUCCESS",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/Response/Status/StatusCode/@Value",
+        "actual": "urn:oasis:names:tc:SAML:2.0:status:Responder",
+        "expected": "urn:oasis:names:tc:SAML:2.0:status:Success"
+      },
+      {
+        "path": "/Response/Status/StatusCode/StatusCode/@Value",
+        "actual": "urn:oasis:names:tc:SAML:2.0:status:RequestDenied"
+      },
+      {
+        "path": "/Response/Status/StatusMessage",
+        "actual": "The user is not assigned to this application."
+      }
+    ],
+    "fix": "The IdP refused the request because the user is not assigned to this application. Assign the user (or a group they belong to) to the SP application in the IdP, then retry the login. Issuer, Destination and InResponseTo all match, so no SP-side change is needed. Keep signature validation on. Because this is an error response with no assertion, the signature, audience, time-window, NameID and attribute checks were skipped. Re-run the diagnosis on a successful response after the assignment is fixed.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "IDP_POLICY_REFUSAL",
+        "why_not": "The deterministic top cause is the non-Success status. The refusal reason is carried in the status sub-code and message, so the status class fits better."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T01:20:03.291412-05:00",
+  "duration_ms": 15796,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1983,
+    "cache_creation_input_tokens": 5405,
+    "cache_read_input_tokens": 24020
+  },
+  "cost_usd": 0.043859999999999996,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1983,
+      "cacheReadInputTokens": 24020,
+      "cacheCreationInputTokens": 5405,
+      "costUSD": 0.043859999999999996,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "envelope": {
+    "duration_api_ms": 15693,
+    "stop_reason": "tool_use",
+    "session_id": "2a76d8dd-4cf8-4986-8126-193d856cb628",
+    "total_cost_usd": 0.043859999999999996,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 5405,
+      "cache_read_input_tokens": 24020,
+      "output_tokens": 1983,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 5405,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 570,
+          "cache_read_input_tokens": 13144,
+          "cache_creation_input_tokens": 3137,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 3137
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1983,
+        "cacheReadInputTokens": 24020,
+        "cacheCreationInputTokens": 5405,
+        "webSearchRequests": 0,
+        "costUSD": 0.043859999999999996,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 5405,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_STATUS_NOT_SUCCESS\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/Response/Status/StatusCode/@Value\",\"actual\":\"urn:oasis:names:tc:SAML:2.0:status:Responder\",\"expected\":\"urn:oasis:names:tc:SAML:2.0:status:Success\"},{\"path\":\"/Response/Status/StatusCode/StatusCode/@Value\",\"actual\":\"urn:oasis:names:tc:SAML:2.0:status:RequestDenied\"},{\"path\":\"/Response/Status/StatusMessage\",\"actual\":\"The user is not assigned to this application.\"}],\"fix\":\"The IdP refused the request because the user is not assigned to this application. Assign the user (or a group they belong to) to the SP application in the IdP, then retry the login. Issuer, Destination and InResponseTo all match, so no SP-side change is needed. Keep signature validation on. Because this is an error response with no assertion, the signature, audience, time-window, NameID and attribute checks were skipped. Re-run the diagnosis on a successful response after the assignment is fixed.\",\"alternatives\":[{\"code\":\"IDP_POLICY_REFUSAL\",\"why_not\":\"The deterministic top cause is the non-Success status. The refusal reason is carried in the status sub-code and message, so the status class fits better.\"}]}",
+    "structured_output": {
+      "root_cause_code": "SAML_STATUS_NOT_SUCCESS",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/Response/Status/StatusCode/@Value",
+          "actual": "urn:oasis:names:tc:SAML:2.0:status:Responder",
+          "expected": "urn:oasis:names:tc:SAML:2.0:status:Success"
+        },
+        {
+          "path": "/Response/Status/StatusCode/StatusCode/@Value",
+          "actual": "urn:oasis:names:tc:SAML:2.0:status:RequestDenied"
+        },
+        {
+          "path": "/Response/Status/StatusMessage",
+          "actual": "The user is not assigned to this application."
+        }
+      ],
+      "fix": "The IdP refused the request because the user is not assigned to this application. Assign the user (or a group they belong to) to the SP application in the IdP, then retry the login. Issuer, Destination and InResponseTo all match, so no SP-side change is needed. Keep signature validation on. Because this is an error response with no assertion, the signature, audience, time-window, NameID and attribute checks were skipped. Re-run the diagnosis on a successful response after the assignment is fixed.",
+      "alternatives": [
+        {
+          "code": "IDP_POLICY_REFUSAL",
+          "why_not": "The deterministic top cause is the non-Success status. The refusal reason is carried in the status sub-code and message, so the status class fits better."
+        }
+      ]
+    },
+    "ttft_ms": 8950,
+    "type": "result",
+    "duration_ms": 15796,
+    "uuid": "a318cd27-413c-412b-a5f4-8042d6e6987f",
+    "ttft_stream_ms": 1987,
+    "time_to_request_ms": 93,
+    "first_content_frame_ms": 1987,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

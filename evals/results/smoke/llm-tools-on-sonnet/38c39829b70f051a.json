@@ -1,0 +1,198 @@
+{
+  "case_id": "saml_time_window_invalid-00",
+  "case_hash": "38c39829b70f051a",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_TIME_WINDOW_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+    "fix_keys": [
+      "synchronise",
+      "clocks",
+      "sides",
+      "clock"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_time_window_invalid-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "expired",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "38c39829b70f051a"
+  },
+  "output": {
+    "root_cause_code": "SAML_TIME_WINDOW_INVALID",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+        "actual": "2026-01-15T11:40:00.000Z",
+        "expected": "\u003e 2026-01-15T12:00:00Z - skew 3m0s",
+        "note": "assertion expired 20m0s before the evaluation time"
+      },
+      {
+        "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@NotOnOrAfter",
+        "actual": "2026-01-15T11:40:00.000Z",
+        "expected": "\u003e 2026-01-15T12:00:00Z - skew 3m0s"
+      }
+    ],
+    "fix": "The assertion's validity window ended 20 minutes before the evaluation time of 2026-01-15T12:00:00Z. Every other check passed: status, issuer, destination, InResponseTo, signature, audience, recipient, NameID, attributes and structure. If this is a live failure, sync the clocks on the SP and IdP with NTP and keep the SP skew tolerance at or below the default 3 minutes (never above 5). Also check that the user isn't sitting on the IdP login page long enough to let the assertion expire, and that the SP doesn't replay or cache old responses. If this is an old capture, replay it with its real capture time in the `now` parameter. Don't widen the skew to get past the failure.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": [
+      "Is the `now` value of 2026-01-15T12:00:00Z the actual time the SP processed the response, or just a replay time? If the capture is old, what was its real capture time?"
+    ]
+  },
+  "started": "2026-10-27T01:20:19.581139-05:00",
+  "duration_ms": 19500,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2120,
+    "cache_creation_input_tokens": 5627,
+    "cache_read_input_tokens": 24020
+  },
+  "cost_usd": 0.046118,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2120,
+      "cacheReadInputTokens": 24020,
+      "cacheCreationInputTokens": 5627,
+      "costUSD": 0.046118,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 2,
+  "envelope": {
+    "duration_api_ms": 19393,
+    "stop_reason": "tool_use",
+    "session_id": "ab33d192-ca6b-402a-92c2-701492660da2",
+    "total_cost_usd": 0.046118,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 5627,
+      "cache_read_input_tokens": 24020,
+      "output_tokens": 2120,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 5627,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 707,
+          "cache_read_input_tokens": 13144,
+          "cache_creation_input_tokens": 3359,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 3359
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2120,
+        "cacheReadInputTokens": 24020,
+        "cacheCreationInputTokens": 5627,
+        "webSearchRequests": 0,
+        "costUSD": 0.046118,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 5627,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_TIME_WINDOW_INVALID\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/Response/Assertion/Conditions/@NotOnOrAfter\",\"actual\":\"2026-01-15T11:40:00.000Z\",\"expected\":\"\u003e 2026-01-15T12:00:00Z - skew 3m0s\",\"note\":\"assertion expired 20m0s before the evaluation time\"},{\"path\":\"/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@NotOnOrAfter\",\"actual\":\"2026-01-15T11:40:00.000Z\",\"expected\":\"\u003e 2026-01-15T12:00:00Z - skew 3m0s\"}],\"fix\":\"The assertion's validity window ended 20 minutes before the evaluation time of 2026-01-15T12:00:00Z. Every other check passed: status, issuer, destination, InResponseTo, signature, audience, recipient, NameID, attributes and structure. If this is a live failure, sync the clocks on the SP and IdP with NTP and keep the SP skew tolerance at or below the default 3 minutes (never above 5). Also check that the user isn't sitting on the IdP login page long enough to let the assertion expire, and that the SP doesn't replay or cache old responses. If this is an old capture, replay it with its real capture time in the `now` parameter. Don't widen the skew to get past the failure.\",\"alternatives\":[],\"questions\":[\"Is the `now` value of 2026-01-15T12:00:00Z the actual time the SP processed the response, or just a replay time? If the capture is old, what was its real capture time?\"],\"posture_codes\":[]}",
+    "structured_output": {
+      "root_cause_code": "SAML_TIME_WINDOW_INVALID",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+          "actual": "2026-01-15T11:40:00.000Z",
+          "expected": "\u003e 2026-01-15T12:00:00Z - skew 3m0s",
+          "note": "assertion expired 20m0s before the evaluation time"
+        },
+        {
+          "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@NotOnOrAfter",
+          "actual": "2026-01-15T11:40:00.000Z",
+          "expected": "\u003e 2026-01-15T12:00:00Z - skew 3m0s"
+        }
+      ],
+      "fix": "The assertion's validity window ended 20 minutes before the evaluation time of 2026-01-15T12:00:00Z. Every other check passed: status, issuer, destination, InResponseTo, signature, audience, recipient, NameID, attributes and structure. If this is a live failure, sync the clocks on the SP and IdP with NTP and keep the SP skew tolerance at or below the default 3 minutes (never above 5). Also check that the user isn't sitting on the IdP login page long enough to let the assertion expire, and that the SP doesn't replay or cache old responses. If this is an old capture, replay it with its real capture time in the `now` parameter. Don't widen the skew to get past the failure.",
+      "alternatives": [],
+      "questions": [
+        "Is the `now` value of 2026-01-15T12:00:00Z the actual time the SP processed the response, or just a replay time? If the capture is old, what was its real capture time?"
+      ],
+      "posture_codes": []
+    },
+    "ttft_ms": 11709,
+    "type": "result",
+    "duration_ms": 19500,
+    "uuid": "058915b1-42f9-48eb-817a-19bb31bd27b9",
+    "ttft_stream_ms": 5119,
+    "time_to_request_ms": 95,
+    "first_content_frame_ms": 5119,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

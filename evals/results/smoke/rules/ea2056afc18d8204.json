@@ -1,0 +1,60 @@
+{
+  "case_id": "oauth_invalid_grant_code-00",
+  "case_hash": "ea2056afc18d8204",
+  "arm": "rules",
+  "label": {
+    "code": "OAUTH_INVALID_GRANT_CODE",
+    "posture_codes": [],
+    "evidence_path": "/redirect/error",
+    "fix_keys": [
+      "exchange",
+      "within",
+      "minutes",
+      "issuance"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_invalid_grant_code-00",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_invalid_grant_expired",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "ea2056afc18d8204"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_INVALID_GRANT_CODE",
+    "confidence": 1,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_grant",
+        "note": "classified by vendor code AADSTS70008"
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "AADSTS70008: The provided authorization code or refresh token has expired due to inactivity. Send a new interactive authorization request for this user and resource. Trace ID: 0f3c2a1e-0000-4000-8000-000000000001 Correlation ID: 7d9e4b2c-0000-4000-8000-000000000002 Timestamp: 2026-01-15 12:00:00Z",
+        "note": "codes live about 10 minutes or less; exchange immediately after the redirect"
+      }
+    ],
+    "fix": "Exchange the code exactly once and within minutes of issuance, with the same redirect_uri and client; guard against double submission (e.g. React StrictMode effects firing twice).",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T01:14:08.93049-05:00",
+  "duration_ms": 0,
+  "tool_calls": 0,
+  "num_turns": 0,
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0
+  },
+  "cost_usd": 0,
+  "hallucinated": [],
+  "valid_citations": 2
+}

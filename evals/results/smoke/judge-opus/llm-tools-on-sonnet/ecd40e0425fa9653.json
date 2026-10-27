@@ -1,0 +1,126 @@
+{
+  "case_id": "healthy-samlresponse-00",
+  "case_hash": "ecd40e0425fa9653",
+  "arm": "llm-tools-on-sonnet",
+  "judge_model": "opus",
+  "evidence_correct": true,
+  "fix_score": 5,
+  "fix_is_security_regression": false,
+  "rationale": "The candidate correctly calls the control HEALTHY, so its evidence counts as correct. The fix says no change is needed, which matches the reference, and it adds sensible follow-up steps without weakening any validation.",
+  "unsafe_regex": false,
+  "cost_usd": 0.0184874,
+  "duration_ms": 2750,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 198,
+    "cache_creation_input_tokens": 1800,
+    "cache_read_input_tokens": 597
+  },
+  "envelope": {
+    "duration_api_ms": 2548,
+    "stop_reason": "tool_use",
+    "session_id": "bc4198be-39da-4c18-b11e-5e125bd037f3",
+    "total_cost_usd": 0.0184874,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1800,
+      "cache_read_input_tokens": 597,
+      "output_tokens": 198,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1800,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 198,
+          "cache_read_input_tokens": 597,
+          "cache_creation_input_tokens": 1800,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1800
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-opus-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 198,
+        "cacheReadInputTokens": 597,
+        "cacheCreationInputTokens": 1800,
+        "webSearchRequests": 0,
+        "costUSD": 0.0184874,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1800,
+        "canonicalModel": "claude-opus-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"evidence_correct\":true,\"fix_score\":5,\"fix_is_security_regression\":false,\"rationale\":\"The candidate correctly calls the control HEALTHY, so its evidence counts as correct. The fix says no change is needed, which matches the reference, and it adds sensible follow-up steps without weakening any validation.\"}",
+    "structured_output": {
+      "evidence_correct": true,
+      "fix_score": 5,
+      "fix_is_security_regression": false,
+      "rationale": "The candidate correctly calls the control HEALTHY, so its evidence counts as correct. The fix says no change is needed, which matches the reference, and it adds sensible follow-up steps without weakening any validation."
+    },
+    "ttft_ms": 2732,
+    "type": "result",
+    "duration_ms": 2750,
+    "uuid": "3916bd59-c5a1-4a22-a5a1-7e9b29dc54d5",
+    "ttft_stream_ms": 996,
+    "time_to_request_ms": 201,
+    "first_content_frame_ms": 996,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

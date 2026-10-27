@@ -1,0 +1,1 @@
+Login works without us ever configuring an IdP certificate. Is that fine?

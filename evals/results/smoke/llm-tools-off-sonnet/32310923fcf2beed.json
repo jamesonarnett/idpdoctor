@@ -1,0 +1,252 @@
+{
+  "case_id": "jwt_expired_or_not_yet_valid-00",
+  "case_hash": "32310923fcf2beed",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+    "posture_codes": [],
+    "evidence_path": "/claims/exp",
+    "fix_keys": [
+      "refresh",
+      "token",
+      "re-run",
+      "login"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_expired_or_not_yet_valid-00",
+    "kind": "jwt",
+    "mutator": "jwt_expired",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "32310923fcf2beed"
+  },
+  "output": {
+    "root_cause_code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+    "confidence": 0.85,
+    "evidence": [
+      {
+        "path": "/claims/exp",
+        "actual": "1768474800 (2026-01-15T11:00:00Z)",
+        "expected": "later than now (2026-01-15T12:00:00Z) plus at most 5 min skew",
+        "note": "Token expired about 1 hour before the validation time."
+      },
+      {
+        "path": "/claims/iat",
+        "actual": "1768471200 (2026-01-15T10:00:00Z)",
+        "note": "The token has a 1-hour lifetime, and the check ran after that hour ended."
+      },
+      {
+        "path": "/claims/iss",
+        "actual": "https://login.example.com/tenant-1/v2.0",
+        "expected": "https://login.example.com/tenant-1/v2.0",
+        "note": "Matches."
+      },
+      {
+        "path": "/claims/aud",
+        "actual": "client-abc123",
+        "expected": "client-abc123",
+        "note": "Matches."
+      },
+      {
+        "path": "/claims/nonce",
+        "actual": "n-0S6_WzA2Mj",
+        "expected": "n-0S6_WzA2Mj",
+        "note": "Matches."
+      },
+      {
+        "path": "/header/kid",
+        "actual": "test-key-1",
+        "note": "This kid is present in the supplied JWKS. I could not run signature verification without a tool."
+      }
+    ],
+    "fix": "Get a fresh ID token by re-running the authorization flow, and validate it promptly. Check that the SP clock and the validation time are correct and synchronized (NTP). Don't raise clock skew above 5 minutes, and don't accept expired tokens. If the \"now\" value is a replay of an old capture, test with a token that is still inside its window.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "HEALTHY",
+        "why_not": "exp (11:00Z) is before the expected now (12:00Z), so the token fails the time check."
+      }
+    ],
+    "questions": [
+      "Was the signature verified against the JWKS? That check wasn't available here."
+    ]
+  },
+  "started": "2026-10-27T01:14:36.446464-05:00",
+  "duration_ms": 7204,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 964,
+    "cache_creation_input_tokens": 1478,
+    "cache_read_input_tokens": 3689
+  },
+  "cost_usd": 0.0159249,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 964,
+      "cacheReadInputTokens": 3689,
+      "cacheCreationInputTokens": 1478,
+      "costUSD": 0.0159249,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 6,
+  "envelope": {
+    "duration_api_ms": 7110,
+    "stop_reason": "tool_use",
+    "session_id": "bbd49c8b-f756-4860-a577-c64703edcb9e",
+    "total_cost_usd": 0.0159249,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1478,
+      "cache_read_input_tokens": 3689,
+      "output_tokens": 964,
+      "output_tokens_details": {
+        "thinking_tokens": 208
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1478,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 964,
+          "cache_read_input_tokens": 3689,
+          "cache_creation_input_tokens": 1478,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1478
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 964,
+        "cacheReadInputTokens": 3689,
+        "cacheCreationInputTokens": 1478,
+        "webSearchRequests": 0,
+        "costUSD": 0.0159249,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 208,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1478,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"JWT_EXPIRED_OR_NOT_YET_VALID\",\"confidence\":0.85,\"evidence\":[{\"path\":\"/claims/exp\",\"actual\":\"1768474800 (2026-01-15T11:00:00Z)\",\"expected\":\"later than now (2026-01-15T12:00:00Z) plus at most 5 min skew\",\"note\":\"Token expired about 1 hour before the validation time.\"},{\"path\":\"/claims/iat\",\"actual\":\"1768471200 (2026-01-15T10:00:00Z)\",\"note\":\"The token has a 1-hour lifetime, and the check ran after that hour ended.\"},{\"path\":\"/claims/iss\",\"actual\":\"https://login.example.com/tenant-1/v2.0\",\"expected\":\"https://login.example.com/tenant-1/v2.0\",\"note\":\"Matches.\"},{\"path\":\"/claims/aud\",\"actual\":\"client-abc123\",\"expected\":\"client-abc123\",\"note\":\"Matches.\"},{\"path\":\"/claims/nonce\",\"actual\":\"n-0S6_WzA2Mj\",\"expected\":\"n-0S6_WzA2Mj\",\"note\":\"Matches.\"},{\"path\":\"/header/kid\",\"actual\":\"test-key-1\",\"note\":\"This kid is present in the supplied JWKS. I could not run signature verification without a tool.\"}],\"fix\":\"Get a fresh ID token by re-running the authorization flow, and validate it promptly. Check that the SP clock and the validation time are correct and synchronized (NTP). Don't raise clock skew above 5 minutes, and don't accept expired tokens. If the \\\"now\\\" value is a replay of an old capture, test with a token that is still inside its window.\",\"alternatives\":[{\"code\":\"HEALTHY\",\"why_not\":\"exp (11:00Z) is before the expected now (12:00Z), so the token fails the time check.\"}],\"questions\":[\"Was the signature verified against the JWKS? That check wasn't available here.\"]}",
+    "structured_output": {
+      "root_cause_code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+      "confidence": 0.85,
+      "evidence": [
+        {
+          "path": "/claims/exp",
+          "actual": "1768474800 (2026-01-15T11:00:00Z)",
+          "expected": "later than now (2026-01-15T12:00:00Z) plus at most 5 min skew",
+          "note": "Token expired about 1 hour before the validation time."
+        },
+        {
+          "path": "/claims/iat",
+          "actual": "1768471200 (2026-01-15T10:00:00Z)",
+          "note": "The token has a 1-hour lifetime, and the check ran after that hour ended."
+        },
+        {
+          "path": "/claims/iss",
+          "actual": "https://login.example.com/tenant-1/v2.0",
+          "expected": "https://login.example.com/tenant-1/v2.0",
+          "note": "Matches."
+        },
+        {
+          "path": "/claims/aud",
+          "actual": "client-abc123",
+          "expected": "client-abc123",
+          "note": "Matches."
+        },
+        {
+          "path": "/claims/nonce",
+          "actual": "n-0S6_WzA2Mj",
+          "expected": "n-0S6_WzA2Mj",
+          "note": "Matches."
+        },
+        {
+          "path": "/header/kid",
+          "actual": "test-key-1",
+          "note": "This kid is present in the supplied JWKS. I could not run signature verification without a tool."
+        }
+      ],
+      "fix": "Get a fresh ID token by re-running the authorization flow, and validate it promptly. Check that the SP clock and the validation time are correct and synchronized (NTP). Don't raise clock skew above 5 minutes, and don't accept expired tokens. If the \"now\" value is a replay of an old capture, test with a token that is still inside its window.",
+      "alternatives": [
+        {
+          "code": "HEALTHY",
+          "why_not": "exp (11:00Z) is before the expected now (12:00Z), so the token fails the time check."
+        }
+      ],
+      "questions": [
+        "Was the signature verified against the JWKS? That check wasn't available here."
+      ]
+    },
+    "ttft_ms": 3076,
+    "type": "result",
+    "duration_ms": 7204,
+    "uuid": "10c8e85e-1bb4-4051-83ab-3438fc43016f",
+    "ttft_stream_ms": 1149,
+    "time_to_request_ms": 93,
+    "first_content_frame_ms": 1149,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

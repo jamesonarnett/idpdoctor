@@ -1,0 +1,200 @@
+{
+  "case_id": "healthy-samlresponse-01",
+  "case_hash": "200d9b48267e7e5c",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [],
+    "fix_keys": [
+      "no change needed",
+      "the artifact validates"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "healthy-samlresponse-01",
+    "kind": "saml_response",
+    "dialect": "okta",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 1,
+    "hash": "200d9b48267e7e5c"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "checks/signature_verify",
+        "actual": "verified against idp_cert_pem"
+      },
+      {
+        "path": "checks/time_window",
+        "actual": "valid at 2026-01-15T12:00:00Z",
+        "note": "validated at the supplied replay time, not today's date"
+      },
+      {
+        "path": "checks/audience",
+        "actual": "matches sp_entity_id"
+      }
+    ],
+    "fix": "No fix is needed. All 14 checks passed: status, issuer, destination, InResponseTo, signature on the Assertion, audience, recipient, time window, NameID format, required attributes and structure. If the login still fails in the live SP, the cause is outside this artifact. Check that the SP clock is correct, and that it rejects replayed assertion IDs and enforces signature validation against the configured IdP certificate.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": [
+      "The time window was checked at 2026-01-15T12:00:00Z (the 'now' value you supplied). Do you want it replayed at the actual capture time? The assertion would be expired if validated today."
+    ]
+  },
+  "started": "2026-10-27T01:16:59.55797-05:00",
+  "duration_ms": 12339,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1873,
+    "cache_creation_input_tokens": 4311,
+    "cache_read_input_tokens": 24018
+  },
+  "cost_usd": 0.038383799999999996,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1873,
+      "cacheReadInputTokens": 24018,
+      "cacheCreationInputTokens": 4311,
+      "costUSD": 0.038383799999999996,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [
+    "checks/signature_verify",
+    "checks/time_window",
+    "checks/audience"
+  ],
+  "valid_citations": 0,
+  "envelope": {
+    "duration_api_ms": 12224,
+    "stop_reason": "tool_use",
+    "session_id": "9946e678-b549-4e8a-b5f5-21fa5a628d93",
+    "total_cost_usd": 0.038383799999999996,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 4311,
+      "cache_read_input_tokens": 24018,
+      "output_tokens": 1873,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 4311,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 462,
+          "cache_read_input_tokens": 13142,
+          "cache_creation_input_tokens": 2045,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2045
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1873,
+        "cacheReadInputTokens": 24018,
+        "cacheCreationInputTokens": 4311,
+        "webSearchRequests": 0,
+        "costUSD": 0.038383799999999996,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 4311,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.95,\"evidence\":[{\"path\":\"checks/signature_verify\",\"actual\":\"verified against idp_cert_pem\"},{\"path\":\"checks/time_window\",\"actual\":\"valid at 2026-01-15T12:00:00Z\",\"note\":\"validated at the supplied replay time, not today's date\"},{\"path\":\"checks/audience\",\"actual\":\"matches sp_entity_id\"}],\"fix\":\"No fix is needed. All 14 checks passed: status, issuer, destination, InResponseTo, signature on the Assertion, audience, recipient, time window, NameID format, required attributes and structure. If the login still fails in the live SP, the cause is outside this artifact. Check that the SP clock is correct, and that it rejects replayed assertion IDs and enforces signature validation against the configured IdP certificate.\",\"questions\":[\"The time window was checked at 2026-01-15T12:00:00Z (the 'now' value you supplied). Do you want it replayed at the actual capture time? The assertion would be expired if validated today.\"]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "checks/signature_verify",
+          "actual": "verified against idp_cert_pem"
+        },
+        {
+          "path": "checks/time_window",
+          "actual": "valid at 2026-01-15T12:00:00Z",
+          "note": "validated at the supplied replay time, not today's date"
+        },
+        {
+          "path": "checks/audience",
+          "actual": "matches sp_entity_id"
+        }
+      ],
+      "fix": "No fix is needed. All 14 checks passed: status, issuer, destination, InResponseTo, signature on the Assertion, audience, recipient, time window, NameID format, required attributes and structure. If the login still fails in the live SP, the cause is outside this artifact. Check that the SP clock is correct, and that it rejects replayed assertion IDs and enforces signature validation against the configured IdP certificate.",
+      "questions": [
+        "The time window was checked at 2026-01-15T12:00:00Z (the 'now' value you supplied). Do you want it replayed at the actual capture time? The assertion would be expired if validated today."
+      ]
+    },
+    "ttft_ms": 8003,
+    "type": "result",
+    "duration_ms": 12339,
+    "uuid": "81acbec0-0497-4866-adbc-448d0bff1d0a",
+    "ttft_stream_ms": 1527,
+    "time_to_request_ms": 102,
+    "first_content_frame_ms": 1527,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

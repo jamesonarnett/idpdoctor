@@ -1,0 +1,186 @@
+{
+  "case_id": "saml_inresponseto_mismatch_or_unsolicited-00",
+  "case_hash": "ba52f9482a777e7c",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED",
+    "posture_codes": [],
+    "evidence_path": "/Response/@InResponseTo",
+    "fix_keys": [
+      "ensure",
+      "keeps",
+      "authnrequest",
+      "across"
+    ],
+    "needs": [
+      "request_id"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_inresponseto_mismatch_or_unsolicited-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "in_response_to_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "ba52f9482a777e7c"
+  },
+  "output": {
+    "root_cause_code": "SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/Response/@InResponseTo",
+        "actual": "_req_stale_from_another_tab",
+        "expected": "_req_1234567890abcdef",
+        "note": "InResponseTo echoes an AuthnRequest ID from another tab. The SP holds only one pending request ID, so the second tab's request overwrote or replaced the first."
+      }
+    ],
+    "fix": "Don't store a single pending AuthnRequest ID per browser session. Keep a set of outstanding request IDs, keyed by the ID itself or by RelayState. Store them server-side or in a cookie that holds multiple entries. When a response arrives, look up its InResponseTo in that set, accept it only if found, and remove it after one use. Give each pending ID a short expiry. Keep the existing checks: signature verification against the configured IdP certificate, audience, recipient and time window. Don't disable the InResponseTo check. If IdP-initiated SSO is intended, enable it explicitly and separately.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T01:19:18.699052-05:00",
+  "duration_ms": 15935,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1940,
+    "cache_creation_input_tokens": 5348,
+    "cache_read_input_tokens": 24041
+  },
+  "cost_usd": 0.043204099999999995,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1940,
+      "cacheReadInputTokens": 24041,
+      "cacheCreationInputTokens": 5348,
+      "costUSD": 0.043204099999999995,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "envelope": {
+    "duration_api_ms": 15578,
+    "stop_reason": "tool_use",
+    "session_id": "43823049-b911-4994-8617-437fc0ac83d2",
+    "total_cost_usd": 0.043204099999999995,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 5348,
+      "cache_read_input_tokens": 24041,
+      "output_tokens": 1940,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 5348,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 486,
+          "cache_read_input_tokens": 13165,
+          "cache_creation_input_tokens": 3059,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 3059
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1940,
+        "cacheReadInputTokens": 24041,
+        "cacheCreationInputTokens": 5348,
+        "webSearchRequests": 0,
+        "costUSD": 0.043204099999999995,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 5348,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/Response/@InResponseTo\",\"actual\":\"_req_stale_from_another_tab\",\"expected\":\"_req_1234567890abcdef\",\"note\":\"InResponseTo echoes an AuthnRequest ID from another tab. The SP holds only one pending request ID, so the second tab's request overwrote or replaced the first.\"}],\"fix\":\"Don't store a single pending AuthnRequest ID per browser session. Keep a set of outstanding request IDs, keyed by the ID itself or by RelayState. Store them server-side or in a cookie that holds multiple entries. When a response arrives, look up its InResponseTo in that set, accept it only if found, and remove it after one use. Give each pending ID a short expiry. Keep the existing checks: signature verification against the configured IdP certificate, audience, recipient and time window. Don't disable the InResponseTo check. If IdP-initiated SSO is intended, enable it explicitly and separately.\",\"alternatives\":[]}",
+    "structured_output": {
+      "root_cause_code": "SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/Response/@InResponseTo",
+          "actual": "_req_stale_from_another_tab",
+          "expected": "_req_1234567890abcdef",
+          "note": "InResponseTo echoes an AuthnRequest ID from another tab. The SP holds only one pending request ID, so the second tab's request overwrote or replaced the first."
+        }
+      ],
+      "fix": "Don't store a single pending AuthnRequest ID per browser session. Keep a set of outstanding request IDs, keyed by the ID itself or by RelayState. Store them server-side or in a cookie that holds multiple entries. When a response arrives, look up its InResponseTo in that set, accept it only if found, and remove it after one use. Give each pending ID a short expiry. Keep the existing checks: signature verification against the configured IdP certificate, audience, recipient and time window. Don't disable the InResponseTo check. If IdP-initiated SSO is intended, enable it explicitly and separately.",
+      "alternatives": []
+    },
+    "ttft_ms": 10435,
+    "type": "result",
+    "duration_ms": 15935,
+    "uuid": "daabc1f3-7e13-4504-b343-18e605a244e9",
+    "ttft_stream_ms": 3548,
+    "time_to_request_ms": 346,
+    "first_content_frame_ms": 3549,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

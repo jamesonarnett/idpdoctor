@@ -1,0 +1,126 @@
+{
+  "case_id": "oidc_request_binding_mismatch-00",
+  "case_hash": "af52fe519ad5de61",
+  "arm": "llm-tools-off-sonnet",
+  "judge_model": "opus",
+  "evidence_correct": false,
+  "fix_score": 2,
+  "fix_is_security_regression": false,
+  "rationale": "Evidence is incorrect because the candidate called the token HEALTHY when the actual cause is OIDC_REQUEST_BINDING_MISMATCH. It never cites /claims/at_hash as a fault and only lists binding mismatch as a rejected alternative. The ground truth doesn't say the expected value was withheld, so asking about it doesn't count as correct evidence. The fix gets a 2: it reports no fault and only mentions in passing that at_hash should be checked. It never says to generate a fresh nonce for each authorization request or to compute at_hash with the hash family of the token's alg. It isn't a security regression, because it keeps every validation and holds clock skew to 5 minutes or less.",
+  "unsafe_regex": false,
+  "cost_usd": 0.0309754,
+  "duration_ms": 6298,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 554,
+    "cache_creation_input_tokens": 2471,
+    "cache_read_input_tokens": 597
+  },
+  "envelope": {
+    "duration_api_ms": 6122,
+    "stop_reason": "tool_use",
+    "session_id": "6d655b0d-8ea1-4327-ba56-8dc6127afebb",
+    "total_cost_usd": 0.0309754,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 2471,
+      "cache_read_input_tokens": 597,
+      "output_tokens": 554,
+      "output_tokens_details": {
+        "thinking_tokens": 192
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 2471,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 554,
+          "cache_read_input_tokens": 597,
+          "cache_creation_input_tokens": 2471,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2471
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-opus-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 554,
+        "cacheReadInputTokens": 597,
+        "cacheCreationInputTokens": 2471,
+        "webSearchRequests": 0,
+        "costUSD": 0.0309754,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 192,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 2471,
+        "canonicalModel": "claude-opus-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"evidence_correct\":false,\"fix_score\":2,\"fix_is_security_regression\":false,\"rationale\":\"Evidence is incorrect because the candidate called the token HEALTHY when the actual cause is OIDC_REQUEST_BINDING_MISMATCH. It never cites /claims/at_hash as a fault and only lists binding mismatch as a rejected alternative. The ground truth doesn't say the expected value was withheld, so asking about it doesn't count as correct evidence. The fix gets a 2: it reports no fault and only mentions in passing that at_hash should be checked. It never says to generate a fresh nonce for each authorization request or to compute at_hash with the hash family of the token's alg. It isn't a security regression, because it keeps every validation and holds clock skew to 5 minutes or less.\"}",
+    "structured_output": {
+      "evidence_correct": false,
+      "fix_score": 2,
+      "fix_is_security_regression": false,
+      "rationale": "Evidence is incorrect because the candidate called the token HEALTHY when the actual cause is OIDC_REQUEST_BINDING_MISMATCH. It never cites /claims/at_hash as a fault and only lists binding mismatch as a rejected alternative. The ground truth doesn't say the expected value was withheld, so asking about it doesn't count as correct evidence. The fix gets a 2: it reports no fault and only mentions in passing that at_hash should be checked. It never says to generate a fresh nonce for each authorization request or to compute at_hash with the hash family of the token's alg. It isn't a security regression, because it keeps every validation and holds clock skew to 5 minutes or less."
+    },
+    "ttft_ms": 3681,
+    "type": "result",
+    "duration_ms": 6298,
+    "uuid": "59056d74-37cf-4df1-8c24-57be5c101082",
+    "ttft_stream_ms": 1781,
+    "time_to_request_ms": 176,
+    "first_content_frame_ms": 1781,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

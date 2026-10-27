@@ -1,0 +1,193 @@
+{
+  "case_id": "posture_unsigned_assertion_accepted-00",
+  "case_hash": "680b09e16bc62e68",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_UNSIGNED_ASSERTION_ACCEPTED"
+    ],
+    "evidence_path": "/Response/Assertion/Signature",
+    "fix_keys": [
+      "require",
+      "signed",
+      "assertion",
+      "response"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_unsigned_assertion_accepted-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "posture_unsigned_assertion",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "680b09e16bc62e68"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature",
+        "actual": "unsigned",
+        "note": "Only the Response is signed. The signature verifies against the supplied IdP certificate, so this is a posture warning and not a fault."
+      }
+    ],
+    "fix": "The response validates, so no fault needs fixing. To harden it, have the IdP sign the Assertion as well as the Response. Alternatively, make sure the SP only consumes data from the verified, signed Response element. Keep signature validation on and keep trusting only the configured IdP certificate.",
+    "posture_codes": [
+      "POSTURE_UNSIGNED_ASSERTION_ACCEPTED"
+    ],
+    "alternatives": [],
+    "questions": [
+      "require_signed_assertion: does the SP require a signed Assertion? It was not stated.",
+      "The validation used now=2026-01-15T12:00:00Z. If this is a live failure, replay it with the real capture time."
+    ]
+  },
+  "started": "2026-10-27T01:18:43.63518-05:00",
+  "duration_ms": 15094,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1840,
+    "cache_creation_input_tokens": 4724,
+    "cache_read_input_tokens": 24003
+  },
+  "cost_usd": 0.0397043,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1840,
+      "cacheReadInputTokens": 24003,
+      "cacheCreationInputTokens": 4724,
+      "costUSD": 0.0397043,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "envelope": {
+    "duration_api_ms": 14993,
+    "stop_reason": "tool_use",
+    "session_id": "46ad8868-2d24-4be8-aa3c-ed4a5d076867",
+    "total_cost_usd": 0.0397043,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 4724,
+      "cache_read_input_tokens": 24003,
+      "output_tokens": 1840,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 4724,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 442,
+          "cache_read_input_tokens": 13127,
+          "cache_creation_input_tokens": 2473,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2473
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1840,
+        "cacheReadInputTokens": 24003,
+        "cacheCreationInputTokens": 4724,
+        "webSearchRequests": 0,
+        "costUSD": 0.0397043,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 4724,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/Response/Assertion/Signature\",\"actual\":\"unsigned\",\"note\":\"Only the Response is signed. The signature verifies against the supplied IdP certificate, so this is a posture warning and not a fault.\"}],\"fix\":\"The response validates, so no fault needs fixing. To harden it, have the IdP sign the Assertion as well as the Response. Alternatively, make sure the SP only consumes data from the verified, signed Response element. Keep signature validation on and keep trusting only the configured IdP certificate.\",\"posture_codes\":[\"POSTURE_UNSIGNED_ASSERTION_ACCEPTED\"],\"questions\":[\"require_signed_assertion: does the SP require a signed Assertion? It was not stated.\",\"The validation used now=2026-01-15T12:00:00Z. If this is a live failure, replay it with the real capture time.\"]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Signature",
+          "actual": "unsigned",
+          "note": "Only the Response is signed. The signature verifies against the supplied IdP certificate, so this is a posture warning and not a fault."
+        }
+      ],
+      "fix": "The response validates, so no fault needs fixing. To harden it, have the IdP sign the Assertion as well as the Response. Alternatively, make sure the SP only consumes data from the verified, signed Response element. Keep signature validation on and keep trusting only the configured IdP certificate.",
+      "posture_codes": [
+        "POSTURE_UNSIGNED_ASSERTION_ACCEPTED"
+      ],
+      "questions": [
+        "require_signed_assertion: does the SP require a signed Assertion? It was not stated.",
+        "The validation used now=2026-01-15T12:00:00Z. If this is a live failure, replay it with the real capture time."
+      ]
+    },
+    "ttft_ms": 8096,
+    "type": "result",
+    "duration_ms": 15094,
+    "uuid": "aef48df9-9678-4cf8-9631-ba5d76b5f79f",
+    "ttft_stream_ms": 1752,
+    "time_to_request_ms": 90,
+    "first_content_frame_ms": 1752,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

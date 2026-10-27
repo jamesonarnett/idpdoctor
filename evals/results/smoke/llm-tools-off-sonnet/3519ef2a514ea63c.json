@@ -1,0 +1,235 @@
+{
+  "case_id": "posture_expired_cert_accepted-00",
+  "case_hash": "3519ef2a514ea63c",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_EXPIRED_CERT_ACCEPTED"
+    ],
+    "evidence_path": "/Signature/KeyInfo/X509Data/X509Certificate/NotAfter",
+    "fix_keys": [
+      "rotate",
+      "signing",
+      "certificate",
+      "configure"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_expired_cert_accepted-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "posture_expired_cert",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "3519ef2a514ea63c"
+  },
+  "output": {
+    "root_cause_code": "CERT_EXPIRED_OR_WEAK",
+    "confidence": 0.75,
+    "evidence": [
+      {
+        "path": "/expected/idp_cert_pem",
+        "actual": "Certificate validity decodes to notBefore 2025-01-01T00:00:00Z, notAfter 2026-01-14T12:00:00Z",
+        "expected": "notAfter later than now (2026-01-15T12:00:00Z)",
+        "note": "The configured IdP cert is already expired at the evaluation time. This is about 1 day by the supplied 'now', and the developer reports about a week."
+      },
+      {
+        "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate",
+        "actual": "Embedded cert is the same expired certificate as the configured idp_cert_pem",
+        "note": "The assertion is signed with the expired cert and the SP still accepts it, so the SP is not checking certificate validity."
+      },
+      {
+        "path": "/Response/Assertion/Conditions",
+        "actual": "NotBefore 11:57:30Z, NotOnOrAfter 12:02:30Z, Audience matches sp_entity_id",
+        "note": "All other checks look fine: Issuer, Destination, Recipient, InResponseTo, NameID format, required attributes and the assertion-level signature."
+      }
+    ],
+    "fix": "Get the IdP's renewed signing certificate through a trusted channel, such as signed IdP metadata or a verified out-of-band exchange. Replace the configured idp_cert_pem with it, and keep the old cert only during a planned overlap window. Make the SP reject signatures from certificates outside their notBefore/notAfter validity. Add monitoring that alerts well before a cert's notAfter. Keep the signature requirement on the assertion, and don't trust the cert embedded in the message.",
+    "posture_codes": [
+      "POSTURE_EXPIRED_CERT_ACCEPTED"
+    ],
+    "alternatives": [
+      {
+        "code": "HEALTHY",
+        "why_not": "Every other check passes, but the signing cert is expired and the SP accepted it. That is a real fault, not just a posture warning."
+      },
+      {
+        "code": "SAML_SIGNATURE_INVALID",
+        "why_not": "The signature value is redacted so I can't verify it. The symptom says logins succeed, which implies it verifies."
+      }
+    ],
+    "questions": [
+      "Does the SP library enforce X.509 validity dates when verifying the signature? Logins succeeding suggests it doesn't.",
+      "Has the IdP rotated to a new signing certificate that you haven't yet loaded into the SP?"
+    ]
+  },
+  "started": "2026-10-27T01:15:26.324231-05:00",
+  "duration_ms": 11941,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1459,
+    "cache_creation_input_tokens": 4815,
+    "cache_read_input_tokens": 3689
+  },
+  "cost_usd": 0.0342229,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1459,
+      "cacheReadInputTokens": 3689,
+      "cacheCreationInputTokens": 4815,
+      "costUSD": 0.0342229,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "envelope": {
+    "duration_api_ms": 11843,
+    "stop_reason": "tool_use",
+    "session_id": "a0c3de1d-95e5-43a6-872f-c7b85b518fec",
+    "total_cost_usd": 0.0342229,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 4815,
+      "cache_read_input_tokens": 3689,
+      "output_tokens": 1459,
+      "output_tokens_details": {
+        "thinking_tokens": 434
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 4815,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1459,
+          "cache_read_input_tokens": 3689,
+          "cache_creation_input_tokens": 4815,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 4815
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1459,
+        "cacheReadInputTokens": 3689,
+        "cacheCreationInputTokens": 4815,
+        "webSearchRequests": 0,
+        "costUSD": 0.0342229,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 434,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 4815,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"CERT_EXPIRED_OR_WEAK\",\"confidence\":0.75,\"evidence\":[{\"path\":\"/expected/idp_cert_pem\",\"actual\":\"Certificate validity decodes to notBefore 2025-01-01T00:00:00Z, notAfter 2026-01-14T12:00:00Z\",\"expected\":\"notAfter later than now (2026-01-15T12:00:00Z)\",\"note\":\"The configured IdP cert is already expired at the evaluation time. This is about 1 day by the supplied 'now', and the developer reports about a week.\"},{\"path\":\"/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate\",\"actual\":\"Embedded cert is the same expired certificate as the configured idp_cert_pem\",\"note\":\"The assertion is signed with the expired cert and the SP still accepts it, so the SP is not checking certificate validity.\"},{\"path\":\"/Response/Assertion/Conditions\",\"actual\":\"NotBefore 11:57:30Z, NotOnOrAfter 12:02:30Z, Audience matches sp_entity_id\",\"note\":\"All other checks look fine: Issuer, Destination, Recipient, InResponseTo, NameID format, required attributes and the assertion-level signature.\"}],\"fix\":\"Get the IdP's renewed signing certificate through a trusted channel, such as signed IdP metadata or a verified out-of-band exchange. Replace the configured idp_cert_pem with it, and keep the old cert only during a planned overlap window. Make the SP reject signatures from certificates outside their notBefore/notAfter validity. Add monitoring that alerts well before a cert's notAfter. Keep the signature requirement on the assertion, and don't trust the cert embedded in the message.\",\"posture_codes\":[\"POSTURE_EXPIRED_CERT_ACCEPTED\"],\"alternatives\":[{\"code\":\"HEALTHY\",\"why_not\":\"Every other check passes, but the signing cert is expired and the SP accepted it. That is a real fault, not just a posture warning.\"},{\"code\":\"SAML_SIGNATURE_INVALID\",\"why_not\":\"The signature value is redacted so I can't verify it. The symptom says logins succeed, which implies it verifies.\"}],\"questions\":[\"Does the SP library enforce X.509 validity dates when verifying the signature? Logins succeeding suggests it doesn't.\",\"Has the IdP rotated to a new signing certificate that you haven't yet loaded into the SP?\"]}",
+    "structured_output": {
+      "root_cause_code": "CERT_EXPIRED_OR_WEAK",
+      "confidence": 0.75,
+      "evidence": [
+        {
+          "path": "/expected/idp_cert_pem",
+          "actual": "Certificate validity decodes to notBefore 2025-01-01T00:00:00Z, notAfter 2026-01-14T12:00:00Z",
+          "expected": "notAfter later than now (2026-01-15T12:00:00Z)",
+          "note": "The configured IdP cert is already expired at the evaluation time. This is about 1 day by the supplied 'now', and the developer reports about a week."
+        },
+        {
+          "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate",
+          "actual": "Embedded cert is the same expired certificate as the configured idp_cert_pem",
+          "note": "The assertion is signed with the expired cert and the SP still accepts it, so the SP is not checking certificate validity."
+        },
+        {
+          "path": "/Response/Assertion/Conditions",
+          "actual": "NotBefore 11:57:30Z, NotOnOrAfter 12:02:30Z, Audience matches sp_entity_id",
+          "note": "All other checks look fine: Issuer, Destination, Recipient, InResponseTo, NameID format, required attributes and the assertion-level signature."
+        }
+      ],
+      "fix": "Get the IdP's renewed signing certificate through a trusted channel, such as signed IdP metadata or a verified out-of-band exchange. Replace the configured idp_cert_pem with it, and keep the old cert only during a planned overlap window. Make the SP reject signatures from certificates outside their notBefore/notAfter validity. Add monitoring that alerts well before a cert's notAfter. Keep the signature requirement on the assertion, and don't trust the cert embedded in the message.",
+      "posture_codes": [
+        "POSTURE_EXPIRED_CERT_ACCEPTED"
+      ],
+      "alternatives": [
+        {
+          "code": "HEALTHY",
+          "why_not": "Every other check passes, but the signing cert is expired and the SP accepted it. That is a real fault, not just a posture warning."
+        },
+        {
+          "code": "SAML_SIGNATURE_INVALID",
+          "why_not": "The signature value is redacted so I can't verify it. The symptom says logins succeed, which implies it verifies."
+        }
+      ],
+      "questions": [
+        "Does the SP library enforce X.509 validity dates when verifying the signature? Logins succeeding suggests it doesn't.",
+        "Has the IdP rotated to a new signing certificate that you haven't yet loaded into the SP?"
+      ]
+    },
+    "ttft_ms": 5295,
+    "type": "result",
+    "duration_ms": 11941,
+    "uuid": "6f6e4441-bc33-4d17-88af-05542d944326",
+    "ttft_stream_ms": 2403,
+    "time_to_request_ms": 98,
+    "first_content_frame_ms": 2403,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "id": "jwt_alg_none_or_confusion-00",
+  "kind": "jwt",
+  "mutator": "jwt_alg_none",
+  "expected_completeness": "full",
+  "symptom_from": "vendor_strings.json",
+  "seed": 42,
+  "index": 0,
+  "hash": "c82042ed6de92962"
+}

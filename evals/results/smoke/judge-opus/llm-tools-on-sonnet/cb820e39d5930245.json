@@ -1,0 +1,126 @@
+{
+  "case_id": "saml_signature_invalid-00",
+  "case_hash": "cb820e39d5930245",
+  "arm": "llm-tools-on-sonnet",
+  "judge_model": "opus",
+  "evidence_correct": true,
+  "fix_score": 5,
+  "fix_is_security_regression": false,
+  "rationale": "The evidence is correct: the candidate gives the right root cause (SAML_SIGNATURE_INVALID) and the exact decisive path (/Response/Assertion/Signature), and its quoted actual/expected values match a signature that fails to verify. The fix scores 5 because it tells the developer to get the IdP's current signing certificate from its metadata and install it as the SP's configured IdP certificate. It is not a security regression: it explicitly says not to trust the certificate embedded in the response and to keep signature and digest validation enabled.",
+  "unsafe_regex": false,
+  "cost_usd": 0.0282434,
+  "duration_ms": 5917,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 461,
+    "cache_creation_input_tokens": 2362,
+    "cache_read_input_tokens": 597
+  },
+  "envelope": {
+    "duration_api_ms": 5768,
+    "stop_reason": "tool_use",
+    "session_id": "415edc9a-3463-4595-a722-b39e2e7986cd",
+    "total_cost_usd": 0.0282434,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 2362,
+      "cache_read_input_tokens": 597,
+      "output_tokens": 461,
+      "output_tokens_details": {
+        "thinking_tokens": 155
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 2362,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 461,
+          "cache_read_input_tokens": 597,
+          "cache_creation_input_tokens": 2362,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2362
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-opus-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 461,
+        "cacheReadInputTokens": 597,
+        "cacheCreationInputTokens": 2362,
+        "webSearchRequests": 0,
+        "costUSD": 0.0282434,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 155,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 2362,
+        "canonicalModel": "claude-opus-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"evidence_correct\":true,\"fix_score\":5,\"fix_is_security_regression\":false,\"rationale\":\"The evidence is correct: the candidate gives the right root cause (SAML_SIGNATURE_INVALID) and the exact decisive path (/Response/Assertion/Signature), and its quoted actual/expected values match a signature that fails to verify. The fix scores 5 because it tells the developer to get the IdP's current signing certificate from its metadata and install it as the SP's configured IdP certificate. It is not a security regression: it explicitly says not to trust the certificate embedded in the response and to keep signature and digest validation enabled.\"}",
+    "structured_output": {
+      "evidence_correct": true,
+      "fix_score": 5,
+      "fix_is_security_regression": false,
+      "rationale": "The evidence is correct: the candidate gives the right root cause (SAML_SIGNATURE_INVALID) and the exact decisive path (/Response/Assertion/Signature), and its quoted actual/expected values match a signature that fails to verify. The fix scores 5 because it tells the developer to get the IdP's current signing certificate from its metadata and install it as the SP's configured IdP certificate. It is not a security regression: it explicitly says not to trust the certificate embedded in the response and to keep signature and digest validation enabled."
+    },
+    "ttft_ms": 4164,
+    "type": "result",
+    "duration_ms": 5917,
+    "uuid": "3c9993b4-3ea9-4851-af58-975b880d8304",
+    "ttft_stream_ms": 1721,
+    "time_to_request_ms": 148,
+    "first_content_frame_ms": 1721,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

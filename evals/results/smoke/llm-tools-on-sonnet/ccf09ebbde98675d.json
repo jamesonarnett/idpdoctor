@@ -1,0 +1,206 @@
+{
+  "case_id": "oauth_client_config_rejected-00",
+  "case_hash": "ccf09ebbde98675d",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+    "posture_codes": [],
+    "evidence_path": "/redirect/error",
+    "fix_keys": [
+      "compare",
+      "client",
+      "registered",
+      "grant"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_client_config_rejected-00",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_invalid_client",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "ccf09ebbde98675d"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_CLIENT_CONFIG_REJECTED",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_client",
+        "note": "classified by vendor code AADSTS7000215"
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "AADSTS7000215: Invalid client secret provided. Ensure the secret being sent in the request is the client secret value, not the client secret ID, for a secret added to app 'client-abc123'."
+      }
+    ],
+    "fix": "In the Entra app registration for client-abc123, open Certificates \u0026 secrets. Check that the secret hasn't expired. If it has, or you can't tell, create a new secret. Copy its Value, not its Secret ID. The Value is only shown once, when you create the secret. Store the Value in the app's secret store and deploy it to the token-request code. Check that the secret reaches the request unchanged: no trailing whitespace or newline, no stray quoting, and no stale environment variable or cached config. Check that the app sends it to the token endpoint of the right tenant for this client. Delete the old secret once the new one works. Keep PKCE S256 enabled.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OAUTH_REDIRECT_URI_MISMATCH",
+        "why_not": "The redirect_uri exactly matches the registered URI (the redirect_uri check passed)."
+      },
+      {
+        "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+        "why_not": "The code_verifier matches the S256 code_challenge (the pkce check passed)."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T01:17:35.389117-05:00",
+  "duration_ms": 8544,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 989,
+    "cache_creation_input_tokens": 3050,
+    "cache_read_input_tokens": 22989
+  },
+  "cost_usd": 0.0243969,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 989,
+      "cacheReadInputTokens": 22989,
+      "cacheCreationInputTokens": 3050,
+      "costUSD": 0.0243969,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 2,
+  "envelope": {
+    "duration_api_ms": 8454,
+    "stop_reason": "tool_use",
+    "session_id": "9021be88-6d4b-400a-939a-63a7e5ce5b9b",
+    "total_cost_usd": 0.0243969,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3050,
+      "cache_read_input_tokens": 22989,
+      "output_tokens": 989,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3050,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 634,
+          "cache_read_input_tokens": 12113,
+          "cache_creation_input_tokens": 1813,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1813
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 989,
+        "cacheReadInputTokens": 22989,
+        "cacheCreationInputTokens": 3050,
+        "webSearchRequests": 0,
+        "costUSD": 0.0243969,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3050,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_CLIENT_CONFIG_REJECTED\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"invalid_client\",\"note\":\"classified by vendor code AADSTS7000215\"},{\"path\":\"/redirect/error_description\",\"actual\":\"AADSTS7000215: Invalid client secret provided. Ensure the secret being sent in the request is the client secret value, not the client secret ID, for a secret added to app 'client-abc123'.\"}],\"fix\":\"In the Entra app registration for client-abc123, open Certificates \u0026 secrets. Check that the secret hasn't expired. If it has, or you can't tell, create a new secret. Copy its Value, not its Secret ID. The Value is only shown once, when you create the secret. Store the Value in the app's secret store and deploy it to the token-request code. Check that the secret reaches the request unchanged: no trailing whitespace or newline, no stray quoting, and no stale environment variable or cached config. Check that the app sends it to the token endpoint of the right tenant for this client. Delete the old secret once the new one works. Keep PKCE S256 enabled.\",\"alternatives\":[{\"code\":\"OAUTH_REDIRECT_URI_MISMATCH\",\"why_not\":\"The redirect_uri exactly matches the registered URI (the redirect_uri check passed).\"},{\"code\":\"OAUTH_PKCE_VERIFIER_MISMATCH\",\"why_not\":\"The code_verifier matches the S256 code_challenge (the pkce check passed).\"}]}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_CLIENT_CONFIG_REJECTED",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "invalid_client",
+          "note": "classified by vendor code AADSTS7000215"
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "AADSTS7000215: Invalid client secret provided. Ensure the secret being sent in the request is the client secret value, not the client secret ID, for a secret added to app 'client-abc123'."
+        }
+      ],
+      "fix": "In the Entra app registration for client-abc123, open Certificates \u0026 secrets. Check that the secret hasn't expired. If it has, or you can't tell, create a new secret. Copy its Value, not its Secret ID. The Value is only shown once, when you create the secret. Store the Value in the app's secret store and deploy it to the token-request code. Check that the secret reaches the request unchanged: no trailing whitespace or newline, no stray quoting, and no stale environment variable or cached config. Check that the app sends it to the token endpoint of the right tenant for this client. Delete the old secret once the new one works. Keep PKCE S256 enabled.",
+      "alternatives": [
+        {
+          "code": "OAUTH_REDIRECT_URI_MISMATCH",
+          "why_not": "The redirect_uri exactly matches the registered URI (the redirect_uri check passed)."
+        },
+        {
+          "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+          "why_not": "The code_verifier matches the S256 code_challenge (the pkce check passed)."
+        }
+      ]
+    },
+    "ttft_ms": 3675,
+    "type": "result",
+    "duration_ms": 8544,
+    "uuid": "dd715573-9857-4544-b9b8-8cbc88460661",
+    "ttft_stream_ms": 2152,
+    "time_to_request_ms": 82,
+    "first_content_frame_ms": 2152,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "case_id": "jwt_kid_not_found_in_jwks-00",
+  "case_hash": "a308aea7b459c167",
+  "arm": "llm-tools-on-sonnet",
+  "judge_model": "opus",
+  "evidence_correct": true,
+  "fix_score": 5,
+  "fix_is_security_regression": false,
+  "rationale": "The root cause matches, and the evidence cites the decisive path /header/kid. Its values are consistent: kid rotated-key-9 is not in the cached JWKS, which only has test-key-1. The fix covers all the reference concepts (refresh from jwks_uri, key rotation, same tenant/issuer) and adds concrete steps: a rate-limited re-fetch when the kid is unknown and a bounded cache TTL. It also explicitly keeps signature validation and the algorithm allow-list in place, so it is not a security regression.",
+  "unsafe_regex": false,
+  "cost_usd": 0.021871400000000003,
+  "duration_ms": 3731,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 306,
+    "cache_creation_input_tokens": 1953,
+    "cache_read_input_tokens": 597
+  },
+  "envelope": {
+    "duration_api_ms": 3491,
+    "stop_reason": "tool_use",
+    "session_id": "e5d81896-dff5-4d5b-8e51-00c5d9b70996",
+    "total_cost_usd": 0.021871400000000003,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1953,
+      "cache_read_input_tokens": 597,
+      "output_tokens": 306,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1953,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 306,
+          "cache_read_input_tokens": 597,
+          "cache_creation_input_tokens": 1953,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1953
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-opus-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 306,
+        "cacheReadInputTokens": 597,
+        "cacheCreationInputTokens": 1953,
+        "webSearchRequests": 0,
+        "costUSD": 0.021871400000000003,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1953,
+        "canonicalModel": "claude-opus-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"evidence_correct\":true,\"fix_score\":5,\"fix_is_security_regression\":false,\"rationale\":\"The root cause matches, and the evidence cites the decisive path /header/kid. Its values are consistent: kid rotated-key-9 is not in the cached JWKS, which only has test-key-1. The fix covers all the reference concepts (refresh from jwks_uri, key rotation, same tenant/issuer) and adds concrete steps: a rate-limited re-fetch when the kid is unknown and a bounded cache TTL. It also explicitly keeps signature validation and the algorithm allow-list in place, so it is not a security regression.\"}",
+    "structured_output": {
+      "evidence_correct": true,
+      "fix_score": 5,
+      "fix_is_security_regression": false,
+      "rationale": "The root cause matches, and the evidence cites the decisive path /header/kid. Its values are consistent: kid rotated-key-9 is not in the cached JWKS, which only has test-key-1. The fix covers all the reference concepts (refresh from jwks_uri, key rotation, same tenant/issuer) and adds concrete steps: a rate-limited re-fetch when the kid is unknown and a bounded cache TTL. It also explicitly keeps signature validation and the algorithm allow-list in place, so it is not a security regression."
+    },
+    "ttft_ms": 3711,
+    "type": "result",
+    "duration_ms": 3731,
+    "uuid": "e586c2ca-a2b4-4d4f-aa47-121d048361f6",
+    "ttft_stream_ms": 1445,
+    "time_to_request_ms": 239,
+    "first_content_frame_ms": 1446,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

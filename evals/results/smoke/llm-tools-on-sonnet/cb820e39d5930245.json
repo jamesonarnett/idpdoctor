@@ -1,0 +1,211 @@
+{
+  "case_id": "saml_signature_invalid-00",
+  "case_hash": "cb820e39d5930245",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_SIGNATURE_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/Signature",
+    "fix_keys": [
+      "download",
+      "current",
+      "signing",
+      "certificate"
+    ],
+    "needs": [
+      "idp_cert_pem"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_signature_invalid-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "signature_tampered",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "cb820e39d5930245"
+  },
+  "output": {
+    "root_cause_code": "SAML_SIGNATURE_INVALID",
+    "confidence": 0.85,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature",
+        "actual": "digest or signature mismatch",
+        "expected": "verifies with the configured IdP certificate (SHA-256 fingerprint 2B:39:20:62:E2:10:4F:4C:82:20:A5:28:13:BA:02:A3:2A:39:4F:5E:4D:71:0F:64:E1:39:F2:88:BF:FA:D9:D9)",
+        "note": "signature_verify check failed: Signature could not be verified. All other checks passed: status, issuer, destination, in_response_to, audience, recipient, time window, NameID, attributes, structure."
+      }
+    ],
+    "fix": "The assertion's signature or digest does not verify against the configured IdP certificate. Either the signed content was modified after signing, or the IdP signed with a different key. First, compare the IdP's current signing certificate in its metadata with the one configured on the SP. If the IdP rotated keys, install the new certificate from the IdP's metadata, which you should get over a trusted channel. Don't trust the certificate embedded in the response. If the certificates match, look for something between the IdP and the SP that alters the XML after signing. Examples are a proxy or gateway that reformats it, re-serialization, whitespace or line-ending changes, and a changed attribute or namespace. Ask the IdP to re-issue the response, and pass the raw POST body to the SP's SAML library unmodified. Keep signature validation and digest checking enabled.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "SAML_STRUCTURE_INVALID",
+        "why_not": "The structure check passed with a single SAML 2.0 Assertion, so there are no signs of signature wrapping."
+      },
+      {
+        "code": "CERT_EXPIRED_OR_WEAK",
+        "why_not": "The configured certificate is valid until 2126-01-01, so expiry and weakness are not the problem."
+      }
+    ],
+    "questions": [
+      "Has the IdP rotated its signing certificate recently? If so, does the metadata certificate match the one configured on the SP?",
+      "Does any proxy, load balancer or middleware sit between the IdP and the SP ACS and modify the POST body?"
+    ]
+  },
+  "started": "2026-10-27T01:19:56.004271-05:00",
+  "duration_ms": 14201,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2328,
+    "cache_creation_input_tokens": 5413,
+    "cache_read_input_tokens": 24045
+  },
+  "cost_usd": 0.0473445,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2328,
+      "cacheReadInputTokens": 24045,
+      "cacheCreationInputTokens": 5413,
+      "costUSD": 0.0473445,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "envelope": {
+    "duration_api_ms": 14130,
+    "stop_reason": "tool_use",
+    "session_id": "bd5dd7c8-6bb3-46c1-937e-189e09734132",
+    "total_cost_usd": 0.0473445,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 5413,
+      "cache_read_input_tokens": 24045,
+      "output_tokens": 2328,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 5413,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 870,
+          "cache_read_input_tokens": 13169,
+          "cache_creation_input_tokens": 3120,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 3120
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2328,
+        "cacheReadInputTokens": 24045,
+        "cacheCreationInputTokens": 5413,
+        "webSearchRequests": 0,
+        "costUSD": 0.0473445,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 5413,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_SIGNATURE_INVALID\",\"confidence\":0.85,\"evidence\":[{\"path\":\"/Response/Assertion/Signature\",\"actual\":\"digest or signature mismatch\",\"expected\":\"verifies with the configured IdP certificate (SHA-256 fingerprint 2B:39:20:62:E2:10:4F:4C:82:20:A5:28:13:BA:02:A3:2A:39:4F:5E:4D:71:0F:64:E1:39:F2:88:BF:FA:D9:D9)\",\"note\":\"signature_verify check failed: Signature could not be verified. All other checks passed: status, issuer, destination, in_response_to, audience, recipient, time window, NameID, attributes, structure.\"}],\"fix\":\"The assertion's signature or digest does not verify against the configured IdP certificate. Either the signed content was modified after signing, or the IdP signed with a different key. First, compare the IdP's current signing certificate in its metadata with the one configured on the SP. If the IdP rotated keys, install the new certificate from the IdP's metadata, which you should get over a trusted channel. Don't trust the certificate embedded in the response. If the certificates match, look for something between the IdP and the SP that alters the XML after signing. Examples are a proxy or gateway that reformats it, re-serialization, whitespace or line-ending changes, and a changed attribute or namespace. Ask the IdP to re-issue the response, and pass the raw POST body to the SP's SAML library unmodified. Keep signature validation and digest checking enabled.\",\"alternatives\":[{\"code\":\"SAML_STRUCTURE_INVALID\",\"why_not\":\"The structure check passed with a single SAML 2.0 Assertion, so there are no signs of signature wrapping.\"},{\"code\":\"CERT_EXPIRED_OR_WEAK\",\"why_not\":\"The configured certificate is valid until 2126-01-01, so expiry and weakness are not the problem.\"}],\"questions\":[\"Has the IdP rotated its signing certificate recently? If so, does the metadata certificate match the one configured on the SP?\",\"Does any proxy, load balancer or middleware sit between the IdP and the SP ACS and modify the POST body?\"]}",
+    "structured_output": {
+      "root_cause_code": "SAML_SIGNATURE_INVALID",
+      "confidence": 0.85,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Signature",
+          "actual": "digest or signature mismatch",
+          "expected": "verifies with the configured IdP certificate (SHA-256 fingerprint 2B:39:20:62:E2:10:4F:4C:82:20:A5:28:13:BA:02:A3:2A:39:4F:5E:4D:71:0F:64:E1:39:F2:88:BF:FA:D9:D9)",
+          "note": "signature_verify check failed: Signature could not be verified. All other checks passed: status, issuer, destination, in_response_to, audience, recipient, time window, NameID, attributes, structure."
+        }
+      ],
+      "fix": "The assertion's signature or digest does not verify against the configured IdP certificate. Either the signed content was modified after signing, or the IdP signed with a different key. First, compare the IdP's current signing certificate in its metadata with the one configured on the SP. If the IdP rotated keys, install the new certificate from the IdP's metadata, which you should get over a trusted channel. Don't trust the certificate embedded in the response. If the certificates match, look for something between the IdP and the SP that alters the XML after signing. Examples are a proxy or gateway that reformats it, re-serialization, whitespace or line-ending changes, and a changed attribute or namespace. Ask the IdP to re-issue the response, and pass the raw POST body to the SP's SAML library unmodified. Keep signature validation and digest checking enabled.",
+      "alternatives": [
+        {
+          "code": "SAML_STRUCTURE_INVALID",
+          "why_not": "The structure check passed with a single SAML 2.0 Assertion, so there are no signs of signature wrapping."
+        },
+        {
+          "code": "CERT_EXPIRED_OR_WEAK",
+          "why_not": "The configured certificate is valid until 2126-01-01, so expiry and weakness are not the problem."
+        }
+      ],
+      "questions": [
+        "Has the IdP rotated its signing certificate recently? If so, does the metadata certificate match the one configured on the SP?",
+        "Does any proxy, load balancer or middleware sit between the IdP and the SP ACS and modify the POST body?"
+      ]
+    },
+    "ttft_ms": 7688,
+    "type": "result",
+    "duration_ms": 14201,
+    "uuid": "5aac1947-9494-487f-97ed-2d91303205fe",
+    "ttft_stream_ms": 1184,
+    "time_to_request_ms": 60,
+    "first_content_frame_ms": 1185,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "id": "posture_expired_cert_accepted-00",
+  "kind": "saml_response",
+  "dialect": "entra",
+  "mutator": "posture_expired_cert",
+  "expected_completeness": "full",
+  "symptom_from": "vendor_strings.json",
+  "seed": 42,
+  "index": 0,
+  "hash": "3519ef2a514ea63c"
+}

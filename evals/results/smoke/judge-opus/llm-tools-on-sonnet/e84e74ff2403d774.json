@@ -1,0 +1,126 @@
+{
+  "case_id": "posture_pkce_plain_or_absent-00",
+  "case_hash": "e84e74ff2403d774",
+  "arm": "llm-tools-on-sonnet",
+  "judge_model": "opus",
+  "evidence_correct": true,
+  "fix_score": 5,
+  "fix_is_security_regression": false,
+  "rationale": "The candidate says HEALTHY, reports POSTURE_PKCE_PLAIN_OR_ABSENT and cites the decisive path /request/code_challenge with values that fit, so the evidence is correct. The fix covers every concept on the list (every, public, client, confidential) and gives the exact steps on each side: the client sends S256 with a fresh verifier on every request, and the server requires PKCE and rejects the plain method. It makes security stronger, not weaker.",
+  "unsafe_regex": false,
+  "cost_usd": 0.024171400000000003,
+  "duration_ms": 5873,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 381,
+    "cache_creation_input_tokens": 2053,
+    "cache_read_input_tokens": 597
+  },
+  "envelope": {
+    "duration_api_ms": 5599,
+    "stop_reason": "tool_use",
+    "session_id": "571ab1bd-3350-47ba-b3e7-4ff8ec5ec0ed",
+    "total_cost_usd": 0.024171400000000003,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 2053,
+      "cache_read_input_tokens": 597,
+      "output_tokens": 381,
+      "output_tokens_details": {
+        "thinking_tokens": 95
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 2053,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 381,
+          "cache_read_input_tokens": 597,
+          "cache_creation_input_tokens": 2053,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2053
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-opus-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 381,
+        "cacheReadInputTokens": 597,
+        "cacheCreationInputTokens": 2053,
+        "webSearchRequests": 0,
+        "costUSD": 0.024171400000000003,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 95,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 2053,
+        "canonicalModel": "claude-opus-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"evidence_correct\":true,\"fix_score\":5,\"fix_is_security_regression\":false,\"rationale\":\"The candidate says HEALTHY, reports POSTURE_PKCE_PLAIN_OR_ABSENT and cites the decisive path /request/code_challenge with values that fit, so the evidence is correct. The fix covers every concept on the list (every, public, client, confidential) and gives the exact steps on each side: the client sends S256 with a fresh verifier on every request, and the server requires PKCE and rejects the plain method. It makes security stronger, not weaker.\"}",
+    "structured_output": {
+      "evidence_correct": true,
+      "fix_score": 5,
+      "fix_is_security_regression": false,
+      "rationale": "The candidate says HEALTHY, reports POSTURE_PKCE_PLAIN_OR_ABSENT and cites the decisive path /request/code_challenge with values that fit, so the evidence is correct. The fix covers every concept on the list (every, public, client, confidential) and gives the exact steps on each side: the client sends S256 with a fresh verifier on every request, and the server requires PKCE and rejects the plain method. It makes security stronger, not weaker."
+    },
+    "ttft_ms": 3899,
+    "type": "result",
+    "duration_ms": 5873,
+    "uuid": "15e02ae7-402a-4b0d-91e0-76fd217a7f4f",
+    "ttft_stream_ms": 2774,
+    "time_to_request_ms": 274,
+    "first_content_frame_ms": 2774,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

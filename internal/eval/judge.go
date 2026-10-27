@@ -238,7 +238,10 @@ func LoadHandLabels(path string) ([]HandLabel, error) {
 		return nil, err
 	}
 	defer f.Close()
-	rows, err := csv.NewReader(f).ReadAll()
+	cr := csv.NewReader(f)
+	cr.Comment = '#'        // the committed file documents itself in comment lines
+	cr.FieldsPerRecord = -1 // notes are optional
+	rows, err := cr.ReadAll()
 	if err != nil {
 		return nil, err
 	}

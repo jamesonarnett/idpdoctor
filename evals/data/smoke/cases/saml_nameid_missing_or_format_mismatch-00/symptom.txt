@@ -1,0 +1,1 @@
+Entra AADSTS75016 about the NameID format after the admin changed the claim.

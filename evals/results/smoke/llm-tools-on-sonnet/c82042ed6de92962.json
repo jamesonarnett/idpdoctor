@@ -1,0 +1,188 @@
+{
+  "case_id": "jwt_alg_none_or_confusion-00",
+  "case_hash": "c82042ed6de92962",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_ALG_NONE_OR_CONFUSION",
+    "posture_codes": [],
+    "evidence_path": "/header/alg",
+    "fix_keys": [
+      "reject",
+      "token"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_alg_none_or_confusion-00",
+    "kind": "jwt",
+    "mutator": "jwt_alg_none",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "c82042ed6de92962"
+  },
+  "output": {
+    "root_cause_code": "JWT_ALG_NONE_OR_CONFUSION",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/header/alg",
+        "actual": "none",
+        "expected": "an asymmetric algorithm such as RS256",
+        "note": "The validator read the header as unsigned (alg none). You reported HS256. Either way the algorithm is not one the OP's RSA-only JWKS can verify. Please recheck the raw header."
+      }
+    ],
+    "fix": "Reject this token. Pin the SP's allowed algorithms to the asymmetric ones the OP publishes (e.g. RS256). Never take the algorithm from the token header. Never use the RSA public key as an HMAC secret. Select the verification key by kid from the JWKS and require the key's alg and kty to match the pinned algorithm. Then find out why the OP or the test harness issued a non-RS256 token. The cause is probably a misconfigured client or token-signing setting, such as a client-secret-signed id_token setting, or a forged or tampered token.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": [
+      "The tool decoded the header as alg=none, but you reported HS256. Can you confirm the exact header of the captured token?",
+      "access_token (optional, to run the at_hash check)"
+    ]
+  },
+  "started": "2026-10-27T01:17:10.256419-05:00",
+  "duration_ms": 11719,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1298,
+    "cache_creation_input_tokens": 3364,
+    "cache_read_input_tokens": 23256
+  },
+  "cost_usd": 0.0287696,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1298,
+      "cacheReadInputTokens": 23256,
+      "cacheCreationInputTokens": 3364,
+      "costUSD": 0.0287696,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "envelope": {
+    "duration_api_ms": 11634,
+    "stop_reason": "tool_use",
+    "session_id": "1904565c-5ccf-4cf3-a9ee-bc70c2cbaeef",
+    "total_cost_usd": 0.0287696,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3364,
+      "cache_read_input_tokens": 23256,
+      "output_tokens": 1298,
+      "output_tokens_details": {
+        "thinking_tokens": 49
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3364,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 610,
+          "cache_read_input_tokens": 12380,
+          "cache_creation_input_tokens": 1860,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1860
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1298,
+        "cacheReadInputTokens": 23256,
+        "cacheCreationInputTokens": 3364,
+        "webSearchRequests": 0,
+        "costUSD": 0.0287696,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 49,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3364,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"JWT_ALG_NONE_OR_CONFUSION\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/header/alg\",\"actual\":\"none\",\"expected\":\"an asymmetric algorithm such as RS256\",\"note\":\"The validator read the header as unsigned (alg none). You reported HS256. Either way the algorithm is not one the OP's RSA-only JWKS can verify. Please recheck the raw header.\"}],\"fix\":\"Reject this token. Pin the SP's allowed algorithms to the asymmetric ones the OP publishes (e.g. RS256). Never take the algorithm from the token header. Never use the RSA public key as an HMAC secret. Select the verification key by kid from the JWKS and require the key's alg and kty to match the pinned algorithm. Then find out why the OP or the test harness issued a non-RS256 token. The cause is probably a misconfigured client or token-signing setting, such as a client-secret-signed id_token setting, or a forged or tampered token.\",\"alternatives\":[],\"posture_codes\":[],\"questions\":[\"The tool decoded the header as alg=none, but you reported HS256. Can you confirm the exact header of the captured token?\",\"access_token (optional, to run the at_hash check)\"]}",
+    "structured_output": {
+      "root_cause_code": "JWT_ALG_NONE_OR_CONFUSION",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/header/alg",
+          "actual": "none",
+          "expected": "an asymmetric algorithm such as RS256",
+          "note": "The validator read the header as unsigned (alg none). You reported HS256. Either way the algorithm is not one the OP's RSA-only JWKS can verify. Please recheck the raw header."
+        }
+      ],
+      "fix": "Reject this token. Pin the SP's allowed algorithms to the asymmetric ones the OP publishes (e.g. RS256). Never take the algorithm from the token header. Never use the RSA public key as an HMAC secret. Select the verification key by kid from the JWKS and require the key's alg and kty to match the pinned algorithm. Then find out why the OP or the test harness issued a non-RS256 token. The cause is probably a misconfigured client or token-signing setting, such as a client-secret-signed id_token setting, or a forged or tampered token.",
+      "alternatives": [],
+      "posture_codes": [],
+      "questions": [
+        "The tool decoded the header as alg=none, but you reported HS256. Can you confirm the exact header of the captured token?",
+        "access_token (optional, to run the at_hash check)"
+      ]
+    },
+    "ttft_ms": 5330,
+    "type": "result",
+    "duration_ms": 11719,
+    "uuid": "3e46f002-ea72-4fca-a658-8925f762df15",
+    "ttft_stream_ms": 2292,
+    "time_to_request_ms": 74,
+    "first_content_frame_ms": 2292,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

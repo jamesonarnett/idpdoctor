@@ -2,3 +2,11 @@ case_id,arm,evidence_correct,fix_score,notes
 # One row per (case, arm) scored by a human on the rubric in evals/rubric.md, blind to the judge.
 # evidence_correct: 1/0. fix_score: 1-5. Rows whose notes contain "placeholder" were not hand-labelled
 # and the report says so; replace them with real labels (BUILD_PLAN 6.3: 50 stratified cases).
+cert_expired_or_weak-00,llm-tools-off-sonnet,0,3,placeholder: called it HEALTHY but named the 1024-bit key and the right rotation; wrong verdict
+oidc_request_binding_mismatch-00,llm-tools-off-sonnet,0,2,placeholder: HEALTHY instead of at_hash mismatch; asked the right question but guessed anyway
+saml_audience_mismatch-00,llm-tools-off-sonnet,1,5,placeholder: exact path and the exact value to set
+oauth_pkce_verifier_mismatch-00,llm-tools-off-sonnet,0,4,placeholder: right class and fix but cited invented paths (/vendor_code) instead of /request/code_verifier
+posture_pkce_plain_or_absent-00,llm-tools-on-sonnet,1,4,placeholder: HEALTHY plus the posture code; cites the challenge path plus two check names
+healthy-samlresponse-00,llm-tools-on-sonnet,1,5,placeholder: HEALTHY with no fix needed (control)
+jwt_kid_not_found_in_jwks-00,llm-tools-on-sonnet,1,5,placeholder: /header/kid and refresh-the-JWKS fix
+saml_signature_invalid-00,llm-tools-on-sonnet,1,4,placeholder: right path; fix covers rotation but hedges

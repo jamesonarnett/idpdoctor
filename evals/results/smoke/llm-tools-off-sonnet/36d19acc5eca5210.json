@@ -1,0 +1,227 @@
+{
+  "case_id": "saml_structure_invalid-00",
+  "case_hash": "36d19acc5eca5210",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_STRUCTURE_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion",
+    "fix_keys": [
+      "treat",
+      "response",
+      "hostile",
+      "unless"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_structure_invalid-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "structure_multi_assertion",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "36d19acc5eca5210"
+  },
+  "output": {
+    "root_cause_code": "SAML_STRUCTURE_INVALID",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "path": "/Response/Assertion[2]",
+        "actual": "Second Assertion ID=_assert_a289ac_wrapped with no ds:Signature and a different NameID",
+        "expected": "Exactly one assertion, signed",
+        "note": "Looks like signature wrapping: a signed assertion plus an unsigned lookalike"
+      },
+      {
+        "path": "/Response/Assertion[1]/Signature/SignedInfo/Reference/@URI",
+        "actual": "#_assert_a289ac",
+        "note": "Signature covers only the first assertion"
+      },
+      {
+        "path": "/Response/Assertion[2]/Subject/NameID",
+        "actual": "[REDACTED:nameid:941e7c61]",
+        "expected": "[REDACTED:nameid:ff8d9819]",
+        "note": "The identity differs from the signed assertion"
+      }
+    ],
+    "fix": "Make the SP reject any response with more than one assertion, or with any assertion that isn't covered by a verified signature. Verify the signature against the configured IdP certificate, not the embedded KeyInfo. Then read claims only from the exact element that the verified Reference URI points to. Use a schema-validating XML parser. Separately, the AADSTS75003 error comes from the AuthnRequest, not this response. Check the request binding and the ACS binding registered in Entra. Entra only accepts SP-initiated requests sent over HTTP-Redirect, and the ACS must be an HTTP-POST endpoint. Check whether the request was sent over HTTP-POST.",
+    "posture_codes": [
+      "POSTURE_PARSER_DIFFERENTIAL_EXPOSURE"
+    ],
+    "alternatives": [
+      {
+        "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+        "why_not": "The required assertion signature is present. The problem is an extra unsigned assertion, which is a structural fault."
+      }
+    ],
+    "questions": [
+      "Is the AADSTS75003 error from the AuthnRequest binding? Which binding did the SP use to send it?"
+    ]
+  },
+  "started": "2026-10-27T01:16:35.286017-05:00",
+  "duration_ms": 9440,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1203,
+    "cache_creation_input_tokens": 5808,
+    "cache_read_input_tokens": 3689
+  },
+  "cost_usd": 0.0356349,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1203,
+      "cacheReadInputTokens": 3689,
+      "cacheCreationInputTokens": 5808,
+      "costUSD": 0.0356349,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [
+    "/Response/Assertion[1]/Signature/SignedInfo/Reference/@URI"
+  ],
+  "valid_citations": 2,
+  "envelope": {
+    "duration_api_ms": 9342,
+    "stop_reason": "tool_use",
+    "session_id": "c4d43bce-5b46-4db6-b229-8a4d9772240f",
+    "total_cost_usd": 0.0356349,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 5808,
+      "cache_read_input_tokens": 3689,
+      "output_tokens": 1203,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 5808,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1203,
+          "cache_read_input_tokens": 3689,
+          "cache_creation_input_tokens": 5808,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 5808
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1203,
+        "cacheReadInputTokens": 3689,
+        "cacheCreationInputTokens": 5808,
+        "webSearchRequests": 0,
+        "costUSD": 0.0356349,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 5808,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_STRUCTURE_INVALID\",\"confidence\":0.8,\"evidence\":[{\"path\":\"/Response/Assertion[2]\",\"actual\":\"Second Assertion ID=_assert_a289ac_wrapped with no ds:Signature and a different NameID\",\"expected\":\"Exactly one assertion, signed\",\"note\":\"Looks like signature wrapping: a signed assertion plus an unsigned lookalike\"},{\"path\":\"/Response/Assertion[1]/Signature/SignedInfo/Reference/@URI\",\"actual\":\"#_assert_a289ac\",\"note\":\"Signature covers only the first assertion\"},{\"path\":\"/Response/Assertion[2]/Subject/NameID\",\"actual\":\"[REDACTED:nameid:941e7c61]\",\"expected\":\"[REDACTED:nameid:ff8d9819]\",\"note\":\"The identity differs from the signed assertion\"}],\"fix\":\"Make the SP reject any response with more than one assertion, or with any assertion that isn't covered by a verified signature. Verify the signature against the configured IdP certificate, not the embedded KeyInfo. Then read claims only from the exact element that the verified Reference URI points to. Use a schema-validating XML parser. Separately, the AADSTS75003 error comes from the AuthnRequest, not this response. Check the request binding and the ACS binding registered in Entra. Entra only accepts SP-initiated requests sent over HTTP-Redirect, and the ACS must be an HTTP-POST endpoint. Check whether the request was sent over HTTP-POST.\",\"alternatives\":[{\"code\":\"SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED\",\"why_not\":\"The required assertion signature is present. The problem is an extra unsigned assertion, which is a structural fault.\"}],\"questions\":[\"Is the AADSTS75003 error from the AuthnRequest binding? Which binding did the SP use to send it?\"],\"posture_codes\":[\"POSTURE_PARSER_DIFFERENTIAL_EXPOSURE\"]}",
+    "structured_output": {
+      "root_cause_code": "SAML_STRUCTURE_INVALID",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "path": "/Response/Assertion[2]",
+          "actual": "Second Assertion ID=_assert_a289ac_wrapped with no ds:Signature and a different NameID",
+          "expected": "Exactly one assertion, signed",
+          "note": "Looks like signature wrapping: a signed assertion plus an unsigned lookalike"
+        },
+        {
+          "path": "/Response/Assertion[1]/Signature/SignedInfo/Reference/@URI",
+          "actual": "#_assert_a289ac",
+          "note": "Signature covers only the first assertion"
+        },
+        {
+          "path": "/Response/Assertion[2]/Subject/NameID",
+          "actual": "[REDACTED:nameid:941e7c61]",
+          "expected": "[REDACTED:nameid:ff8d9819]",
+          "note": "The identity differs from the signed assertion"
+        }
+      ],
+      "fix": "Make the SP reject any response with more than one assertion, or with any assertion that isn't covered by a verified signature. Verify the signature against the configured IdP certificate, not the embedded KeyInfo. Then read claims only from the exact element that the verified Reference URI points to. Use a schema-validating XML parser. Separately, the AADSTS75003 error comes from the AuthnRequest, not this response. Check the request binding and the ACS binding registered in Entra. Entra only accepts SP-initiated requests sent over HTTP-Redirect, and the ACS must be an HTTP-POST endpoint. Check whether the request was sent over HTTP-POST.",
+      "alternatives": [
+        {
+          "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+          "why_not": "The required assertion signature is present. The problem is an extra unsigned assertion, which is a structural fault."
+        }
+      ],
+      "questions": [
+        "Is the AADSTS75003 error from the AuthnRequest binding? Which binding did the SP use to send it?"
+      ],
+      "posture_codes": [
+        "POSTURE_PARSER_DIFFERENTIAL_EXPOSURE"
+      ]
+    },
+    "ttft_ms": 4721,
+    "type": "result",
+    "duration_ms": 9440,
+    "uuid": "8bde9ae1-7162-42b3-acd5-838ba7c5727a",
+    "ttft_stream_ms": 1378,
+    "time_to_request_ms": 96,
+    "first_content_frame_ms": 1378,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

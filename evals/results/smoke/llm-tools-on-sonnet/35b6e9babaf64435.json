@@ -1,0 +1,216 @@
+{
+  "case_id": "posture_decrypt_before_verify-00",
+  "case_hash": "35b6e9babaf64435",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_DECRYPT_BEFORE_VERIFY"
+    ],
+    "evidence_path": "/Response/Assertion",
+    "fix_keys": [
+      "response",
+      "assertion",
+      "encrypting",
+      "verify"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_decrypt_before_verify-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "posture_encrypted_unsigned",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "35b6e9babaf64435"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.5,
+    "evidence": [
+      {
+        "path": "/Response/Assertion",
+        "actual": "EncryptedAssertion, Response unsigned",
+        "expected": "signed Response or signed-then-encrypted Assertion",
+        "note": "Posture warning only. Assertion-level checks (signature, audience, recipient, time window, NameID, attributes) were skipped because the assertion is encrypted and the tool can't decrypt it."
+      },
+      {
+        "path": "/Response/Status",
+        "actual": "Success",
+        "note": "The status, issuer, destination and in_response_to checks all passed."
+      }
+    ],
+    "fix": "The envelope checks pass, so no fault is confirmed. Ask the IdP to sign the Response, or to sign the Assertion before encrypting it. The SP can then verify a signature against the pinned IdP certificate before it decrypts. Don't disable signature validation, and don't trust a certificate embedded in the message. After decryption, re-run the assertion-level checks: audience, recipient, time window, NameID format, and the email and firstName attributes.",
+    "posture_codes": [
+      "POSTURE_DECRYPT_BEFORE_VERIFY"
+    ],
+    "alternatives": [
+      {
+        "code": "SAML_ENCRYPTED_ASSERTION_UNDECRYPTABLE",
+        "why_not": "No symptom or tool evidence shows a decryption failure. The tool simply doesn't support decryption."
+      }
+    ],
+    "questions": [
+      "Can you supply the decrypted assertion, or confirm that the SP's decryption works? Audience, recipient, time window, NameID and attributes could not be checked. No symptom was given, so I don't know what error you see."
+    ]
+  },
+  "started": "2026-10-27T01:18:13.211243-05:00",
+  "duration_ms": 13944,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2090,
+    "cache_creation_input_tokens": 4653,
+    "cache_read_input_tokens": 24004
+  },
+  "cost_usd": 0.0419204,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2090,
+      "cacheReadInputTokens": 24004,
+      "cacheCreationInputTokens": 4653,
+      "costUSD": 0.0419204,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [
+    "/Response/Status"
+  ],
+  "valid_citations": 1,
+  "envelope": {
+    "duration_api_ms": 13854,
+    "stop_reason": "tool_use",
+    "session_id": "ad50418c-6932-4924-b027-7e4258a55671",
+    "total_cost_usd": 0.0419204,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 4653,
+      "cache_read_input_tokens": 24004,
+      "output_tokens": 2090,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 4653,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 690,
+          "cache_read_input_tokens": 13128,
+          "cache_creation_input_tokens": 2401,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2401
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2090,
+        "cacheReadInputTokens": 24004,
+        "cacheCreationInputTokens": 4653,
+        "webSearchRequests": 0,
+        "costUSD": 0.0419204,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 4653,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.5,\"evidence\":[{\"path\":\"/Response/Assertion\",\"actual\":\"EncryptedAssertion, Response unsigned\",\"expected\":\"signed Response or signed-then-encrypted Assertion\",\"note\":\"Posture warning only. Assertion-level checks (signature, audience, recipient, time window, NameID, attributes) were skipped because the assertion is encrypted and the tool can't decrypt it.\"},{\"path\":\"/Response/Status\",\"actual\":\"Success\",\"note\":\"The status, issuer, destination and in_response_to checks all passed.\"}],\"fix\":\"The envelope checks pass, so no fault is confirmed. Ask the IdP to sign the Response, or to sign the Assertion before encrypting it. The SP can then verify a signature against the pinned IdP certificate before it decrypts. Don't disable signature validation, and don't trust a certificate embedded in the message. After decryption, re-run the assertion-level checks: audience, recipient, time window, NameID format, and the email and firstName attributes.\",\"posture_codes\":[\"POSTURE_DECRYPT_BEFORE_VERIFY\"],\"questions\":[\"Can you supply the decrypted assertion, or confirm that the SP's decryption works? Audience, recipient, time window, NameID and attributes could not be checked. No symptom was given, so I don't know what error you see.\"],\"alternatives\":[{\"code\":\"SAML_ENCRYPTED_ASSERTION_UNDECRYPTABLE\",\"why_not\":\"No symptom or tool evidence shows a decryption failure. The tool simply doesn't support decryption.\"}]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.5,
+      "evidence": [
+        {
+          "path": "/Response/Assertion",
+          "actual": "EncryptedAssertion, Response unsigned",
+          "expected": "signed Response or signed-then-encrypted Assertion",
+          "note": "Posture warning only. Assertion-level checks (signature, audience, recipient, time window, NameID, attributes) were skipped because the assertion is encrypted and the tool can't decrypt it."
+        },
+        {
+          "path": "/Response/Status",
+          "actual": "Success",
+          "note": "The status, issuer, destination and in_response_to checks all passed."
+        }
+      ],
+      "fix": "The envelope checks pass, so no fault is confirmed. Ask the IdP to sign the Response, or to sign the Assertion before encrypting it. The SP can then verify a signature against the pinned IdP certificate before it decrypts. Don't disable signature validation, and don't trust a certificate embedded in the message. After decryption, re-run the assertion-level checks: audience, recipient, time window, NameID format, and the email and firstName attributes.",
+      "posture_codes": [
+        "POSTURE_DECRYPT_BEFORE_VERIFY"
+      ],
+      "questions": [
+        "Can you supply the decrypted assertion, or confirm that the SP's decryption works? Audience, recipient, time window, NameID and attributes could not be checked. No symptom was given, so I don't know what error you see."
+      ],
+      "alternatives": [
+        {
+          "code": "SAML_ENCRYPTED_ASSERTION_UNDECRYPTABLE",
+          "why_not": "No symptom or tool evidence shows a decryption failure. The tool simply doesn't support decryption."
+        }
+      ]
+    },
+    "ttft_ms": 8340,
+    "type": "result",
+    "duration_ms": 13944,
+    "uuid": "74df242d-40e3-41df-8497-f9e1750b8f7c",
+    "ttft_stream_ms": 1486,
+    "time_to_request_ms": 79,
+    "first_content_frame_ms": 1487,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

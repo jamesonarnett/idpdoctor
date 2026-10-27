@@ -1,0 +1,14 @@
+{
+  "code": "SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED",
+  "posture_codes": [],
+  "evidence_path": "/Response/@InResponseTo",
+  "fix_keys": [
+    "ensure",
+    "keeps",
+    "authnrequest",
+    "across"
+  ],
+  "needs": [
+    "request_id"
+  ]
+}

@@ -1,0 +1,209 @@
+{
+  "case_id": "saml_destination_or_recipient_mismatch-00",
+  "case_hash": "0ba09ca183043aee",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_DESTINATION_OR_RECIPIENT_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/Response/@Destination",
+    "fix_keys": [
+      "application",
+      "reply",
+      "assertion",
+      "consumer"
+    ],
+    "needs": [
+      "acs_url"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_destination_or_recipient_mismatch-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "destination_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "0ba09ca183043aee"
+  },
+  "output": {
+    "root_cause_code": "SAML_DESTINATION_OR_RECIPIENT_MISMATCH",
+    "confidence": 0.93,
+    "evidence": [
+      {
+        "path": "/Response/@Destination",
+        "actual": "https://sp-staging.example.com/saml/acs",
+        "expected": "https://sp.example.com/saml/acs",
+        "note": "Destination points at the staging environment's ACS URL"
+      }
+    ],
+    "fix": "In the IdP application, set the ACS / Reply URL to exactly the production SP ACS URL (https://sp.example.com/saml/acs), including scheme, host, port and path. It is currently the staging one. Then re-issue the response. Keep Destination and Recipient equal to the ACS URL, and keep signature and audience validation as they are.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "SAML_AUDIENCE_MISMATCH",
+        "why_not": "The audience check passed and matches sp_entity_id."
+      },
+      {
+        "code": "SAML_SIGNATURE_INVALID",
+        "why_not": "The assertion signature verified against the supplied IdP certificate."
+      }
+    ],
+    "questions": [
+      "GitHub reported 'Recipient'. The Recipient in SubjectConfirmationData matches the ACS URL, but Destination does not. Is the IdP app configured with two different ACS URLs (production and staging)?"
+    ]
+  },
+  "started": "2026-10-27T01:19:13.385336-05:00",
+  "duration_ms": 13408,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2007,
+    "cache_creation_input_tokens": 5114,
+    "cache_read_input_tokens": 24038
+  },
+  "cost_usd": 0.0429378,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2007,
+      "cacheReadInputTokens": 24038,
+      "cacheCreationInputTokens": 5114,
+      "costUSD": 0.0429378,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "envelope": {
+    "duration_api_ms": 13288,
+    "stop_reason": "tool_use",
+    "session_id": "176d4ac4-b805-484e-9bd4-2d659503bd97",
+    "total_cost_usd": 0.0429378,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 5114,
+      "cache_read_input_tokens": 24038,
+      "output_tokens": 2007,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 5114,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 555,
+          "cache_read_input_tokens": 13162,
+          "cache_creation_input_tokens": 2828,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2828
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2007,
+        "cacheReadInputTokens": 24038,
+        "cacheCreationInputTokens": 5114,
+        "webSearchRequests": 0,
+        "costUSD": 0.0429378,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 5114,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_DESTINATION_OR_RECIPIENT_MISMATCH\",\"confidence\":0.93,\"evidence\":[{\"path\":\"/Response/@Destination\",\"actual\":\"https://sp-staging.example.com/saml/acs\",\"expected\":\"https://sp.example.com/saml/acs\",\"note\":\"Destination points at the staging environment's ACS URL\"}],\"fix\":\"In the IdP application, set the ACS / Reply URL to exactly the production SP ACS URL (https://sp.example.com/saml/acs), including scheme, host, port and path. It is currently the staging one. Then re-issue the response. Keep Destination and Recipient equal to the ACS URL, and keep signature and audience validation as they are.\",\"alternatives\":[{\"code\":\"SAML_AUDIENCE_MISMATCH\",\"why_not\":\"The audience check passed and matches sp_entity_id.\"},{\"code\":\"SAML_SIGNATURE_INVALID\",\"why_not\":\"The assertion signature verified against the supplied IdP certificate.\"}],\"questions\":[\"GitHub reported 'Recipient'. The Recipient in SubjectConfirmationData matches the ACS URL, but Destination does not. Is the IdP app configured with two different ACS URLs (production and staging)?\"]}",
+    "structured_output": {
+      "root_cause_code": "SAML_DESTINATION_OR_RECIPIENT_MISMATCH",
+      "confidence": 0.93,
+      "evidence": [
+        {
+          "path": "/Response/@Destination",
+          "actual": "https://sp-staging.example.com/saml/acs",
+          "expected": "https://sp.example.com/saml/acs",
+          "note": "Destination points at the staging environment's ACS URL"
+        }
+      ],
+      "fix": "In the IdP application, set the ACS / Reply URL to exactly the production SP ACS URL (https://sp.example.com/saml/acs), including scheme, host, port and path. It is currently the staging one. Then re-issue the response. Keep Destination and Recipient equal to the ACS URL, and keep signature and audience validation as they are.",
+      "alternatives": [
+        {
+          "code": "SAML_AUDIENCE_MISMATCH",
+          "why_not": "The audience check passed and matches sp_entity_id."
+        },
+        {
+          "code": "SAML_SIGNATURE_INVALID",
+          "why_not": "The assertion signature verified against the supplied IdP certificate."
+        }
+      ],
+      "questions": [
+        "GitHub reported 'Recipient'. The Recipient in SubjectConfirmationData matches the ACS URL, but Destination does not. Is the IdP app configured with two different ACS URLs (production and staging)?"
+      ]
+    },
+    "ttft_ms": 8679,
+    "type": "result",
+    "duration_ms": 13408,
+    "uuid": "aa8ddfbe-bbeb-4db8-b46e-803b37ad228e",
+    "ttft_stream_ms": 1389,
+    "time_to_request_ms": 108,
+    "first_content_frame_ms": 1389,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

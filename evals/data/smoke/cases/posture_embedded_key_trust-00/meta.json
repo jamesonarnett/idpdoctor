@@ -1,0 +1,11 @@
+{
+  "id": "posture_embedded_key_trust-00",
+  "kind": "saml_response",
+  "dialect": "entra",
+  "mutator": "posture_embedded_key",
+  "expected_completeness": "full",
+  "symptom_from": "vendor_strings.json",
+  "seed": 42,
+  "index": 0,
+  "hash": "8e5f13ae9937a7a9"
+}

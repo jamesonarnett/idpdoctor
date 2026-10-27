@@ -1,0 +1,201 @@
+{
+  "case_id": "saml_issuer_mismatch-00",
+  "case_hash": "2c7db55000ea5dd5",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_ISSUER_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/Response/Issuer",
+    "fix_keys": [
+      "entityid",
+      "metadata",
+      "verbatim",
+      "issuer"
+    ],
+    "needs": [
+      "idp_entity_id"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_issuer_mismatch-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "issuer_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "2c7db55000ea5dd5"
+  },
+  "output": {
+    "root_cause_code": "SAML_ISSUER_MISMATCH",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "path": "/Response/Issuer",
+        "actual": "https://idp.example.com/saml/",
+        "expected": "https://idp.example.com/saml",
+        "note": "Differs only by a trailing slash. Every other check passed: status, destination, InResponseTo, signature, audience, recipient, time window, NameID and attributes."
+      }
+    ],
+    "fix": "Make the SP's configured IdP entityID and the response Issuer identical, character for character. Copy the entityID from the IdP metadata exactly as published, including any trailing slash. Alternatively, change the IdP's entity ID setting to match what the SP expects. Keep signature validation and the pinned IdP certificate in place, and don't loosen the issuer comparison with normalization or wildcards.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "IDP_POLICY_REFUSAL",
+        "why_not": "The reported Google error app_not_configured_for_user is an IdP-side assignment or configuration error. The captured response has Status Success and a valid signed assertion, so the IdP did issue the assertion. The only failing check is the Issuer."
+      }
+    ],
+    "questions": [
+      "Was the captured response from the same attempt that produced app_not_configured_for_user? That error normally appears at the IdP before any assertion is issued. If it is a separate failure, check the app's SP entity ID and ACS URL in the Google admin console, and check the user's service status for the app."
+    ]
+  },
+  "started": "2026-10-27T01:19:27.309777-05:00",
+  "duration_ms": 15363,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2167,
+    "cache_creation_input_tokens": 5074,
+    "cache_read_input_tokens": 24044
+  },
+  "cost_usd": 0.0443784,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2167,
+      "cacheReadInputTokens": 24044,
+      "cacheCreationInputTokens": 5074,
+      "costUSD": 0.0443784,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "envelope": {
+    "duration_api_ms": 15250,
+    "stop_reason": "tool_use",
+    "session_id": "b7cba156-372c-4050-a7d1-cdb0fc4d58c7",
+    "total_cost_usd": 0.0443784,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 5074,
+      "cache_read_input_tokens": 24044,
+      "output_tokens": 2167,
+      "output_tokens_details": {
+        "thinking_tokens": 96
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 5074,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 710,
+          "cache_read_input_tokens": 13168,
+          "cache_creation_input_tokens": 2782,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2782
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2167,
+        "cacheReadInputTokens": 24044,
+        "cacheCreationInputTokens": 5074,
+        "webSearchRequests": 0,
+        "costUSD": 0.0443784,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 96,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 5074,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_ISSUER_MISMATCH\",\"confidence\":0.8,\"evidence\":[{\"path\":\"/Response/Issuer\",\"actual\":\"https://idp.example.com/saml/\",\"expected\":\"https://idp.example.com/saml\",\"note\":\"Differs only by a trailing slash. Every other check passed: status, destination, InResponseTo, signature, audience, recipient, time window, NameID and attributes.\"}],\"fix\":\"Make the SP's configured IdP entityID and the response Issuer identical, character for character. Copy the entityID from the IdP metadata exactly as published, including any trailing slash. Alternatively, change the IdP's entity ID setting to match what the SP expects. Keep signature validation and the pinned IdP certificate in place, and don't loosen the issuer comparison with normalization or wildcards.\",\"alternatives\":[{\"code\":\"IDP_POLICY_REFUSAL\",\"why_not\":\"The reported Google error app_not_configured_for_user is an IdP-side assignment or configuration error. The captured response has Status Success and a valid signed assertion, so the IdP did issue the assertion. The only failing check is the Issuer.\"}],\"questions\":[\"Was the captured response from the same attempt that produced app_not_configured_for_user? That error normally appears at the IdP before any assertion is issued. If it is a separate failure, check the app's SP entity ID and ACS URL in the Google admin console, and check the user's service status for the app.\"]}",
+    "structured_output": {
+      "root_cause_code": "SAML_ISSUER_MISMATCH",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "path": "/Response/Issuer",
+          "actual": "https://idp.example.com/saml/",
+          "expected": "https://idp.example.com/saml",
+          "note": "Differs only by a trailing slash. Every other check passed: status, destination, InResponseTo, signature, audience, recipient, time window, NameID and attributes."
+        }
+      ],
+      "fix": "Make the SP's configured IdP entityID and the response Issuer identical, character for character. Copy the entityID from the IdP metadata exactly as published, including any trailing slash. Alternatively, change the IdP's entity ID setting to match what the SP expects. Keep signature validation and the pinned IdP certificate in place, and don't loosen the issuer comparison with normalization or wildcards.",
+      "alternatives": [
+        {
+          "code": "IDP_POLICY_REFUSAL",
+          "why_not": "The reported Google error app_not_configured_for_user is an IdP-side assignment or configuration error. The captured response has Status Success and a valid signed assertion, so the IdP did issue the assertion. The only failing check is the Issuer."
+        }
+      ],
+      "questions": [
+        "Was the captured response from the same attempt that produced app_not_configured_for_user? That error normally appears at the IdP before any assertion is issued. If it is a separate failure, check the app's SP entity ID and ACS URL in the Google admin console, and check the user's service status for the app."
+      ]
+    },
+    "ttft_ms": 9242,
+    "type": "result",
+    "duration_ms": 15363,
+    "uuid": "baa4c312-f066-4bfa-a7d5-12f9ecd7e0db",
+    "ttft_stream_ms": 2478,
+    "time_to_request_ms": 106,
+    "first_content_frame_ms": 2479,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,226 @@
+{
+  "case_id": "posture_pkce_plain_or_absent-00",
+  "case_hash": "e84e74ff2403d774",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_PKCE_PLAIN_OR_ABSENT"
+    ],
+    "evidence_path": "/request/code_challenge",
+    "fix_keys": [
+      "every",
+      "public",
+      "client",
+      "confidential"
+    ],
+    "needs": [
+      "client_type"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "posture_pkce_plain_or_absent-00",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_pkce_absent_posture",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "e84e74ff2403d774"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.85,
+    "evidence": [
+      {
+        "path": "/request/code_challenge",
+        "actual": "no code_challenge supplied for a public client",
+        "expected": "an S256 code_challenge",
+        "note": "Without PKCE, an intercepted authorization code can be redeemed by anyone, because a public client has no secret."
+      },
+      {
+        "path": "/checks/redirect_uri",
+        "actual": "pass: exact match with a registered URI"
+      },
+      {
+        "path": "/checks/client_config",
+        "actual": "pass: public client with grant_type authorization_code"
+      }
+    ],
+    "fix": "Make the client send code_challenge with code_challenge_method=S256 on every authorization request. It should generate a high-entropy code_verifier per request and send that verifier at the token endpoint. On the authorization server, require PKCE for this public client and reject authorization requests that have no code_challenge, and reject the plain method. Apply the same to confidential clients.",
+    "posture_codes": [
+      "POSTURE_PKCE_PLAIN_OR_ABSENT"
+    ],
+    "alternatives": [
+      {
+        "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+        "why_not": "No verifier or challenge was supplied, so that check was skipped. There is no evidence of a mismatch. The issue is that PKCE is absent."
+      }
+    ],
+    "questions": [
+      "code_verifier (and code_challenge / code_challenge_method) if you want the verifier-to-challenge match checked"
+    ]
+  },
+  "started": "2026-10-27T01:18:42.603709-05:00",
+  "duration_ms": 8754,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 874,
+    "cache_creation_input_tokens": 2099,
+    "cache_read_input_tokens": 22880
+  },
+  "cost_usd": 0.019431999999999998,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 874,
+      "cacheReadInputTokens": 22880,
+      "cacheCreationInputTokens": 2099,
+      "costUSD": 0.019431999999999998,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [
+    "/checks/redirect_uri",
+    "/checks/client_config"
+  ],
+  "valid_citations": 1,
+  "envelope": {
+    "duration_api_ms": 8666,
+    "stop_reason": "tool_use",
+    "session_id": "2c7391a0-7b5b-460f-b239-ee7501b65e1d",
+    "total_cost_usd": 0.019431999999999998,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 2099,
+      "cache_read_input_tokens": 22880,
+      "output_tokens": 874,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 2099,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 619,
+          "cache_read_input_tokens": 12004,
+          "cache_creation_input_tokens": 971,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 971
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 874,
+        "cacheReadInputTokens": 22880,
+        "cacheCreationInputTokens": 2099,
+        "webSearchRequests": 0,
+        "costUSD": 0.019431999999999998,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 2099,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.85,\"posture_codes\":[\"POSTURE_PKCE_PLAIN_OR_ABSENT\"],\"evidence\":[{\"path\":\"/request/code_challenge\",\"actual\":\"no code_challenge supplied for a public client\",\"expected\":\"an S256 code_challenge\",\"note\":\"Without PKCE, an intercepted authorization code can be redeemed by anyone, because a public client has no secret.\"},{\"path\":\"/checks/redirect_uri\",\"actual\":\"pass: exact match with a registered URI\"},{\"path\":\"/checks/client_config\",\"actual\":\"pass: public client with grant_type authorization_code\"}],\"fix\":\"Make the client send code_challenge with code_challenge_method=S256 on every authorization request. It should generate a high-entropy code_verifier per request and send that verifier at the token endpoint. On the authorization server, require PKCE for this public client and reject authorization requests that have no code_challenge, and reject the plain method. Apply the same to confidential clients.\",\"questions\":[\"code_verifier (and code_challenge / code_challenge_method) if you want the verifier-to-challenge match checked\"],\"alternatives\":[{\"code\":\"OAUTH_PKCE_VERIFIER_MISMATCH\",\"why_not\":\"No verifier or challenge was supplied, so that check was skipped. There is no evidence of a mismatch. The issue is that PKCE is absent.\"}]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.85,
+      "posture_codes": [
+        "POSTURE_PKCE_PLAIN_OR_ABSENT"
+      ],
+      "evidence": [
+        {
+          "path": "/request/code_challenge",
+          "actual": "no code_challenge supplied for a public client",
+          "expected": "an S256 code_challenge",
+          "note": "Without PKCE, an intercepted authorization code can be redeemed by anyone, because a public client has no secret."
+        },
+        {
+          "path": "/checks/redirect_uri",
+          "actual": "pass: exact match with a registered URI"
+        },
+        {
+          "path": "/checks/client_config",
+          "actual": "pass: public client with grant_type authorization_code"
+        }
+      ],
+      "fix": "Make the client send code_challenge with code_challenge_method=S256 on every authorization request. It should generate a high-entropy code_verifier per request and send that verifier at the token endpoint. On the authorization server, require PKCE for this public client and reject authorization requests that have no code_challenge, and reject the plain method. Apply the same to confidential clients.",
+      "questions": [
+        "code_verifier (and code_challenge / code_challenge_method) if you want the verifier-to-challenge match checked"
+      ],
+      "alternatives": [
+        {
+          "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+          "why_not": "No verifier or challenge was supplied, so that check was skipped. There is no evidence of a mismatch. The issue is that PKCE is absent."
+        }
+      ]
+    },
+    "ttft_ms": 2700,
+    "type": "result",
+    "duration_ms": 8754,
+    "uuid": "8b69c158-6741-4b2e-850b-6e6802b75ef6",
+    "ttft_stream_ms": 1524,
+    "time_to_request_ms": 75,
+    "first_content_frame_ms": 1525,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

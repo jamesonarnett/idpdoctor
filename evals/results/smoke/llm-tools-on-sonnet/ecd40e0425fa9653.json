@@ -1,0 +1,205 @@
+{
+  "case_id": "healthy-samlresponse-00",
+  "case_hash": "ecd40e0425fa9653",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [],
+    "fix_keys": [
+      "no change needed",
+      "the artifact validates"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "healthy-samlresponse-00",
+    "kind": "saml_response",
+    "dialect": "generic",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "ecd40e0425fa9653"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "checks/signature_verify",
+        "actual": "verified against idp_cert_pem"
+      },
+      {
+        "path": "checks/audience",
+        "actual": "matches sp_entity_id"
+      },
+      {
+        "path": "checks/time_window",
+        "actual": "valid at 2026-01-15T12:00:00Z"
+      },
+      {
+        "path": "checks/in_response_to",
+        "actual": "matches request_id"
+      }
+    ],
+    "fix": "No fix needed. All 14 checks passed with the supplied expected values, and the assertion is signed and verified against the configured IdP certificate. The time window was evaluated at the replay time 2026-01-15T12:00:00Z, so a failure today would be a separate expiry or clock issue. If the developer still sees an error, capture the SP-side error message and a fresh response.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T01:16:47.049903-05:00",
+  "duration_ms": 11984,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1856,
+    "cache_creation_input_tokens": 4317,
+    "cache_read_input_tokens": 24021
+  },
+  "cost_usd": 0.0382381,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1856,
+      "cacheReadInputTokens": 24021,
+      "cacheCreationInputTokens": 4317,
+      "costUSD": 0.0382381,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [
+    "checks/signature_verify",
+    "checks/audience",
+    "checks/time_window",
+    "checks/in_response_to"
+  ],
+  "valid_citations": 0,
+  "envelope": {
+    "duration_api_ms": 11859,
+    "stop_reason": "tool_use",
+    "session_id": "41fa8f33-88e7-4ec7-b1a2-066b7d1f06e2",
+    "total_cost_usd": 0.0382381,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 4317,
+      "cache_read_input_tokens": 24021,
+      "output_tokens": 1856,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 4317,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 442,
+          "cache_read_input_tokens": 13145,
+          "cache_creation_input_tokens": 2048,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2048
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1856,
+        "cacheReadInputTokens": 24021,
+        "cacheCreationInputTokens": 4317,
+        "webSearchRequests": 0,
+        "costUSD": 0.0382381,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 4317,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.95,\"evidence\":[{\"path\":\"checks/signature_verify\",\"actual\":\"verified against idp_cert_pem\"},{\"path\":\"checks/audience\",\"actual\":\"matches sp_entity_id\"},{\"path\":\"checks/time_window\",\"actual\":\"valid at 2026-01-15T12:00:00Z\"},{\"path\":\"checks/in_response_to\",\"actual\":\"matches request_id\"}],\"fix\":\"No fix needed. All 14 checks passed with the supplied expected values, and the assertion is signed and verified against the configured IdP certificate. The time window was evaluated at the replay time 2026-01-15T12:00:00Z, so a failure today would be a separate expiry or clock issue. If the developer still sees an error, capture the SP-side error message and a fresh response.\",\"posture_codes\":[],\"questions\":[],\"alternatives\":[]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "checks/signature_verify",
+          "actual": "verified against idp_cert_pem"
+        },
+        {
+          "path": "checks/audience",
+          "actual": "matches sp_entity_id"
+        },
+        {
+          "path": "checks/time_window",
+          "actual": "valid at 2026-01-15T12:00:00Z"
+        },
+        {
+          "path": "checks/in_response_to",
+          "actual": "matches request_id"
+        }
+      ],
+      "fix": "No fix needed. All 14 checks passed with the supplied expected values, and the assertion is signed and verified against the configured IdP certificate. The time window was evaluated at the replay time 2026-01-15T12:00:00Z, so a failure today would be a separate expiry or clock issue. If the developer still sees an error, capture the SP-side error message and a fresh response.",
+      "posture_codes": [],
+      "questions": [],
+      "alternatives": []
+    },
+    "ttft_ms": 7961,
+    "type": "result",
+    "duration_ms": 11984,
+    "uuid": "60b2180e-a35e-4a78-9189-6033cbfc3616",
+    "ttft_stream_ms": 1565,
+    "time_to_request_ms": 115,
+    "first_content_frame_ms": 1565,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

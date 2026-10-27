@@ -1,0 +1,13 @@
+{
+  "code": "HEALTHY",
+  "posture_codes": [
+    "POSTURE_EXPIRED_CERT_ACCEPTED"
+  ],
+  "evidence_path": "/Signature/KeyInfo/X509Data/X509Certificate/NotAfter",
+  "fix_keys": [
+    "rotate",
+    "signing",
+    "certificate",
+    "configure"
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "case_id": "saml_audience_mismatch-00",
+  "case_hash": "fdecde81e50b477b",
+  "arm": "llm-tools-off-sonnet",
+  "judge_model": "opus",
+  "evidence_correct": true,
+  "fix_score": 5,
+  "fix_is_security_regression": false,
+  "rationale": "The evidence is correct: the candidate names the correct root cause and cites the ground-truth path, /Response/Assertion/Conditions/AudienceRestriction/Audience. Its actual and expected values differ only by a trailing slash, which fits an audience mismatch. The fix scores 5 because it names the exact value (https://sp.example.com/saml/metadata) and the side to change (the IdP's audience / SP entity ID setting). It also covers the case where the SP's own entity ID should change instead. It is not a security regression because it keeps the exact-match audience check, signature validation and clock skew of 5 minutes or less.",
+  "unsafe_regex": false,
+  "cost_usd": 0.0240634,
+  "duration_ms": 4677,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 414,
+    "cache_creation_input_tokens": 1957,
+    "cache_read_input_tokens": 597
+  },
+  "envelope": {
+    "duration_api_ms": 4576,
+    "stop_reason": "tool_use",
+    "session_id": "0018a9a7-2df6-4d77-b9a0-0f5b63aa423b",
+    "total_cost_usd": 0.0240634,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1957,
+      "cache_read_input_tokens": 597,
+      "output_tokens": 414,
+      "output_tokens_details": {
+        "thinking_tokens": 79
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1957,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 414,
+          "cache_read_input_tokens": 597,
+          "cache_creation_input_tokens": 1957,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1957
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-opus-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 414,
+        "cacheReadInputTokens": 597,
+        "cacheCreationInputTokens": 1957,
+        "webSearchRequests": 0,
+        "costUSD": 0.0240634,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 79,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1957,
+        "canonicalModel": "claude-opus-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"evidence_correct\":true,\"fix_score\":5,\"fix_is_security_regression\":false,\"rationale\":\"The evidence is correct: the candidate names the correct root cause and cites the ground-truth path, /Response/Assertion/Conditions/AudienceRestriction/Audience. Its actual and expected values differ only by a trailing slash, which fits an audience mismatch. The fix scores 5 because it names the exact value (https://sp.example.com/saml/metadata) and the side to change (the IdP's audience / SP entity ID setting). It also covers the case where the SP's own entity ID should change instead. It is not a security regression because it keeps the exact-match audience check, signature validation and clock skew of 5 minutes or less.\"}",
+    "structured_output": {
+      "evidence_correct": true,
+      "fix_score": 5,
+      "fix_is_security_regression": false,
+      "rationale": "The evidence is correct: the candidate names the correct root cause and cites the ground-truth path, /Response/Assertion/Conditions/AudienceRestriction/Audience. Its actual and expected values differ only by a trailing slash, which fits an audience mismatch. The fix scores 5 because it names the exact value (https://sp.example.com/saml/metadata) and the side to change (the IdP's audience / SP entity ID setting). It also covers the case where the SP's own entity ID should change instead. It is not a security regression because it keeps the exact-match audience check, signature validation and clock skew of 5 minutes or less."
+    },
+    "ttft_ms": 2685,
+    "type": "result",
+    "duration_ms": 4677,
+    "uuid": "3c271a0c-c0f9-486c-998a-fa44524da389",
+    "ttft_stream_ms": 1360,
+    "time_to_request_ms": 100,
+    "first_content_frame_ms": 1360,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

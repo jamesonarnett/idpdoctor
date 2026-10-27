@@ -1,0 +1,14 @@
+{
+  "code": "SAML_SIGNATURE_INVALID",
+  "posture_codes": [],
+  "evidence_path": "/Response/Assertion/Signature",
+  "fix_keys": [
+    "download",
+    "current",
+    "signing",
+    "certificate"
+  ],
+  "needs": [
+    "idp_cert_pem"
+  ]
+}

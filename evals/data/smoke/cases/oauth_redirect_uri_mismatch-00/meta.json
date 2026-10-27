@@ -1,0 +1,9 @@
+{
+  "id": "oauth_redirect_uri_mismatch-00",
+  "kind": "oauth_redirect",
+  "mutator": "oauth_redirect_uri_mismatch",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 0,
+  "hash": "0baa8d96a7d3eb51"
+}

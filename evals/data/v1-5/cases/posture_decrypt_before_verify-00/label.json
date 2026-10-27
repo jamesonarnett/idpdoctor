@@ -1,0 +1,13 @@
+{
+  "code": "HEALTHY",
+  "posture_codes": [
+    "POSTURE_DECRYPT_BEFORE_VERIFY"
+  ],
+  "evidence_path": "/Response/Assertion",
+  "fix_keys": [
+    "response",
+    "assertion",
+    "encrypting",
+    "verify"
+  ]
+}

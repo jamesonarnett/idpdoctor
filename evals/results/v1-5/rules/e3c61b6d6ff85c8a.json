@@ -1,0 +1,62 @@
+{
+  "case_id": "oauth_redirect_uri_mismatch-03",
+  "case_hash": "e3c61b6d6ff85c8a",
+  "arm": "rules",
+  "label": {
+    "code": "OAUTH_REDIRECT_URI_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/request/redirect_uri",
+    "fix_keys": [
+      "register",
+      "exact",
+      "redirect",
+      "scheme"
+    ],
+    "needs": [
+      "registered_redirect_uris"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_redirect_uri_mismatch-03",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_redirect_uri_mismatch_auth0",
+    "expected_completeness": "partial",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 3,
+    "hash": "e3c61b6d6ff85c8a"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_REDIRECT_URI_MISMATCH",
+    "confidence": 1,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_request",
+        "note": "classified by description mentions \"callback url mismatch\""
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "Callback URL mismatch. http://app.example.com/callback is not in the list of allowed callback URLs"
+      }
+    ],
+    "fix": "Register the exact redirect URI (scheme, host, port, path, no trailing-slash drift) on the client and send the identical value in both the authorize and token requests.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T09:29:17.710054-05:00",
+  "duration_ms": 0,
+  "tool_calls": 0,
+  "num_turns": 0,
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0
+  },
+  "cost_usd": 0,
+  "hallucinated": [],
+  "valid_citations": 2
+}

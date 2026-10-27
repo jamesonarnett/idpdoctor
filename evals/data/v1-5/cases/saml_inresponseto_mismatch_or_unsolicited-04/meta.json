@@ -1,0 +1,10 @@
+{
+  "id": "saml_inresponseto_mismatch_or_unsolicited-04",
+  "kind": "saml_response",
+  "dialect": "entra",
+  "mutator": "in_response_to_mismatch",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 4,
+  "hash": "8fc9fd31d0bb82dc"
+}

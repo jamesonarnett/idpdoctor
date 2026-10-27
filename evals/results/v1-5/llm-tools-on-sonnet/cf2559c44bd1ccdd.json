@@ -1,0 +1,189 @@
+{
+  "case_id": "jwt_aud_or_azp_mismatch-00",
+  "case_hash": "cf2559c44bd1ccdd",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_AUD_OR_AZP_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/claims/aud",
+    "fix_keys": [
+      "request",
+      "token",
+      "client",
+      "correct"
+    ],
+    "needs": [
+      "client_id"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_aud_or_azp_mismatch-00",
+    "kind": "jwt",
+    "mutator": "jwt_aud_mismatch",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "cf2559c44bd1ccdd"
+  },
+  "output": {
+    "root_cause_code": "JWT_AUD_OR_AZP_MISMATCH",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/claims/aud",
+        "actual": "api://some-other-client",
+        "expected": "client-abc123",
+        "note": "The token's audience is a different client or resource. The signature, issuer, nonce and time checks all pass."
+      }
+    ],
+    "fix": "Get the token issued for this client. Use the correct client_id, or set the audience or resource parameter so aud contains client-abc123. Keep validating aud against the client's own ID. Don't relax the audience check or accept tokens issued for another audience.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": [
+      "access_token (optional, only needed to run the at_hash check, which was skipped)"
+    ]
+  },
+  "started": "2026-10-27T09:53:58.341145-05:00",
+  "duration_ms": 12082,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 988,
+    "cache_creation_input_tokens": 3540,
+    "cache_read_input_tokens": 23912
+  },
+  "cost_usd": 0.0264392,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 988,
+      "cacheReadInputTokens": 23912,
+      "cacheCreationInputTokens": 3540,
+      "costUSD": 0.0264392,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 11959,
+    "stop_reason": "tool_use",
+    "session_id": "3068f497-2965-42f9-bc40-d1699ede869c",
+    "total_cost_usd": 0.0264392,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3540,
+      "cache_read_input_tokens": 23912,
+      "output_tokens": 988,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3540,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 343,
+          "cache_read_input_tokens": 12839,
+          "cache_creation_input_tokens": 1774,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1774
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 988,
+        "cacheReadInputTokens": 23912,
+        "cacheCreationInputTokens": 3540,
+        "webSearchRequests": 0,
+        "costUSD": 0.0264392,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3540,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"JWT_AUD_OR_AZP_MISMATCH\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/claims/aud\",\"actual\":\"api://some-other-client\",\"expected\":\"client-abc123\",\"note\":\"The token's audience is a different client or resource. The signature, issuer, nonce and time checks all pass.\"}],\"fix\":\"Get the token issued for this client. Use the correct client_id, or set the audience or resource parameter so aud contains client-abc123. Keep validating aud against the client's own ID. Don't relax the audience check or accept tokens issued for another audience.\",\"questions\":[\"access_token (optional, only needed to run the at_hash check, which was skipped)\"]}",
+    "structured_output": {
+      "root_cause_code": "JWT_AUD_OR_AZP_MISMATCH",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/claims/aud",
+          "actual": "api://some-other-client",
+          "expected": "client-abc123",
+          "note": "The token's audience is a different client or resource. The signature, issuer, nonce and time checks all pass."
+        }
+      ],
+      "fix": "Get the token issued for this client. Use the correct client_id, or set the audience or resource parameter so aud contains client-abc123. Keep validating aud against the client's own ID. Don't relax the audience check or accept tokens issued for another audience.",
+      "questions": [
+        "access_token (optional, only needed to run the at_hash check, which was skipped)"
+      ]
+    },
+    "ttft_ms": 4147,
+    "type": "result",
+    "duration_ms": 12082,
+    "uuid": "1ba9a98b-b0b8-48cd-a502-f6b8f50e2b23",
+    "ttft_stream_ms": 1378,
+    "time_to_request_ms": 107,
+    "first_content_frame_ms": 1378,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

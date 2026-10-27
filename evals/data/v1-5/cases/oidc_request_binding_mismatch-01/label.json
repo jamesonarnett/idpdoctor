@@ -1,0 +1,14 @@
+{
+  "code": "OIDC_REQUEST_BINDING_MISMATCH",
+  "posture_codes": [],
+  "evidence_path": "/claims/nonce",
+  "fix_keys": [
+    "generate",
+    "fresh",
+    "nonce",
+    "authorization"
+  ],
+  "needs": [
+    "nonce"
+  ]
+}

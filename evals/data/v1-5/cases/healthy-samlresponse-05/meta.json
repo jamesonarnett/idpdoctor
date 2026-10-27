@@ -1,0 +1,11 @@
+{
+  "id": "healthy-samlresponse-05",
+  "kind": "saml_response",
+  "dialect": "okta",
+  "expected_completeness": "full",
+  "symptom_from": "misleading",
+  "misleading_symptom": true,
+  "seed": 42,
+  "index": 5,
+  "hash": "fee976d9b543c5bb"
+}

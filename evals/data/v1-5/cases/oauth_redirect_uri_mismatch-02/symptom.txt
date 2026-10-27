@@ -1,0 +1,1 @@
+Entra AADSTS50011: the redirect URI specified in the request does not match the redirect URIs configured for the application.

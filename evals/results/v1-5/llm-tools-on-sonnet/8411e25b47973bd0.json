@@ -1,0 +1,198 @@
+{
+  "case_id": "oidc_discovery_doc_invalid-00",
+  "case_hash": "8411e25b47973bd0",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OIDC_DISCOVERY_DOC_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/discovery/token_endpoint",
+    "fix_keys": [
+      "point",
+      "canonical"
+    ]
+  },
+  "kind": "oidc_discovery",
+  "meta": {
+    "id": "oidc_discovery_doc_invalid-00",
+    "kind": "oidc_discovery",
+    "mutator": "discovery_http_endpoint",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "8411e25b47973bd0"
+  },
+  "output": {
+    "root_cause_code": "OIDC_DISCOVERY_DOC_INVALID",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "path": "/discovery/token_endpoint",
+        "actual": "http://login.example.com/tenant-1/oauth2/v2.0/token",
+        "expected": "an https:// URL",
+        "note": "OIDC Discovery requires https for endpoints; this is the only failing check. The issuer matches the expected value."
+      }
+    ],
+    "fix": "Have the OP publish https URLs for every endpoint, including token_endpoint. The SP should load the canonical https://\u003chost\u003e/\u003ctenant\u003e/v2.0/.well-known/openid-configuration for the correct tenant. If the OP's document can't be fixed, configure the endpoints explicitly over https. Don't accept http endpoints. AADSTS50049 usually means the instance or host in the authority isn't a recognized Entra cloud instance. Check that the authority host and tenant are correct and that you're pointing at Entra's own login host, not a custom or proxy host.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+        "why_not": "AADSTS50049 suggests the authority or instance is wrong. But the artifact itself has a concrete defect: token_endpoint is http. The issuer, required fields and hosts all pass."
+      }
+    ],
+    "questions": [
+      "Is login.example.com a proxy or custom front for Entra? AADSTS50049 suggests the authority host or instance isn't recognized by Entra.",
+      "Was this document fetched directly from the OP, or modified by a proxy that rewrote the scheme?"
+    ]
+  },
+  "started": "2026-10-27T09:58:28.125719-05:00",
+  "duration_ms": 8290,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 836,
+    "cache_creation_input_tokens": 2859,
+    "cache_read_input_tokens": 23915
+  },
+  "cost_usd": 0.0221955,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 836,
+      "cacheReadInputTokens": 23915,
+      "cacheCreationInputTokens": 2859,
+      "costUSD": 0.0221955,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 8158,
+    "stop_reason": "tool_use",
+    "session_id": "996ae36c-efd6-4610-b1ec-ffbeeb285023",
+    "total_cost_usd": 0.0221955,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 2859,
+      "cache_read_input_tokens": 23915,
+      "output_tokens": 836,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 2859,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 658,
+          "cache_read_input_tokens": 12690,
+          "cache_creation_input_tokens": 1394,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1394
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 836,
+        "cacheReadInputTokens": 23915,
+        "cacheCreationInputTokens": 2859,
+        "webSearchRequests": 0,
+        "costUSD": 0.0221955,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 2859,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OIDC_DISCOVERY_DOC_INVALID\",\"confidence\":0.8,\"evidence\":[{\"path\":\"/discovery/token_endpoint\",\"actual\":\"http://login.example.com/tenant-1/oauth2/v2.0/token\",\"expected\":\"an https:// URL\",\"note\":\"OIDC Discovery requires https for endpoints; this is the only failing check. The issuer matches the expected value.\"}],\"fix\":\"Have the OP publish https URLs for every endpoint, including token_endpoint. The SP should load the canonical https://\u003chost\u003e/\u003ctenant\u003e/v2.0/.well-known/openid-configuration for the correct tenant. If the OP's document can't be fixed, configure the endpoints explicitly over https. Don't accept http endpoints. AADSTS50049 usually means the instance or host in the authority isn't a recognized Entra cloud instance. Check that the authority host and tenant are correct and that you're pointing at Entra's own login host, not a custom or proxy host.\",\"alternatives\":[{\"code\":\"OAUTH_CLIENT_CONFIG_REJECTED\",\"why_not\":\"AADSTS50049 suggests the authority or instance is wrong. But the artifact itself has a concrete defect: token_endpoint is http. The issuer, required fields and hosts all pass.\"}],\"questions\":[\"Is login.example.com a proxy or custom front for Entra? AADSTS50049 suggests the authority host or instance isn't recognized by Entra.\",\"Was this document fetched directly from the OP, or modified by a proxy that rewrote the scheme?\"]}",
+    "structured_output": {
+      "root_cause_code": "OIDC_DISCOVERY_DOC_INVALID",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "path": "/discovery/token_endpoint",
+          "actual": "http://login.example.com/tenant-1/oauth2/v2.0/token",
+          "expected": "an https:// URL",
+          "note": "OIDC Discovery requires https for endpoints; this is the only failing check. The issuer matches the expected value."
+        }
+      ],
+      "fix": "Have the OP publish https URLs for every endpoint, including token_endpoint. The SP should load the canonical https://\u003chost\u003e/\u003ctenant\u003e/v2.0/.well-known/openid-configuration for the correct tenant. If the OP's document can't be fixed, configure the endpoints explicitly over https. Don't accept http endpoints. AADSTS50049 usually means the instance or host in the authority isn't a recognized Entra cloud instance. Check that the authority host and tenant are correct and that you're pointing at Entra's own login host, not a custom or proxy host.",
+      "alternatives": [
+        {
+          "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+          "why_not": "AADSTS50049 suggests the authority or instance is wrong. But the artifact itself has a concrete defect: token_endpoint is http. The issuer, required fields and hosts all pass."
+        }
+      ],
+      "questions": [
+        "Is login.example.com a proxy or custom front for Entra? AADSTS50049 suggests the authority host or instance isn't recognized by Entra.",
+        "Was this document fetched directly from the OP, or modified by a proxy that rewrote the scheme?"
+      ]
+    },
+    "ttft_ms": 2572,
+    "type": "result",
+    "duration_ms": 8290,
+    "uuid": "c78639c3-6b83-458e-8f18-2f67862db00b",
+    "ttft_stream_ms": 1792,
+    "time_to_request_ms": 123,
+    "first_content_frame_ms": 1793,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

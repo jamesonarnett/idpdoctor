@@ -1,0 +1,10 @@
+{
+  "id": "saml_audience_mismatch-00",
+  "kind": "saml_response",
+  "dialect": "entra",
+  "mutator": "audience_mismatch",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 0,
+  "hash": "fdecde81e50b477b"
+}

@@ -1,0 +1,218 @@
+{
+  "case_id": "oauth_client_config_rejected-02",
+  "case_hash": "c202f8f0dae1aa1a",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+    "posture_codes": [],
+    "evidence_path": "/redirect/error",
+    "fix_keys": [
+      "compare",
+      "client",
+      "registered",
+      "grant"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_client_config_rejected-02",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_unauthorized_client",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 2,
+    "hash": "c202f8f0dae1aa1a"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_CLIENT_CONFIG_REJECTED",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "unauthorized_client",
+        "note": "Classified by vendor code AADSTS700054 as a client configuration rejection"
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "AADSTS700054: response_type 'id_token' is not enabled for the application.",
+        "note": "The authorization server says the app registration does not allow the implicit/ID-token response type"
+      },
+      {
+        "path": "/request/response_type",
+        "actual": "id_token",
+        "note": "The client requested response_type=id_token, which the registration does not enable"
+      }
+    ],
+    "fix": "The app registration does not allow response_type=id_token. Choose one of two options. (1) Preferred for a public client: switch to the authorization code flow with PKCE S256. Send response_type=code, then redeem the code at the token endpoint with the code_verifier. Your current request already uses S256 correctly. (2) If you really need the implicit/hybrid ID-token response, enable ID token issuance for the app in the IdP's app registration, under the implicit or hybrid grant settings. Do not weaken any other settings. The redirect_uri and PKCE checks already pass, so leave them as they are.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OAUTH_REDIRECT_URI_MISMATCH",
+        "why_not": "The redirect_uri exactly matches a registered URI."
+      },
+      {
+        "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+        "why_not": "The code_verifier matches the S256 code_challenge."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:56:05.699393-05:00",
+  "duration_ms": 17805,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 959,
+    "cache_creation_input_tokens": 3177,
+    "cache_read_input_tokens": 23604
+  },
+  "cost_usd": 0.024666399999999998,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 959,
+      "cacheReadInputTokens": 23604,
+      "cacheCreationInputTokens": 3177,
+      "costUSD": 0.024666399999999998,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 17694,
+    "stop_reason": "tool_use",
+    "session_id": "330f6150-0b6e-4d7d-a744-9bf3501cffc1",
+    "total_cost_usd": 0.024666399999999998,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3177,
+      "cache_read_input_tokens": 23604,
+      "output_tokens": 959,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3177,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 645,
+          "cache_read_input_tokens": 12545,
+          "cache_creation_input_tokens": 1691,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1691
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 959,
+        "cacheReadInputTokens": 23604,
+        "cacheCreationInputTokens": 3177,
+        "webSearchRequests": 0,
+        "costUSD": 0.024666399999999998,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3177,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_CLIENT_CONFIG_REJECTED\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"unauthorized_client\",\"note\":\"Classified by vendor code AADSTS700054 as a client configuration rejection\"},{\"path\":\"/redirect/error_description\",\"actual\":\"AADSTS700054: response_type 'id_token' is not enabled for the application.\",\"note\":\"The authorization server says the app registration does not allow the implicit/ID-token response type\"},{\"path\":\"/request/response_type\",\"actual\":\"id_token\",\"note\":\"The client requested response_type=id_token, which the registration does not enable\"}],\"fix\":\"The app registration does not allow response_type=id_token. Choose one of two options. (1) Preferred for a public client: switch to the authorization code flow with PKCE S256. Send response_type=code, then redeem the code at the token endpoint with the code_verifier. Your current request already uses S256 correctly. (2) If you really need the implicit/hybrid ID-token response, enable ID token issuance for the app in the IdP's app registration, under the implicit or hybrid grant settings. Do not weaken any other settings. The redirect_uri and PKCE checks already pass, so leave them as they are.\",\"alternatives\":[{\"code\":\"OAUTH_REDIRECT_URI_MISMATCH\",\"why_not\":\"The redirect_uri exactly matches a registered URI.\"},{\"code\":\"OAUTH_PKCE_VERIFIER_MISMATCH\",\"why_not\":\"The code_verifier matches the S256 code_challenge.\"}]}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_CLIENT_CONFIG_REJECTED",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "unauthorized_client",
+          "note": "Classified by vendor code AADSTS700054 as a client configuration rejection"
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "AADSTS700054: response_type 'id_token' is not enabled for the application.",
+          "note": "The authorization server says the app registration does not allow the implicit/ID-token response type"
+        },
+        {
+          "path": "/request/response_type",
+          "actual": "id_token",
+          "note": "The client requested response_type=id_token, which the registration does not enable"
+        }
+      ],
+      "fix": "The app registration does not allow response_type=id_token. Choose one of two options. (1) Preferred for a public client: switch to the authorization code flow with PKCE S256. Send response_type=code, then redeem the code at the token endpoint with the code_verifier. Your current request already uses S256 correctly. (2) If you really need the implicit/hybrid ID-token response, enable ID token issuance for the app in the IdP's app registration, under the implicit or hybrid grant settings. Do not weaken any other settings. The redirect_uri and PKCE checks already pass, so leave them as they are.",
+      "alternatives": [
+        {
+          "code": "OAUTH_REDIRECT_URI_MISMATCH",
+          "why_not": "The redirect_uri exactly matches a registered URI."
+        },
+        {
+          "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+          "why_not": "The code_verifier matches the S256 code_challenge."
+        }
+      ]
+    },
+    "ttft_ms": 3187,
+    "type": "result",
+    "duration_ms": 17805,
+    "uuid": "228166f6-ff73-4ea0-a74f-876cb0673ef6",
+    "ttft_stream_ms": 1888,
+    "time_to_request_ms": 102,
+    "first_content_frame_ms": 1888,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

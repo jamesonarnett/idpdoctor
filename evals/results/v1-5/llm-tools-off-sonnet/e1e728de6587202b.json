@@ -1,0 +1,204 @@
+{
+  "case_id": "saml_time_window_invalid-03",
+  "case_hash": "e1e728de6587202b",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_TIME_WINDOW_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/Conditions/@NotBefore",
+    "fix_keys": [
+      "synchronise",
+      "clocks",
+      "sides",
+      "clock"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_time_window_invalid-03",
+    "kind": "saml_response",
+    "dialect": "okta",
+    "mutator": "not_yet_valid",
+    "expected_completeness": "partial",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 3,
+    "hash": "e1e728de6587202b"
+  },
+  "output": {
+    "root_cause_code": "SAML_TIME_WINDOW_INVALID",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Conditions/@NotBefore",
+        "actual": "2026-01-15T12:10:00.000Z",
+        "expected": "at or before now (2026-01-15T12:00:00Z) plus at most 5 minutes skew",
+        "note": "NotBefore is 10 minutes after the SP's current time, beyond the 5 minute skew limit"
+      },
+      {
+        "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+        "actual": "2026-01-15T12:15:00.000Z",
+        "note": "The window runs 12:10 to 12:15, so it has not started yet"
+      },
+      {
+        "path": "/Response/Assertion/@IssueInstant",
+        "actual": "2026-01-15T12:00:00.000Z",
+        "note": "The assertion was issued at 12:00, ten minutes before its own NotBefore. This points to IdP clock skew or a misconfigured NotBefore offset."
+      }
+    ],
+    "fix": "The IdP is issuing a NotBefore about 10 minutes in the future. Sync the IdP and SP clocks with NTP and make the IdP set NotBefore at or slightly before IssueInstant. If the IdP has a configurable NotBefore offset or skew setting, correct it. Keep SP clock skew tolerance at 5 minutes or less. Do not widen it to hide the problem, and do not skip the time checks. Then re-issue the assertion and retest.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T09:48:23.507391-05:00",
+  "duration_ms": 6527,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 621,
+    "cache_creation_input_tokens": 6610,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.0331732,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 621,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 6610,
+      "costUSD": 0.0331732,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 6411,
+    "stop_reason": "tool_use",
+    "session_id": "1290aae9-ef60-4ebb-a3a0-7755ca615041",
+    "total_cost_usd": 0.0331732,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6610,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 621,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6610,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 621,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 6610,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 6610
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 621,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 6610,
+        "webSearchRequests": 0,
+        "costUSD": 0.0331732,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6610,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_TIME_WINDOW_INVALID\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/Response/Assertion/Conditions/@NotBefore\",\"actual\":\"2026-01-15T12:10:00.000Z\",\"expected\":\"at or before now (2026-01-15T12:00:00Z) plus at most 5 minutes skew\",\"note\":\"NotBefore is 10 minutes after the SP's current time, beyond the 5 minute skew limit\"},{\"path\":\"/Response/Assertion/Conditions/@NotOnOrAfter\",\"actual\":\"2026-01-15T12:15:00.000Z\",\"note\":\"The window runs 12:10 to 12:15, so it has not started yet\"},{\"path\":\"/Response/Assertion/@IssueInstant\",\"actual\":\"2026-01-15T12:00:00.000Z\",\"note\":\"The assertion was issued at 12:00, ten minutes before its own NotBefore. This points to IdP clock skew or a misconfigured NotBefore offset.\"}],\"fix\":\"The IdP is issuing a NotBefore about 10 minutes in the future. Sync the IdP and SP clocks with NTP and make the IdP set NotBefore at or slightly before IssueInstant. If the IdP has a configurable NotBefore offset or skew setting, correct it. Keep SP clock skew tolerance at 5 minutes or less. Do not widen it to hide the problem, and do not skip the time checks. Then re-issue the assertion and retest.\",\"alternatives\":[]}",
+    "structured_output": {
+      "root_cause_code": "SAML_TIME_WINDOW_INVALID",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Conditions/@NotBefore",
+          "actual": "2026-01-15T12:10:00.000Z",
+          "expected": "at or before now (2026-01-15T12:00:00Z) plus at most 5 minutes skew",
+          "note": "NotBefore is 10 minutes after the SP's current time, beyond the 5 minute skew limit"
+        },
+        {
+          "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+          "actual": "2026-01-15T12:15:00.000Z",
+          "note": "The window runs 12:10 to 12:15, so it has not started yet"
+        },
+        {
+          "path": "/Response/Assertion/@IssueInstant",
+          "actual": "2026-01-15T12:00:00.000Z",
+          "note": "The assertion was issued at 12:00, ten minutes before its own NotBefore. This points to IdP clock skew or a misconfigured NotBefore offset."
+        }
+      ],
+      "fix": "The IdP is issuing a NotBefore about 10 minutes in the future. Sync the IdP and SP clocks with NTP and make the IdP set NotBefore at or slightly before IssueInstant. If the IdP has a configurable NotBefore offset or skew setting, correct it. Keep SP clock skew tolerance at 5 minutes or less. Do not widen it to hide the problem, and do not skip the time checks. Then re-issue the assertion and retest.",
+      "alternatives": []
+    },
+    "ttft_ms": 6499,
+    "type": "result",
+    "duration_ms": 6527,
+    "uuid": "1687639d-1afb-47a2-b9ba-c04cd66f8fed",
+    "ttft_stream_ms": 2712,
+    "time_to_request_ms": 112,
+    "first_content_frame_ms": 2712,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

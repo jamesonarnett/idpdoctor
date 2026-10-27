@@ -1,0 +1,11 @@
+{
+  "code": "IDP_POLICY_REFUSAL",
+  "posture_codes": [],
+  "evidence_path": "/redirect/error",
+  "fix_keys": [
+    "resolve",
+    "side:",
+    "assign",
+    "group"
+  ]
+}

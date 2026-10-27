@@ -1,0 +1,224 @@
+{
+  "case_id": "saml_status_not_success-00",
+  "case_hash": "6e0e4d48758794a8",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_STATUS_NOT_SUCCESS",
+    "posture_codes": [],
+    "evidence_path": "/Response/Status/StatusCode/@Value",
+    "fix_keys": [
+      "statuscode",
+      "sub-code",
+      "statusmessage:",
+      "responder"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_status_not_success-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "status_responder",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "6e0e4d48758794a8"
+  },
+  "output": {
+    "root_cause_code": "SAML_STATUS_NOT_SUCCESS",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "path": "/Response/Status/StatusCode/@Value",
+        "actual": "urn:oasis:names:tc:SAML:2.0:status:Responder",
+        "expected": "urn:oasis:names:tc:SAML:2.0:status:Success"
+      },
+      {
+        "path": "/Response/Status/StatusCode/StatusCode/@Value",
+        "actual": "urn:oasis:names:tc:SAML:2.0:status:RequestDenied",
+        "note": "Second-level status shows the IdP denied the request."
+      },
+      {
+        "path": "/Response/Status/StatusMessage",
+        "actual": "The user is not assigned to this application.",
+        "note": "The IdP gave an assignment/authorization reason for the denial."
+      },
+      {
+        "path": "/Response/Assertion",
+        "actual": "absent",
+        "expected": "present",
+        "note": "No assertion was issued, so there is nothing further to validate."
+      }
+    ],
+    "fix": "The IdP denied the request, so the SP configuration is not the cause. Assign the user (or one of their groups) to this application in the IdP, then retry the login. The SP should keep requiring a signed assertion and should keep rejecting non-Success responses. It should also show the user a clear \"access not granted\" message instead of a generic error. Don't loosen any validation to get past this.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "IDP_POLICY_REFUSAL",
+        "why_not": "The refusal is a policy decision made at the IdP, so this is a close fit. But the response has a plainly non-Success status code, and the catalog's deterministic status class covers that directly."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:46:35.423715-05:00",
+  "duration_ms": 7708,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 925,
+    "cache_creation_input_tokens": 3895,
+    "cache_read_input_tokens": 5099
+  },
+  "cost_usd": 0.025343900000000003,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 925,
+      "cacheReadInputTokens": 5099,
+      "cacheCreationInputTokens": 3895,
+      "costUSD": 0.025343900000000003,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 7502,
+    "stop_reason": "tool_use",
+    "session_id": "815f6f07-a2a1-47b8-a163-72055a331cbf",
+    "total_cost_usd": 0.025343900000000003,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 3895,
+      "cache_read_input_tokens": 5099,
+      "output_tokens": 925,
+      "output_tokens_details": {
+        "thinking_tokens": 256
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3895,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 925,
+          "cache_read_input_tokens": 5099,
+          "cache_creation_input_tokens": 3895,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 3895
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 925,
+        "cacheReadInputTokens": 5099,
+        "cacheCreationInputTokens": 3895,
+        "webSearchRequests": 0,
+        "costUSD": 0.025343900000000003,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 256,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3895,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_STATUS_NOT_SUCCESS\",\"confidence\":0.8,\"evidence\":[{\"path\":\"/Response/Status/StatusCode/@Value\",\"actual\":\"urn:oasis:names:tc:SAML:2.0:status:Responder\",\"expected\":\"urn:oasis:names:tc:SAML:2.0:status:Success\"},{\"path\":\"/Response/Status/StatusCode/StatusCode/@Value\",\"actual\":\"urn:oasis:names:tc:SAML:2.0:status:RequestDenied\",\"note\":\"Second-level status shows the IdP denied the request.\"},{\"path\":\"/Response/Status/StatusMessage\",\"actual\":\"The user is not assigned to this application.\",\"note\":\"The IdP gave an assignment/authorization reason for the denial.\"},{\"path\":\"/Response/Assertion\",\"actual\":\"absent\",\"expected\":\"present\",\"note\":\"No assertion was issued, so there is nothing further to validate.\"}],\"fix\":\"The IdP denied the request, so the SP configuration is not the cause. Assign the user (or one of their groups) to this application in the IdP, then retry the login. The SP should keep requiring a signed assertion and should keep rejecting non-Success responses. It should also show the user a clear \\\"access not granted\\\" message instead of a generic error. Don't loosen any validation to get past this.\",\"alternatives\":[{\"code\":\"IDP_POLICY_REFUSAL\",\"why_not\":\"The refusal is a policy decision made at the IdP, so this is a close fit. But the response has a plainly non-Success status code, and the catalog's deterministic status class covers that directly.\"}],\"questions\":[]}",
+    "structured_output": {
+      "root_cause_code": "SAML_STATUS_NOT_SUCCESS",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "path": "/Response/Status/StatusCode/@Value",
+          "actual": "urn:oasis:names:tc:SAML:2.0:status:Responder",
+          "expected": "urn:oasis:names:tc:SAML:2.0:status:Success"
+        },
+        {
+          "path": "/Response/Status/StatusCode/StatusCode/@Value",
+          "actual": "urn:oasis:names:tc:SAML:2.0:status:RequestDenied",
+          "note": "Second-level status shows the IdP denied the request."
+        },
+        {
+          "path": "/Response/Status/StatusMessage",
+          "actual": "The user is not assigned to this application.",
+          "note": "The IdP gave an assignment/authorization reason for the denial."
+        },
+        {
+          "path": "/Response/Assertion",
+          "actual": "absent",
+          "expected": "present",
+          "note": "No assertion was issued, so there is nothing further to validate."
+        }
+      ],
+      "fix": "The IdP denied the request, so the SP configuration is not the cause. Assign the user (or one of their groups) to this application in the IdP, then retry the login. The SP should keep requiring a signed assertion and should keep rejecting non-Success responses. It should also show the user a clear \"access not granted\" message instead of a generic error. Don't loosen any validation to get past this.",
+      "alternatives": [
+        {
+          "code": "IDP_POLICY_REFUSAL",
+          "why_not": "The refusal is a policy decision made at the IdP, so this is a close fit. But the response has a plainly non-Success status code, and the catalog's deterministic status class covers that directly."
+        }
+      ],
+      "questions": []
+    },
+    "ttft_ms": 4077,
+    "type": "result",
+    "duration_ms": 7708,
+    "uuid": "37d8e150-414f-4421-b986-e0b8ae1b1d33",
+    "ttft_stream_ms": 2142,
+    "time_to_request_ms": 203,
+    "first_content_frame_ms": 2142,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

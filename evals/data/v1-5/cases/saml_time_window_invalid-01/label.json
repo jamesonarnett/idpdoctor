@@ -1,0 +1,11 @@
+{
+  "code": "SAML_TIME_WINDOW_INVALID",
+  "posture_codes": [],
+  "evidence_path": "/Response/Assertion/Conditions/@NotBefore",
+  "fix_keys": [
+    "synchronise",
+    "clocks",
+    "sides",
+    "clock"
+  ]
+}

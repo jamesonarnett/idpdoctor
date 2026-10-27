@@ -1,0 +1,54 @@
+{
+  "case_id": "posture_unsigned_assertion_accepted-01",
+  "case_hash": "0f3a1e905888efe1",
+  "arm": "rules",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_UNSIGNED_ASSERTION_ACCEPTED"
+    ],
+    "evidence_path": "/Response/Assertion/Signature",
+    "fix_keys": [
+      "require",
+      "signed",
+      "assertion",
+      "response"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_unsigned_assertion_accepted-01",
+    "kind": "saml_response",
+    "dialect": "auth0",
+    "mutator": "posture_unsigned_assertion",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 1,
+    "hash": "0f3a1e905888efe1"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 1,
+    "evidence": [],
+    "fix": "No change needed: every applicable check passed.",
+    "posture_codes": [
+      "POSTURE_UNSIGNED_ASSERTION_ACCEPTED"
+    ],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T09:29:17.71388-05:00",
+  "duration_ms": 0,
+  "tool_calls": 0,
+  "num_turns": 0,
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0
+  },
+  "cost_usd": 0,
+  "hallucinated": [],
+  "valid_citations": 0
+}

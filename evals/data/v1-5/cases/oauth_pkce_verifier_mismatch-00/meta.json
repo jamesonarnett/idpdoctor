@@ -1,0 +1,9 @@
+{
+  "id": "oauth_pkce_verifier_mismatch-00",
+  "kind": "oauth_redirect",
+  "mutator": "oauth_pkce_plain_mismatch",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 0,
+  "hash": "aafb242c0d112a57"
+}

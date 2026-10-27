@@ -1,0 +1,201 @@
+{
+  "case_id": "saml_signature_invalid-03",
+  "case_hash": "3ec426c94b8dca29",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_SIGNATURE_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/Signature/KeyInfo/X509Data/X509Certificate",
+    "fix_keys": [
+      "download",
+      "current",
+      "signing",
+      "certificate"
+    ],
+    "needs": [
+      "idp_cert_pem"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_signature_invalid-03",
+    "kind": "saml_response",
+    "dialect": "okta",
+    "mutator": "wrong_cert",
+    "expected_completeness": "partial",
+    "seed": 42,
+    "index": 3,
+    "hash": "3ec426c94b8dca29"
+  },
+  "output": {
+    "root_cause_code": "SAML_SIGNATURE_INVALID",
+    "confidence": 0.93,
+    "evidence": [
+      {
+        "path": "/Signature/KeyInfo/X509Data/X509Certificate",
+        "actual": "C1:E0:C2:26:A4:54:34:7F:BA:05:32:F8:55:DE:81:06:92:D1:AC:20:FF:DC:B0:75:13:8C:66:FF:C8:15:88:78",
+        "expected": "2B:39:20:62:E2:10:4F:4C:82:20:A5:28:13:BA:02:A3:2A:39:4F:5E:4D:71:0F:64:E1:39:F2:88:BF:FA:D9:D9",
+        "note": "The certificate embedded in the message has a different fingerprint from the configured IdP certificate. The assertion signature does not verify against the trusted cert."
+      }
+    ],
+    "fix": "Get the IdP's current signing certificate from its metadata over a trusted channel. Compare its fingerprint with the out-of-band value the IdP publishes. Replace the SP's configured IdP certificate with it. If the IdP rotated keys, load both the old and new certificates during the overlap period. Keep signature validation on, and never trust the certificate embedded in the response. If the IdP says it did not rotate keys, treat the response as coming from a different or untrusted signer and investigate.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "SAML_ISSUER_MISMATCH",
+        "why_not": "The Issuer matches idp_entity_id, so the signer's certificate is the problem, not the issuer."
+      }
+    ],
+    "questions": [
+      "request_id: the AuthnRequest ID, so the InResponseTo check can run. It was skipped and does not change the top cause."
+    ]
+  },
+  "started": "2026-10-27T10:12:27.900904-05:00",
+  "duration_ms": 12300,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2094,
+    "cache_creation_input_tokens": 7361,
+    "cache_read_input_tokens": 28625
+  },
+  "cost_usd": 0.0532545,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2094,
+      "cacheReadInputTokens": 28625,
+      "cacheCreationInputTokens": 7361,
+      "costUSD": 0.0532545,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 11868,
+    "stop_reason": "tool_use",
+    "session_id": "5343b25a-ff6c-40db-af28-43e691cf7e57",
+    "total_cost_usd": 0.0532545,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 7361,
+      "cache_read_input_tokens": 28625,
+      "output_tokens": 2094,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 7361,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 699,
+          "cache_read_input_tokens": 16246,
+          "cache_creation_input_tokens": 3494,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 3494
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2094,
+        "cacheReadInputTokens": 28625,
+        "cacheCreationInputTokens": 7361,
+        "webSearchRequests": 0,
+        "costUSD": 0.0532545,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 7361,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_SIGNATURE_INVALID\",\"confidence\":0.93,\"evidence\":[{\"path\":\"/Signature/KeyInfo/X509Data/X509Certificate\",\"actual\":\"C1:E0:C2:26:A4:54:34:7F:BA:05:32:F8:55:DE:81:06:92:D1:AC:20:FF:DC:B0:75:13:8C:66:FF:C8:15:88:78\",\"expected\":\"2B:39:20:62:E2:10:4F:4C:82:20:A5:28:13:BA:02:A3:2A:39:4F:5E:4D:71:0F:64:E1:39:F2:88:BF:FA:D9:D9\",\"note\":\"The certificate embedded in the message has a different fingerprint from the configured IdP certificate. The assertion signature does not verify against the trusted cert.\"}],\"fix\":\"Get the IdP's current signing certificate from its metadata over a trusted channel. Compare its fingerprint with the out-of-band value the IdP publishes. Replace the SP's configured IdP certificate with it. If the IdP rotated keys, load both the old and new certificates during the overlap period. Keep signature validation on, and never trust the certificate embedded in the response. If the IdP says it did not rotate keys, treat the response as coming from a different or untrusted signer and investigate.\",\"alternatives\":[{\"code\":\"SAML_ISSUER_MISMATCH\",\"why_not\":\"The Issuer matches idp_entity_id, so the signer's certificate is the problem, not the issuer.\"}],\"questions\":[\"request_id: the AuthnRequest ID, so the InResponseTo check can run. It was skipped and does not change the top cause.\"]}",
+    "structured_output": {
+      "root_cause_code": "SAML_SIGNATURE_INVALID",
+      "confidence": 0.93,
+      "evidence": [
+        {
+          "path": "/Signature/KeyInfo/X509Data/X509Certificate",
+          "actual": "C1:E0:C2:26:A4:54:34:7F:BA:05:32:F8:55:DE:81:06:92:D1:AC:20:FF:DC:B0:75:13:8C:66:FF:C8:15:88:78",
+          "expected": "2B:39:20:62:E2:10:4F:4C:82:20:A5:28:13:BA:02:A3:2A:39:4F:5E:4D:71:0F:64:E1:39:F2:88:BF:FA:D9:D9",
+          "note": "The certificate embedded in the message has a different fingerprint from the configured IdP certificate. The assertion signature does not verify against the trusted cert."
+        }
+      ],
+      "fix": "Get the IdP's current signing certificate from its metadata over a trusted channel. Compare its fingerprint with the out-of-band value the IdP publishes. Replace the SP's configured IdP certificate with it. If the IdP rotated keys, load both the old and new certificates during the overlap period. Keep signature validation on, and never trust the certificate embedded in the response. If the IdP says it did not rotate keys, treat the response as coming from a different or untrusted signer and investigate.",
+      "alternatives": [
+        {
+          "code": "SAML_ISSUER_MISMATCH",
+          "why_not": "The Issuer matches idp_entity_id, so the signer's certificate is the problem, not the issuer."
+        }
+      ],
+      "questions": [
+        "request_id: the AuthnRequest ID, so the InResponseTo check can run. It was skipped and does not change the top cause."
+      ]
+    },
+    "ttft_ms": 7599,
+    "type": "result",
+    "duration_ms": 12300,
+    "uuid": "e62bc0c7-c117-4208-ab6f-46e2fa789d9f",
+    "ttft_stream_ms": 1315,
+    "time_to_request_ms": 421,
+    "first_content_frame_ms": 1315,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

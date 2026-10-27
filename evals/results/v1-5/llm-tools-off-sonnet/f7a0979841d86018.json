@@ -1,0 +1,189 @@
+{
+  "case_id": "saml_audience_mismatch-02",
+  "case_hash": "f7a0979841d86018",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_AUDIENCE_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+    "fix_keys": [
+      "application",
+      "audience",
+      "entity",
+      "configured"
+    ],
+    "needs": [
+      "sp_entity_id"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_audience_mismatch-02",
+    "kind": "saml_response",
+    "dialect": "generic",
+    "mutator": "audience_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 2,
+    "hash": "f7a0979841d86018"
+  },
+  "output": {
+    "root_cause_code": "SAML_AUDIENCE_MISMATCH",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+        "actual": "https://sp.example.com/saml/metadata/",
+        "expected": "https://sp.example.com/saml/metadata",
+        "note": "Audience has a trailing slash; SP entity ID does not. Exact string comparison fails."
+      }
+    ],
+    "fix": "In the new IdP app, set the SP Entity ID / Audience URI to exactly https://sp.example.com/saml/metadata with no trailing slash, matching the SP configuration. Then re-issue the login. Keep signature validation, the pinned IdP certificate and strict audience comparison unchanged.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T09:41:29.042298-05:00",
+  "duration_ms": 10474,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 423,
+    "cache_creation_input_tokens": 6616,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.0312172,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 423,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 6616,
+      "costUSD": 0.0312172,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 10359,
+    "stop_reason": "tool_use",
+    "session_id": "a507e166-988e-4bbe-a1e4-c89c0a6e27c5",
+    "total_cost_usd": 0.0312172,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6616,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 423,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6616,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 423,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 6616,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 6616
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 423,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 6616,
+        "webSearchRequests": 0,
+        "costUSD": 0.0312172,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6616,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_AUDIENCE_MISMATCH\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/Response/Assertion/Conditions/AudienceRestriction/Audience\",\"actual\":\"https://sp.example.com/saml/metadata/\",\"expected\":\"https://sp.example.com/saml/metadata\",\"note\":\"Audience has a trailing slash; SP entity ID does not. Exact string comparison fails.\"}],\"fix\":\"In the new IdP app, set the SP Entity ID / Audience URI to exactly https://sp.example.com/saml/metadata with no trailing slash, matching the SP configuration. Then re-issue the login. Keep signature validation, the pinned IdP certificate and strict audience comparison unchanged.\",\"alternatives\":[],\"questions\":[],\"posture_codes\":[]}",
+    "structured_output": {
+      "root_cause_code": "SAML_AUDIENCE_MISMATCH",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+          "actual": "https://sp.example.com/saml/metadata/",
+          "expected": "https://sp.example.com/saml/metadata",
+          "note": "Audience has a trailing slash; SP entity ID does not. Exact string comparison fails."
+        }
+      ],
+      "fix": "In the new IdP app, set the SP Entity ID / Audience URI to exactly https://sp.example.com/saml/metadata with no trailing slash, matching the SP configuration. Then re-issue the login. Keep signature validation, the pinned IdP certificate and strict audience comparison unchanged.",
+      "alternatives": [],
+      "questions": [],
+      "posture_codes": []
+    },
+    "ttft_ms": 10447,
+    "type": "result",
+    "duration_ms": 10474,
+    "uuid": "0b4dc71b-c335-4c22-ae75-3f762a973ea4",
+    "ttft_stream_ms": 8378,
+    "time_to_request_ms": 112,
+    "first_content_frame_ms": 8378,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,271 @@
+{
+  "case_id": "jwt_alg_none_or_confusion-01",
+  "case_hash": "143315fd833a4686",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_ALG_NONE_OR_CONFUSION",
+    "posture_codes": [],
+    "evidence_path": "/header/jku",
+    "fix_keys": [
+      "reject",
+      "token"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_alg_none_or_confusion-01",
+    "kind": "jwt",
+    "mutator": "jwt_jku_header",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 1,
+    "hash": "143315fd833a4686"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.6,
+    "evidence": [
+      {
+        "path": "/claims/iss",
+        "actual": "https://login.example.com/tenant-1/v2.0",
+        "expected": "https://login.example.com/tenant-1/v2.0",
+        "note": "Issuer matches."
+      },
+      {
+        "path": "/claims/aud",
+        "actual": "client-abc123",
+        "expected": "client-abc123",
+        "note": "Audience matches the client."
+      },
+      {
+        "path": "/claims/nonce",
+        "actual": "n-0S6_WzA2Mj",
+        "expected": "n-0S6_WzA2Mj",
+        "note": "Nonce binds the token to the request."
+      },
+      {
+        "path": "/claims/exp",
+        "actual": "1768482000",
+        "note": "Expires one hour after the evaluation time of 2026-01-15T12:00:00Z, so it is not expired."
+      },
+      {
+        "path": "/claims/nbf",
+        "actual": "1768478400",
+        "note": "Equals the evaluation time, so the token is already valid."
+      },
+      {
+        "path": "/header/kid",
+        "actual": "test-key-1",
+        "note": "The kid is present in the configured JWKS."
+      },
+      {
+        "path": "/header/alg",
+        "actual": "RS256",
+        "note": "Algorithm is allowed and matches the RSA key in the JWKS."
+      },
+      {
+        "path": "/header/jku",
+        "actual": "https://attacker.example/jwks.json",
+        "note": "This header points at an untrusted key source. It is a risk only if the SP follows it. Verify only against the configured JWKS."
+      }
+    ],
+    "fix": "Verify the signature only against the configured OP JWKS, selected by kid. Ignore the jku header and never fetch keys from a URL the token supplies. Reject or strip tokens whose jku does not match the OP's discovery jwks_uri. Keep the algorithm allowlist at RS256, and keep clock skew at 5 minutes or less.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "JWT_ALG_NONE_OR_CONFUSION",
+        "why_not": "The alg is RS256 and matches the JWKS key type. The attacker-controlled jku is only dangerous if the SP honors it, and nothing shows that it does."
+      }
+    ],
+    "questions": [
+      "The captured artifact shows no signature, so the signature check could not be confirmed. Does the signature verify against the configured JWKS?",
+      "Does your JWT library follow the jku header to fetch keys?"
+    ]
+  },
+  "started": "2026-10-27T09:32:39.081467-05:00",
+  "duration_ms": 9055,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1247,
+    "cache_creation_input_tokens": 5662,
+    "cache_read_input_tokens": 0
+  },
+  "cost_usd": 0.035122,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1247,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 5662,
+      "costUSD": 0.035122,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 8,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 8840,
+    "stop_reason": "tool_use",
+    "session_id": "3f3904fe-c25f-41fc-b765-ab3f32b86253",
+    "total_cost_usd": 0.035122,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 5662,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 1247,
+      "output_tokens_details": {
+        "thinking_tokens": 364
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 5662,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1247,
+          "cache_read_input_tokens": 0,
+          "cache_creation_input_tokens": 5662,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 5662
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1247,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 5662,
+        "webSearchRequests": 0,
+        "costUSD": 0.035122,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 364,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 5662,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.6,\"evidence\":[{\"path\":\"/claims/iss\",\"actual\":\"https://login.example.com/tenant-1/v2.0\",\"expected\":\"https://login.example.com/tenant-1/v2.0\",\"note\":\"Issuer matches.\"},{\"path\":\"/claims/aud\",\"actual\":\"client-abc123\",\"expected\":\"client-abc123\",\"note\":\"Audience matches the client.\"},{\"path\":\"/claims/nonce\",\"actual\":\"n-0S6_WzA2Mj\",\"expected\":\"n-0S6_WzA2Mj\",\"note\":\"Nonce binds the token to the request.\"},{\"path\":\"/claims/exp\",\"actual\":\"1768482000\",\"note\":\"Expires one hour after the evaluation time of 2026-01-15T12:00:00Z, so it is not expired.\"},{\"path\":\"/claims/nbf\",\"actual\":\"1768478400\",\"note\":\"Equals the evaluation time, so the token is already valid.\"},{\"path\":\"/header/kid\",\"actual\":\"test-key-1\",\"note\":\"The kid is present in the configured JWKS.\"},{\"path\":\"/header/alg\",\"actual\":\"RS256\",\"note\":\"Algorithm is allowed and matches the RSA key in the JWKS.\"},{\"path\":\"/header/jku\",\"actual\":\"https://attacker.example/jwks.json\",\"note\":\"This header points at an untrusted key source. It is a risk only if the SP follows it. Verify only against the configured JWKS.\"}],\"fix\":\"Verify the signature only against the configured OP JWKS, selected by kid. Ignore the jku header and never fetch keys from a URL the token supplies. Reject or strip tokens whose jku does not match the OP's discovery jwks_uri. Keep the algorithm allowlist at RS256, and keep clock skew at 5 minutes or less.\",\"alternatives\":[{\"code\":\"JWT_ALG_NONE_OR_CONFUSION\",\"why_not\":\"The alg is RS256 and matches the JWKS key type. The attacker-controlled jku is only dangerous if the SP honors it, and nothing shows that it does.\"}],\"questions\":[\"The captured artifact shows no signature, so the signature check could not be confirmed. Does the signature verify against the configured JWKS?\",\"Does your JWT library follow the jku header to fetch keys?\"]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.6,
+      "evidence": [
+        {
+          "path": "/claims/iss",
+          "actual": "https://login.example.com/tenant-1/v2.0",
+          "expected": "https://login.example.com/tenant-1/v2.0",
+          "note": "Issuer matches."
+        },
+        {
+          "path": "/claims/aud",
+          "actual": "client-abc123",
+          "expected": "client-abc123",
+          "note": "Audience matches the client."
+        },
+        {
+          "path": "/claims/nonce",
+          "actual": "n-0S6_WzA2Mj",
+          "expected": "n-0S6_WzA2Mj",
+          "note": "Nonce binds the token to the request."
+        },
+        {
+          "path": "/claims/exp",
+          "actual": "1768482000",
+          "note": "Expires one hour after the evaluation time of 2026-01-15T12:00:00Z, so it is not expired."
+        },
+        {
+          "path": "/claims/nbf",
+          "actual": "1768478400",
+          "note": "Equals the evaluation time, so the token is already valid."
+        },
+        {
+          "path": "/header/kid",
+          "actual": "test-key-1",
+          "note": "The kid is present in the configured JWKS."
+        },
+        {
+          "path": "/header/alg",
+          "actual": "RS256",
+          "note": "Algorithm is allowed and matches the RSA key in the JWKS."
+        },
+        {
+          "path": "/header/jku",
+          "actual": "https://attacker.example/jwks.json",
+          "note": "This header points at an untrusted key source. It is a risk only if the SP follows it. Verify only against the configured JWKS."
+        }
+      ],
+      "fix": "Verify the signature only against the configured OP JWKS, selected by kid. Ignore the jku header and never fetch keys from a URL the token supplies. Reject or strip tokens whose jku does not match the OP's discovery jwks_uri. Keep the algorithm allowlist at RS256, and keep clock skew at 5 minutes or less.",
+      "alternatives": [
+        {
+          "code": "JWT_ALG_NONE_OR_CONFUSION",
+          "why_not": "The alg is RS256 and matches the JWKS key type. The attacker-controlled jku is only dangerous if the SP honors it, and nothing shows that it does."
+        }
+      ],
+      "questions": [
+        "The captured artifact shows no signature, so the signature check could not be confirmed. Does the signature verify against the configured JWKS?",
+        "Does your JWT library follow the jku header to fetch keys?"
+      ]
+    },
+    "ttft_ms": 4308,
+    "type": "result",
+    "duration_ms": 9055,
+    "uuid": "596fd194-20b4-4c2b-9b1e-32b952be57f4",
+    "ttft_stream_ms": 1274,
+    "time_to_request_ms": 214,
+    "first_content_frame_ms": 1275,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

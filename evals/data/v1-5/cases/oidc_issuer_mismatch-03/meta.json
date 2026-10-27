@@ -1,0 +1,10 @@
+{
+  "id": "oidc_issuer_mismatch-03",
+  "kind": "oidc_discovery",
+  "mutator": "discovery_issuer_mismatch",
+  "expected_completeness": "partial",
+  "symptom_from": "vendor_strings.json",
+  "seed": 42,
+  "index": 3,
+  "hash": "138ef9256ded4291"
+}

@@ -1,0 +1,1 @@
+Snowflake 390168 invalid destination; the IdP app still points at staging.

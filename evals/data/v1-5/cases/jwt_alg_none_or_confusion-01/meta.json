@@ -1,0 +1,9 @@
+{
+  "id": "jwt_alg_none_or_confusion-01",
+  "kind": "jwt",
+  "mutator": "jwt_jku_header",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 1,
+  "hash": "143315fd833a4686"
+}

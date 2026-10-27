@@ -1,0 +1,223 @@
+{
+  "case_id": "saml_status_not_success-03",
+  "case_hash": "95a44c497bf81349",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_STATUS_NOT_SUCCESS",
+    "posture_codes": [],
+    "evidence_path": "/Response/Status/StatusCode/@Value",
+    "fix_keys": [
+      "statuscode",
+      "sub-code",
+      "statusmessage:",
+      "responder"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_status_not_success-03",
+    "kind": "saml_response",
+    "dialect": "okta",
+    "mutator": "status_responder",
+    "expected_completeness": "partial",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 3,
+    "hash": "95a44c497bf81349"
+  },
+  "output": {
+    "root_cause_code": "SAML_STATUS_NOT_SUCCESS",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/Response/Status/StatusCode/@Value",
+        "actual": "urn:oasis:names:tc:SAML:2.0:status:Responder",
+        "expected": "urn:oasis:names:tc:SAML:2.0:status:Success"
+      },
+      {
+        "path": "/Response/Status/StatusCode/StatusCode/@Value",
+        "actual": "urn:oasis:names:tc:SAML:2.0:status:RequestDenied",
+        "note": "Second-level status shows the IdP denied the request."
+      },
+      {
+        "path": "/Response/Status/StatusMessage",
+        "actual": "The user is not assigned to this application."
+      }
+    ],
+    "fix": "The IdP returned a non-Success status and no assertion, so there is nothing for the SP to validate or fix. In the IdP (Entra), assign the user or a group they belong to to the enterprise application, then retry the login. If the user is already assigned, check that the app's conditional access and assignment-required settings are correct. Keep signature validation, audience checks and the other SP checks enabled. Separately, the AADSTS75005 text suggests that a request sent to Entra may be malformed. Confirm that the AuthnRequest the SP sends is valid SAML 2.0 and that the SP's entity ID and ACS URL match the app registration.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "IDP_POLICY_REFUSAL",
+        "why_not": "The refusal is a user-assignment policy at the IdP. The artifact itself carries the non-Success status, so SAML_STATUS_NOT_SUCCESS is the more direct class."
+      },
+      {
+        "code": "SAML_STRUCTURE_INVALID",
+        "why_not": "The response is well-formed. It has a status-only structure because the IdP denied the request, and that is not signature wrapping."
+      }
+    ],
+    "questions": [
+      "Is the user assigned to the Entra enterprise application, directly or through a group?"
+    ]
+  },
+  "started": "2026-10-27T09:47:00.65566-05:00",
+  "duration_ms": 6118,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 775,
+    "cache_creation_input_tokens": 3938,
+    "cache_read_input_tokens": 5099
+  },
+  "cost_usd": 0.0240159,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 775,
+      "cacheReadInputTokens": 5099,
+      "cacheCreationInputTokens": 3938,
+      "costUSD": 0.0240159,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 5970,
+    "stop_reason": "tool_use",
+    "session_id": "0532184a-d133-45e4-95c2-3b5566495728",
+    "total_cost_usd": 0.0240159,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 3938,
+      "cache_read_input_tokens": 5099,
+      "output_tokens": 775,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3938,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 775,
+          "cache_read_input_tokens": 5099,
+          "cache_creation_input_tokens": 3938,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 3938
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 775,
+        "cacheReadInputTokens": 5099,
+        "cacheCreationInputTokens": 3938,
+        "webSearchRequests": 0,
+        "costUSD": 0.0240159,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3938,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_STATUS_NOT_SUCCESS\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/Response/Status/StatusCode/@Value\",\"actual\":\"urn:oasis:names:tc:SAML:2.0:status:Responder\",\"expected\":\"urn:oasis:names:tc:SAML:2.0:status:Success\"},{\"path\":\"/Response/Status/StatusCode/StatusCode/@Value\",\"actual\":\"urn:oasis:names:tc:SAML:2.0:status:RequestDenied\",\"note\":\"Second-level status shows the IdP denied the request.\"},{\"path\":\"/Response/Status/StatusMessage\",\"actual\":\"The user is not assigned to this application.\"}],\"fix\":\"The IdP returned a non-Success status and no assertion, so there is nothing for the SP to validate or fix. In the IdP (Entra), assign the user or a group they belong to to the enterprise application, then retry the login. If the user is already assigned, check that the app's conditional access and assignment-required settings are correct. Keep signature validation, audience checks and the other SP checks enabled. Separately, the AADSTS75005 text suggests that a request sent to Entra may be malformed. Confirm that the AuthnRequest the SP sends is valid SAML 2.0 and that the SP's entity ID and ACS URL match the app registration.\",\"alternatives\":[{\"code\":\"IDP_POLICY_REFUSAL\",\"why_not\":\"The refusal is a user-assignment policy at the IdP. The artifact itself carries the non-Success status, so SAML_STATUS_NOT_SUCCESS is the more direct class.\"},{\"code\":\"SAML_STRUCTURE_INVALID\",\"why_not\":\"The response is well-formed. It has a status-only structure because the IdP denied the request, and that is not signature wrapping.\"}],\"questions\":[\"Is the user assigned to the Entra enterprise application, directly or through a group?\"]}",
+    "structured_output": {
+      "root_cause_code": "SAML_STATUS_NOT_SUCCESS",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/Response/Status/StatusCode/@Value",
+          "actual": "urn:oasis:names:tc:SAML:2.0:status:Responder",
+          "expected": "urn:oasis:names:tc:SAML:2.0:status:Success"
+        },
+        {
+          "path": "/Response/Status/StatusCode/StatusCode/@Value",
+          "actual": "urn:oasis:names:tc:SAML:2.0:status:RequestDenied",
+          "note": "Second-level status shows the IdP denied the request."
+        },
+        {
+          "path": "/Response/Status/StatusMessage",
+          "actual": "The user is not assigned to this application."
+        }
+      ],
+      "fix": "The IdP returned a non-Success status and no assertion, so there is nothing for the SP to validate or fix. In the IdP (Entra), assign the user or a group they belong to to the enterprise application, then retry the login. If the user is already assigned, check that the app's conditional access and assignment-required settings are correct. Keep signature validation, audience checks and the other SP checks enabled. Separately, the AADSTS75005 text suggests that a request sent to Entra may be malformed. Confirm that the AuthnRequest the SP sends is valid SAML 2.0 and that the SP's entity ID and ACS URL match the app registration.",
+      "alternatives": [
+        {
+          "code": "IDP_POLICY_REFUSAL",
+          "why_not": "The refusal is a user-assignment policy at the IdP. The artifact itself carries the non-Success status, so SAML_STATUS_NOT_SUCCESS is the more direct class."
+        },
+        {
+          "code": "SAML_STRUCTURE_INVALID",
+          "why_not": "The response is well-formed. It has a status-only structure because the IdP denied the request, and that is not signature wrapping."
+        }
+      ],
+      "questions": [
+        "Is the user assigned to the Entra enterprise application, directly or through a group?"
+      ]
+    },
+    "ttft_ms": 6087,
+    "type": "result",
+    "duration_ms": 6118,
+    "uuid": "9437822d-5c48-44ad-97e6-4369b3829a66",
+    "ttft_stream_ms": 1503,
+    "time_to_request_ms": 145,
+    "first_content_frame_ms": 1503,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,209 @@
+{
+  "case_id": "oauth_redirect_uri_mismatch-01",
+  "case_hash": "69363ff01117f0a7",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_REDIRECT_URI_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/request/redirect_uri",
+    "fix_keys": [
+      "register",
+      "exact",
+      "redirect",
+      "scheme"
+    ],
+    "needs": [
+      "registered_redirect_uris"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_redirect_uri_mismatch-01",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_redirect_uri_mismatch_auth0",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 1,
+    "hash": "69363ff01117f0a7"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_REDIRECT_URI_MISMATCH",
+    "confidence": 0.98,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_request"
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "Callback URL mismatch. http://app.example.com/callback is not in the list of allowed callback URLs"
+      },
+      {
+        "path": "/request/redirect_uri",
+        "actual": "http://app.example.com/callback",
+        "expected": "https://app.example.com/callback",
+        "note": "differs only by scheme (http vs https)"
+      },
+      {
+        "path": "/request/registered_redirect_uris",
+        "actual": "https://app.example.com/callback"
+      }
+    ],
+    "fix": "The client sent redirect_uri with the http scheme, but only the https URI is registered. Change the app to send exactly https://app.example.com/callback in both the authorize and token requests. Don't add the http URI to the allowed list unless it is a genuine loopback development URL. PKCE (S256) and the client configuration validated fine.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T09:57:52.065559-05:00",
+  "duration_ms": 8483,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 738,
+    "cache_creation_input_tokens": 3692,
+    "cache_read_input_tokens": 23619
+  },
+  "cost_usd": 0.0245179,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 738,
+      "cacheReadInputTokens": 23619,
+      "cacheCreationInputTokens": 3692,
+      "costUSD": 0.0245179,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 8353,
+    "stop_reason": "tool_use",
+    "session_id": "d7edbe3f-c344-481f-a765-44a7948f667f",
+    "total_cost_usd": 0.0245179,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3692,
+      "cache_read_input_tokens": 23619,
+      "output_tokens": 738,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3692,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 426,
+          "cache_read_input_tokens": 12560,
+          "cache_creation_input_tokens": 2191,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2191
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 738,
+        "cacheReadInputTokens": 23619,
+        "cacheCreationInputTokens": 3692,
+        "webSearchRequests": 0,
+        "costUSD": 0.0245179,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3692,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_REDIRECT_URI_MISMATCH\",\"confidence\":0.98,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"invalid_request\"},{\"path\":\"/redirect/error_description\",\"actual\":\"Callback URL mismatch. http://app.example.com/callback is not in the list of allowed callback URLs\"},{\"path\":\"/request/redirect_uri\",\"actual\":\"http://app.example.com/callback\",\"expected\":\"https://app.example.com/callback\",\"note\":\"differs only by scheme (http vs https)\"},{\"path\":\"/request/registered_redirect_uris\",\"actual\":\"https://app.example.com/callback\"}],\"fix\":\"The client sent redirect_uri with the http scheme, but only the https URI is registered. Change the app to send exactly https://app.example.com/callback in both the authorize and token requests. Don't add the http URI to the allowed list unless it is a genuine loopback development URL. PKCE (S256) and the client configuration validated fine.\"}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_REDIRECT_URI_MISMATCH",
+      "confidence": 0.98,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "invalid_request"
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "Callback URL mismatch. http://app.example.com/callback is not in the list of allowed callback URLs"
+        },
+        {
+          "path": "/request/redirect_uri",
+          "actual": "http://app.example.com/callback",
+          "expected": "https://app.example.com/callback",
+          "note": "differs only by scheme (http vs https)"
+        },
+        {
+          "path": "/request/registered_redirect_uris",
+          "actual": "https://app.example.com/callback"
+        }
+      ],
+      "fix": "The client sent redirect_uri with the http scheme, but only the https URI is registered. Change the app to send exactly https://app.example.com/callback in both the authorize and token requests. Don't add the http URI to the allowed list unless it is a genuine loopback development URL. PKCE (S256) and the client configuration validated fine."
+    },
+    "ttft_ms": 3046,
+    "type": "result",
+    "duration_ms": 8483,
+    "uuid": "ec74ea53-d3ea-4ce3-b8df-6dabd7aa668c",
+    "ttft_stream_ms": 1750,
+    "time_to_request_ms": 119,
+    "first_content_frame_ms": 1751,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,1 @@
+Scalekit mandatory_attribute_missing: email.

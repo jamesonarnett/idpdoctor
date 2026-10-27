@@ -1,0 +1,239 @@
+{
+  "case_id": "oauth_pkce_verifier_mismatch-02",
+  "case_hash": "92ef98ba76291121",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/request/code_verifier",
+    "fix_keys": [
+      "generate",
+      "verifier",
+      "store",
+      "session"
+    ],
+    "needs": [
+      "code_verifier"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_pkce_verifier_mismatch-02",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_pkce_plain_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 2,
+    "hash": "92ef98ba76291121"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_grant",
+        "note": "Classified by vendor code AADSTS501481 (code_verifier mismatch)."
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "AADSTS501481: The Code_Verifier does not match the code_challenge supplied in the authorization request."
+      },
+      {
+        "path": "/request/code_verifier",
+        "actual": "[REDACTED:code_verifier:623deb68]",
+        "expected": "[REDACTED:code_challenge:ddbc472d]",
+        "note": "With the plain method the verifier must equal the challenge byte for byte. It does not."
+      },
+      {
+        "path": "/request/code_challenge_method",
+        "actual": "plain",
+        "expected": "S256",
+        "note": "A public client is using plain PKCE."
+      }
+    ],
+    "fix": "The verifier sent to the token endpoint is not the one that produced the challenge in the authorization request. This usually means the CDN-served SPA build generates a new verifier on each load or each page. It can also happen when the verifier is stored in per-origin or per-edge state, such as a cached bundle, a different storage origin, or a service worker. The fix has three parts. First, generate the verifier once per login attempt and persist it in sessionStorage for the same origin that handles the callback. Second, send that stored value unchanged at the token exchange, and don't regenerate it on callback load. Third, switch to code_challenge_method=S256, with the challenge set to BASE64URL(SHA256(verifier)). Make sure the CDN doesn't cache or rewrite the callback and login pages in a way that re-runs the initialization code or serves a different build. Also confirm the authorization request and the token request come from the same origin, app.example.com.",
+    "posture_codes": [
+      "POSTURE_PKCE_PLAIN_OR_ABSENT"
+    ],
+    "alternatives": [
+      {
+        "code": "OAUTH_INVALID_GRANT_CODE",
+        "why_not": "The error is invalid_grant, which could also mean a reused or expired code. However, the vendor code AADSTS501481 and the plain-method check both point specifically to a verifier mismatch."
+      },
+      {
+        "code": "OAUTH_REDIRECT_URI_MISMATCH",
+        "why_not": "The redirect_uri exactly matches the registered URI, so this check passed."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:57:21.140644-05:00",
+  "duration_ms": 11349,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1221,
+    "cache_creation_input_tokens": 4208,
+    "cache_read_input_tokens": 23599
+  },
+  "cost_usd": 0.031409900000000004,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1221,
+      "cacheReadInputTokens": 23599,
+      "cacheCreationInputTokens": 4208,
+      "costUSD": 0.031409900000000004,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 11249,
+    "stop_reason": "tool_use",
+    "session_id": "433cda9a-9efd-415b-9c80-6bf18ce167f2",
+    "total_cost_usd": 0.031409900000000004,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 4208,
+      "cache_read_input_tokens": 23599,
+      "output_tokens": 1221,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 4208,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 919,
+          "cache_read_input_tokens": 12548,
+          "cache_creation_input_tokens": 2711,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2711
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1221,
+        "cacheReadInputTokens": 23599,
+        "cacheCreationInputTokens": 4208,
+        "webSearchRequests": 0,
+        "costUSD": 0.031409900000000004,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 4208,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_PKCE_VERIFIER_MISMATCH\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"invalid_grant\",\"note\":\"Classified by vendor code AADSTS501481 (code_verifier mismatch).\"},{\"path\":\"/redirect/error_description\",\"actual\":\"AADSTS501481: The Code_Verifier does not match the code_challenge supplied in the authorization request.\"},{\"path\":\"/request/code_verifier\",\"actual\":\"[REDACTED:code_verifier:623deb68]\",\"expected\":\"[REDACTED:code_challenge:ddbc472d]\",\"note\":\"With the plain method the verifier must equal the challenge byte for byte. It does not.\"},{\"path\":\"/request/code_challenge_method\",\"actual\":\"plain\",\"expected\":\"S256\",\"note\":\"A public client is using plain PKCE.\"}],\"fix\":\"The verifier sent to the token endpoint is not the one that produced the challenge in the authorization request. This usually means the CDN-served SPA build generates a new verifier on each load or each page. It can also happen when the verifier is stored in per-origin or per-edge state, such as a cached bundle, a different storage origin, or a service worker. The fix has three parts. First, generate the verifier once per login attempt and persist it in sessionStorage for the same origin that handles the callback. Second, send that stored value unchanged at the token exchange, and don't regenerate it on callback load. Third, switch to code_challenge_method=S256, with the challenge set to BASE64URL(SHA256(verifier)). Make sure the CDN doesn't cache or rewrite the callback and login pages in a way that re-runs the initialization code or serves a different build. Also confirm the authorization request and the token request come from the same origin, app.example.com.\",\"posture_codes\":[\"POSTURE_PKCE_PLAIN_OR_ABSENT\"],\"alternatives\":[{\"code\":\"OAUTH_INVALID_GRANT_CODE\",\"why_not\":\"The error is invalid_grant, which could also mean a reused or expired code. However, the vendor code AADSTS501481 and the plain-method check both point specifically to a verifier mismatch.\"},{\"code\":\"OAUTH_REDIRECT_URI_MISMATCH\",\"why_not\":\"The redirect_uri exactly matches the registered URI, so this check passed.\"}]}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "invalid_grant",
+          "note": "Classified by vendor code AADSTS501481 (code_verifier mismatch)."
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "AADSTS501481: The Code_Verifier does not match the code_challenge supplied in the authorization request."
+        },
+        {
+          "path": "/request/code_verifier",
+          "actual": "[REDACTED:code_verifier:623deb68]",
+          "expected": "[REDACTED:code_challenge:ddbc472d]",
+          "note": "With the plain method the verifier must equal the challenge byte for byte. It does not."
+        },
+        {
+          "path": "/request/code_challenge_method",
+          "actual": "plain",
+          "expected": "S256",
+          "note": "A public client is using plain PKCE."
+        }
+      ],
+      "fix": "The verifier sent to the token endpoint is not the one that produced the challenge in the authorization request. This usually means the CDN-served SPA build generates a new verifier on each load or each page. It can also happen when the verifier is stored in per-origin or per-edge state, such as a cached bundle, a different storage origin, or a service worker. The fix has three parts. First, generate the verifier once per login attempt and persist it in sessionStorage for the same origin that handles the callback. Second, send that stored value unchanged at the token exchange, and don't regenerate it on callback load. Third, switch to code_challenge_method=S256, with the challenge set to BASE64URL(SHA256(verifier)). Make sure the CDN doesn't cache or rewrite the callback and login pages in a way that re-runs the initialization code or serves a different build. Also confirm the authorization request and the token request come from the same origin, app.example.com.",
+      "posture_codes": [
+        "POSTURE_PKCE_PLAIN_OR_ABSENT"
+      ],
+      "alternatives": [
+        {
+          "code": "OAUTH_INVALID_GRANT_CODE",
+          "why_not": "The error is invalid_grant, which could also mean a reused or expired code. However, the vendor code AADSTS501481 and the plain-method check both point specifically to a verifier mismatch."
+        },
+        {
+          "code": "OAUTH_REDIRECT_URI_MISMATCH",
+          "why_not": "The redirect_uri exactly matches the registered URI, so this check passed."
+        }
+      ]
+    },
+    "ttft_ms": 2561,
+    "type": "result",
+    "duration_ms": 11349,
+    "uuid": "ed75454f-8bc3-4dab-81e7-6666bfb40982",
+    "ttft_stream_ms": 1230,
+    "time_to_request_ms": 91,
+    "first_content_frame_ms": 1230,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,221 @@
+{
+  "case_id": "saml_status_not_success-03",
+  "case_hash": "95a44c497bf81349",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_STATUS_NOT_SUCCESS",
+    "posture_codes": [],
+    "evidence_path": "/Response/Status/StatusCode/@Value",
+    "fix_keys": [
+      "statuscode",
+      "sub-code",
+      "statusmessage:",
+      "responder"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_status_not_success-03",
+    "kind": "saml_response",
+    "dialect": "okta",
+    "mutator": "status_responder",
+    "expected_completeness": "partial",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 3,
+    "hash": "95a44c497bf81349"
+  },
+  "output": {
+    "root_cause_code": "SAML_STATUS_NOT_SUCCESS",
+    "confidence": 0.85,
+    "evidence": [
+      {
+        "path": "/Response/Status/StatusCode/@Value",
+        "actual": "urn:oasis:names:tc:SAML:2.0:status:Responder",
+        "expected": "urn:oasis:names:tc:SAML:2.0:status:Success"
+      },
+      {
+        "path": "/Response/Status/StatusCode/StatusCode/@Value",
+        "actual": "urn:oasis:names:tc:SAML:2.0:status:RequestDenied"
+      },
+      {
+        "path": "/Response/Status/StatusMessage",
+        "actual": "The user is not assigned to this application."
+      }
+    ],
+    "fix": "The IdP refused the request, so there is no assertion to validate. Assign the user, or a group they belong to, to the SP's enterprise application in the IdP and retry. The status message says the user is not assigned. Also check that the AuthnRequest the SP sends is well-formed. Check its Issuer/entityID, ACS URL and NameID policy against the IdP's app registration. The reported AADSTS75005 can come from a malformed request, but this response's message points to user assignment. Keep signature validation and the other security checks on.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "IDP_POLICY_REFUSAL",
+        "why_not": "User assignment is an IdP-side policy. The deterministic validator classifies this as a non-Success status, which is the more direct match."
+      },
+      {
+        "code": "SAML_STRUCTURE_INVALID",
+        "why_not": "The structure check passed. AADSTS75005 describes the inbound request, not this response."
+      }
+    ],
+    "questions": [
+      "request_id (the AuthnRequest ID, so InResponseTo can be checked)"
+    ]
+  },
+  "started": "2026-10-27T10:13:40.806946-05:00",
+  "duration_ms": 19448,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2281,
+    "cache_creation_input_tokens": 7093,
+    "cache_read_input_tokens": 28370
+  },
+  "cost_usd": 0.054027000000000006,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2281,
+      "cacheReadInputTokens": 28370,
+      "cacheCreationInputTokens": 7093,
+      "costUSD": 0.054027000000000006,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 19343,
+    "stop_reason": "tool_use",
+    "session_id": "bc3b97db-6859-4825-a9cc-984b829e8748",
+    "total_cost_usd": 0.054027000000000006,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 7093,
+      "cache_read_input_tokens": 28370,
+      "output_tokens": 2281,
+      "output_tokens_details": {
+        "thinking_tokens": 137
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 7093,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 828,
+          "cache_read_input_tokens": 16084,
+          "cache_creation_input_tokens": 3295,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 3295
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2281,
+        "cacheReadInputTokens": 28370,
+        "cacheCreationInputTokens": 7093,
+        "webSearchRequests": 0,
+        "costUSD": 0.054027000000000006,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 137,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 7093,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_STATUS_NOT_SUCCESS\",\"confidence\":0.85,\"evidence\":[{\"path\":\"/Response/Status/StatusCode/@Value\",\"actual\":\"urn:oasis:names:tc:SAML:2.0:status:Responder\",\"expected\":\"urn:oasis:names:tc:SAML:2.0:status:Success\"},{\"path\":\"/Response/Status/StatusCode/StatusCode/@Value\",\"actual\":\"urn:oasis:names:tc:SAML:2.0:status:RequestDenied\"},{\"path\":\"/Response/Status/StatusMessage\",\"actual\":\"The user is not assigned to this application.\"}],\"fix\":\"The IdP refused the request, so there is no assertion to validate. Assign the user, or a group they belong to, to the SP's enterprise application in the IdP and retry. The status message says the user is not assigned. Also check that the AuthnRequest the SP sends is well-formed. Check its Issuer/entityID, ACS URL and NameID policy against the IdP's app registration. The reported AADSTS75005 can come from a malformed request, but this response's message points to user assignment. Keep signature validation and the other security checks on.\",\"alternatives\":[{\"code\":\"IDP_POLICY_REFUSAL\",\"why_not\":\"User assignment is an IdP-side policy. The deterministic validator classifies this as a non-Success status, which is the more direct match.\"},{\"code\":\"SAML_STRUCTURE_INVALID\",\"why_not\":\"The structure check passed. AADSTS75005 describes the inbound request, not this response.\"}],\"questions\":[\"request_id (the AuthnRequest ID, so InResponseTo can be checked)\"]}",
+    "structured_output": {
+      "root_cause_code": "SAML_STATUS_NOT_SUCCESS",
+      "confidence": 0.85,
+      "evidence": [
+        {
+          "path": "/Response/Status/StatusCode/@Value",
+          "actual": "urn:oasis:names:tc:SAML:2.0:status:Responder",
+          "expected": "urn:oasis:names:tc:SAML:2.0:status:Success"
+        },
+        {
+          "path": "/Response/Status/StatusCode/StatusCode/@Value",
+          "actual": "urn:oasis:names:tc:SAML:2.0:status:RequestDenied"
+        },
+        {
+          "path": "/Response/Status/StatusMessage",
+          "actual": "The user is not assigned to this application."
+        }
+      ],
+      "fix": "The IdP refused the request, so there is no assertion to validate. Assign the user, or a group they belong to, to the SP's enterprise application in the IdP and retry. The status message says the user is not assigned. Also check that the AuthnRequest the SP sends is well-formed. Check its Issuer/entityID, ACS URL and NameID policy against the IdP's app registration. The reported AADSTS75005 can come from a malformed request, but this response's message points to user assignment. Keep signature validation and the other security checks on.",
+      "alternatives": [
+        {
+          "code": "IDP_POLICY_REFUSAL",
+          "why_not": "User assignment is an IdP-side policy. The deterministic validator classifies this as a non-Success status, which is the more direct match."
+        },
+        {
+          "code": "SAML_STRUCTURE_INVALID",
+          "why_not": "The structure check passed. AADSTS75005 describes the inbound request, not this response."
+        }
+      ],
+      "questions": [
+        "request_id (the AuthnRequest ID, so InResponseTo can be checked)"
+      ]
+    },
+    "ttft_ms": 10139,
+    "type": "result",
+    "duration_ms": 19448,
+    "uuid": "4b5b96f4-27db-4420-99e5-0947c9961d8d",
+    "ttft_stream_ms": 2703,
+    "time_to_request_ms": 95,
+    "first_content_frame_ms": 2703,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

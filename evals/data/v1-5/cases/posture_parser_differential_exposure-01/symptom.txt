@@ -1,0 +1,1 @@
+Pentest mentioned XML comments in NameID; login works normally.

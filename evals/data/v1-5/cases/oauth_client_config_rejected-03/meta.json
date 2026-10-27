@@ -1,0 +1,10 @@
+{
+  "id": "oauth_client_config_rejected-03",
+  "kind": "oauth_redirect",
+  "mutator": "oauth_invalid_client",
+  "expected_completeness": "partial",
+  "symptom_from": "vendor_strings.json",
+  "seed": 42,
+  "index": 3,
+  "hash": "ccf09ebbde98675d"
+}

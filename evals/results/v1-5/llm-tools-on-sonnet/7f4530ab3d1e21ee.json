@@ -1,0 +1,207 @@
+{
+  "case_id": "saml_signature_invalid-02",
+  "case_hash": "7f4530ab3d1e21ee",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_SIGNATURE_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/Signature",
+    "fix_keys": [
+      "download",
+      "current",
+      "signing",
+      "certificate"
+    ],
+    "needs": [
+      "idp_cert_pem"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_signature_invalid-02",
+    "kind": "saml_response",
+    "dialect": "generic",
+    "mutator": "signature_tampered",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 2,
+    "hash": "7f4530ab3d1e21ee"
+  },
+  "output": {
+    "root_cause_code": "SAML_SIGNATURE_INVALID",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature",
+        "actual": "digest or signature mismatch",
+        "expected": "verifies with the configured IdP certificate (SHA-256 fingerprint 2B:39:20:62:...:D9:D9)",
+        "note": "The assertion is signed and the signature is on the correct element. It does not verify against the configured IdP certificate. All other checks pass: status, issuer, destination, InResponseTo, audience, recipient, time window, NameID, attributes and structure."
+      }
+    ],
+    "fix": "Fetch the IdP's current signing certificate from its metadata over a trusted channel. Confirm its fingerprint with the IdP admin, then replace the SP's configured IdP certificate with it. If the IdP rotated keys, load both the old and new certificates during the transition. If the certificate already matches, check whether the assertion was modified after signing. Examples are a proxy, a re-serialization step, or a response signed by a different key. Keep signature validation enabled and don't trust the certificate embedded in the message.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "SAML_STRUCTURE_INVALID",
+        "why_not": "The structure check passed: there is a single Assertion and the version is SAML 2.0. There are no signs of signature wrapping."
+      },
+      {
+        "code": "CERT_EXPIRED_OR_WEAK",
+        "why_not": "The configured certificate is valid until 2126, so expiry or weakness is not the cause."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T10:12:14.214102-05:00",
+  "duration_ms": 12959,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2128,
+    "cache_creation_input_tokens": 7049,
+    "cache_read_input_tokens": 28650
+  },
+  "cost_usd": 0.052349,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2128,
+      "cacheReadInputTokens": 28650,
+      "cacheCreationInputTokens": 7049,
+      "costUSD": 0.052349,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 12853,
+    "stop_reason": "tool_use",
+    "session_id": "4ef173f4-a479-4f52-ab76-14185f7e5a79",
+    "total_cost_usd": 0.052349,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 7049,
+      "cache_read_input_tokens": 28650,
+      "output_tokens": 2128,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 7049,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 668,
+          "cache_read_input_tokens": 16271,
+          "cache_creation_input_tokens": 3157,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 3157
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2128,
+        "cacheReadInputTokens": 28650,
+        "cacheCreationInputTokens": 7049,
+        "webSearchRequests": 0,
+        "costUSD": 0.052349,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 7049,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_SIGNATURE_INVALID\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/Response/Assertion/Signature\",\"actual\":\"digest or signature mismatch\",\"expected\":\"verifies with the configured IdP certificate (SHA-256 fingerprint 2B:39:20:62:...:D9:D9)\",\"note\":\"The assertion is signed and the signature is on the correct element. It does not verify against the configured IdP certificate. All other checks pass: status, issuer, destination, InResponseTo, audience, recipient, time window, NameID, attributes and structure.\"}],\"fix\":\"Fetch the IdP's current signing certificate from its metadata over a trusted channel. Confirm its fingerprint with the IdP admin, then replace the SP's configured IdP certificate with it. If the IdP rotated keys, load both the old and new certificates during the transition. If the certificate already matches, check whether the assertion was modified after signing. Examples are a proxy, a re-serialization step, or a response signed by a different key. Keep signature validation enabled and don't trust the certificate embedded in the message.\",\"alternatives\":[{\"code\":\"SAML_STRUCTURE_INVALID\",\"why_not\":\"The structure check passed: there is a single Assertion and the version is SAML 2.0. There are no signs of signature wrapping.\"},{\"code\":\"CERT_EXPIRED_OR_WEAK\",\"why_not\":\"The configured certificate is valid until 2126, so expiry or weakness is not the cause.\"}],\"posture_codes\":[],\"questions\":[]}",
+    "structured_output": {
+      "root_cause_code": "SAML_SIGNATURE_INVALID",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Signature",
+          "actual": "digest or signature mismatch",
+          "expected": "verifies with the configured IdP certificate (SHA-256 fingerprint 2B:39:20:62:...:D9:D9)",
+          "note": "The assertion is signed and the signature is on the correct element. It does not verify against the configured IdP certificate. All other checks pass: status, issuer, destination, InResponseTo, audience, recipient, time window, NameID, attributes and structure."
+        }
+      ],
+      "fix": "Fetch the IdP's current signing certificate from its metadata over a trusted channel. Confirm its fingerprint with the IdP admin, then replace the SP's configured IdP certificate with it. If the IdP rotated keys, load both the old and new certificates during the transition. If the certificate already matches, check whether the assertion was modified after signing. Examples are a proxy, a re-serialization step, or a response signed by a different key. Keep signature validation enabled and don't trust the certificate embedded in the message.",
+      "alternatives": [
+        {
+          "code": "SAML_STRUCTURE_INVALID",
+          "why_not": "The structure check passed: there is a single Assertion and the version is SAML 2.0. There are no signs of signature wrapping."
+        },
+        {
+          "code": "CERT_EXPIRED_OR_WEAK",
+          "why_not": "The configured certificate is valid until 2126, so expiry or weakness is not the cause."
+        }
+      ],
+      "posture_codes": [],
+      "questions": []
+    },
+    "ttft_ms": 8004,
+    "type": "result",
+    "duration_ms": 12959,
+    "uuid": "2fb6a202-8b8c-47a6-94e2-7ec37368092b",
+    "ttft_stream_ms": 1527,
+    "time_to_request_ms": 96,
+    "first_content_frame_ms": 1528,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

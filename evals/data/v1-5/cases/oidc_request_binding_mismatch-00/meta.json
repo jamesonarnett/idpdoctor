@@ -1,0 +1,9 @@
+{
+  "id": "oidc_request_binding_mismatch-00",
+  "kind": "jwt",
+  "mutator": "jwt_at_hash_mismatch",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 0,
+  "hash": "af52fe519ad5de61"
+}

@@ -1,0 +1,216 @@
+{
+  "case_id": "oauth_client_config_rejected-00",
+  "case_hash": "ccf09ebbde98675d",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+    "posture_codes": [],
+    "evidence_path": "/redirect/error",
+    "fix_keys": [
+      "compare",
+      "client",
+      "registered",
+      "grant"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_client_config_rejected-00",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_invalid_client",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "ccf09ebbde98675d"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_CLIENT_CONFIG_REJECTED",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_client",
+        "note": "The authorization server rejected the client credentials."
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "AADSTS7000215: Invalid client secret provided. Ensure the secret being sent in the request is the client secret value, not the client secret ID",
+        "note": "Entra says the secret is wrong. The usual causes are sending the secret ID instead of the secret value, or sending an expired or rotated secret."
+      }
+    ],
+    "fix": "In the Entra app registration for client-abc123, open Certificates \u0026 secrets. Check that the secret has not expired. If needed, create a new secret and copy its Value right away. The Value is not the Secret ID. Store it in the SP's secret store and send it as client_secret in the token request, or use a certificate or federated credential instead. Make sure the config is read from the right environment and tenant, and that the value has no extra whitespace or encoding changes. Do not log the secret or put it in the URL.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "IDP_POLICY_REFUSAL",
+        "why_not": "The failure is a credential problem in the client's own configuration, not a policy refusal outside the artifact."
+      },
+      {
+        "code": "OAUTH_INVALID_GRANT_CODE",
+        "why_not": "The error is invalid_client, raised before any code is evaluated. The artifact also contains no code (has_code is false)."
+      }
+    ],
+    "questions": [
+      "Was the secret value copied from the portal at creation time, or was the secret ID used by mistake?",
+      "Has the secret expired or been rotated since it was deployed?"
+    ]
+  },
+  "started": "2026-10-27T09:34:48.406107-05:00",
+  "duration_ms": 6673,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 685,
+    "cache_creation_input_tokens": 5358,
+    "cache_read_input_tokens": 0
+  },
+  "cost_usd": 0.028286,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 685,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 5358,
+      "costUSD": 0.028286,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 2,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 6557,
+    "stop_reason": "tool_use",
+    "session_id": "1cb83eae-9bf8-43be-8d99-2f1bf3612963",
+    "total_cost_usd": 0.028286,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 5358,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 685,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 5358,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 685,
+          "cache_read_input_tokens": 0,
+          "cache_creation_input_tokens": 5358,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 5358
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 685,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 5358,
+        "webSearchRequests": 0,
+        "costUSD": 0.028286,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 5358,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_CLIENT_CONFIG_REJECTED\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"invalid_client\",\"note\":\"The authorization server rejected the client credentials.\"},{\"path\":\"/redirect/error_description\",\"actual\":\"AADSTS7000215: Invalid client secret provided. Ensure the secret being sent in the request is the client secret value, not the client secret ID\",\"note\":\"Entra says the secret is wrong. The usual causes are sending the secret ID instead of the secret value, or sending an expired or rotated secret.\"}],\"fix\":\"In the Entra app registration for client-abc123, open Certificates \u0026 secrets. Check that the secret has not expired. If needed, create a new secret and copy its Value right away. The Value is not the Secret ID. Store it in the SP's secret store and send it as client_secret in the token request, or use a certificate or federated credential instead. Make sure the config is read from the right environment and tenant, and that the value has no extra whitespace or encoding changes. Do not log the secret or put it in the URL.\",\"alternatives\":[{\"code\":\"IDP_POLICY_REFUSAL\",\"why_not\":\"The failure is a credential problem in the client's own configuration, not a policy refusal outside the artifact.\"},{\"code\":\"OAUTH_INVALID_GRANT_CODE\",\"why_not\":\"The error is invalid_client, raised before any code is evaluated. The artifact also contains no code (has_code is false).\"}],\"questions\":[\"Was the secret value copied from the portal at creation time, or was the secret ID used by mistake?\",\"Has the secret expired or been rotated since it was deployed?\"]}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_CLIENT_CONFIG_REJECTED",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "invalid_client",
+          "note": "The authorization server rejected the client credentials."
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "AADSTS7000215: Invalid client secret provided. Ensure the secret being sent in the request is the client secret value, not the client secret ID",
+          "note": "Entra says the secret is wrong. The usual causes are sending the secret ID instead of the secret value, or sending an expired or rotated secret."
+        }
+      ],
+      "fix": "In the Entra app registration for client-abc123, open Certificates \u0026 secrets. Check that the secret has not expired. If needed, create a new secret and copy its Value right away. The Value is not the Secret ID. Store it in the SP's secret store and send it as client_secret in the token request, or use a certificate or federated credential instead. Make sure the config is read from the right environment and tenant, and that the value has no extra whitespace or encoding changes. Do not log the secret or put it in the URL.",
+      "alternatives": [
+        {
+          "code": "IDP_POLICY_REFUSAL",
+          "why_not": "The failure is a credential problem in the client's own configuration, not a policy refusal outside the artifact."
+        },
+        {
+          "code": "OAUTH_INVALID_GRANT_CODE",
+          "why_not": "The error is invalid_client, raised before any code is evaluated. The artifact also contains no code (has_code is false)."
+        }
+      ],
+      "questions": [
+        "Was the secret value copied from the portal at creation time, or was the secret ID used by mistake?",
+        "Has the secret expired or been rotated since it was deployed?"
+      ]
+    },
+    "ttft_ms": 6645,
+    "type": "result",
+    "duration_ms": 6673,
+    "uuid": "d767d88c-b8b2-4183-a086-2555278b4d60",
+    "ttft_stream_ms": 2385,
+    "time_to_request_ms": 113,
+    "first_content_frame_ms": 2386,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

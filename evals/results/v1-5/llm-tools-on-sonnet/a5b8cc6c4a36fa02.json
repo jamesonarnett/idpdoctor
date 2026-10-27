@@ -1,0 +1,224 @@
+{
+  "case_id": "oauth_redirect_uri_mismatch-02",
+  "case_hash": "a5b8cc6c4a36fa02",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_REDIRECT_URI_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/request/redirect_uri",
+    "fix_keys": [
+      "register",
+      "exact",
+      "redirect",
+      "scheme"
+    ],
+    "needs": [
+      "registered_redirect_uris"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_redirect_uri_mismatch-02",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_redirect_uri_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 2,
+    "hash": "a5b8cc6c4a36fa02"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_REDIRECT_URI_MISMATCH",
+    "confidence": 0.98,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_request",
+        "note": "Classified as a redirect URI mismatch by vendor code AADSTS50011"
+      },
+      {
+        "path": "/request/redirect_uri",
+        "actual": "https://app.example.com/callback/",
+        "expected": "https://app.example.com/callback",
+        "note": "Differs from the registered value only by a trailing slash"
+      },
+      {
+        "path": "/request/registered_redirect_uris",
+        "actual": "https://app.example.com/callback",
+        "note": "The only registered URI has no trailing slash"
+      }
+    ],
+    "fix": "The client sends https://app.example.com/callback/ but only https://app.example.com/callback is registered. Entra compares these strings exactly. Make the two identical. Either change the app to send the registered URI without the trailing slash, or register the slash variant on the app registration. Send the same value in both the authorize request and the token request. Do not use wildcards or loosen the match.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+        "why_not": "The S256 verifier matches the challenge, and the PKCE check passed."
+      },
+      {
+        "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+        "why_not": "The client config check passed. A public client with the authorization_code grant and S256 is valid."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:58:01.061583-05:00",
+  "duration_ms": 8686,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 951,
+    "cache_creation_input_tokens": 4180,
+    "cache_read_input_tokens": 23641
+  },
+  "cost_usd": 0.0286021,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 951,
+      "cacheReadInputTokens": 23641,
+      "cacheCreationInputTokens": 4180,
+      "costUSD": 0.0286021,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 8578,
+    "stop_reason": "tool_use",
+    "session_id": "ff070bcc-64fe-4744-8922-059944e852bf",
+    "total_cost_usd": 0.0286021,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 4180,
+      "cache_read_input_tokens": 23641,
+      "output_tokens": 951,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 4180,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 581,
+          "cache_read_input_tokens": 12582,
+          "cache_creation_input_tokens": 2657,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2657
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 951,
+        "cacheReadInputTokens": 23641,
+        "cacheCreationInputTokens": 4180,
+        "webSearchRequests": 0,
+        "costUSD": 0.0286021,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 4180,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_REDIRECT_URI_MISMATCH\",\"confidence\":0.98,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"invalid_request\",\"note\":\"Classified as a redirect URI mismatch by vendor code AADSTS50011\"},{\"path\":\"/request/redirect_uri\",\"actual\":\"https://app.example.com/callback/\",\"expected\":\"https://app.example.com/callback\",\"note\":\"Differs from the registered value only by a trailing slash\"},{\"path\":\"/request/registered_redirect_uris\",\"actual\":\"https://app.example.com/callback\",\"note\":\"The only registered URI has no trailing slash\"}],\"fix\":\"The client sends https://app.example.com/callback/ but only https://app.example.com/callback is registered. Entra compares these strings exactly. Make the two identical. Either change the app to send the registered URI without the trailing slash, or register the slash variant on the app registration. Send the same value in both the authorize request and the token request. Do not use wildcards or loosen the match.\",\"alternatives\":[{\"code\":\"OAUTH_PKCE_VERIFIER_MISMATCH\",\"why_not\":\"The S256 verifier matches the challenge, and the PKCE check passed.\"},{\"code\":\"OAUTH_CLIENT_CONFIG_REJECTED\",\"why_not\":\"The client config check passed. A public client with the authorization_code grant and S256 is valid.\"}]}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_REDIRECT_URI_MISMATCH",
+      "confidence": 0.98,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "invalid_request",
+          "note": "Classified as a redirect URI mismatch by vendor code AADSTS50011"
+        },
+        {
+          "path": "/request/redirect_uri",
+          "actual": "https://app.example.com/callback/",
+          "expected": "https://app.example.com/callback",
+          "note": "Differs from the registered value only by a trailing slash"
+        },
+        {
+          "path": "/request/registered_redirect_uris",
+          "actual": "https://app.example.com/callback",
+          "note": "The only registered URI has no trailing slash"
+        }
+      ],
+      "fix": "The client sends https://app.example.com/callback/ but only https://app.example.com/callback is registered. Entra compares these strings exactly. Make the two identical. Either change the app to send the registered URI without the trailing slash, or register the slash variant on the app registration. Send the same value in both the authorize request and the token request. Do not use wildcards or loosen the match.",
+      "alternatives": [
+        {
+          "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+          "why_not": "The S256 verifier matches the challenge, and the PKCE check passed."
+        },
+        {
+          "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+          "why_not": "The client config check passed. A public client with the authorization_code grant and S256 is valid."
+        }
+      ]
+    },
+    "ttft_ms": 4118,
+    "type": "result",
+    "duration_ms": 8686,
+    "uuid": "58e61be7-fda1-42f8-b44f-4d781e99920e",
+    "ttft_stream_ms": 2586,
+    "time_to_request_ms": 95,
+    "first_content_frame_ms": 2586,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

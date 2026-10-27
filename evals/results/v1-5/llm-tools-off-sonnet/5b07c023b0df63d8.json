@@ -1,0 +1,210 @@
+{
+  "case_id": "oauth_invalid_grant_code-02",
+  "case_hash": "5b07c023b0df63d8",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_INVALID_GRANT_CODE",
+    "posture_codes": [],
+    "evidence_path": "/redirect/error",
+    "fix_keys": [
+      "exchange",
+      "within",
+      "minutes",
+      "issuance"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_invalid_grant_code-02",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_invalid_grant_expired",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 2,
+    "hash": "5b07c023b0df63d8"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_INVALID_GRANT_CODE",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_grant",
+        "note": "Token endpoint rejected the authorization code"
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "AADSTS70008: The provided authorization code or refresh token has expired due to inactivity.",
+        "note": "Entra says the code expired from inactivity"
+      }
+    ],
+    "fix": "Start a new interactive authorization request (new state, nonce and PKCE pair) to get a fresh authorization code. Exchange it at the token endpoint right away, within a minute or so, and only once. Don't retry or cache old codes. Check that the app doesn't delay the exchange, for example through queues, retries or a slow redirect handler. Keep PKCE S256 and the exact registered redirect_uri in both requests.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+        "why_not": "The error is AADSTS70008 (expired code), not a PKCE failure. The expected verifier and challenge are also consistent with each other."
+      },
+      {
+        "code": "OAUTH_REDIRECT_URI_MISMATCH",
+        "why_not": "The redirect_uri is registered and matches. The error doesn't point to a redirect problem."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:35:24.44938-05:00",
+  "duration_ms": 6410,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 606,
+    "cache_creation_input_tokens": 1454,
+    "cache_read_input_tokens": 3864
+  },
+  "cost_usd": 0.0122664,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 606,
+      "cacheReadInputTokens": 3864,
+      "cacheCreationInputTokens": 1454,
+      "costUSD": 0.0122664,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 2,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 6305,
+    "stop_reason": "tool_use",
+    "session_id": "a5ab59e9-186f-4ff2-a8ec-ca3bd2e580d2",
+    "total_cost_usd": 0.0122664,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1454,
+      "cache_read_input_tokens": 3864,
+      "output_tokens": 606,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1454,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 606,
+          "cache_read_input_tokens": 3864,
+          "cache_creation_input_tokens": 1454,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1454
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 606,
+        "cacheReadInputTokens": 3864,
+        "cacheCreationInputTokens": 1454,
+        "webSearchRequests": 0,
+        "costUSD": 0.0122664,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1454,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_INVALID_GRANT_CODE\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"invalid_grant\",\"note\":\"Token endpoint rejected the authorization code\"},{\"path\":\"/redirect/error_description\",\"actual\":\"AADSTS70008: The provided authorization code or refresh token has expired due to inactivity.\",\"note\":\"Entra says the code expired from inactivity\"}],\"fix\":\"Start a new interactive authorization request (new state, nonce and PKCE pair) to get a fresh authorization code. Exchange it at the token endpoint right away, within a minute or so, and only once. Don't retry or cache old codes. Check that the app doesn't delay the exchange, for example through queues, retries or a slow redirect handler. Keep PKCE S256 and the exact registered redirect_uri in both requests.\",\"alternatives\":[{\"code\":\"OAUTH_PKCE_VERIFIER_MISMATCH\",\"why_not\":\"The error is AADSTS70008 (expired code), not a PKCE failure. The expected verifier and challenge are also consistent with each other.\"},{\"code\":\"OAUTH_REDIRECT_URI_MISMATCH\",\"why_not\":\"The redirect_uri is registered and matches. The error doesn't point to a redirect problem.\"}],\"questions\":[],\"posture_codes\":[]}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_INVALID_GRANT_CODE",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "invalid_grant",
+          "note": "Token endpoint rejected the authorization code"
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "AADSTS70008: The provided authorization code or refresh token has expired due to inactivity.",
+          "note": "Entra says the code expired from inactivity"
+        }
+      ],
+      "fix": "Start a new interactive authorization request (new state, nonce and PKCE pair) to get a fresh authorization code. Exchange it at the token endpoint right away, within a minute or so, and only once. Don't retry or cache old codes. Check that the app doesn't delay the exchange, for example through queues, retries or a slow redirect handler. Keep PKCE S256 and the exact registered redirect_uri in both requests.",
+      "alternatives": [
+        {
+          "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+          "why_not": "The error is AADSTS70008 (expired code), not a PKCE failure. The expected verifier and challenge are also consistent with each other."
+        },
+        {
+          "code": "OAUTH_REDIRECT_URI_MISMATCH",
+          "why_not": "The redirect_uri is registered and matches. The error doesn't point to a redirect problem."
+        }
+      ],
+      "questions": [],
+      "posture_codes": []
+    },
+    "ttft_ms": 6381,
+    "type": "result",
+    "duration_ms": 6410,
+    "uuid": "c24cc009-e787-404a-a5a1-7f614cff57de",
+    "ttft_stream_ms": 2262,
+    "time_to_request_ms": 102,
+    "first_content_frame_ms": 2262,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,253 @@
+{
+  "case_id": "posture_decrypt_before_verify-01",
+  "case_hash": "c084215170d239a2",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_DECRYPT_BEFORE_VERIFY"
+    ],
+    "evidence_path": "/Response/Assertion",
+    "fix_keys": [
+      "response",
+      "assertion",
+      "encrypting",
+      "verify"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_decrypt_before_verify-01",
+    "kind": "saml_response",
+    "dialect": "auth0",
+    "mutator": "posture_encrypted_unsigned",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 1,
+    "hash": "c084215170d239a2"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.55,
+    "evidence": [
+      {
+        "path": "/Response/Status/StatusCode/@Value",
+        "actual": "urn:oasis:names:tc:SAML:2.0:status:Success",
+        "expected": "Success"
+      },
+      {
+        "path": "/Response/@Destination",
+        "actual": "https://sp.example.com/saml/acs",
+        "expected": "https://sp.example.com/saml/acs"
+      },
+      {
+        "path": "/Response/@InResponseTo",
+        "actual": "_req_1234567890abcdef",
+        "expected": "_req_1234567890abcdef"
+      },
+      {
+        "path": "/Response/Issuer",
+        "actual": "https://idp.example.com/saml",
+        "expected": "https://idp.example.com/saml"
+      },
+      {
+        "path": "/Response/Signature",
+        "actual": "absent; the only assertion is an EncryptedAssertion, so any signature is inside the ciphertext",
+        "note": "The SP must decrypt before it can verify, which is the decrypt-before-verify posture."
+      }
+    ],
+    "fix": "The envelope checks pass: status, issuer, destination and InResponseTo all match. The assertion is encrypted, so audience, time window, NameID, attributes and signature can't be checked from this capture. Ask the IdP to sign the Response element as well as the inner assertion. On the SP, decrypt with the SP private key, then require and verify a signature against the configured IdP certificate (never the embedded KeyInfo). Reject the message if the decrypted assertion is unsigned. Keep clock skew at 5 minutes or less. Also check the decrypted assertion for audience https://sp.example.com/saml/metadata, a valid time window, an emailAddress NameID format, and the email and firstName attributes.",
+    "posture_codes": [
+      "POSTURE_DECRYPT_BEFORE_VERIFY"
+    ],
+    "alternatives": [
+      {
+        "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+        "why_not": "The Response has no signature, but the encrypted assertion may carry its own signature, which can't be seen here."
+      },
+      {
+        "code": "SAML_ENCRYPTED_ASSERTION_UNDECRYPTABLE",
+        "why_not": "There is no evidence that decryption failed, and no SP decryption key was supplied to test with."
+      }
+    ],
+    "questions": [
+      "Is the decrypted inner Assertion signed, and does that signature verify against the configured idp_cert_pem?",
+      "What do the audience, time window, NameID format and attributes look like after decryption?"
+    ]
+  },
+  "started": "2026-10-27T09:38:38.648597-05:00",
+  "duration_ms": 10153,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1390,
+    "cache_creation_input_tokens": 4011,
+    "cache_read_input_tokens": 5099
+  },
+  "cost_usd": 0.0304579,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1390,
+      "cacheReadInputTokens": 5099,
+      "cacheCreationInputTokens": 4011,
+      "costUSD": 0.0304579,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 5,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 10002,
+    "stop_reason": "tool_use",
+    "session_id": "9561f852-8946-4307-8a9f-990818cde69f",
+    "total_cost_usd": 0.0304579,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 4011,
+      "cache_read_input_tokens": 5099,
+      "output_tokens": 1390,
+      "output_tokens_details": {
+        "thinking_tokens": 423
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 4011,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1390,
+          "cache_read_input_tokens": 5099,
+          "cache_creation_input_tokens": 4011,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 4011
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1390,
+        "cacheReadInputTokens": 5099,
+        "cacheCreationInputTokens": 4011,
+        "webSearchRequests": 0,
+        "costUSD": 0.0304579,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 423,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 4011,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.55,\"evidence\":[{\"path\":\"/Response/Status/StatusCode/@Value\",\"actual\":\"urn:oasis:names:tc:SAML:2.0:status:Success\",\"expected\":\"Success\"},{\"path\":\"/Response/@Destination\",\"actual\":\"https://sp.example.com/saml/acs\",\"expected\":\"https://sp.example.com/saml/acs\"},{\"path\":\"/Response/@InResponseTo\",\"actual\":\"_req_1234567890abcdef\",\"expected\":\"_req_1234567890abcdef\"},{\"path\":\"/Response/Issuer\",\"actual\":\"https://idp.example.com/saml\",\"expected\":\"https://idp.example.com/saml\"},{\"path\":\"/Response/Signature\",\"actual\":\"absent; the only assertion is an EncryptedAssertion, so any signature is inside the ciphertext\",\"note\":\"The SP must decrypt before it can verify, which is the decrypt-before-verify posture.\"}],\"fix\":\"The envelope checks pass: status, issuer, destination and InResponseTo all match. The assertion is encrypted, so audience, time window, NameID, attributes and signature can't be checked from this capture. Ask the IdP to sign the Response element as well as the inner assertion. On the SP, decrypt with the SP private key, then require and verify a signature against the configured IdP certificate (never the embedded KeyInfo). Reject the message if the decrypted assertion is unsigned. Keep clock skew at 5 minutes or less. Also check the decrypted assertion for audience https://sp.example.com/saml/metadata, a valid time window, an emailAddress NameID format, and the email and firstName attributes.\",\"posture_codes\":[\"POSTURE_DECRYPT_BEFORE_VERIFY\"],\"questions\":[\"Is the decrypted inner Assertion signed, and does that signature verify against the configured idp_cert_pem?\",\"What do the audience, time window, NameID format and attributes look like after decryption?\"],\"alternatives\":[{\"code\":\"SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED\",\"why_not\":\"The Response has no signature, but the encrypted assertion may carry its own signature, which can't be seen here.\"},{\"code\":\"SAML_ENCRYPTED_ASSERTION_UNDECRYPTABLE\",\"why_not\":\"There is no evidence that decryption failed, and no SP decryption key was supplied to test with.\"}]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.55,
+      "evidence": [
+        {
+          "path": "/Response/Status/StatusCode/@Value",
+          "actual": "urn:oasis:names:tc:SAML:2.0:status:Success",
+          "expected": "Success"
+        },
+        {
+          "path": "/Response/@Destination",
+          "actual": "https://sp.example.com/saml/acs",
+          "expected": "https://sp.example.com/saml/acs"
+        },
+        {
+          "path": "/Response/@InResponseTo",
+          "actual": "_req_1234567890abcdef",
+          "expected": "_req_1234567890abcdef"
+        },
+        {
+          "path": "/Response/Issuer",
+          "actual": "https://idp.example.com/saml",
+          "expected": "https://idp.example.com/saml"
+        },
+        {
+          "path": "/Response/Signature",
+          "actual": "absent; the only assertion is an EncryptedAssertion, so any signature is inside the ciphertext",
+          "note": "The SP must decrypt before it can verify, which is the decrypt-before-verify posture."
+        }
+      ],
+      "fix": "The envelope checks pass: status, issuer, destination and InResponseTo all match. The assertion is encrypted, so audience, time window, NameID, attributes and signature can't be checked from this capture. Ask the IdP to sign the Response element as well as the inner assertion. On the SP, decrypt with the SP private key, then require and verify a signature against the configured IdP certificate (never the embedded KeyInfo). Reject the message if the decrypted assertion is unsigned. Keep clock skew at 5 minutes or less. Also check the decrypted assertion for audience https://sp.example.com/saml/metadata, a valid time window, an emailAddress NameID format, and the email and firstName attributes.",
+      "posture_codes": [
+        "POSTURE_DECRYPT_BEFORE_VERIFY"
+      ],
+      "questions": [
+        "Is the decrypted inner Assertion signed, and does that signature verify against the configured idp_cert_pem?",
+        "What do the audience, time window, NameID format and attributes look like after decryption?"
+      ],
+      "alternatives": [
+        {
+          "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+          "why_not": "The Response has no signature, but the encrypted assertion may carry its own signature, which can't be seen here."
+        },
+        {
+          "code": "SAML_ENCRYPTED_ASSERTION_UNDECRYPTABLE",
+          "why_not": "There is no evidence that decryption failed, and no SP decryption key was supplied to test with."
+        }
+      ]
+    },
+    "ttft_ms": 5202,
+    "type": "result",
+    "duration_ms": 10153,
+    "uuid": "4e3686a1-0b6a-4f55-9753-3dfd28a36fc9",
+    "ttft_stream_ms": 1940,
+    "time_to_request_ms": 148,
+    "first_content_frame_ms": 1940,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,1 @@
+Snowflake-style error 390169: SAML_RESPONSE_INVALID_AUDIENCE after switching the IdP app.

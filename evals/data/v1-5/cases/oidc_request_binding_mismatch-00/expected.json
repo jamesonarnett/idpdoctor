@@ -1,0 +1,7 @@
+{
+  "issuer": "https://login.example.com/tenant-1/v2.0",
+  "client_id": "client-abc123",
+  "nonce": "n-0S6_WzA2Mj",
+  "access_token": "access-token-secret-presented",
+  "now": "2026-01-15T12:00:00Z"
+}

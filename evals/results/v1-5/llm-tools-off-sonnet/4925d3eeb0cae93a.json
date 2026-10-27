@@ -1,0 +1,234 @@
+{
+  "case_id": "healthy-oidcdiscovery-03",
+  "case_hash": "4925d3eeb0cae93a",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [],
+    "fix_keys": [
+      "no change needed",
+      "the artifact validates"
+    ]
+  },
+  "kind": "oidc_discovery",
+  "meta": {
+    "id": "healthy-oidcdiscovery-03",
+    "kind": "oidc_discovery",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 3,
+    "hash": "4925d3eeb0cae93a"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "path": "/discovery/issuer",
+        "actual": "https://login.example.com/tenant-1/v2.0",
+        "expected": "https://login.example.com/tenant-1/v2.0",
+        "note": "Issuer matches the configured value exactly."
+      },
+      {
+        "path": "/discovery/jwks_uri",
+        "actual": "https://login.example.com/tenant-1/discovery/v2.0/keys",
+        "note": "HTTPS and on the same host as the issuer."
+      },
+      {
+        "path": "/discovery/id_token_signing_alg_values_supported",
+        "actual": "[\"RS256\"]",
+        "note": "Strong algorithm, no 'none'."
+      },
+      {
+        "path": "/discovery/code_challenge_methods_supported",
+        "actual": "[\"S256\",\"plain\"]",
+        "note": "The OP advertises 'plain' as well as S256. The SP must request S256 only."
+      },
+      {
+        "path": "/discovery/userinfo_endpoint",
+        "actual": "https://login.example.com/oidc/userinfo",
+        "note": "This path is not tenant-scoped, unlike the other endpoints. It is on the same host over HTTPS, so it is not a fault, but check it is the right endpoint for this tenant."
+      }
+    ],
+    "fix": "The discovery document validates. The issuer matches the expected value, all endpoints use HTTPS on the issuer's host, and the required fields are present. Configure the client to send PKCE with S256 only and never 'plain'. Check that the OP's userinfo endpoint, which is not tenant-scoped, is correct for tenant-1.",
+    "posture_codes": [
+      "POSTURE_PKCE_PLAIN_OR_ABSENT"
+    ],
+    "alternatives": [
+      {
+        "code": "OIDC_DISCOVERY_DOC_INVALID",
+        "why_not": "All required fields are present, the issuer matches, and the endpoints are HTTPS on the same host. The non-tenant userinfo path is odd but not invalid."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:31:02.614466-05:00",
+  "duration_ms": 7830,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 984,
+    "cache_creation_input_tokens": 5869,
+    "cache_read_input_tokens": 0
+  },
+  "cost_usd": 0.03332,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 984,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 5869,
+      "costUSD": 0.03332,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 5,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 7687,
+    "stop_reason": "tool_use",
+    "session_id": "8d9f61d1-12b5-4cfc-94bd-a2f9fd04219e",
+    "total_cost_usd": 0.03332,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 5869,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 984,
+      "output_tokens_details": {
+        "thinking_tokens": 183
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 5869,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 984,
+          "cache_read_input_tokens": 0,
+          "cache_creation_input_tokens": 5869,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 5869
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 984,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 5869,
+        "webSearchRequests": 0,
+        "costUSD": 0.03332,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 183,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 5869,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.8,\"evidence\":[{\"path\":\"/discovery/issuer\",\"actual\":\"https://login.example.com/tenant-1/v2.0\",\"expected\":\"https://login.example.com/tenant-1/v2.0\",\"note\":\"Issuer matches the configured value exactly.\"},{\"path\":\"/discovery/jwks_uri\",\"actual\":\"https://login.example.com/tenant-1/discovery/v2.0/keys\",\"note\":\"HTTPS and on the same host as the issuer.\"},{\"path\":\"/discovery/id_token_signing_alg_values_supported\",\"actual\":\"[\\\"RS256\\\"]\",\"note\":\"Strong algorithm, no 'none'.\"},{\"path\":\"/discovery/code_challenge_methods_supported\",\"actual\":\"[\\\"S256\\\",\\\"plain\\\"]\",\"note\":\"The OP advertises 'plain' as well as S256. The SP must request S256 only.\"},{\"path\":\"/discovery/userinfo_endpoint\",\"actual\":\"https://login.example.com/oidc/userinfo\",\"note\":\"This path is not tenant-scoped, unlike the other endpoints. It is on the same host over HTTPS, so it is not a fault, but check it is the right endpoint for this tenant.\"}],\"fix\":\"The discovery document validates. The issuer matches the expected value, all endpoints use HTTPS on the issuer's host, and the required fields are present. Configure the client to send PKCE with S256 only and never 'plain'. Check that the OP's userinfo endpoint, which is not tenant-scoped, is correct for tenant-1.\",\"posture_codes\":[\"POSTURE_PKCE_PLAIN_OR_ABSENT\"],\"alternatives\":[{\"code\":\"OIDC_DISCOVERY_DOC_INVALID\",\"why_not\":\"All required fields are present, the issuer matches, and the endpoints are HTTPS on the same host. The non-tenant userinfo path is odd but not invalid.\"}],\"questions\":[]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "path": "/discovery/issuer",
+          "actual": "https://login.example.com/tenant-1/v2.0",
+          "expected": "https://login.example.com/tenant-1/v2.0",
+          "note": "Issuer matches the configured value exactly."
+        },
+        {
+          "path": "/discovery/jwks_uri",
+          "actual": "https://login.example.com/tenant-1/discovery/v2.0/keys",
+          "note": "HTTPS and on the same host as the issuer."
+        },
+        {
+          "path": "/discovery/id_token_signing_alg_values_supported",
+          "actual": "[\"RS256\"]",
+          "note": "Strong algorithm, no 'none'."
+        },
+        {
+          "path": "/discovery/code_challenge_methods_supported",
+          "actual": "[\"S256\",\"plain\"]",
+          "note": "The OP advertises 'plain' as well as S256. The SP must request S256 only."
+        },
+        {
+          "path": "/discovery/userinfo_endpoint",
+          "actual": "https://login.example.com/oidc/userinfo",
+          "note": "This path is not tenant-scoped, unlike the other endpoints. It is on the same host over HTTPS, so it is not a fault, but check it is the right endpoint for this tenant."
+        }
+      ],
+      "fix": "The discovery document validates. The issuer matches the expected value, all endpoints use HTTPS on the issuer's host, and the required fields are present. Configure the client to send PKCE with S256 only and never 'plain'. Check that the OP's userinfo endpoint, which is not tenant-scoped, is correct for tenant-1.",
+      "posture_codes": [
+        "POSTURE_PKCE_PLAIN_OR_ABSENT"
+      ],
+      "alternatives": [
+        {
+          "code": "OIDC_DISCOVERY_DOC_INVALID",
+          "why_not": "All required fields are present, the issuer matches, and the endpoints are HTTPS on the same host. The non-tenant userinfo path is odd but not invalid."
+        }
+      ],
+      "questions": []
+    },
+    "ttft_ms": 3936,
+    "type": "result",
+    "duration_ms": 7830,
+    "uuid": "12f8ad9b-652e-4853-ba58-35b6fd2fdec7",
+    "ttft_stream_ms": 2142,
+    "time_to_request_ms": 139,
+    "first_content_frame_ms": 2142,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

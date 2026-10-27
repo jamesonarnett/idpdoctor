@@ -1,0 +1,14 @@
+{
+  "code": "SAML_SIGNATURE_INVALID",
+  "posture_codes": [],
+  "evidence_path": "/Signature/KeyInfo/X509Data/X509Certificate",
+  "fix_keys": [
+    "download",
+    "current",
+    "signing",
+    "certificate"
+  ],
+  "needs": [
+    "idp_cert_pem"
+  ]
+}

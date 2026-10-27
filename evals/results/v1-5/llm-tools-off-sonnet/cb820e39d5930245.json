@@ -1,0 +1,230 @@
+{
+  "case_id": "saml_signature_invalid-00",
+  "case_hash": "cb820e39d5930245",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_SIGNATURE_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/Signature",
+    "fix_keys": [
+      "download",
+      "current",
+      "signing",
+      "certificate"
+    ],
+    "needs": [
+      "idp_cert_pem"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_signature_invalid-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "signature_tampered",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "cb820e39d5930245"
+  },
+  "output": {
+    "root_cause_code": "SAML_SIGNATURE_INVALID",
+    "confidence": 0.5,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature",
+        "actual": "Reference URI=#_assert_a289ac with sha256 DigestValue present; the developer reports the library computes a different digest",
+        "note": "Digest mismatch means the signed assertion content differs from what the IdP signed (modified or re-serialized in transit, or a canonicalization difference). I could not recompute the digest here."
+      },
+      {
+        "path": "/Response/Assertion/Signature/SignedInfo/Reference/DigestMethod/@Algorithm",
+        "actual": "http://www.w3.org/2001/04/xmlenc#sha256",
+        "note": "Algorithm is strong, so this is not a weak-algorithm issue."
+      },
+      {
+        "path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm",
+        "actual": "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
+        "note": "Algorithm is acceptable."
+      }
+    ],
+    "fix": "Pass the raw, unmodified SAMLResponse (base64-decoded only) to the validator, and make sure no proxy, gateway or framework step re-serializes or reformats the XML first. Confirm with the IdP that its signing and canonicalization settings did not change, and ask for a freshly signed response to compare against the raw bytes you received. Keep validating against the configured IdP certificate with the assertion signature required. Do not skip digest or signature checks and do not trust the embedded certificate.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "HEALTHY",
+        "why_not": "All structural, audience, destination, time and attribute checks pass, but the developer's library reports a digest failure that I cannot disprove without recomputing the digest."
+      },
+      {
+        "code": "SAML_STRUCTURE_INVALID",
+        "why_not": "There is one assertion with a single signature reference matching its ID, and no sign of signature wrapping."
+      }
+    ],
+    "questions": [
+      "Does any proxy, gateway or middleware touch the SAMLResponse XML before your library validates it?",
+      "Is your library receiving the raw SAMLResponse bytes, or a re-serialized copy?"
+    ]
+  },
+  "started": "2026-10-27T09:45:42.426328-05:00",
+  "duration_ms": 12865,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1685,
+    "cache_creation_input_tokens": 6433,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.0431052,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1685,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 6433,
+      "costUSD": 0.0431052,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 12717,
+    "stop_reason": "tool_use",
+    "session_id": "f4d09aa9-cc3a-4e19-959c-54254519020c",
+    "total_cost_usd": 0.0431052,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6433,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 1685,
+      "output_tokens_details": {
+        "thinking_tokens": 342
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6433,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1685,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 6433,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 6433
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1685,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 6433,
+        "webSearchRequests": 0,
+        "costUSD": 0.0431052,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 342,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6433,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_SIGNATURE_INVALID\",\"confidence\":0.5,\"evidence\":[{\"path\":\"/Response/Assertion/Signature\",\"actual\":\"Reference URI=#_assert_a289ac with sha256 DigestValue present; the developer reports the library computes a different digest\",\"note\":\"Digest mismatch means the signed assertion content differs from what the IdP signed (modified or re-serialized in transit, or a canonicalization difference). I could not recompute the digest here.\"},{\"path\":\"/Response/Assertion/Signature/SignedInfo/Reference/DigestMethod/@Algorithm\",\"actual\":\"http://www.w3.org/2001/04/xmlenc#sha256\",\"note\":\"Algorithm is strong, so this is not a weak-algorithm issue.\"},{\"path\":\"/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm\",\"actual\":\"http://www.w3.org/2001/04/xmldsig-more#rsa-sha256\",\"note\":\"Algorithm is acceptable.\"}],\"fix\":\"Pass the raw, unmodified SAMLResponse (base64-decoded only) to the validator, and make sure no proxy, gateway or framework step re-serializes or reformats the XML first. Confirm with the IdP that its signing and canonicalization settings did not change, and ask for a freshly signed response to compare against the raw bytes you received. Keep validating against the configured IdP certificate with the assertion signature required. Do not skip digest or signature checks and do not trust the embedded certificate.\",\"alternatives\":[{\"code\":\"HEALTHY\",\"why_not\":\"All structural, audience, destination, time and attribute checks pass, but the developer's library reports a digest failure that I cannot disprove without recomputing the digest.\"},{\"code\":\"SAML_STRUCTURE_INVALID\",\"why_not\":\"There is one assertion with a single signature reference matching its ID, and no sign of signature wrapping.\"}],\"questions\":[\"Does any proxy, gateway or middleware touch the SAMLResponse XML before your library validates it?\",\"Is your library receiving the raw SAMLResponse bytes, or a re-serialized copy?\"]}",
+    "structured_output": {
+      "root_cause_code": "SAML_SIGNATURE_INVALID",
+      "confidence": 0.5,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Signature",
+          "actual": "Reference URI=#_assert_a289ac with sha256 DigestValue present; the developer reports the library computes a different digest",
+          "note": "Digest mismatch means the signed assertion content differs from what the IdP signed (modified or re-serialized in transit, or a canonicalization difference). I could not recompute the digest here."
+        },
+        {
+          "path": "/Response/Assertion/Signature/SignedInfo/Reference/DigestMethod/@Algorithm",
+          "actual": "http://www.w3.org/2001/04/xmlenc#sha256",
+          "note": "Algorithm is strong, so this is not a weak-algorithm issue."
+        },
+        {
+          "path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm",
+          "actual": "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
+          "note": "Algorithm is acceptable."
+        }
+      ],
+      "fix": "Pass the raw, unmodified SAMLResponse (base64-decoded only) to the validator, and make sure no proxy, gateway or framework step re-serializes or reformats the XML first. Confirm with the IdP that its signing and canonicalization settings did not change, and ask for a freshly signed response to compare against the raw bytes you received. Keep validating against the configured IdP certificate with the assertion signature required. Do not skip digest or signature checks and do not trust the embedded certificate.",
+      "alternatives": [
+        {
+          "code": "HEALTHY",
+          "why_not": "All structural, audience, destination, time and attribute checks pass, but the developer's library reports a digest failure that I cannot disprove without recomputing the digest."
+        },
+        {
+          "code": "SAML_STRUCTURE_INVALID",
+          "why_not": "There is one assertion with a single signature reference matching its ID, and no sign of signature wrapping."
+        }
+      ],
+      "questions": [
+        "Does any proxy, gateway or middleware touch the SAMLResponse XML before your library validates it?",
+        "Is your library receiving the raw SAMLResponse bytes, or a re-serialized copy?"
+      ]
+    },
+    "ttft_ms": 4028,
+    "type": "result",
+    "duration_ms": 12865,
+    "uuid": "0a2c4f99-ceb1-499b-865a-932e22fed003",
+    "ttft_stream_ms": 1365,
+    "time_to_request_ms": 145,
+    "first_content_frame_ms": 1365,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

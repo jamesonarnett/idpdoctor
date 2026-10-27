@@ -1,0 +1,236 @@
+{
+  "case_id": "saml_structure_invalid-00",
+  "case_hash": "36d19acc5eca5210",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_STRUCTURE_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion",
+    "fix_keys": [
+      "treat",
+      "response",
+      "hostile",
+      "unless"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_structure_invalid-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "structure_multi_assertion",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "36d19acc5eca5210"
+  },
+  "output": {
+    "root_cause_code": "SAML_STRUCTURE_INVALID",
+    "confidence": 0.85,
+    "evidence": [
+      {
+        "path": "/Response/Assertion",
+        "actual": "Two Assertion elements in the Response: the signed one (ID _assert_a289ac) and an unsigned one (ID _assert_a289ac_wrapped) with a different NameID and the same attributes, conditions and audience.",
+        "expected": "A single assertion, signed and verified",
+        "note": "This matches a signature-wrapping pattern. An SP could validate the signed assertion but consume the unsigned copy."
+      },
+      {
+        "path": "/Response/Assertion/@ID",
+        "actual": "_assert_a289ac (signed). A second assertion has ID _assert_a289ac_wrapped.",
+        "expected": "One unique assertion ID, referenced by the signature",
+        "note": "The signature Reference URI points only at #_assert_a289ac."
+      },
+      {
+        "path": "/Response/Assertion/Signature",
+        "actual": "Signature is present only on the first assertion. The second assertion has none.",
+        "expected": "Every assertion the SP consumes is covered by a verified signature",
+        "note": "The Response element itself is unsigned."
+      }
+    ],
+    "fix": "Make the IdP send exactly one Assertion, signed by the configured IdP certificate. On the SP, reject any Response with more than one Assertion. Resolve the assertion by the ID in the verified signature Reference, and read data only from that signed node. Keep validating against the pinned IdP certificate, not the embedded KeyInfo. The AADSTS75003 \"unsupported binding\" error usually points to a binding mismatch in the request or the Entra app configuration. Check that the AuthnRequest binding and the ACS binding (HTTP-POST) match what Entra has registered. The captured response is a separate problem, because it has a duplicated, wrapped assertion.",
+    "posture_codes": [
+      "POSTURE_PARSER_DIFFERENTIAL_EXPOSURE"
+    ],
+    "alternatives": [
+      {
+        "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+        "why_not": "A signature exists on one assertion. The fault is the extra unsigned assertion, which is a structural problem."
+      },
+      {
+        "code": "IDP_POLICY_REFUSAL",
+        "why_not": "AADSTS75003 is a binding error from Entra's side. The artifact has Success status and no other policy refusal, and the structural defect is visible in the artifact itself."
+      }
+    ],
+    "questions": [
+      "Which binding (HTTP-Redirect or HTTP-POST) does your AuthnRequest use, and which binding is registered for the ACS in Entra?"
+    ]
+  },
+  "started": "2026-10-27T09:47:07.237468-05:00",
+  "duration_ms": 9628,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1013,
+    "cache_creation_input_tokens": 7385,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.0401932,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1013,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 7385,
+      "costUSD": 0.0401932,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 9484,
+    "stop_reason": "tool_use",
+    "session_id": "da5bce91-7e73-4941-86fc-58701105c2ef",
+    "total_cost_usd": 0.0401932,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 7385,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 1013,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 7385,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1013,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 7385,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 7385
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1013,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 7385,
+        "webSearchRequests": 0,
+        "costUSD": 0.0401932,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 7385,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_STRUCTURE_INVALID\",\"confidence\":0.85,\"evidence\":[{\"path\":\"/Response/Assertion\",\"actual\":\"Two Assertion elements in the Response: the signed one (ID _assert_a289ac) and an unsigned one (ID _assert_a289ac_wrapped) with a different NameID and the same attributes, conditions and audience.\",\"expected\":\"A single assertion, signed and verified\",\"note\":\"This matches a signature-wrapping pattern. An SP could validate the signed assertion but consume the unsigned copy.\"},{\"path\":\"/Response/Assertion/@ID\",\"actual\":\"_assert_a289ac (signed). A second assertion has ID _assert_a289ac_wrapped.\",\"expected\":\"One unique assertion ID, referenced by the signature\",\"note\":\"The signature Reference URI points only at #_assert_a289ac.\"},{\"path\":\"/Response/Assertion/Signature\",\"actual\":\"Signature is present only on the first assertion. The second assertion has none.\",\"expected\":\"Every assertion the SP consumes is covered by a verified signature\",\"note\":\"The Response element itself is unsigned.\"}],\"fix\":\"Make the IdP send exactly one Assertion, signed by the configured IdP certificate. On the SP, reject any Response with more than one Assertion. Resolve the assertion by the ID in the verified signature Reference, and read data only from that signed node. Keep validating against the pinned IdP certificate, not the embedded KeyInfo. The AADSTS75003 \\\"unsupported binding\\\" error usually points to a binding mismatch in the request or the Entra app configuration. Check that the AuthnRequest binding and the ACS binding (HTTP-POST) match what Entra has registered. The captured response is a separate problem, because it has a duplicated, wrapped assertion.\",\"alternatives\":[{\"code\":\"SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED\",\"why_not\":\"A signature exists on one assertion. The fault is the extra unsigned assertion, which is a structural problem.\"},{\"code\":\"IDP_POLICY_REFUSAL\",\"why_not\":\"AADSTS75003 is a binding error from Entra's side. The artifact has Success status and no other policy refusal, and the structural defect is visible in the artifact itself.\"}],\"questions\":[\"Which binding (HTTP-Redirect or HTTP-POST) does your AuthnRequest use, and which binding is registered for the ACS in Entra?\"],\"posture_codes\":[\"POSTURE_PARSER_DIFFERENTIAL_EXPOSURE\"]}",
+    "structured_output": {
+      "root_cause_code": "SAML_STRUCTURE_INVALID",
+      "confidence": 0.85,
+      "evidence": [
+        {
+          "path": "/Response/Assertion",
+          "actual": "Two Assertion elements in the Response: the signed one (ID _assert_a289ac) and an unsigned one (ID _assert_a289ac_wrapped) with a different NameID and the same attributes, conditions and audience.",
+          "expected": "A single assertion, signed and verified",
+          "note": "This matches a signature-wrapping pattern. An SP could validate the signed assertion but consume the unsigned copy."
+        },
+        {
+          "path": "/Response/Assertion/@ID",
+          "actual": "_assert_a289ac (signed). A second assertion has ID _assert_a289ac_wrapped.",
+          "expected": "One unique assertion ID, referenced by the signature",
+          "note": "The signature Reference URI points only at #_assert_a289ac."
+        },
+        {
+          "path": "/Response/Assertion/Signature",
+          "actual": "Signature is present only on the first assertion. The second assertion has none.",
+          "expected": "Every assertion the SP consumes is covered by a verified signature",
+          "note": "The Response element itself is unsigned."
+        }
+      ],
+      "fix": "Make the IdP send exactly one Assertion, signed by the configured IdP certificate. On the SP, reject any Response with more than one Assertion. Resolve the assertion by the ID in the verified signature Reference, and read data only from that signed node. Keep validating against the pinned IdP certificate, not the embedded KeyInfo. The AADSTS75003 \"unsupported binding\" error usually points to a binding mismatch in the request or the Entra app configuration. Check that the AuthnRequest binding and the ACS binding (HTTP-POST) match what Entra has registered. The captured response is a separate problem, because it has a duplicated, wrapped assertion.",
+      "alternatives": [
+        {
+          "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+          "why_not": "A signature exists on one assertion. The fault is the extra unsigned assertion, which is a structural problem."
+        },
+        {
+          "code": "IDP_POLICY_REFUSAL",
+          "why_not": "AADSTS75003 is a binding error from Entra's side. The artifact has Success status and no other policy refusal, and the structural defect is visible in the artifact itself."
+        }
+      ],
+      "questions": [
+        "Which binding (HTTP-Redirect or HTTP-POST) does your AuthnRequest use, and which binding is registered for the ACS in Entra?"
+      ],
+      "posture_codes": [
+        "POSTURE_PARSER_DIFFERENTIAL_EXPOSURE"
+      ]
+    },
+    "ttft_ms": 9599,
+    "type": "result",
+    "duration_ms": 9628,
+    "uuid": "fdc1f492-ac1a-420d-8099-cdd4a6fcca5e",
+    "ttft_stream_ms": 2994,
+    "time_to_request_ms": 141,
+    "first_content_frame_ms": 2994,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

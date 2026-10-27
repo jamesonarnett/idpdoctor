@@ -1,0 +1,243 @@
+{
+  "case_id": "oidc_discovery_doc_invalid-03",
+  "case_hash": "0965e380477a7079",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "OIDC_DISCOVERY_DOC_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/discovery/id_token_signing_alg_values_supported",
+    "fix_keys": [
+      "point",
+      "canonical"
+    ]
+  },
+  "kind": "oidc_discovery",
+  "meta": {
+    "id": "oidc_discovery_doc_invalid-03",
+    "kind": "oidc_discovery",
+    "mutator": "discovery_no_rs256",
+    "expected_completeness": "partial",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 3,
+    "hash": "0965e380477a7079"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.55,
+    "evidence": [
+      {
+        "path": "/discovery/issuer",
+        "actual": "https://login.example.com/tenant-1/v2.0",
+        "expected": "https://login.example.com/tenant-1/v2.0",
+        "note": "Issuer matches the configured value exactly."
+      },
+      {
+        "path": "/discovery/jwks_uri",
+        "actual": "https://login.example.com/tenant-1/discovery/v2.0/keys",
+        "note": "Same host and tenant as the issuer."
+      },
+      {
+        "path": "/discovery/code_challenge_methods_supported",
+        "actual": "[\"S256\",\"plain\"]",
+        "note": "The OP advertises plain PKCE alongside S256. This is a posture warning only."
+      },
+      {
+        "path": "/discovery/userinfo_endpoint",
+        "actual": "https://login.example.com/oidc/userinfo",
+        "note": "This path is not tenant-scoped, unlike the other endpoints. It is unusual but does not make the document invalid."
+      }
+    ],
+    "fix": "The discovery document is internally consistent and its issuer matches the configuration. AADSTS50049 is an Entra error saying the authority host or instance is unknown. The document you captured did not come from Entra, because its host is login.example.com. Check which authority the SP or Entra app is actually using. Entra-hosted tenants use the official login host, for example https://login.microsoftonline.com/{tenant-id}/v2.0. If login.example.com is a third-party OP, don't point an Entra-specific flow or library at it. Use a generic OIDC client or a federation setup that Entra supports. If you use MSAL, register the host as a known authority only through its supported custom-authority or instance-discovery configuration. Don't turn off issuer or instance validation. Separately, stop the OP from advertising the plain PKCE method, and require S256 in the SP.",
+    "posture_codes": [
+      "POSTURE_PKCE_PLAIN_OR_ABSENT"
+    ],
+    "alternatives": [
+      {
+        "code": "IDP_POLICY_REFUSAL",
+        "why_not": "The refusal comes from Entra and not from this document. The artifact gives no evidence about Entra's policy, so I can't confirm it."
+      },
+      {
+        "code": "OIDC_DISCOVERY_DOC_INVALID",
+        "why_not": "The document has the required fields and a matching issuer, and its endpoints use HTTPS on a consistent host."
+      }
+    ],
+    "questions": [
+      "Which authority or instance URL does the failing client or Entra app registration use?",
+      "Is login.example.com a real Entra-hosted instance, or a third-party OP or proxy?",
+      "What exact request triggers AADSTS50049: the discovery fetch or a later token call?"
+    ]
+  },
+  "started": "2026-10-27T09:37:03.17961-05:00",
+  "duration_ms": 10027,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1412,
+    "cache_creation_input_tokens": 1902,
+    "cache_read_input_tokens": 4038
+  },
+  "cost_usd": 0.0221358,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1412,
+      "cacheReadInputTokens": 4038,
+      "cacheCreationInputTokens": 1902,
+      "costUSD": 0.0221358,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 9927,
+    "stop_reason": "tool_use",
+    "session_id": "c831e16a-b3c1-4675-9004-27f32e57b9d6",
+    "total_cost_usd": 0.0221358,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1902,
+      "cache_read_input_tokens": 4038,
+      "output_tokens": 1412,
+      "output_tokens_details": {
+        "thinking_tokens": 386
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1902,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1412,
+          "cache_read_input_tokens": 4038,
+          "cache_creation_input_tokens": 1902,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1902
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1412,
+        "cacheReadInputTokens": 4038,
+        "cacheCreationInputTokens": 1902,
+        "webSearchRequests": 0,
+        "costUSD": 0.0221358,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 386,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1902,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.55,\"evidence\":[{\"path\":\"/discovery/issuer\",\"actual\":\"https://login.example.com/tenant-1/v2.0\",\"expected\":\"https://login.example.com/tenant-1/v2.0\",\"note\":\"Issuer matches the configured value exactly.\"},{\"path\":\"/discovery/jwks_uri\",\"actual\":\"https://login.example.com/tenant-1/discovery/v2.0/keys\",\"note\":\"Same host and tenant as the issuer.\"},{\"path\":\"/discovery/code_challenge_methods_supported\",\"actual\":\"[\\\"S256\\\",\\\"plain\\\"]\",\"note\":\"The OP advertises plain PKCE alongside S256. This is a posture warning only.\"},{\"path\":\"/discovery/userinfo_endpoint\",\"actual\":\"https://login.example.com/oidc/userinfo\",\"note\":\"This path is not tenant-scoped, unlike the other endpoints. It is unusual but does not make the document invalid.\"}],\"fix\":\"The discovery document is internally consistent and its issuer matches the configuration. AADSTS50049 is an Entra error saying the authority host or instance is unknown. The document you captured did not come from Entra, because its host is login.example.com. Check which authority the SP or Entra app is actually using. Entra-hosted tenants use the official login host, for example https://login.microsoftonline.com/{tenant-id}/v2.0. If login.example.com is a third-party OP, don't point an Entra-specific flow or library at it. Use a generic OIDC client or a federation setup that Entra supports. If you use MSAL, register the host as a known authority only through its supported custom-authority or instance-discovery configuration. Don't turn off issuer or instance validation. Separately, stop the OP from advertising the plain PKCE method, and require S256 in the SP.\",\"posture_codes\":[\"POSTURE_PKCE_PLAIN_OR_ABSENT\"],\"questions\":[\"Which authority or instance URL does the failing client or Entra app registration use?\",\"Is login.example.com a real Entra-hosted instance, or a third-party OP or proxy?\",\"What exact request triggers AADSTS50049: the discovery fetch or a later token call?\"],\"alternatives\":[{\"code\":\"IDP_POLICY_REFUSAL\",\"why_not\":\"The refusal comes from Entra and not from this document. The artifact gives no evidence about Entra's policy, so I can't confirm it.\"},{\"code\":\"OIDC_DISCOVERY_DOC_INVALID\",\"why_not\":\"The document has the required fields and a matching issuer, and its endpoints use HTTPS on a consistent host.\"}]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.55,
+      "evidence": [
+        {
+          "path": "/discovery/issuer",
+          "actual": "https://login.example.com/tenant-1/v2.0",
+          "expected": "https://login.example.com/tenant-1/v2.0",
+          "note": "Issuer matches the configured value exactly."
+        },
+        {
+          "path": "/discovery/jwks_uri",
+          "actual": "https://login.example.com/tenant-1/discovery/v2.0/keys",
+          "note": "Same host and tenant as the issuer."
+        },
+        {
+          "path": "/discovery/code_challenge_methods_supported",
+          "actual": "[\"S256\",\"plain\"]",
+          "note": "The OP advertises plain PKCE alongside S256. This is a posture warning only."
+        },
+        {
+          "path": "/discovery/userinfo_endpoint",
+          "actual": "https://login.example.com/oidc/userinfo",
+          "note": "This path is not tenant-scoped, unlike the other endpoints. It is unusual but does not make the document invalid."
+        }
+      ],
+      "fix": "The discovery document is internally consistent and its issuer matches the configuration. AADSTS50049 is an Entra error saying the authority host or instance is unknown. The document you captured did not come from Entra, because its host is login.example.com. Check which authority the SP or Entra app is actually using. Entra-hosted tenants use the official login host, for example https://login.microsoftonline.com/{tenant-id}/v2.0. If login.example.com is a third-party OP, don't point an Entra-specific flow or library at it. Use a generic OIDC client or a federation setup that Entra supports. If you use MSAL, register the host as a known authority only through its supported custom-authority or instance-discovery configuration. Don't turn off issuer or instance validation. Separately, stop the OP from advertising the plain PKCE method, and require S256 in the SP.",
+      "posture_codes": [
+        "POSTURE_PKCE_PLAIN_OR_ABSENT"
+      ],
+      "questions": [
+        "Which authority or instance URL does the failing client or Entra app registration use?",
+        "Is login.example.com a real Entra-hosted instance, or a third-party OP or proxy?",
+        "What exact request triggers AADSTS50049: the discovery fetch or a later token call?"
+      ],
+      "alternatives": [
+        {
+          "code": "IDP_POLICY_REFUSAL",
+          "why_not": "The refusal comes from Entra and not from this document. The artifact gives no evidence about Entra's policy, so I can't confirm it."
+        },
+        {
+          "code": "OIDC_DISCOVERY_DOC_INVALID",
+          "why_not": "The document has the required fields and a matching issuer, and its endpoints use HTTPS on a consistent host."
+        }
+      ]
+    },
+    "ttft_ms": 4204,
+    "type": "result",
+    "duration_ms": 10027,
+    "uuid": "a7d356cc-e6e4-4887-83cb-95d000bc09c1",
+    "ttft_stream_ms": 1253,
+    "time_to_request_ms": 96,
+    "first_content_frame_ms": 1253,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

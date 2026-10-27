@@ -1,0 +1,10 @@
+{
+  "id": "oauth_client_config_rejected-04",
+  "kind": "oauth_redirect",
+  "mutator": "oauth_invalid_scope",
+  "expected_completeness": "full",
+  "symptom_from": "vendor_strings.json",
+  "seed": 42,
+  "index": 4,
+  "hash": "56a42865198218cb"
+}

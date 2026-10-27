@@ -1,0 +1,226 @@
+{
+  "case_id": "posture_embedded_key_trust-00",
+  "case_hash": "8e5f13ae9937a7a9",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_EMBEDDED_KEY_TRUST"
+    ],
+    "evidence_path": "/Signature/KeyInfo/X509Data/X509Certificate",
+    "fix_keys": [
+      "configure",
+      "signing",
+      "certificate",
+      "metadata"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_embedded_key_trust-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "posture_embedded_key",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "8e5f13ae9937a7a9"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.6,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate",
+        "actual": "Certificate embedded in the assertion signature's KeyInfo is the only key material available",
+        "note": "No configured IdP certificate, so the signature can only be checked against the key the message itself supplies."
+      },
+      {
+        "path": "/Response/Assertion/Signature",
+        "actual": "Assertion is signed (rsa-sha256, SHA-256 digest) over the assertion ID",
+        "expected": "Signature verified against a pinned IdP certificate"
+      },
+      {
+        "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+        "actual": "https://sp.example.com/saml/metadata",
+        "expected": "https://sp.example.com/saml/metadata",
+        "note": "Audience, destination, recipient, InResponseTo, issuer, time window, NameID format and required attributes all match the expected values."
+      }
+    ],
+    "fix": "No, this isn't fine. Obtain the IdP's signing certificate from its metadata over a trusted channel, and pin it in the SP configuration. Verify the assertion signature only against that pinned certificate (or a metadata-derived key set). Never trust the certificate embedded in the message. Reject any response whose signature doesn't verify against the configured key. Plan for certificate rotation by allowing multiple pinned certificates from the IdP metadata.",
+    "posture_codes": [
+      "POSTURE_EMBEDDED_KEY_TRUST"
+    ],
+    "alternatives": [
+      {
+        "code": "SAML_SIGNATURE_INVALID",
+        "why_not": "Without a configured certificate the signature can't be judged against a trusted key, and nothing shows it fails."
+      }
+    ],
+    "questions": [
+      "idp_cert_pem: what is the IdP's trusted signing certificate, from its metadata?"
+    ]
+  },
+  "started": "2026-10-27T09:38:49.232165-05:00",
+  "duration_ms": 7721,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 981,
+    "cache_creation_input_tokens": 5310,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.031573199999999996,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 981,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 5310,
+      "costUSD": 0.031573199999999996,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 7422,
+    "stop_reason": "tool_use",
+    "session_id": "b4f3628d-7186-4dde-a174-988565736ff7",
+    "total_cost_usd": 0.031573199999999996,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 5310,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 981,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 5310,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 981,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 5310,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 5310
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 981,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 5310,
+        "webSearchRequests": 0,
+        "costUSD": 0.031573199999999996,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 5310,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.6,\"posture_codes\":[\"POSTURE_EMBEDDED_KEY_TRUST\"],\"evidence\":[{\"path\":\"/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate\",\"actual\":\"Certificate embedded in the assertion signature's KeyInfo is the only key material available\",\"note\":\"No configured IdP certificate, so the signature can only be checked against the key the message itself supplies.\"},{\"path\":\"/Response/Assertion/Signature\",\"actual\":\"Assertion is signed (rsa-sha256, SHA-256 digest) over the assertion ID\",\"expected\":\"Signature verified against a pinned IdP certificate\"},{\"path\":\"/Response/Assertion/Conditions/AudienceRestriction/Audience\",\"actual\":\"https://sp.example.com/saml/metadata\",\"expected\":\"https://sp.example.com/saml/metadata\",\"note\":\"Audience, destination, recipient, InResponseTo, issuer, time window, NameID format and required attributes all match the expected values.\"}],\"fix\":\"No, this isn't fine. Obtain the IdP's signing certificate from its metadata over a trusted channel, and pin it in the SP configuration. Verify the assertion signature only against that pinned certificate (or a metadata-derived key set). Never trust the certificate embedded in the message. Reject any response whose signature doesn't verify against the configured key. Plan for certificate rotation by allowing multiple pinned certificates from the IdP metadata.\",\"questions\":[\"idp_cert_pem: what is the IdP's trusted signing certificate, from its metadata?\"],\"alternatives\":[{\"code\":\"SAML_SIGNATURE_INVALID\",\"why_not\":\"Without a configured certificate the signature can't be judged against a trusted key, and nothing shows it fails.\"}]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.6,
+      "posture_codes": [
+        "POSTURE_EMBEDDED_KEY_TRUST"
+      ],
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate",
+          "actual": "Certificate embedded in the assertion signature's KeyInfo is the only key material available",
+          "note": "No configured IdP certificate, so the signature can only be checked against the key the message itself supplies."
+        },
+        {
+          "path": "/Response/Assertion/Signature",
+          "actual": "Assertion is signed (rsa-sha256, SHA-256 digest) over the assertion ID",
+          "expected": "Signature verified against a pinned IdP certificate"
+        },
+        {
+          "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+          "actual": "https://sp.example.com/saml/metadata",
+          "expected": "https://sp.example.com/saml/metadata",
+          "note": "Audience, destination, recipient, InResponseTo, issuer, time window, NameID format and required attributes all match the expected values."
+        }
+      ],
+      "fix": "No, this isn't fine. Obtain the IdP's signing certificate from its metadata over a trusted channel, and pin it in the SP configuration. Verify the assertion signature only against that pinned certificate (or a metadata-derived key set). Never trust the certificate embedded in the message. Reject any response whose signature doesn't verify against the configured key. Plan for certificate rotation by allowing multiple pinned certificates from the IdP metadata.",
+      "questions": [
+        "idp_cert_pem: what is the IdP's trusted signing certificate, from its metadata?"
+      ],
+      "alternatives": [
+        {
+          "code": "SAML_SIGNATURE_INVALID",
+          "why_not": "Without a configured certificate the signature can't be judged against a trusted key, and nothing shows it fails."
+        }
+      ]
+    },
+    "ttft_ms": 3579,
+    "type": "result",
+    "duration_ms": 7721,
+    "uuid": "7ea9e934-bcf1-4dfb-85ff-009818f076d1",
+    "ttft_stream_ms": 1545,
+    "time_to_request_ms": 302,
+    "first_content_frame_ms": 1554,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

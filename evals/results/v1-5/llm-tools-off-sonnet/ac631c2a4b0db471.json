@@ -1,0 +1,249 @@
+{
+  "case_id": "cert_expired_or_weak-03",
+  "case_hash": "ac631c2a4b0db471",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "CERT_EXPIRED_OR_WEAK",
+    "posture_codes": [],
+    "evidence_path": "/Signature/KeyInfo/X509Data/X509Certificate/PublicKey",
+    "fix_keys": [
+      "rotate",
+      "signing",
+      "certificate",
+      "generate"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "cert_expired_or_weak-03",
+    "kind": "saml_response",
+    "dialect": "okta",
+    "mutator": "cert_weak_key",
+    "expected_completeness": "partial",
+    "seed": 42,
+    "index": 3,
+    "hash": "ac631c2a4b0db471"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.72,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate/PublicKey",
+        "actual": "1024-bit RSA public key (cert subject says weak 1024-bit IdP)",
+        "expected": "RSA key of at least 2048 bits",
+        "note": "Weak key size is a posture warning only."
+      },
+      {
+        "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+        "actual": "https://sp.example.com/saml/metadata",
+        "expected": "https://sp.example.com/saml/metadata"
+      },
+      {
+        "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+        "actual": "2026-01-15T12:02:30.000Z",
+        "expected": "after now (2026-01-15T12:00:00Z)",
+        "note": "The window is 5 minutes, which is within policy."
+      },
+      {
+        "path": "/Response/@Destination",
+        "actual": "https://sp.example.com/saml/acs",
+        "expected": "https://sp.example.com/saml/acs"
+      },
+      {
+        "path": "/Response/Assertion/Signature",
+        "actual": "Present on the Assertion, referencing the assertion ID",
+        "expected": "Signed assertion required"
+      }
+    ],
+    "fix": "No fault to fix. As hardening, ask the IdP to rotate to an RSA key of at least 2048 bits (or an EC key) with a SHA-256 or stronger signature. Update the configured IdP certificate on the SP when you do. Keep verifying against the configured certificate rather than the one embedded in the message, and keep the validity window and clock skew at 5 minutes or less.",
+    "posture_codes": [
+      "POSTURE_WEAK_ALGORITHM"
+    ],
+    "alternatives": [
+      {
+        "code": "CERT_EXPIRED_OR_WEAK",
+        "why_not": "The certificate is within its validity dates (2026 to 2126). The 1024-bit key is a posture warning, not a validation failure."
+      },
+      {
+        "code": "SAML_SIGNATURE_INVALID",
+        "why_not": "The signing certificate is identical to the configured one and nothing indicates a mismatch. I couldn't verify the redacted SignatureValue cryptographically."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:30:01.083446-05:00",
+  "duration_ms": 10307,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1416,
+    "cache_creation_input_tokens": 5939,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.0384392,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1416,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 5939,
+      "costUSD": 0.0384392,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 5,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 10142,
+    "stop_reason": "tool_use",
+    "session_id": "b3c60cb1-8fa2-44b2-a8b1-e4e8fe84c456",
+    "total_cost_usd": 0.0384392,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 5939,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 1416,
+      "output_tokens_details": {
+        "thinking_tokens": 226
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 5939,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1416,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 5939,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 5939
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1416,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 5939,
+        "webSearchRequests": 0,
+        "costUSD": 0.0384392,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 226,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 5939,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.72,\"posture_codes\":[\"POSTURE_WEAK_ALGORITHM\"],\"evidence\":[{\"path\":\"/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate/PublicKey\",\"actual\":\"1024-bit RSA public key (cert subject says weak 1024-bit IdP)\",\"expected\":\"RSA key of at least 2048 bits\",\"note\":\"Weak key size is a posture warning only.\"},{\"path\":\"/Response/Assertion/Conditions/AudienceRestriction/Audience\",\"actual\":\"https://sp.example.com/saml/metadata\",\"expected\":\"https://sp.example.com/saml/metadata\"},{\"path\":\"/Response/Assertion/Conditions/@NotOnOrAfter\",\"actual\":\"2026-01-15T12:02:30.000Z\",\"expected\":\"after now (2026-01-15T12:00:00Z)\",\"note\":\"The window is 5 minutes, which is within policy.\"},{\"path\":\"/Response/@Destination\",\"actual\":\"https://sp.example.com/saml/acs\",\"expected\":\"https://sp.example.com/saml/acs\"},{\"path\":\"/Response/Assertion/Signature\",\"actual\":\"Present on the Assertion, referencing the assertion ID\",\"expected\":\"Signed assertion required\"}],\"fix\":\"No fault to fix. As hardening, ask the IdP to rotate to an RSA key of at least 2048 bits (or an EC key) with a SHA-256 or stronger signature. Update the configured IdP certificate on the SP when you do. Keep verifying against the configured certificate rather than the one embedded in the message, and keep the validity window and clock skew at 5 minutes or less.\",\"alternatives\":[{\"code\":\"CERT_EXPIRED_OR_WEAK\",\"why_not\":\"The certificate is within its validity dates (2026 to 2126). The 1024-bit key is a posture warning, not a validation failure.\"},{\"code\":\"SAML_SIGNATURE_INVALID\",\"why_not\":\"The signing certificate is identical to the configured one and nothing indicates a mismatch. I couldn't verify the redacted SignatureValue cryptographically.\"}],\"questions\":[]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.72,
+      "posture_codes": [
+        "POSTURE_WEAK_ALGORITHM"
+      ],
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate/PublicKey",
+          "actual": "1024-bit RSA public key (cert subject says weak 1024-bit IdP)",
+          "expected": "RSA key of at least 2048 bits",
+          "note": "Weak key size is a posture warning only."
+        },
+        {
+          "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+          "actual": "https://sp.example.com/saml/metadata",
+          "expected": "https://sp.example.com/saml/metadata"
+        },
+        {
+          "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+          "actual": "2026-01-15T12:02:30.000Z",
+          "expected": "after now (2026-01-15T12:00:00Z)",
+          "note": "The window is 5 minutes, which is within policy."
+        },
+        {
+          "path": "/Response/@Destination",
+          "actual": "https://sp.example.com/saml/acs",
+          "expected": "https://sp.example.com/saml/acs"
+        },
+        {
+          "path": "/Response/Assertion/Signature",
+          "actual": "Present on the Assertion, referencing the assertion ID",
+          "expected": "Signed assertion required"
+        }
+      ],
+      "fix": "No fault to fix. As hardening, ask the IdP to rotate to an RSA key of at least 2048 bits (or an EC key) with a SHA-256 or stronger signature. Update the configured IdP certificate on the SP when you do. Keep verifying against the configured certificate rather than the one embedded in the message, and keep the validity window and clock skew at 5 minutes or less.",
+      "alternatives": [
+        {
+          "code": "CERT_EXPIRED_OR_WEAK",
+          "why_not": "The certificate is within its validity dates (2026 to 2126). The 1024-bit key is a posture warning, not a validation failure."
+        },
+        {
+          "code": "SAML_SIGNATURE_INVALID",
+          "why_not": "The signing certificate is identical to the configured one and nothing indicates a mismatch. I couldn't verify the redacted SignatureValue cryptographically."
+        }
+      ],
+      "questions": []
+    },
+    "ttft_ms": 2885,
+    "type": "result",
+    "duration_ms": 10307,
+    "uuid": "ce295b46-1af2-447b-b1da-d06dd36e5cfb",
+    "ttft_stream_ms": 937,
+    "time_to_request_ms": 162,
+    "first_content_frame_ms": 937,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

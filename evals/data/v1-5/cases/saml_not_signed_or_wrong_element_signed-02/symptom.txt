@@ -1,0 +1,1 @@
+Our SP requires a signed assertion and the Entra app only signs the response.

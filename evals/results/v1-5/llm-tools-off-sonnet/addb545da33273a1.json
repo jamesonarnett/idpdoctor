@@ -1,0 +1,205 @@
+{
+  "case_id": "oidc_issuer_mismatch-01",
+  "case_hash": "addb545da33273a1",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "OIDC_ISSUER_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/discovery/issuer",
+    "fix_keys": [
+      "configure",
+      "issuer",
+      "exact",
+      "string"
+    ],
+    "needs": [
+      "issuer"
+    ]
+  },
+  "kind": "oidc_discovery",
+  "meta": {
+    "id": "oidc_issuer_mismatch-01",
+    "kind": "oidc_discovery",
+    "mutator": "discovery_issuer_mismatch",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 1,
+    "hash": "addb545da33273a1"
+  },
+  "output": {
+    "root_cause_code": "OIDC_ISSUER_MISMATCH",
+    "confidence": 0.85,
+    "evidence": [
+      {
+        "path": "/discovery/issuer",
+        "actual": "https://login.example.com/tenant-1/v2.0/",
+        "expected": "https://login.example.com/tenant-1/v2.0",
+        "note": "Discovery issuer has a trailing slash; issuer comparison must be exact string match."
+      }
+    ],
+    "fix": "Make the SP's configured issuer exactly equal the discovery document's issuer value (including the trailing slash), and compare issuer to the token's iss claim by exact string match. Do not normalize or loosen the comparison. Confirm the iss in issued tokens matches the discovery issuer.",
+    "posture_codes": [
+      "POSTURE_PKCE_PLAIN_OR_ABSENT"
+    ],
+    "alternatives": [
+      {
+        "code": "OIDC_DISCOVERY_DOC_INVALID",
+        "why_not": "The document has the required fields; the userinfo_endpoint is on a different path but that is not invalid. The primary problem is the issuer difference from the configured value."
+      }
+    ],
+    "questions": [
+      "Does the iss claim in issued ID tokens include the trailing slash?"
+    ]
+  },
+  "started": "2026-10-27T09:37:28.159375-05:00",
+  "duration_ms": 4351,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 534,
+    "cache_creation_input_tokens": 1840,
+    "cache_read_input_tokens": 4038
+  },
+  "cost_usd": 0.0131078,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 534,
+      "cacheReadInputTokens": 4038,
+      "cacheCreationInputTokens": 1840,
+      "costUSD": 0.0131078,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 4169,
+    "stop_reason": "tool_use",
+    "session_id": "87cd9715-ed42-472d-9019-11ceb3be605e",
+    "total_cost_usd": 0.0131078,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1840,
+      "cache_read_input_tokens": 4038,
+      "output_tokens": 534,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1840,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 534,
+          "cache_read_input_tokens": 4038,
+          "cache_creation_input_tokens": 1840,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1840
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 534,
+        "cacheReadInputTokens": 4038,
+        "cacheCreationInputTokens": 1840,
+        "webSearchRequests": 0,
+        "costUSD": 0.0131078,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1840,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OIDC_ISSUER_MISMATCH\",\"confidence\":0.85,\"evidence\":[{\"path\":\"/discovery/issuer\",\"actual\":\"https://login.example.com/tenant-1/v2.0/\",\"expected\":\"https://login.example.com/tenant-1/v2.0\",\"note\":\"Discovery issuer has a trailing slash; issuer comparison must be exact string match.\"}],\"fix\":\"Make the SP's configured issuer exactly equal the discovery document's issuer value (including the trailing slash), and compare issuer to the token's iss claim by exact string match. Do not normalize or loosen the comparison. Confirm the iss in issued tokens matches the discovery issuer.\",\"posture_codes\":[\"POSTURE_PKCE_PLAIN_OR_ABSENT\"],\"alternatives\":[{\"code\":\"OIDC_DISCOVERY_DOC_INVALID\",\"why_not\":\"The document has the required fields; the userinfo_endpoint is on a different path but that is not invalid. The primary problem is the issuer difference from the configured value.\"}],\"questions\":[\"Does the iss claim in issued ID tokens include the trailing slash?\"]}",
+    "structured_output": {
+      "root_cause_code": "OIDC_ISSUER_MISMATCH",
+      "confidence": 0.85,
+      "evidence": [
+        {
+          "path": "/discovery/issuer",
+          "actual": "https://login.example.com/tenant-1/v2.0/",
+          "expected": "https://login.example.com/tenant-1/v2.0",
+          "note": "Discovery issuer has a trailing slash; issuer comparison must be exact string match."
+        }
+      ],
+      "fix": "Make the SP's configured issuer exactly equal the discovery document's issuer value (including the trailing slash), and compare issuer to the token's iss claim by exact string match. Do not normalize or loosen the comparison. Confirm the iss in issued tokens matches the discovery issuer.",
+      "posture_codes": [
+        "POSTURE_PKCE_PLAIN_OR_ABSENT"
+      ],
+      "alternatives": [
+        {
+          "code": "OIDC_DISCOVERY_DOC_INVALID",
+          "why_not": "The document has the required fields; the userinfo_endpoint is on a different path but that is not invalid. The primary problem is the issuer difference from the configured value."
+        }
+      ],
+      "questions": [
+        "Does the iss claim in issued ID tokens include the trailing slash?"
+      ]
+    },
+    "ttft_ms": 4325,
+    "type": "result",
+    "duration_ms": 4351,
+    "uuid": "66912463-b08d-492a-a648-ef51df2e2363",
+    "ttft_stream_ms": 1360,
+    "time_to_request_ms": 181,
+    "first_content_frame_ms": 1360,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

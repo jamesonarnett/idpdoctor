@@ -1,0 +1,237 @@
+{
+  "case_id": "idp_policy_refusal-04",
+  "case_hash": "d42e8b6b38ca1bf4",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "IDP_POLICY_REFUSAL",
+    "posture_codes": [],
+    "evidence_path": "/redirect/error",
+    "fix_keys": [
+      "resolve",
+      "side:",
+      "assign",
+      "group"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "idp_policy_refusal-04",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_consent_required",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 4,
+    "hash": "d42e8b6b38ca1bf4"
+  },
+  "output": {
+    "root_cause_code": "IDP_POLICY_REFUSAL",
+    "confidence": 0.85,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "consent_required",
+        "note": "The IdP returned consent_required, which is a policy or consent refusal and not a request-format fault."
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "The user or administrator has not consented to use the application.",
+        "note": "The user or tenant admin has not granted consent to the app."
+      },
+      {
+        "path": "/request/redirect_uri",
+        "actual": "https://app.example.com/callback",
+        "expected": "https://app.example.com/callback",
+        "note": "This matches a registered URI exactly, so redirect_uri is not the cause."
+      },
+      {
+        "path": "/request/code_challenge_method",
+        "actual": "S256",
+        "note": "The code_verifier matches the code_challenge under S256, and the public client uses S256."
+      }
+    ],
+    "fix": "Fix this on the IdP side. A tenant admin should grant admin consent for the application, or the user should be able to complete the consent prompt. Assign the user or group to the app and satisfy any access or consent policy. Confirm the authorization request targets the correct tenant endpoint (tenant-1). Then retry the flow. Don't change the redirect URI or PKCE settings, because both validate correctly.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+        "why_not": "The client type, grant type and PKCE configuration all pass. The error is consent_required, not invalid_client or unauthorized_client."
+      },
+      {
+        "code": "OAUTH_REDIRECT_URI_MISMATCH",
+        "why_not": "The redirect_uri is an exact match with the registered URI."
+      }
+    ],
+    "questions": [
+      "Does the consent failure occur for all users or only some? That would show whether admin consent or user assignment is missing.",
+      "Which scopes does the app need? Check whether any of them require admin consent in this tenant."
+    ]
+  },
+  "started": "2026-10-27T09:52:37.332975-05:00",
+  "duration_ms": 8238,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1066,
+    "cache_creation_input_tokens": 3014,
+    "cache_read_input_tokens": 23606
+  },
+  "cost_usd": 0.0250846,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1066,
+      "cacheReadInputTokens": 23606,
+      "cacheCreationInputTokens": 3014,
+      "costUSD": 0.0250846,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 8132,
+    "stop_reason": "tool_use",
+    "session_id": "e9636d29-ddbc-4451-b496-b4106b792a47",
+    "total_cost_usd": 0.0250846,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3014,
+      "cache_read_input_tokens": 23606,
+      "output_tokens": 1066,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3014,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 751,
+          "cache_read_input_tokens": 12547,
+          "cache_creation_input_tokens": 1526,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1526
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1066,
+        "cacheReadInputTokens": 23606,
+        "cacheCreationInputTokens": 3014,
+        "webSearchRequests": 0,
+        "costUSD": 0.0250846,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3014,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"IDP_POLICY_REFUSAL\",\"confidence\":0.85,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"consent_required\",\"note\":\"The IdP returned consent_required, which is a policy or consent refusal and not a request-format fault.\"},{\"path\":\"/redirect/error_description\",\"actual\":\"The user or administrator has not consented to use the application.\",\"note\":\"The user or tenant admin has not granted consent to the app.\"},{\"path\":\"/request/redirect_uri\",\"actual\":\"https://app.example.com/callback\",\"expected\":\"https://app.example.com/callback\",\"note\":\"This matches a registered URI exactly, so redirect_uri is not the cause.\"},{\"path\":\"/request/code_challenge_method\",\"actual\":\"S256\",\"note\":\"The code_verifier matches the code_challenge under S256, and the public client uses S256.\"}],\"fix\":\"Fix this on the IdP side. A tenant admin should grant admin consent for the application, or the user should be able to complete the consent prompt. Assign the user or group to the app and satisfy any access or consent policy. Confirm the authorization request targets the correct tenant endpoint (tenant-1). Then retry the flow. Don't change the redirect URI or PKCE settings, because both validate correctly.\",\"alternatives\":[{\"code\":\"OAUTH_CLIENT_CONFIG_REJECTED\",\"why_not\":\"The client type, grant type and PKCE configuration all pass. The error is consent_required, not invalid_client or unauthorized_client.\"},{\"code\":\"OAUTH_REDIRECT_URI_MISMATCH\",\"why_not\":\"The redirect_uri is an exact match with the registered URI.\"}],\"questions\":[\"Does the consent failure occur for all users or only some? That would show whether admin consent or user assignment is missing.\",\"Which scopes does the app need? Check whether any of them require admin consent in this tenant.\"]}",
+    "structured_output": {
+      "root_cause_code": "IDP_POLICY_REFUSAL",
+      "confidence": 0.85,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "consent_required",
+          "note": "The IdP returned consent_required, which is a policy or consent refusal and not a request-format fault."
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "The user or administrator has not consented to use the application.",
+          "note": "The user or tenant admin has not granted consent to the app."
+        },
+        {
+          "path": "/request/redirect_uri",
+          "actual": "https://app.example.com/callback",
+          "expected": "https://app.example.com/callback",
+          "note": "This matches a registered URI exactly, so redirect_uri is not the cause."
+        },
+        {
+          "path": "/request/code_challenge_method",
+          "actual": "S256",
+          "note": "The code_verifier matches the code_challenge under S256, and the public client uses S256."
+        }
+      ],
+      "fix": "Fix this on the IdP side. A tenant admin should grant admin consent for the application, or the user should be able to complete the consent prompt. Assign the user or group to the app and satisfy any access or consent policy. Confirm the authorization request targets the correct tenant endpoint (tenant-1). Then retry the flow. Don't change the redirect URI or PKCE settings, because both validate correctly.",
+      "alternatives": [
+        {
+          "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+          "why_not": "The client type, grant type and PKCE configuration all pass. The error is consent_required, not invalid_client or unauthorized_client."
+        },
+        {
+          "code": "OAUTH_REDIRECT_URI_MISMATCH",
+          "why_not": "The redirect_uri is an exact match with the registered URI."
+        }
+      ],
+      "questions": [
+        "Does the consent failure occur for all users or only some? That would show whether admin consent or user assignment is missing.",
+        "Which scopes does the app need? Check whether any of them require admin consent in this tenant."
+      ]
+    },
+    "ttft_ms": 2735,
+    "type": "result",
+    "duration_ms": 8238,
+    "uuid": "d5d244de-ee6d-4a68-9207-cecbbfa529ef",
+    "ttft_stream_ms": 1477,
+    "time_to_request_ms": 90,
+    "first_content_frame_ms": 1477,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

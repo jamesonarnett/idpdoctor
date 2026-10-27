@@ -1,0 +1,234 @@
+{
+  "case_id": "oauth_client_config_rejected-01",
+  "case_hash": "56a42865198218cb",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+    "posture_codes": [],
+    "evidence_path": "/redirect/error",
+    "fix_keys": [
+      "compare",
+      "client",
+      "registered",
+      "grant"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_client_config_rejected-01",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_invalid_scope",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 1,
+    "hash": "56a42865198218cb"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_CLIENT_CONFIG_REJECTED",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_scope",
+        "note": "The captured redirect carries invalid_scope, not a secret error."
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "The requested scope is invalid, unknown, or malformed."
+      },
+      {
+        "path": "/request/scopes",
+        "actual": "openid, profile, email, admin.write",
+        "note": "admin.write is probably the scope the server doesn't recognise. It is a custom scope that may not be exposed or consented for this client."
+      },
+      {
+        "path": "/request/client_type",
+        "actual": "public",
+        "note": "A public client has no client secret. AADSTS7000215 doesn't fit this capture and suggests a secret is being sent, or the app registration is set up as confidential."
+      }
+    ],
+    "fix": "1. Check the scopes. Confirm that admin.write is defined on the resource API and exposed to this client. Use the fully qualified form the authorization server expects, for example api://\u003cresource\u003e/admin.write. Make sure it is granted or consented. Remove it from the request if it isn't needed.\n2. Check the secret. The client is public and uses PKCE S256, which already verifies correctly, so don't send a client secret. If AADSTS7000215 comes from a separate token request, the app registration is probably marked confidential or is not enabled for public client flows. Either enable the public client flow, or use a valid, unexpired secret value (not the secret ID) from a server-side confidential client. Don't embed secrets in a public client.\n3. Keep PKCE S256 and the exact redirect_uri match. Both already pass.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+        "why_not": "The code_verifier matches the S256 code_challenge."
+      },
+      {
+        "code": "OAUTH_REDIRECT_URI_MISMATCH",
+        "why_not": "The redirect_uri exactly matches a registered URI."
+      }
+    ],
+    "questions": [
+      "Is the AADSTS7000215 error from a separate token-endpoint call? If so, please share its response body. The captured redirect only shows invalid_scope.",
+      "Is admin.write exposed as a scope on the target API registration, and in what form?"
+    ]
+  },
+  "started": "2026-10-27T09:55:53.743443-05:00",
+  "duration_ms": 11446,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1338,
+    "cache_creation_input_tokens": 2942,
+    "cache_read_input_tokens": 23634
+  },
+  "cost_usd": 0.0275194,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1338,
+      "cacheReadInputTokens": 23634,
+      "cacheCreationInputTokens": 2942,
+      "costUSD": 0.0275194,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 11335,
+    "stop_reason": "tool_use",
+    "session_id": "62c7713d-b328-4602-8267-a0185bfa57f4",
+    "total_cost_usd": 0.0275194,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 2942,
+      "cache_read_input_tokens": 23634,
+      "output_tokens": 1338,
+      "output_tokens_details": {
+        "thinking_tokens": 102
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 2942,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 978,
+          "cache_read_input_tokens": 12575,
+          "cache_creation_input_tokens": 1426,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1426
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1338,
+        "cacheReadInputTokens": 23634,
+        "cacheCreationInputTokens": 2942,
+        "webSearchRequests": 0,
+        "costUSD": 0.0275194,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 102,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 2942,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_CLIENT_CONFIG_REJECTED\",\"confidence\":0.8,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"invalid_scope\",\"note\":\"The captured redirect carries invalid_scope, not a secret error.\"},{\"path\":\"/redirect/error_description\",\"actual\":\"The requested scope is invalid, unknown, or malformed.\"},{\"path\":\"/request/scopes\",\"actual\":\"openid, profile, email, admin.write\",\"note\":\"admin.write is probably the scope the server doesn't recognise. It is a custom scope that may not be exposed or consented for this client.\"},{\"path\":\"/request/client_type\",\"actual\":\"public\",\"note\":\"A public client has no client secret. AADSTS7000215 doesn't fit this capture and suggests a secret is being sent, or the app registration is set up as confidential.\"}],\"fix\":\"1. Check the scopes. Confirm that admin.write is defined on the resource API and exposed to this client. Use the fully qualified form the authorization server expects, for example api://\u003cresource\u003e/admin.write. Make sure it is granted or consented. Remove it from the request if it isn't needed.\\n2. Check the secret. The client is public and uses PKCE S256, which already verifies correctly, so don't send a client secret. If AADSTS7000215 comes from a separate token request, the app registration is probably marked confidential or is not enabled for public client flows. Either enable the public client flow, or use a valid, unexpired secret value (not the secret ID) from a server-side confidential client. Don't embed secrets in a public client.\\n3. Keep PKCE S256 and the exact redirect_uri match. Both already pass.\",\"alternatives\":[{\"code\":\"OAUTH_PKCE_VERIFIER_MISMATCH\",\"why_not\":\"The code_verifier matches the S256 code_challenge.\"},{\"code\":\"OAUTH_REDIRECT_URI_MISMATCH\",\"why_not\":\"The redirect_uri exactly matches a registered URI.\"}],\"questions\":[\"Is the AADSTS7000215 error from a separate token-endpoint call? If so, please share its response body. The captured redirect only shows invalid_scope.\",\"Is admin.write exposed as a scope on the target API registration, and in what form?\"]}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_CLIENT_CONFIG_REJECTED",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "invalid_scope",
+          "note": "The captured redirect carries invalid_scope, not a secret error."
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "The requested scope is invalid, unknown, or malformed."
+        },
+        {
+          "path": "/request/scopes",
+          "actual": "openid, profile, email, admin.write",
+          "note": "admin.write is probably the scope the server doesn't recognise. It is a custom scope that may not be exposed or consented for this client."
+        },
+        {
+          "path": "/request/client_type",
+          "actual": "public",
+          "note": "A public client has no client secret. AADSTS7000215 doesn't fit this capture and suggests a secret is being sent, or the app registration is set up as confidential."
+        }
+      ],
+      "fix": "1. Check the scopes. Confirm that admin.write is defined on the resource API and exposed to this client. Use the fully qualified form the authorization server expects, for example api://\u003cresource\u003e/admin.write. Make sure it is granted or consented. Remove it from the request if it isn't needed.\n2. Check the secret. The client is public and uses PKCE S256, which already verifies correctly, so don't send a client secret. If AADSTS7000215 comes from a separate token request, the app registration is probably marked confidential or is not enabled for public client flows. Either enable the public client flow, or use a valid, unexpired secret value (not the secret ID) from a server-side confidential client. Don't embed secrets in a public client.\n3. Keep PKCE S256 and the exact redirect_uri match. Both already pass.",
+      "alternatives": [
+        {
+          "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+          "why_not": "The code_verifier matches the S256 code_challenge."
+        },
+        {
+          "code": "OAUTH_REDIRECT_URI_MISMATCH",
+          "why_not": "The redirect_uri exactly matches a registered URI."
+        }
+      ],
+      "questions": [
+        "Is the AADSTS7000215 error from a separate token-endpoint call? If so, please share its response body. The captured redirect only shows invalid_scope.",
+        "Is admin.write exposed as a scope on the target API registration, and in what form?"
+      ]
+    },
+    "ttft_ms": 3790,
+    "type": "result",
+    "duration_ms": 11446,
+    "uuid": "f812aeb9-9292-4cc9-a37e-c3be6f2a9a18",
+    "ttft_stream_ms": 2311,
+    "time_to_request_ms": 101,
+    "first_content_frame_ms": 2312,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

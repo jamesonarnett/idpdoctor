@@ -1,0 +1,11 @@
+{
+  "id": "saml_required_attribute_missing-04",
+  "kind": "saml_response",
+  "dialect": "entra",
+  "mutator": "attribute_missing",
+  "expected_completeness": "full",
+  "symptom_from": "vendor_strings.json",
+  "seed": 42,
+  "index": 4,
+  "hash": "72fb56c29bbbd662"
+}

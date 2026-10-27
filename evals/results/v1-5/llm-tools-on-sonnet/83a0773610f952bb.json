@@ -1,0 +1,190 @@
+{
+  "case_id": "jwt_expired_or_not_yet_valid-03",
+  "case_hash": "83a0773610f952bb",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+    "posture_codes": [],
+    "evidence_path": "/claims/nbf",
+    "fix_keys": [
+      "refresh",
+      "token",
+      "re-run",
+      "login"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_expired_or_not_yet_valid-03",
+    "kind": "jwt",
+    "mutator": "jwt_not_yet_valid",
+    "expected_completeness": "partial",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 3,
+    "hash": "83a0773610f952bb"
+  },
+  "output": {
+    "root_cause_code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/claims/nbf",
+        "actual": "2026-01-15T12:10:00Z",
+        "expected": "\u003c= 2026-01-15T12:00:00Z + skew 3m0s",
+        "note": "nbf is 10 minutes after the validation time, which is beyond the 3 minute skew. The OP clock appears to be ahead of the SP."
+      }
+    ],
+    "fix": "Synchronise the clocks on the OP and on the API host with NTP. The OP's nbf is about 10 minutes ahead of the validator's time, so the OP clock is the likely culprit. Ask the OP operator to issue nbf at or before the actual issue time. Then get a fresh token. Keep validation leeway at 3 minutes (never above 5 minutes), and don't disable the nbf check.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": [
+      "nonce (not supplied, so the nonce check was skipped)",
+      "access_token (not supplied, so the at_hash check was skipped)"
+    ]
+  },
+  "started": "2026-10-27T09:54:59.09019-05:00",
+  "duration_ms": 11645,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1111,
+    "cache_creation_input_tokens": 3856,
+    "cache_read_input_tokens": 23921
+  },
+  "cost_usd": 0.028934099999999997,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1111,
+      "cacheReadInputTokens": 23921,
+      "cacheCreationInputTokens": 3856,
+      "costUSD": 0.028934099999999997,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 11491,
+    "stop_reason": "tool_use",
+    "session_id": "c44566fe-21cc-43bb-a939-c43d645256e5",
+    "total_cost_usd": 0.028934099999999997,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3856,
+      "cache_read_input_tokens": 23921,
+      "output_tokens": 1111,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3856,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 484,
+          "cache_read_input_tokens": 12848,
+          "cache_creation_input_tokens": 2081,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2081
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1111,
+        "cacheReadInputTokens": 23921,
+        "cacheCreationInputTokens": 3856,
+        "webSearchRequests": 0,
+        "costUSD": 0.028934099999999997,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3856,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"JWT_EXPIRED_OR_NOT_YET_VALID\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/claims/nbf\",\"actual\":\"2026-01-15T12:10:00Z\",\"expected\":\"\u003c= 2026-01-15T12:00:00Z + skew 3m0s\",\"note\":\"nbf is 10 minutes after the validation time, which is beyond the 3 minute skew. The OP clock appears to be ahead of the SP.\"}],\"fix\":\"Synchronise the clocks on the OP and on the API host with NTP. The OP's nbf is about 10 minutes ahead of the validator's time, so the OP clock is the likely culprit. Ask the OP operator to issue nbf at or before the actual issue time. Then get a fresh token. Keep validation leeway at 3 minutes (never above 5 minutes), and don't disable the nbf check.\",\"questions\":[\"nonce (not supplied, so the nonce check was skipped)\",\"access_token (not supplied, so the at_hash check was skipped)\"],\"alternatives\":[]}",
+    "structured_output": {
+      "root_cause_code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/claims/nbf",
+          "actual": "2026-01-15T12:10:00Z",
+          "expected": "\u003c= 2026-01-15T12:00:00Z + skew 3m0s",
+          "note": "nbf is 10 minutes after the validation time, which is beyond the 3 minute skew. The OP clock appears to be ahead of the SP."
+        }
+      ],
+      "fix": "Synchronise the clocks on the OP and on the API host with NTP. The OP's nbf is about 10 minutes ahead of the validator's time, so the OP clock is the likely culprit. Ask the OP operator to issue nbf at or before the actual issue time. Then get a fresh token. Keep validation leeway at 3 minutes (never above 5 minutes), and don't disable the nbf check.",
+      "questions": [
+        "nonce (not supplied, so the nonce check was skipped)",
+        "access_token (not supplied, so the at_hash check was skipped)"
+      ],
+      "alternatives": []
+    },
+    "ttft_ms": 6459,
+    "type": "result",
+    "duration_ms": 11645,
+    "uuid": "93c06b6a-a720-42b5-9aac-a278205fddf1",
+    "ttft_stream_ms": 3639,
+    "time_to_request_ms": 135,
+    "first_content_frame_ms": 3639,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

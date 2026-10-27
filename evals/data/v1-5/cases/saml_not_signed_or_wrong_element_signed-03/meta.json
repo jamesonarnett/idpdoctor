@@ -1,0 +1,11 @@
+{
+  "id": "saml_not_signed_or_wrong_element_signed-03",
+  "kind": "saml_response",
+  "dialect": "okta",
+  "mutator": "unsigned",
+  "expected_completeness": "partial",
+  "symptom_from": "vendor_strings.json",
+  "seed": 42,
+  "index": 3,
+  "hash": "309bd2ee8bc770be"
+}

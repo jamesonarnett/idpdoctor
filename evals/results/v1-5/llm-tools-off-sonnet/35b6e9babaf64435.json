@@ -1,0 +1,227 @@
+{
+  "case_id": "posture_decrypt_before_verify-00",
+  "case_hash": "35b6e9babaf64435",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_DECRYPT_BEFORE_VERIFY"
+    ],
+    "evidence_path": "/Response/Assertion",
+    "fix_keys": [
+      "response",
+      "assertion",
+      "encrypting",
+      "verify"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_decrypt_before_verify-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "posture_encrypted_unsigned",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "35b6e9babaf64435"
+  },
+  "output": {
+    "root_cause_code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+    "confidence": 0.55,
+    "evidence": [
+      {
+        "path": "/Response/Signature",
+        "actual": "absent: the Response has no ds:Signature child",
+        "expected": "A signature on the Response or on the inner Assertion, verifiable against the configured IdP certificate",
+        "note": "The Response element is unsigned."
+      },
+      {
+        "path": "/Response",
+        "actual": "Contains Issuer, Status (Success) and an EncryptedAssertion holding only an xenc:EncryptedData block (aes256-cbc, cipher value redacted). No Signature is visible anywhere.",
+        "expected": "Signed Response or signed Assertion",
+        "note": "The assertion is opaque until it is decrypted. Any signature inside it can't be checked from this capture. Destination, InResponseTo, Issuer and Status all match the expected values."
+      }
+    ],
+    "fix": "Configure the IdP to sign the Response, or to sign the Assertion before encrypting it. Preferably sign both. On the SP, require a signature that verifies against the configured IdP certificate (not a key embedded in the message), and reject any response where neither element is signed. If you can, verify the Response signature before decrypting anything. After decryption, re-check the Audience, Conditions, Recipient, NameID format and required attributes (email, firstName) on the inner assertion.",
+    "posture_codes": [
+      "POSTURE_DECRYPT_BEFORE_VERIFY"
+    ],
+    "alternatives": [
+      {
+        "code": "SAML_ENCRYPTED_ASSERTION_UNDECRYPTABLE",
+        "why_not": "Nothing in the capture shows a decryption failure. The cause would only change if the SP's decrypt log reports one."
+      },
+      {
+        "code": "HEALTHY",
+        "why_not": "The Response is unsigned and the assertion can't be inspected, so it can't be said to validate."
+      }
+    ],
+    "questions": [
+      "Does the decrypted inner Assertion carry its own ds:Signature? Please share the decrypted structure, redacted.",
+      "What error does the SP actually log when it processes this response? No symptom was given."
+    ]
+  },
+  "started": "2026-10-27T09:38:28.404717-05:00",
+  "duration_ms": 9764,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1147,
+    "cache_creation_input_tokens": 9123,
+    "cache_read_input_tokens": 0
+  },
+  "cost_usd": 0.047965999999999995,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1147,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 9123,
+      "costUSD": 0.047965999999999995,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 2,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 9594,
+    "stop_reason": "tool_use",
+    "session_id": "a30880b7-63bb-4f23-b73d-b14e951b2d28",
+    "total_cost_usd": 0.047965999999999995,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 9123,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 1147,
+      "output_tokens_details": {
+        "thinking_tokens": 300
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 9123,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1147,
+          "cache_read_input_tokens": 0,
+          "cache_creation_input_tokens": 9123,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 9123
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1147,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 9123,
+        "webSearchRequests": 0,
+        "costUSD": 0.047965999999999995,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 300,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 9123,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED\",\"confidence\":0.55,\"evidence\":[{\"path\":\"/Response/Signature\",\"actual\":\"absent: the Response has no ds:Signature child\",\"expected\":\"A signature on the Response or on the inner Assertion, verifiable against the configured IdP certificate\",\"note\":\"The Response element is unsigned.\"},{\"path\":\"/Response\",\"actual\":\"Contains Issuer, Status (Success) and an EncryptedAssertion holding only an xenc:EncryptedData block (aes256-cbc, cipher value redacted). No Signature is visible anywhere.\",\"expected\":\"Signed Response or signed Assertion\",\"note\":\"The assertion is opaque until it is decrypted. Any signature inside it can't be checked from this capture. Destination, InResponseTo, Issuer and Status all match the expected values.\"}],\"fix\":\"Configure the IdP to sign the Response, or to sign the Assertion before encrypting it. Preferably sign both. On the SP, require a signature that verifies against the configured IdP certificate (not a key embedded in the message), and reject any response where neither element is signed. If you can, verify the Response signature before decrypting anything. After decryption, re-check the Audience, Conditions, Recipient, NameID format and required attributes (email, firstName) on the inner assertion.\",\"alternatives\":[{\"code\":\"SAML_ENCRYPTED_ASSERTION_UNDECRYPTABLE\",\"why_not\":\"Nothing in the capture shows a decryption failure. The cause would only change if the SP's decrypt log reports one.\"},{\"code\":\"HEALTHY\",\"why_not\":\"The Response is unsigned and the assertion can't be inspected, so it can't be said to validate.\"}],\"posture_codes\":[\"POSTURE_DECRYPT_BEFORE_VERIFY\"],\"questions\":[\"Does the decrypted inner Assertion carry its own ds:Signature? Please share the decrypted structure, redacted.\",\"What error does the SP actually log when it processes this response? No symptom was given.\"]}",
+    "structured_output": {
+      "root_cause_code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+      "confidence": 0.55,
+      "evidence": [
+        {
+          "path": "/Response/Signature",
+          "actual": "absent: the Response has no ds:Signature child",
+          "expected": "A signature on the Response or on the inner Assertion, verifiable against the configured IdP certificate",
+          "note": "The Response element is unsigned."
+        },
+        {
+          "path": "/Response",
+          "actual": "Contains Issuer, Status (Success) and an EncryptedAssertion holding only an xenc:EncryptedData block (aes256-cbc, cipher value redacted). No Signature is visible anywhere.",
+          "expected": "Signed Response or signed Assertion",
+          "note": "The assertion is opaque until it is decrypted. Any signature inside it can't be checked from this capture. Destination, InResponseTo, Issuer and Status all match the expected values."
+        }
+      ],
+      "fix": "Configure the IdP to sign the Response, or to sign the Assertion before encrypting it. Preferably sign both. On the SP, require a signature that verifies against the configured IdP certificate (not a key embedded in the message), and reject any response where neither element is signed. If you can, verify the Response signature before decrypting anything. After decryption, re-check the Audience, Conditions, Recipient, NameID format and required attributes (email, firstName) on the inner assertion.",
+      "alternatives": [
+        {
+          "code": "SAML_ENCRYPTED_ASSERTION_UNDECRYPTABLE",
+          "why_not": "Nothing in the capture shows a decryption failure. The cause would only change if the SP's decrypt log reports one."
+        },
+        {
+          "code": "HEALTHY",
+          "why_not": "The Response is unsigned and the assertion can't be inspected, so it can't be said to validate."
+        }
+      ],
+      "posture_codes": [
+        "POSTURE_DECRYPT_BEFORE_VERIFY"
+      ],
+      "questions": [
+        "Does the decrypted inner Assertion carry its own ds:Signature? Please share the decrypted structure, redacted.",
+        "What error does the SP actually log when it processes this response? No symptom was given."
+      ]
+    },
+    "ttft_ms": 4711,
+    "type": "result",
+    "duration_ms": 9764,
+    "uuid": "515588ee-b3d7-4377-ba1b-51c5f94cbbd9",
+    "ttft_stream_ms": 2216,
+    "time_to_request_ms": 167,
+    "first_content_frame_ms": 2216,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

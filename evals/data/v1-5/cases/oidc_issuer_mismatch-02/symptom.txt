@@ -1,0 +1,1 @@
+Issuer in the discovery document has a trailing slash our config does not.

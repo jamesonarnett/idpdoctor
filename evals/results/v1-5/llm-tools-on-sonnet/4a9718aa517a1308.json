@@ -1,0 +1,211 @@
+{
+  "case_id": "oauth_invalid_grant_code-01",
+  "case_hash": "4a9718aa517a1308",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_INVALID_GRANT_CODE",
+    "posture_codes": [],
+    "evidence_path": "/redirect/error",
+    "fix_keys": [
+      "exchange",
+      "within",
+      "minutes",
+      "issuance"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_invalid_grant_code-01",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_invalid_grant_reused",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 1,
+    "hash": "4a9718aa517a1308"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_INVALID_GRANT_CODE",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_grant",
+        "note": "Classified as a rejected authorization code."
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "The authorization code has already been redeemed.",
+        "note": "The captured redirect says the code was already redeemed. That contradicts the reported AADSTS70008 'expired' symptom. The code was most likely exchanged twice."
+      }
+    ],
+    "fix": "Exchange each authorization code exactly once, soon after it is issued. Use the same redirect_uri and client_id that the authorization request used. Guard the callback against double submission, such as a React StrictMode effect firing twice, a retried request, or a browser refresh or back navigation on the callback URL. If the exchange fails, restart the authorization flow to get a new code. Don't retry with the old one. Keep PKCE S256 and the exact redirect_uri registration as they are. Both checks passed.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+        "why_not": "The code_verifier matches the S256 code_challenge."
+      },
+      {
+        "code": "OAUTH_REDIRECT_URI_MISMATCH",
+        "why_not": "The redirect_uri exactly matches a registered URI."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:56:32.028854-05:00",
+  "duration_ms": 8163,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 925,
+    "cache_creation_input_tokens": 3064,
+    "cache_read_input_tokens": 23603
+  },
+  "cost_usd": 0.0238743,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 925,
+      "cacheReadInputTokens": 23603,
+      "cacheCreationInputTokens": 3064,
+      "costUSD": 0.0238743,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 2,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 7817,
+    "stop_reason": "tool_use",
+    "session_id": "2f517107-32b0-4fee-9276-2703e9037954",
+    "total_cost_usd": 0.0238743,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3064,
+      "cache_read_input_tokens": 23603,
+      "output_tokens": 925,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3064,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 613,
+          "cache_read_input_tokens": 12552,
+          "cache_creation_input_tokens": 1563,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1563
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 925,
+        "cacheReadInputTokens": 23603,
+        "cacheCreationInputTokens": 3064,
+        "webSearchRequests": 0,
+        "costUSD": 0.0238743,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3064,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_INVALID_GRANT_CODE\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"invalid_grant\",\"note\":\"Classified as a rejected authorization code.\"},{\"path\":\"/redirect/error_description\",\"actual\":\"The authorization code has already been redeemed.\",\"note\":\"The captured redirect says the code was already redeemed. That contradicts the reported AADSTS70008 'expired' symptom. The code was most likely exchanged twice.\"}],\"fix\":\"Exchange each authorization code exactly once, soon after it is issued. Use the same redirect_uri and client_id that the authorization request used. Guard the callback against double submission, such as a React StrictMode effect firing twice, a retried request, or a browser refresh or back navigation on the callback URL. If the exchange fails, restart the authorization flow to get a new code. Don't retry with the old one. Keep PKCE S256 and the exact redirect_uri registration as they are. Both checks passed.\",\"alternatives\":[{\"code\":\"OAUTH_PKCE_VERIFIER_MISMATCH\",\"why_not\":\"The code_verifier matches the S256 code_challenge.\"},{\"code\":\"OAUTH_REDIRECT_URI_MISMATCH\",\"why_not\":\"The redirect_uri exactly matches a registered URI.\"}],\"questions\":[],\"posture_codes\":[]}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_INVALID_GRANT_CODE",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "invalid_grant",
+          "note": "Classified as a rejected authorization code."
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "The authorization code has already been redeemed.",
+          "note": "The captured redirect says the code was already redeemed. That contradicts the reported AADSTS70008 'expired' symptom. The code was most likely exchanged twice."
+        }
+      ],
+      "fix": "Exchange each authorization code exactly once, soon after it is issued. Use the same redirect_uri and client_id that the authorization request used. Guard the callback against double submission, such as a React StrictMode effect firing twice, a retried request, or a browser refresh or back navigation on the callback URL. If the exchange fails, restart the authorization flow to get a new code. Don't retry with the old one. Keep PKCE S256 and the exact redirect_uri registration as they are. Both checks passed.",
+      "alternatives": [
+        {
+          "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+          "why_not": "The code_verifier matches the S256 code_challenge."
+        },
+        {
+          "code": "OAUTH_REDIRECT_URI_MISMATCH",
+          "why_not": "The redirect_uri exactly matches a registered URI."
+        }
+      ],
+      "questions": [],
+      "posture_codes": []
+    },
+    "ttft_ms": 3468,
+    "type": "result",
+    "duration_ms": 8163,
+    "uuid": "550becb6-b092-4336-9265-f92e83b3808b",
+    "ttft_stream_ms": 2209,
+    "time_to_request_ms": 338,
+    "first_content_frame_ms": 2210,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

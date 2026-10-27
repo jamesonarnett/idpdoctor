@@ -1,0 +1,1 @@
+Compliance scan: SAML signatures use SHA-1.

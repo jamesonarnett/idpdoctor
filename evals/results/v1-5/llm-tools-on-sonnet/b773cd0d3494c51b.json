@@ -1,0 +1,215 @@
+{
+  "case_id": "oidc_request_binding_mismatch-04",
+  "case_hash": "b773cd0d3494c51b",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OIDC_REQUEST_BINDING_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/claims/at_hash",
+    "fix_keys": [
+      "generate",
+      "fresh",
+      "nonce",
+      "authorization"
+    ],
+    "needs": [
+      "access_token"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "oidc_request_binding_mismatch-04",
+    "kind": "jwt",
+    "mutator": "jwt_at_hash_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 4,
+    "hash": "b773cd0d3494c51b"
+  },
+  "output": {
+    "root_cause_code": "OIDC_REQUEST_BINDING_MISMATCH",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "path": "/claims/at_hash",
+        "actual": "[REDACTED:at_hash:ab7aac87]",
+        "expected": "[REDACTED:at_hash:627e2ed6]",
+        "note": "at_hash does not match the access token presented. The id_token and access token are not from the same response, or the hash family is wrong for RS256."
+      },
+      {
+        "path": "/claims/nonce",
+        "actual": "present",
+        "expected": "n-0S6_WzA2Mj",
+        "note": "The nonce claim is present and matches the expected value. This contradicts the AADSTS50027 symptom that the nonce is missing."
+      }
+    ],
+    "fix": "Pair the id_token with the access token from the same token response. Compute at_hash as the base64url of the left half of the SHA-256 of the access token (SHA-256 because the alg is RS256). Keep generating a fresh nonce for each authorization request and compare it to the id_token nonce. Do not skip or relax the at_hash or nonce checks. If the error comes from Entra, check that the nonce sent in the authorization request is the one expected for that session. Also check that a stale or cached token isn't being sent.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "JWT_ALG_NONE_OR_CONFUSION",
+        "why_not": "The alg is RS256, which is allowed. The kid was found and the signature verified."
+      }
+    ],
+    "questions": [
+      "Does the access_token you tested come from the same token response as this id_token?",
+      "Is the AADSS50027 error raised by Entra on a different request than this captured token?"
+    ]
+  },
+  "started": "2026-10-27T10:00:27.357256-05:00",
+  "duration_ms": 9435,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1325,
+    "cache_creation_input_tokens": 2557,
+    "cache_read_input_tokens": 25256
+  },
+  "cost_usd": 0.0260116,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1325,
+      "cacheReadInputTokens": 25256,
+      "cacheCreationInputTokens": 2557,
+      "costUSD": 0.0260116,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 2,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 9336,
+    "stop_reason": "tool_use",
+    "session_id": "e60127b3-8138-4180-9986-dd6032119a55",
+    "total_cost_usd": 0.0260116,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 2557,
+      "cache_read_input_tokens": 25256,
+      "output_tokens": 1325,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 2557,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 658,
+          "cache_read_input_tokens": 12923,
+          "cache_creation_input_tokens": 1967,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1967
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1325,
+        "cacheReadInputTokens": 25256,
+        "cacheCreationInputTokens": 2557,
+        "webSearchRequests": 0,
+        "costUSD": 0.0260116,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 2557,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OIDC_REQUEST_BINDING_MISMATCH\",\"confidence\":0.8,\"evidence\":[{\"path\":\"/claims/at_hash\",\"actual\":\"[REDACTED:at_hash:ab7aac87]\",\"expected\":\"[REDACTED:at_hash:627e2ed6]\",\"note\":\"at_hash does not match the access token presented. The id_token and access token are not from the same response, or the hash family is wrong for RS256.\"},{\"path\":\"/claims/nonce\",\"actual\":\"present\",\"expected\":\"n-0S6_WzA2Mj\",\"note\":\"The nonce claim is present and matches the expected value. This contradicts the AADSTS50027 symptom that the nonce is missing.\"}],\"fix\":\"Pair the id_token with the access token from the same token response. Compute at_hash as the base64url of the left half of the SHA-256 of the access token (SHA-256 because the alg is RS256). Keep generating a fresh nonce for each authorization request and compare it to the id_token nonce. Do not skip or relax the at_hash or nonce checks. If the error comes from Entra, check that the nonce sent in the authorization request is the one expected for that session. Also check that a stale or cached token isn't being sent.\",\"alternatives\":[{\"code\":\"JWT_ALG_NONE_OR_CONFUSION\",\"why_not\":\"The alg is RS256, which is allowed. The kid was found and the signature verified.\"}],\"questions\":[\"Does the access_token you tested come from the same token response as this id_token?\",\"Is the AADSS50027 error raised by Entra on a different request than this captured token?\"]}",
+    "structured_output": {
+      "root_cause_code": "OIDC_REQUEST_BINDING_MISMATCH",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "path": "/claims/at_hash",
+          "actual": "[REDACTED:at_hash:ab7aac87]",
+          "expected": "[REDACTED:at_hash:627e2ed6]",
+          "note": "at_hash does not match the access token presented. The id_token and access token are not from the same response, or the hash family is wrong for RS256."
+        },
+        {
+          "path": "/claims/nonce",
+          "actual": "present",
+          "expected": "n-0S6_WzA2Mj",
+          "note": "The nonce claim is present and matches the expected value. This contradicts the AADSTS50027 symptom that the nonce is missing."
+        }
+      ],
+      "fix": "Pair the id_token with the access token from the same token response. Compute at_hash as the base64url of the left half of the SHA-256 of the access token (SHA-256 because the alg is RS256). Keep generating a fresh nonce for each authorization request and compare it to the id_token nonce. Do not skip or relax the at_hash or nonce checks. If the error comes from Entra, check that the nonce sent in the authorization request is the one expected for that session. Also check that a stale or cached token isn't being sent.",
+      "alternatives": [
+        {
+          "code": "JWT_ALG_NONE_OR_CONFUSION",
+          "why_not": "The alg is RS256, which is allowed. The kid was found and the signature verified."
+        }
+      ],
+      "questions": [
+        "Does the access_token you tested come from the same token response as this id_token?",
+        "Is the AADSS50027 error raised by Entra on a different request than this captured token?"
+      ]
+    },
+    "ttft_ms": 4348,
+    "type": "result",
+    "duration_ms": 9435,
+    "uuid": "22c990cf-a2ce-48ea-905d-a173b9eb94e2",
+    "ttft_stream_ms": 1693,
+    "time_to_request_ms": 89,
+    "first_content_frame_ms": 1694,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

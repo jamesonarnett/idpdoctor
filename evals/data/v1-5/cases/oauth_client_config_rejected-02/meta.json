@@ -1,0 +1,9 @@
+{
+  "id": "oauth_client_config_rejected-02",
+  "kind": "oauth_redirect",
+  "mutator": "oauth_unauthorized_client",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 2,
+  "hash": "c202f8f0dae1aa1a"
+}

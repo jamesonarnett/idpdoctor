@@ -1,0 +1,218 @@
+{
+  "case_id": "saml_structure_invalid-04",
+  "case_hash": "2e8f281fdc9edd17",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_STRUCTURE_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion",
+    "fix_keys": [
+      "treat",
+      "response",
+      "hostile",
+      "unless"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_structure_invalid-04",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "structure_multi_assertion",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 4,
+    "hash": "2e8f281fdc9edd17"
+  },
+  "output": {
+    "root_cause_code": "SAML_STRUCTURE_INVALID",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/Response/Assertion",
+        "actual": "Two Assertion elements: the signed _assert_a289ac and an unsigned _assert_a289ac_wrapped with a different (redacted) NameID",
+        "expected": "Exactly one assertion, and it is the signed one",
+        "note": "Looks like an XML signature wrapping attempt. A naive SP could process the unsigned duplicate."
+      },
+      {
+        "path": "/Response/Assertion/@ID",
+        "actual": "_assert_a289ac (signed); the second assertion is _assert_a289ac_wrapped with no Signature",
+        "expected": "One unique signed assertion ID"
+      },
+      {
+        "path": "/Response/Assertion/Signature",
+        "actual": "Signature present only on the first assertion, referencing #_assert_a289ac",
+        "expected": "Every assertion the SP consumes is covered by a verified signature"
+      }
+    ],
+    "fix": "Reject any Response that has more than one Assertion, or any assertion that isn't covered by a verified signature. Use a schema-validating SAML library. After verifying the signature, process only the element that the signature Reference points to, and resolve that element by its ID. Don't re-query the document by name. Keep requiring a signed assertion and keep using the pinned IdP certificate. Ask the IdP or the sender where the extra unsigned assertion came from, because a legitimate IdP won't emit one.",
+    "posture_codes": [
+      "POSTURE_PARSER_DIFFERENTIAL_EXPOSURE"
+    ],
+    "alternatives": [
+      {
+        "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+        "why_not": "The first assertion is signed correctly. The problem is a second, unsigned assertion added alongside it, which is a structural wrapping pattern."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:47:41.441366-05:00",
+  "duration_ms": 7724,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 747,
+    "cache_creation_input_tokens": 7365,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.0374532,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 747,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 7365,
+      "costUSD": 0.0374532,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 7609,
+    "stop_reason": "tool_use",
+    "session_id": "3fbcd882-4b48-4e88-9da7-fcb03c9fe882",
+    "total_cost_usd": 0.0374532,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 7365,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 747,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 7365,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 747,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 7365,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 7365
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 747,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 7365,
+        "webSearchRequests": 0,
+        "costUSD": 0.0374532,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 7365,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_STRUCTURE_INVALID\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/Response/Assertion\",\"actual\":\"Two Assertion elements: the signed _assert_a289ac and an unsigned _assert_a289ac_wrapped with a different (redacted) NameID\",\"expected\":\"Exactly one assertion, and it is the signed one\",\"note\":\"Looks like an XML signature wrapping attempt. A naive SP could process the unsigned duplicate.\"},{\"path\":\"/Response/Assertion/@ID\",\"actual\":\"_assert_a289ac (signed); the second assertion is _assert_a289ac_wrapped with no Signature\",\"expected\":\"One unique signed assertion ID\"},{\"path\":\"/Response/Assertion/Signature\",\"actual\":\"Signature present only on the first assertion, referencing #_assert_a289ac\",\"expected\":\"Every assertion the SP consumes is covered by a verified signature\"}],\"fix\":\"Reject any Response that has more than one Assertion, or any assertion that isn't covered by a verified signature. Use a schema-validating SAML library. After verifying the signature, process only the element that the signature Reference points to, and resolve that element by its ID. Don't re-query the document by name. Keep requiring a signed assertion and keep using the pinned IdP certificate. Ask the IdP or the sender where the extra unsigned assertion came from, because a legitimate IdP won't emit one.\",\"alternatives\":[{\"code\":\"SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED\",\"why_not\":\"The first assertion is signed correctly. The problem is a second, unsigned assertion added alongside it, which is a structural wrapping pattern.\"}],\"posture_codes\":[\"POSTURE_PARSER_DIFFERENTIAL_EXPOSURE\"]}",
+    "structured_output": {
+      "root_cause_code": "SAML_STRUCTURE_INVALID",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/Response/Assertion",
+          "actual": "Two Assertion elements: the signed _assert_a289ac and an unsigned _assert_a289ac_wrapped with a different (redacted) NameID",
+          "expected": "Exactly one assertion, and it is the signed one",
+          "note": "Looks like an XML signature wrapping attempt. A naive SP could process the unsigned duplicate."
+        },
+        {
+          "path": "/Response/Assertion/@ID",
+          "actual": "_assert_a289ac (signed); the second assertion is _assert_a289ac_wrapped with no Signature",
+          "expected": "One unique signed assertion ID"
+        },
+        {
+          "path": "/Response/Assertion/Signature",
+          "actual": "Signature present only on the first assertion, referencing #_assert_a289ac",
+          "expected": "Every assertion the SP consumes is covered by a verified signature"
+        }
+      ],
+      "fix": "Reject any Response that has more than one Assertion, or any assertion that isn't covered by a verified signature. Use a schema-validating SAML library. After verifying the signature, process only the element that the signature Reference points to, and resolve that element by its ID. Don't re-query the document by name. Keep requiring a signed assertion and keep using the pinned IdP certificate. Ask the IdP or the sender where the extra unsigned assertion came from, because a legitimate IdP won't emit one.",
+      "alternatives": [
+        {
+          "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+          "why_not": "The first assertion is signed correctly. The problem is a second, unsigned assertion added alongside it, which is a structural wrapping pattern."
+        }
+      ],
+      "posture_codes": [
+        "POSTURE_PARSER_DIFFERENTIAL_EXPOSURE"
+      ]
+    },
+    "ttft_ms": 7695,
+    "type": "result",
+    "duration_ms": 7724,
+    "uuid": "33e3fb00-cb43-4d0d-9bfe-6c606792c2d5",
+    "ttft_stream_ms": 2084,
+    "time_to_request_ms": 111,
+    "first_content_frame_ms": 2084,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

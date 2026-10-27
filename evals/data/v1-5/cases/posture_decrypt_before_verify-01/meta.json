@@ -1,0 +1,10 @@
+{
+  "id": "posture_decrypt_before_verify-01",
+  "kind": "saml_response",
+  "dialect": "auth0",
+  "mutator": "posture_encrypted_unsigned",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 1,
+  "hash": "c084215170d239a2"
+}

@@ -1,0 +1,228 @@
+{
+  "case_id": "oidc_discovery_doc_invalid-01",
+  "case_hash": "00aa450677d3e0e5",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "OIDC_DISCOVERY_DOC_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/discovery/jwks_uri",
+    "fix_keys": [
+      "point",
+      "canonical"
+    ]
+  },
+  "kind": "oidc_discovery",
+  "meta": {
+    "id": "oidc_discovery_doc_invalid-01",
+    "kind": "oidc_discovery",
+    "mutator": "discovery_missing_jwks_uri",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 1,
+    "hash": "00aa450677d3e0e5"
+  },
+  "output": {
+    "root_cause_code": "OIDC_DISCOVERY_DOC_INVALID",
+    "confidence": 0.7,
+    "evidence": [
+      {
+        "path": "/discovery",
+        "actual": "Key list has no jwks_uri member",
+        "expected": "jwks_uri present (required by OpenID Connect Discovery 1.0)",
+        "note": "Without jwks_uri the RP cannot fetch signing keys to verify ID tokens."
+      },
+      {
+        "path": "/discovery/issuer",
+        "actual": "https://login.example.com/tenant-1/v2.0",
+        "expected": "https://login.example.com/tenant-1/v2.0",
+        "note": "Issuer matches the configured value, so issuer mismatch is ruled out."
+      },
+      {
+        "path": "/discovery/code_challenge_methods_supported",
+        "actual": "[\"S256\",\"plain\"]",
+        "note": "S256 is available. Advertising plain is a hardening concern, not the cause."
+      }
+    ],
+    "fix": "Make the OP publish a complete discovery document that includes an https jwks_uri, served from the same host as the issuer and pointing to the JWKS that holds the current signing keys. Keep the issuer exactly equal to the configured value. Consider removing \"plain\" from code_challenge_methods_supported and require S256. Then re-fetch the document from {issuer}/.well-known/openid-configuration. If AADSTS50049 persists, check that the authority/instance URL in the client config is a real Entra tenant authority. Entra reports this error when the instance is unknown, and login.example.com is not an Entra instance. If this is a non-Entra OP, point the SP at the OP's own authority and not at Entra.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+        "why_not": "AADSTS50049 suggests the authority is wrong, but the artifact shows a concrete defect, the missing jwks_uri. The artifact does not show which authority the client was configured with."
+      },
+      {
+        "code": "OIDC_ISSUER_MISMATCH",
+        "why_not": "The issuer in the document equals the expected issuer."
+      }
+    ],
+    "questions": [
+      "Which authority/instance URL is the SP client configured with when Entra returns AADSTS50049?",
+      "Is login.example.com a real Entra instance or a third-party OP being fronted by Entra?"
+    ]
+  },
+  "started": "2026-10-27T09:36:47.481097-05:00",
+  "duration_ms": 8926,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1067,
+    "cache_creation_input_tokens": 1831,
+    "cache_read_input_tokens": 4038
+  },
+  "cost_usd": 0.0184018,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1067,
+      "cacheReadInputTokens": 4038,
+      "cacheCreationInputTokens": 1831,
+      "costUSD": 0.0184018,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 8739,
+    "stop_reason": "tool_use",
+    "session_id": "0dcd042b-e18f-4673-a974-3fa9cd051fbf",
+    "total_cost_usd": 0.0184018,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1831,
+      "cache_read_input_tokens": 4038,
+      "output_tokens": 1067,
+      "output_tokens_details": {
+        "thinking_tokens": 190
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1831,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1067,
+          "cache_read_input_tokens": 4038,
+          "cache_creation_input_tokens": 1831,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1831
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1067,
+        "cacheReadInputTokens": 4038,
+        "cacheCreationInputTokens": 1831,
+        "webSearchRequests": 0,
+        "costUSD": 0.0184018,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 190,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1831,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OIDC_DISCOVERY_DOC_INVALID\",\"confidence\":0.7,\"evidence\":[{\"path\":\"/discovery\",\"actual\":\"Key list has no jwks_uri member\",\"expected\":\"jwks_uri present (required by OpenID Connect Discovery 1.0)\",\"note\":\"Without jwks_uri the RP cannot fetch signing keys to verify ID tokens.\"},{\"path\":\"/discovery/issuer\",\"actual\":\"https://login.example.com/tenant-1/v2.0\",\"expected\":\"https://login.example.com/tenant-1/v2.0\",\"note\":\"Issuer matches the configured value, so issuer mismatch is ruled out.\"},{\"path\":\"/discovery/code_challenge_methods_supported\",\"actual\":\"[\\\"S256\\\",\\\"plain\\\"]\",\"note\":\"S256 is available. Advertising plain is a hardening concern, not the cause.\"}],\"fix\":\"Make the OP publish a complete discovery document that includes an https jwks_uri, served from the same host as the issuer and pointing to the JWKS that holds the current signing keys. Keep the issuer exactly equal to the configured value. Consider removing \\\"plain\\\" from code_challenge_methods_supported and require S256. Then re-fetch the document from {issuer}/.well-known/openid-configuration. If AADSTS50049 persists, check that the authority/instance URL in the client config is a real Entra tenant authority. Entra reports this error when the instance is unknown, and login.example.com is not an Entra instance. If this is a non-Entra OP, point the SP at the OP's own authority and not at Entra.\",\"alternatives\":[{\"code\":\"OAUTH_CLIENT_CONFIG_REJECTED\",\"why_not\":\"AADSTS50049 suggests the authority is wrong, but the artifact shows a concrete defect, the missing jwks_uri. The artifact does not show which authority the client was configured with.\"},{\"code\":\"OIDC_ISSUER_MISMATCH\",\"why_not\":\"The issuer in the document equals the expected issuer.\"}],\"questions\":[\"Which authority/instance URL is the SP client configured with when Entra returns AADSTS50049?\",\"Is login.example.com a real Entra instance or a third-party OP being fronted by Entra?\"]}",
+    "structured_output": {
+      "root_cause_code": "OIDC_DISCOVERY_DOC_INVALID",
+      "confidence": 0.7,
+      "evidence": [
+        {
+          "path": "/discovery",
+          "actual": "Key list has no jwks_uri member",
+          "expected": "jwks_uri present (required by OpenID Connect Discovery 1.0)",
+          "note": "Without jwks_uri the RP cannot fetch signing keys to verify ID tokens."
+        },
+        {
+          "path": "/discovery/issuer",
+          "actual": "https://login.example.com/tenant-1/v2.0",
+          "expected": "https://login.example.com/tenant-1/v2.0",
+          "note": "Issuer matches the configured value, so issuer mismatch is ruled out."
+        },
+        {
+          "path": "/discovery/code_challenge_methods_supported",
+          "actual": "[\"S256\",\"plain\"]",
+          "note": "S256 is available. Advertising plain is a hardening concern, not the cause."
+        }
+      ],
+      "fix": "Make the OP publish a complete discovery document that includes an https jwks_uri, served from the same host as the issuer and pointing to the JWKS that holds the current signing keys. Keep the issuer exactly equal to the configured value. Consider removing \"plain\" from code_challenge_methods_supported and require S256. Then re-fetch the document from {issuer}/.well-known/openid-configuration. If AADSTS50049 persists, check that the authority/instance URL in the client config is a real Entra tenant authority. Entra reports this error when the instance is unknown, and login.example.com is not an Entra instance. If this is a non-Entra OP, point the SP at the OP's own authority and not at Entra.",
+      "alternatives": [
+        {
+          "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+          "why_not": "AADSTS50049 suggests the authority is wrong, but the artifact shows a concrete defect, the missing jwks_uri. The artifact does not show which authority the client was configured with."
+        },
+        {
+          "code": "OIDC_ISSUER_MISMATCH",
+          "why_not": "The issuer in the document equals the expected issuer."
+        }
+      ],
+      "questions": [
+        "Which authority/instance URL is the SP client configured with when Entra returns AADSTS50049?",
+        "Is login.example.com a real Entra instance or a third-party OP being fronted by Entra?"
+      ]
+    },
+    "ttft_ms": 3525,
+    "type": "result",
+    "duration_ms": 8926,
+    "uuid": "4fa4bba9-5576-4f43-9ed3-4bcd0ac556ff",
+    "ttft_stream_ms": 1461,
+    "time_to_request_ms": 183,
+    "first_content_frame_ms": 1461,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

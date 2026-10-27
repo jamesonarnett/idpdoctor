@@ -1,0 +1,204 @@
+{
+  "case_id": "posture_embedded_key_trust-01",
+  "case_hash": "5b17fdb2883a6307",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_EMBEDDED_KEY_TRUST"
+    ],
+    "evidence_path": "/Signature/KeyInfo/X509Data/X509Certificate",
+    "fix_keys": [
+      "configure",
+      "signing",
+      "certificate",
+      "metadata"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_embedded_key_trust-01",
+    "kind": "saml_response",
+    "dialect": "auth0",
+    "mutator": "posture_embedded_key",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 1,
+    "hash": "5b17fdb2883a6307"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.7,
+    "evidence": [
+      {
+        "path": "/Signature/KeyInfo/X509Data/X509Certificate",
+        "actual": "2B:39:20:62:E2:10:4F:4C:82:20:A5:28:13:BA:02:A3:2A:39:4F:5E:4D:71:0F:64:E1:39:F2:88:BF:FA:D9:D9",
+        "note": "No idp_cert_pem was supplied. The signature is only self-consistent against the certificate embedded in the message, so trust in the signer was never established."
+      }
+    ],
+    "fix": "No, this isn't fine. Login works only because the SP trusts the certificate embedded in the message, and anyone can forge that. Take the IdP signing certificate from the IdP's metadata, through a trusted channel. Configure it on the SP. Verify the Assertion signature only against that pinned certificate, and reject any assertion signed by a different key. Keep requiring a signed assertion. Then re-run the validation with idp_cert_pem supplied, so the signature_verify check actually runs.",
+    "posture_codes": [
+      "POSTURE_EMBEDDED_KEY_TRUST"
+    ],
+    "alternatives": [
+      {
+        "code": "SAML_SIGNATURE_INVALID",
+        "why_not": "The signature check was skipped, not failed. It can't be judged until a trusted idp_cert_pem is supplied."
+      }
+    ],
+    "questions": [
+      "idp_cert_pem: what is the IdP signing certificate from the IdP metadata? It is needed to confirm the signature verifies against a trusted key."
+    ]
+  },
+  "started": "2026-10-27T10:01:20.581085-05:00",
+  "duration_ms": 17469,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1011,
+    "cache_creation_input_tokens": 4426,
+    "cache_read_input_tokens": 27525
+  },
+  "cost_usd": 0.0305745,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1011,
+      "cacheReadInputTokens": 27525,
+      "cacheCreationInputTokens": 4426,
+      "costUSD": 0.0305745,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 17363,
+    "stop_reason": "tool_use",
+    "session_id": "4e22acf6-e20b-4106-b600-1f4309b02f2b",
+    "total_cost_usd": 0.0305745,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 4426,
+      "cache_read_input_tokens": 27525,
+      "output_tokens": 1011,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 4426,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 668,
+          "cache_read_input_tokens": 15146,
+          "cache_creation_input_tokens": 1659,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1659
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1011,
+        "cacheReadInputTokens": 27525,
+        "cacheCreationInputTokens": 4426,
+        "webSearchRequests": 0,
+        "costUSD": 0.0305745,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 4426,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.7,\"evidence\":[{\"path\":\"/Signature/KeyInfo/X509Data/X509Certificate\",\"actual\":\"2B:39:20:62:E2:10:4F:4C:82:20:A5:28:13:BA:02:A3:2A:39:4F:5E:4D:71:0F:64:E1:39:F2:88:BF:FA:D9:D9\",\"note\":\"No idp_cert_pem was supplied. The signature is only self-consistent against the certificate embedded in the message, so trust in the signer was never established.\"}],\"fix\":\"No, this isn't fine. Login works only because the SP trusts the certificate embedded in the message, and anyone can forge that. Take the IdP signing certificate from the IdP's metadata, through a trusted channel. Configure it on the SP. Verify the Assertion signature only against that pinned certificate, and reject any assertion signed by a different key. Keep requiring a signed assertion. Then re-run the validation with idp_cert_pem supplied, so the signature_verify check actually runs.\",\"posture_codes\":[\"POSTURE_EMBEDDED_KEY_TRUST\"],\"questions\":[\"idp_cert_pem: what is the IdP signing certificate from the IdP metadata? It is needed to confirm the signature verifies against a trusted key.\"],\"alternatives\":[{\"code\":\"SAML_SIGNATURE_INVALID\",\"why_not\":\"The signature check was skipped, not failed. It can't be judged until a trusted idp_cert_pem is supplied.\"}]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.7,
+      "evidence": [
+        {
+          "path": "/Signature/KeyInfo/X509Data/X509Certificate",
+          "actual": "2B:39:20:62:E2:10:4F:4C:82:20:A5:28:13:BA:02:A3:2A:39:4F:5E:4D:71:0F:64:E1:39:F2:88:BF:FA:D9:D9",
+          "note": "No idp_cert_pem was supplied. The signature is only self-consistent against the certificate embedded in the message, so trust in the signer was never established."
+        }
+      ],
+      "fix": "No, this isn't fine. Login works only because the SP trusts the certificate embedded in the message, and anyone can forge that. Take the IdP signing certificate from the IdP's metadata, through a trusted channel. Configure it on the SP. Verify the Assertion signature only against that pinned certificate, and reject any assertion signed by a different key. Keep requiring a signed assertion. Then re-run the validation with idp_cert_pem supplied, so the signature_verify check actually runs.",
+      "posture_codes": [
+        "POSTURE_EMBEDDED_KEY_TRUST"
+      ],
+      "questions": [
+        "idp_cert_pem: what is the IdP signing certificate from the IdP metadata? It is needed to confirm the signature verifies against a trusted key."
+      ],
+      "alternatives": [
+        {
+          "code": "SAML_SIGNATURE_INVALID",
+          "why_not": "The signature check was skipped, not failed. It can't be judged until a trusted idp_cert_pem is supplied."
+        }
+      ]
+    },
+    "ttft_ms": 10413,
+    "type": "result",
+    "duration_ms": 17469,
+    "uuid": "7caaa633-c6ea-4ec3-8247-3cedeccdfebc",
+    "ttft_stream_ms": 8773,
+    "time_to_request_ms": 94,
+    "first_content_frame_ms": 8773,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

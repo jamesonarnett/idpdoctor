@@ -1,0 +1,236 @@
+{
+  "case_id": "idp_policy_refusal-00",
+  "case_hash": "9ba56f71c025c369",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "IDP_POLICY_REFUSAL",
+    "posture_codes": [],
+    "evidence_path": "/redirect/error",
+    "fix_keys": [
+      "resolve",
+      "side:",
+      "assign",
+      "group"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "idp_policy_refusal-00",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_consent_required",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "9ba56f71c025c369"
+  },
+  "output": {
+    "root_cause_code": "IDP_POLICY_REFUSAL",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "consent_required",
+        "note": "IdP says consent has not been granted; no code issued"
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "The user or administrator has not consented to use the application.",
+        "note": "Consent/enablement is a tenant or user policy decision outside the request"
+      },
+      {
+        "path": "/request/redirect_uri",
+        "actual": "https://app.example.com/callback",
+        "expected": "https://app.example.com/callback",
+        "note": "Matches the registered URI, so not a redirect mismatch"
+      },
+      {
+        "path": "/request/code_challenge_method",
+        "actual": "S256",
+        "note": "PKCE configured correctly; not the cause"
+      }
+    ],
+    "fix": "Have a tenant administrator grant consent for the application (admin consent flow), or assign/enable the app for the affected user or group in the IdP/Workspace admin console. Then retry. Alternatively, have the user complete the interactive consent prompt if user consent is allowed by tenant policy. No change to redirect URI, PKCE or scopes is needed. If the app requests scopes that require admin approval, request only what is needed or obtain admin approval.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+        "why_not": "The client_id, redirect_uri and PKCE all look valid; the refusal is about consent/enablement for the user, not a malformed client configuration."
+      },
+      {
+        "code": "OAUTH_REDIRECT_URI_MISMATCH",
+        "why_not": "redirect_uri exactly matches the registered list and the error was delivered to it."
+      }
+    ],
+    "questions": [
+      "Is the app's consent/enablement restricted by an admin policy in the tenant (e.g. Google Workspace app access control)?"
+    ]
+  },
+  "started": "2026-10-27T09:32:06.525218-05:00",
+  "duration_ms": 5535,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 729,
+    "cache_creation_input_tokens": 5272,
+    "cache_read_input_tokens": 0
+  },
+  "cost_usd": 0.028381999999999998,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 729,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 5272,
+      "costUSD": 0.028381999999999998,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 5418,
+    "stop_reason": "tool_use",
+    "session_id": "73bd3922-034a-497d-a62c-1ccfa07ec165",
+    "total_cost_usd": 0.028381999999999998,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 5272,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 729,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 5272,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 729,
+          "cache_read_input_tokens": 0,
+          "cache_creation_input_tokens": 5272,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 5272
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 729,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 5272,
+        "webSearchRequests": 0,
+        "costUSD": 0.028381999999999998,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 5272,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"IDP_POLICY_REFUSAL\",\"confidence\":0.8,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"consent_required\",\"note\":\"IdP says consent has not been granted; no code issued\"},{\"path\":\"/redirect/error_description\",\"actual\":\"The user or administrator has not consented to use the application.\",\"note\":\"Consent/enablement is a tenant or user policy decision outside the request\"},{\"path\":\"/request/redirect_uri\",\"actual\":\"https://app.example.com/callback\",\"expected\":\"https://app.example.com/callback\",\"note\":\"Matches the registered URI, so not a redirect mismatch\"},{\"path\":\"/request/code_challenge_method\",\"actual\":\"S256\",\"note\":\"PKCE configured correctly; not the cause\"}],\"fix\":\"Have a tenant administrator grant consent for the application (admin consent flow), or assign/enable the app for the affected user or group in the IdP/Workspace admin console. Then retry. Alternatively, have the user complete the interactive consent prompt if user consent is allowed by tenant policy. No change to redirect URI, PKCE or scopes is needed. If the app requests scopes that require admin approval, request only what is needed or obtain admin approval.\",\"alternatives\":[{\"code\":\"OAUTH_CLIENT_CONFIG_REJECTED\",\"why_not\":\"The client_id, redirect_uri and PKCE all look valid; the refusal is about consent/enablement for the user, not a malformed client configuration.\"},{\"code\":\"OAUTH_REDIRECT_URI_MISMATCH\",\"why_not\":\"redirect_uri exactly matches the registered list and the error was delivered to it.\"}],\"questions\":[\"Is the app's consent/enablement restricted by an admin policy in the tenant (e.g. Google Workspace app access control)?\"]}",
+    "structured_output": {
+      "root_cause_code": "IDP_POLICY_REFUSAL",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "consent_required",
+          "note": "IdP says consent has not been granted; no code issued"
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "The user or administrator has not consented to use the application.",
+          "note": "Consent/enablement is a tenant or user policy decision outside the request"
+        },
+        {
+          "path": "/request/redirect_uri",
+          "actual": "https://app.example.com/callback",
+          "expected": "https://app.example.com/callback",
+          "note": "Matches the registered URI, so not a redirect mismatch"
+        },
+        {
+          "path": "/request/code_challenge_method",
+          "actual": "S256",
+          "note": "PKCE configured correctly; not the cause"
+        }
+      ],
+      "fix": "Have a tenant administrator grant consent for the application (admin consent flow), or assign/enable the app for the affected user or group in the IdP/Workspace admin console. Then retry. Alternatively, have the user complete the interactive consent prompt if user consent is allowed by tenant policy. No change to redirect URI, PKCE or scopes is needed. If the app requests scopes that require admin approval, request only what is needed or obtain admin approval.",
+      "alternatives": [
+        {
+          "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+          "why_not": "The client_id, redirect_uri and PKCE all look valid; the refusal is about consent/enablement for the user, not a malformed client configuration."
+        },
+        {
+          "code": "OAUTH_REDIRECT_URI_MISMATCH",
+          "why_not": "redirect_uri exactly matches the registered list and the error was delivered to it."
+        }
+      ],
+      "questions": [
+        "Is the app's consent/enablement restricted by an admin policy in the tenant (e.g. Google Workspace app access control)?"
+      ]
+    },
+    "ttft_ms": 5504,
+    "type": "result",
+    "duration_ms": 5535,
+    "uuid": "d0294bfd-0efd-49c1-bec6-5d9603b4f068",
+    "ttft_stream_ms": 1074,
+    "time_to_request_ms": 113,
+    "first_content_frame_ms": 1075,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

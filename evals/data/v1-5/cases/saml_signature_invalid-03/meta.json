@@ -1,0 +1,10 @@
+{
+  "id": "saml_signature_invalid-03",
+  "kind": "saml_response",
+  "dialect": "okta",
+  "mutator": "wrong_cert",
+  "expected_completeness": "partial",
+  "seed": 42,
+  "index": 3,
+  "hash": "3ec426c94b8dca29"
+}

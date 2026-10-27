@@ -1,0 +1,239 @@
+{
+  "case_id": "posture_validity_window_too_long-00",
+  "case_hash": "915a8e8f22dc6cc8",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_VALIDITY_WINDOW_TOO_LONG"
+    ],
+    "evidence_path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+    "fix_keys": [
+      "shorten",
+      "assertion",
+      "token",
+      "lifetimes"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_validity_window_too_long-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "posture_long_window",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "915a8e8f22dc6cc8"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.85,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Conditions/@NotBefore",
+        "actual": "2026-01-15T11:00:00.000Z",
+        "note": "Starts 1h before IssueInstant"
+      },
+      {
+        "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+        "actual": "2026-01-15T13:00:00.000Z",
+        "note": "2-hour Conditions window; 'now' 12:00Z is inside it"
+      },
+      {
+        "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@NotOnOrAfter",
+        "actual": "2026-01-15T13:00:00.000Z",
+        "note": "Bearer confirmation valid 1h after issue"
+      },
+      {
+        "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+        "actual": "https://sp.example.com/saml/metadata",
+        "expected": "https://sp.example.com/saml/metadata"
+      },
+      {
+        "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate",
+        "actual": "Embedded cert identical to configured cert",
+        "expected": "Configured IdP certificate"
+      }
+    ],
+    "fix": "Nothing is broken. To tighten replay exposure, have the IdP issue assertions with a short window: NotBefore at or just before IssueInstant, and NotOnOrAfter and SubjectConfirmationData NotOnOrAfter about 5 minutes after issue. Keep clock skew at 5 minutes or less. Keep the session lifetime separate, in SessionNotOnOrAfter. Keep validating the signature against the configured IdP certificate, not the embedded one.",
+    "posture_codes": [
+      "POSTURE_VALIDITY_WINDOW_TOO_LONG"
+    ],
+    "alternatives": [
+      {
+        "code": "SAML_TIME_WINDOW_INVALID",
+        "why_not": "'now' (12:00Z) is inside both the Conditions and SubjectConfirmationData windows, so the assertion is currently valid."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:40:32.265957-05:00",
+  "duration_ms": 11874,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1466,
+    "cache_creation_input_tokens": 6423,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.0408752,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1466,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 6423,
+      "costUSD": 0.0408752,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 5,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 11715,
+    "stop_reason": "tool_use",
+    "session_id": "d55f8bc9-ad52-402c-a97d-a47e68d39fc3",
+    "total_cost_usd": 0.0408752,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6423,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 1466,
+      "output_tokens_details": {
+        "thinking_tokens": 216
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6423,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1466,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 6423,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 6423
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1466,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 6423,
+        "webSearchRequests": 0,
+        "costUSD": 0.0408752,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 216,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6423,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.85,\"posture_codes\":[\"POSTURE_VALIDITY_WINDOW_TOO_LONG\"],\"evidence\":[{\"path\":\"/Response/Assertion/Conditions/@NotBefore\",\"actual\":\"2026-01-15T11:00:00.000Z\",\"note\":\"Starts 1h before IssueInstant\"},{\"path\":\"/Response/Assertion/Conditions/@NotOnOrAfter\",\"actual\":\"2026-01-15T13:00:00.000Z\",\"note\":\"2-hour Conditions window; 'now' 12:00Z is inside it\"},{\"path\":\"/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@NotOnOrAfter\",\"actual\":\"2026-01-15T13:00:00.000Z\",\"note\":\"Bearer confirmation valid 1h after issue\"},{\"path\":\"/Response/Assertion/Conditions/AudienceRestriction/Audience\",\"actual\":\"https://sp.example.com/saml/metadata\",\"expected\":\"https://sp.example.com/saml/metadata\"},{\"path\":\"/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate\",\"actual\":\"Embedded cert identical to configured cert\",\"expected\":\"Configured IdP certificate\"}],\"fix\":\"Nothing is broken. To tighten replay exposure, have the IdP issue assertions with a short window: NotBefore at or just before IssueInstant, and NotOnOrAfter and SubjectConfirmationData NotOnOrAfter about 5 minutes after issue. Keep clock skew at 5 minutes or less. Keep the session lifetime separate, in SessionNotOnOrAfter. Keep validating the signature against the configured IdP certificate, not the embedded one.\",\"alternatives\":[{\"code\":\"SAML_TIME_WINDOW_INVALID\",\"why_not\":\"'now' (12:00Z) is inside both the Conditions and SubjectConfirmationData windows, so the assertion is currently valid.\"}]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.85,
+      "posture_codes": [
+        "POSTURE_VALIDITY_WINDOW_TOO_LONG"
+      ],
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Conditions/@NotBefore",
+          "actual": "2026-01-15T11:00:00.000Z",
+          "note": "Starts 1h before IssueInstant"
+        },
+        {
+          "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+          "actual": "2026-01-15T13:00:00.000Z",
+          "note": "2-hour Conditions window; 'now' 12:00Z is inside it"
+        },
+        {
+          "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@NotOnOrAfter",
+          "actual": "2026-01-15T13:00:00.000Z",
+          "note": "Bearer confirmation valid 1h after issue"
+        },
+        {
+          "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+          "actual": "https://sp.example.com/saml/metadata",
+          "expected": "https://sp.example.com/saml/metadata"
+        },
+        {
+          "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate",
+          "actual": "Embedded cert identical to configured cert",
+          "expected": "Configured IdP certificate"
+        }
+      ],
+      "fix": "Nothing is broken. To tighten replay exposure, have the IdP issue assertions with a short window: NotBefore at or just before IssueInstant, and NotOnOrAfter and SubjectConfirmationData NotOnOrAfter about 5 minutes after issue. Keep clock skew at 5 minutes or less. Keep the session lifetime separate, in SessionNotOnOrAfter. Keep validating the signature against the configured IdP certificate, not the embedded one.",
+      "alternatives": [
+        {
+          "code": "SAML_TIME_WINDOW_INVALID",
+          "why_not": "'now' (12:00Z) is inside both the Conditions and SubjectConfirmationData windows, so the assertion is currently valid."
+        }
+      ]
+    },
+    "ttft_ms": 4398,
+    "type": "result",
+    "duration_ms": 11874,
+    "uuid": "a7825076-e6a2-4395-a4a4-8b1209fb8bb7",
+    "ttft_stream_ms": 2843,
+    "time_to_request_ms": 156,
+    "first_content_frame_ms": 2843,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

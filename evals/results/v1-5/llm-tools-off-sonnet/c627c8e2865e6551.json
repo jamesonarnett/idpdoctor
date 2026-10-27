@@ -1,0 +1,229 @@
+{
+  "case_id": "saml_structure_invalid-03",
+  "case_hash": "c627c8e2865e6551",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_STRUCTURE_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion",
+    "fix_keys": [
+      "treat",
+      "response",
+      "hostile",
+      "unless"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_structure_invalid-03",
+    "kind": "saml_response",
+    "dialect": "okta",
+    "mutator": "structure_multi_assertion",
+    "expected_completeness": "partial",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 3,
+    "hash": "c627c8e2865e6551"
+  },
+  "output": {
+    "root_cause_code": "SAML_STRUCTURE_INVALID",
+    "confidence": 0.93,
+    "evidence": [
+      {
+        "path": "/Response/Assertion",
+        "actual": "Two Assertion elements: _assert_a289ac (signed) and _assert_a289ac_wrapped (unsigned, same issuer, different NameID)",
+        "expected": "Exactly one assertion",
+        "note": "Duplicate assertion with a '_wrapped' ID and a different (redacted) NameID is the signature wrapping pattern."
+      },
+      {
+        "path": "/Response/Assertion/@ID",
+        "actual": "_assert_a289ac and _assert_a289ac_wrapped",
+        "expected": "A single signed assertion ID"
+      },
+      {
+        "path": "/Response/Assertion/Subject/NameID",
+        "actual": "Differs between assertions: [REDACTED:nameid:ff8d9819] in the signed one, [REDACTED:nameid:941e7c61] in the unsigned one",
+        "expected": "One subject, covered by the signature"
+      },
+      {
+        "path": "/Response/Assertion/Signature",
+        "actual": "Signature is present only on the first assertion (Reference URI #_assert_a289ac); the second has none",
+        "expected": "Every accepted assertion is covered by a valid signature"
+      }
+    ],
+    "fix": "The library is right to reject this response. It has two assertions, and only the first is signed. The second has a different NameID and no signature, which is the classic XML signature wrapping pattern. Keep rejecting any response that doesn't contain exactly one assertion. Make sure the SP only uses the assertion whose ID matches the signed Reference URI, and verify against the configured IdP certificate, not the one embedded in the message. Then check the IdP and any intermediary proxy to find where the extra assertion is added. If it is an attack, treat it as one and investigate. If the IdP is producing it, have the IdP emit one signed assertion per response.",
+    "posture_codes": [
+      "POSTURE_PARSER_DIFFERENTIAL_EXPOSURE"
+    ],
+    "alternatives": [
+      {
+        "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+        "why_not": "The signed assertion is validly placed. The real problem is the extra unsigned assertion, which is a structural anomaly."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:47:33.927762-05:00",
+  "duration_ms": 7079,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 875,
+    "cache_creation_input_tokens": 7704,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.0400892,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 875,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 7704,
+      "costUSD": 0.0400892,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 6945,
+    "stop_reason": "tool_use",
+    "session_id": "4192a031-2594-4302-9579-c1f23104a4c1",
+    "total_cost_usd": 0.0400892,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 7704,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 875,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 7704,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 875,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 7704,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 7704
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 875,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 7704,
+        "webSearchRequests": 0,
+        "costUSD": 0.0400892,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 7704,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_STRUCTURE_INVALID\",\"confidence\":0.93,\"evidence\":[{\"path\":\"/Response/Assertion\",\"actual\":\"Two Assertion elements: _assert_a289ac (signed) and _assert_a289ac_wrapped (unsigned, same issuer, different NameID)\",\"expected\":\"Exactly one assertion\",\"note\":\"Duplicate assertion with a '_wrapped' ID and a different (redacted) NameID is the signature wrapping pattern.\"},{\"path\":\"/Response/Assertion/@ID\",\"actual\":\"_assert_a289ac and _assert_a289ac_wrapped\",\"expected\":\"A single signed assertion ID\"},{\"path\":\"/Response/Assertion/Subject/NameID\",\"actual\":\"Differs between assertions: [REDACTED:nameid:ff8d9819] in the signed one, [REDACTED:nameid:941e7c61] in the unsigned one\",\"expected\":\"One subject, covered by the signature\"},{\"path\":\"/Response/Assertion/Signature\",\"actual\":\"Signature is present only on the first assertion (Reference URI #_assert_a289ac); the second has none\",\"expected\":\"Every accepted assertion is covered by a valid signature\"}],\"fix\":\"The library is right to reject this response. It has two assertions, and only the first is signed. The second has a different NameID and no signature, which is the classic XML signature wrapping pattern. Keep rejecting any response that doesn't contain exactly one assertion. Make sure the SP only uses the assertion whose ID matches the signed Reference URI, and verify against the configured IdP certificate, not the one embedded in the message. Then check the IdP and any intermediary proxy to find where the extra assertion is added. If it is an attack, treat it as one and investigate. If the IdP is producing it, have the IdP emit one signed assertion per response.\",\"alternatives\":[{\"code\":\"SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED\",\"why_not\":\"The signed assertion is validly placed. The real problem is the extra unsigned assertion, which is a structural anomaly.\"}],\"posture_codes\":[\"POSTURE_PARSER_DIFFERENTIAL_EXPOSURE\"]}",
+    "structured_output": {
+      "root_cause_code": "SAML_STRUCTURE_INVALID",
+      "confidence": 0.93,
+      "evidence": [
+        {
+          "path": "/Response/Assertion",
+          "actual": "Two Assertion elements: _assert_a289ac (signed) and _assert_a289ac_wrapped (unsigned, same issuer, different NameID)",
+          "expected": "Exactly one assertion",
+          "note": "Duplicate assertion with a '_wrapped' ID and a different (redacted) NameID is the signature wrapping pattern."
+        },
+        {
+          "path": "/Response/Assertion/@ID",
+          "actual": "_assert_a289ac and _assert_a289ac_wrapped",
+          "expected": "A single signed assertion ID"
+        },
+        {
+          "path": "/Response/Assertion/Subject/NameID",
+          "actual": "Differs between assertions: [REDACTED:nameid:ff8d9819] in the signed one, [REDACTED:nameid:941e7c61] in the unsigned one",
+          "expected": "One subject, covered by the signature"
+        },
+        {
+          "path": "/Response/Assertion/Signature",
+          "actual": "Signature is present only on the first assertion (Reference URI #_assert_a289ac); the second has none",
+          "expected": "Every accepted assertion is covered by a valid signature"
+        }
+      ],
+      "fix": "The library is right to reject this response. It has two assertions, and only the first is signed. The second has a different NameID and no signature, which is the classic XML signature wrapping pattern. Keep rejecting any response that doesn't contain exactly one assertion. Make sure the SP only uses the assertion whose ID matches the signed Reference URI, and verify against the configured IdP certificate, not the one embedded in the message. Then check the IdP and any intermediary proxy to find where the extra assertion is added. If it is an attack, treat it as one and investigate. If the IdP is producing it, have the IdP emit one signed assertion per response.",
+      "alternatives": [
+        {
+          "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+          "why_not": "The signed assertion is validly placed. The real problem is the extra unsigned assertion, which is a structural anomaly."
+        }
+      ],
+      "posture_codes": [
+        "POSTURE_PARSER_DIFFERENTIAL_EXPOSURE"
+      ]
+    },
+    "ttft_ms": 7055,
+    "type": "result",
+    "duration_ms": 7079,
+    "uuid": "d8ea6213-3de5-4262-8d61-fd6bfb75110b",
+    "ttft_stream_ms": 1709,
+    "time_to_request_ms": 132,
+    "first_content_frame_ms": 1709,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

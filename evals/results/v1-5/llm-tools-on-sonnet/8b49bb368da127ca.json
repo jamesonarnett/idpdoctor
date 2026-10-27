@@ -1,0 +1,186 @@
+{
+  "case_id": "saml_nameid_missing_or_format_mismatch-00",
+  "case_hash": "8b49bb368da127ca",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/Subject/NameID/@Format",
+    "fix_keys": [
+      "stable",
+      "identifier",
+      "nameid",
+      "application"
+    ],
+    "needs": [
+      "name_id_format"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_nameid_missing_or_format_mismatch-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "nameid_format_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "8b49bb368da127ca"
+  },
+  "output": {
+    "root_cause_code": "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Subject/NameID/@Format",
+        "actual": "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
+        "expected": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+        "note": "After the admin changed the claim, the NameID is issued as transient. The SP expects emailAddress. All other checks passed: status, issuer, destination, InResponseTo, signature, audience, recipient, time window and attributes."
+      }
+    ],
+    "fix": "In the Entra enterprise application's SAML single sign-on settings, open the Unique User Identifier (Name ID) claim. Set the Name identifier format to Email address (urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress). Set the source attribute to a stable value, such as user.mail or the user principal name. Don't use Transient. Also make sure the SP's AuthnRequest NameIDPolicy Format matches the same value, because AADSTS75016 is raised when the requested format and the configured claim format disagree. Then capture a new login and re-validate. Leave signature validation and the other checks as they are.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T10:08:45.927585-05:00",
+  "duration_ms": 15405,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1999,
+    "cache_creation_input_tokens": 6931,
+    "cache_read_input_tokens": 28668
+  },
+  "cost_usd": 0.0505888,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1999,
+      "cacheReadInputTokens": 28668,
+      "cacheCreationInputTokens": 6931,
+      "costUSD": 0.0505888,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 15294,
+    "stop_reason": "tool_use",
+    "session_id": "90ef5b9f-7c4e-4c09-a619-a3089f3bab78",
+    "total_cost_usd": 0.0505888,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 6931,
+      "cache_read_input_tokens": 28668,
+      "output_tokens": 1999,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6931,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 536,
+          "cache_read_input_tokens": 16289,
+          "cache_creation_input_tokens": 3021,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 3021
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1999,
+        "cacheReadInputTokens": 28668,
+        "cacheCreationInputTokens": 6931,
+        "webSearchRequests": 0,
+        "costUSD": 0.0505888,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6931,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/Response/Assertion/Subject/NameID/@Format\",\"actual\":\"urn:oasis:names:tc:SAML:2.0:nameid-format:transient\",\"expected\":\"urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress\",\"note\":\"After the admin changed the claim, the NameID is issued as transient. The SP expects emailAddress. All other checks passed: status, issuer, destination, InResponseTo, signature, audience, recipient, time window and attributes.\"}],\"fix\":\"In the Entra enterprise application's SAML single sign-on settings, open the Unique User Identifier (Name ID) claim. Set the Name identifier format to Email address (urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress). Set the source attribute to a stable value, such as user.mail or the user principal name. Don't use Transient. Also make sure the SP's AuthnRequest NameIDPolicy Format matches the same value, because AADSTS75016 is raised when the requested format and the configured claim format disagree. Then capture a new login and re-validate. Leave signature validation and the other checks as they are.\"}",
+    "structured_output": {
+      "root_cause_code": "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Subject/NameID/@Format",
+          "actual": "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
+          "expected": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+          "note": "After the admin changed the claim, the NameID is issued as transient. The SP expects emailAddress. All other checks passed: status, issuer, destination, InResponseTo, signature, audience, recipient, time window and attributes."
+        }
+      ],
+      "fix": "In the Entra enterprise application's SAML single sign-on settings, open the Unique User Identifier (Name ID) claim. Set the Name identifier format to Email address (urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress). Set the source attribute to a stable value, such as user.mail or the user principal name. Don't use Transient. Also make sure the SP's AuthnRequest NameIDPolicy Format matches the same value, because AADSTS75016 is raised when the requested format and the configured claim format disagree. Then capture a new login and re-validate. Leave signature validation and the other checks as they are."
+    },
+    "ttft_ms": 10648,
+    "type": "result",
+    "duration_ms": 15405,
+    "uuid": "1a64f3d7-18b5-4b5c-8cae-0fd3dc999d51",
+    "ttft_stream_ms": 4146,
+    "time_to_request_ms": 92,
+    "first_content_frame_ms": 4146,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

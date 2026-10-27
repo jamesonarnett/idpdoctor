@@ -1,0 +1,294 @@
+{
+  "case_id": "posture_unsigned_assertion_accepted-00",
+  "case_hash": "680b09e16bc62e68",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_UNSIGNED_ASSERTION_ACCEPTED"
+    ],
+    "evidence_path": "/Response/Assertion/Signature",
+    "fix_keys": [
+      "require",
+      "signed",
+      "assertion",
+      "response"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_unsigned_assertion_accepted-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "posture_unsigned_assertion",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "680b09e16bc62e68"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.85,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+        "actual": "https://sp.example.com/saml/metadata",
+        "expected": "https://sp.example.com/saml/metadata",
+        "note": "Audience matches the SP entity ID"
+      },
+      {
+        "path": "/Response/@Destination",
+        "actual": "https://sp.example.com/saml/acs",
+        "expected": "https://sp.example.com/saml/acs"
+      },
+      {
+        "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@Recipient",
+        "actual": "https://sp.example.com/saml/acs",
+        "expected": "https://sp.example.com/saml/acs"
+      },
+      {
+        "path": "/Response/@InResponseTo",
+        "actual": "_req_1234567890abcdef",
+        "expected": "_req_1234567890abcdef"
+      },
+      {
+        "path": "/Response/Issuer",
+        "actual": "https://idp.example.com/saml",
+        "expected": "https://idp.example.com/saml"
+      },
+      {
+        "path": "/Response/Status/StatusCode/@Value",
+        "actual": "urn:oasis:names:tc:SAML:2.0:status:Success"
+      },
+      {
+        "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+        "actual": "2026-01-15T12:02:30.000Z",
+        "note": "Window 11:57:30–12:02:30 contains now (12:00:00Z), 5 minutes wide"
+      },
+      {
+        "path": "/Response/Assertion/Subject/NameID/@Format",
+        "actual": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+        "expected": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress"
+      },
+      {
+        "path": "/Response/Signature/SignedInfo/SignatureMethod/@Algorithm",
+        "actual": "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
+        "note": "Response is signed with RSA-SHA256 and SHA-256 digest; reference covers the Response ID"
+      },
+      {
+        "path": "/Response/Assertion/AttributeStatement/Attribute[@Name='email']",
+        "actual": "present, non-empty (redacted)"
+      },
+      {
+        "path": "/Response/Assertion/AttributeStatement/Attribute[@Name='firstName']",
+        "actual": "present, non-empty (redacted)"
+      }
+    ],
+    "fix": "No fault found. Keep validating the Response signature against the configured IdP certificate (not the embedded KeyInfo), and keep enforcing audience, destination, InResponseTo and the validity window with clock skew of 5 minutes or less. The assertion itself is unsigned, which is acceptable because the enclosing Response is signed and the reference covers it. Make sure your library binds the signed element to the assertion it processes.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "SAML_SIGNATURE_INVALID",
+        "why_not": "The signature value is redacted, so cryptographic verification can't be checked from the artifact. The embedded certificate appears to match the configured one, and nothing in the symptom suggests failure."
+      }
+    ],
+    "questions": [
+      "Does the SP's own signature verification actually pass? If it fails, share the library's error message."
+    ]
+  },
+  "started": "2026-10-27T09:40:05.931696-05:00",
+  "duration_ms": 17963,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1479,
+    "cache_creation_input_tokens": 6387,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.0408612,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1479,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 6387,
+      "costUSD": 0.0408612,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 11,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 17806,
+    "stop_reason": "tool_use",
+    "session_id": "6d299b8e-7d95-4255-a021-3ef95e1754ae",
+    "total_cost_usd": 0.0408612,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6387,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 1479,
+      "output_tokens_details": {
+        "thinking_tokens": 272
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6387,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1479,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 6387,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 6387
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1479,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 6387,
+        "webSearchRequests": 0,
+        "costUSD": 0.0408612,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 272,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6387,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.85,\"evidence\":[{\"path\":\"/Response/Assertion/Conditions/AudienceRestriction/Audience\",\"actual\":\"https://sp.example.com/saml/metadata\",\"expected\":\"https://sp.example.com/saml/metadata\",\"note\":\"Audience matches the SP entity ID\"},{\"path\":\"/Response/@Destination\",\"actual\":\"https://sp.example.com/saml/acs\",\"expected\":\"https://sp.example.com/saml/acs\"},{\"path\":\"/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@Recipient\",\"actual\":\"https://sp.example.com/saml/acs\",\"expected\":\"https://sp.example.com/saml/acs\"},{\"path\":\"/Response/@InResponseTo\",\"actual\":\"_req_1234567890abcdef\",\"expected\":\"_req_1234567890abcdef\"},{\"path\":\"/Response/Issuer\",\"actual\":\"https://idp.example.com/saml\",\"expected\":\"https://idp.example.com/saml\"},{\"path\":\"/Response/Status/StatusCode/@Value\",\"actual\":\"urn:oasis:names:tc:SAML:2.0:status:Success\"},{\"path\":\"/Response/Assertion/Conditions/@NotOnOrAfter\",\"actual\":\"2026-01-15T12:02:30.000Z\",\"note\":\"Window 11:57:30–12:02:30 contains now (12:00:00Z), 5 minutes wide\"},{\"path\":\"/Response/Assertion/Subject/NameID/@Format\",\"actual\":\"urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress\",\"expected\":\"urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress\"},{\"path\":\"/Response/Signature/SignedInfo/SignatureMethod/@Algorithm\",\"actual\":\"http://www.w3.org/2001/04/xmldsig-more#rsa-sha256\",\"note\":\"Response is signed with RSA-SHA256 and SHA-256 digest; reference covers the Response ID\"},{\"path\":\"/Response/Assertion/AttributeStatement/Attribute[@Name='email']\",\"actual\":\"present, non-empty (redacted)\"},{\"path\":\"/Response/Assertion/AttributeStatement/Attribute[@Name='firstName']\",\"actual\":\"present, non-empty (redacted)\"}],\"fix\":\"No fault found. Keep validating the Response signature against the configured IdP certificate (not the embedded KeyInfo), and keep enforcing audience, destination, InResponseTo and the validity window with clock skew of 5 minutes or less. The assertion itself is unsigned, which is acceptable because the enclosing Response is signed and the reference covers it. Make sure your library binds the signed element to the assertion it processes.\",\"alternatives\":[{\"code\":\"SAML_SIGNATURE_INVALID\",\"why_not\":\"The signature value is redacted, so cryptographic verification can't be checked from the artifact. The embedded certificate appears to match the configured one, and nothing in the symptom suggests failure.\"}],\"questions\":[\"Does the SP's own signature verification actually pass? If it fails, share the library's error message.\"]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.85,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+          "actual": "https://sp.example.com/saml/metadata",
+          "expected": "https://sp.example.com/saml/metadata",
+          "note": "Audience matches the SP entity ID"
+        },
+        {
+          "path": "/Response/@Destination",
+          "actual": "https://sp.example.com/saml/acs",
+          "expected": "https://sp.example.com/saml/acs"
+        },
+        {
+          "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@Recipient",
+          "actual": "https://sp.example.com/saml/acs",
+          "expected": "https://sp.example.com/saml/acs"
+        },
+        {
+          "path": "/Response/@InResponseTo",
+          "actual": "_req_1234567890abcdef",
+          "expected": "_req_1234567890abcdef"
+        },
+        {
+          "path": "/Response/Issuer",
+          "actual": "https://idp.example.com/saml",
+          "expected": "https://idp.example.com/saml"
+        },
+        {
+          "path": "/Response/Status/StatusCode/@Value",
+          "actual": "urn:oasis:names:tc:SAML:2.0:status:Success"
+        },
+        {
+          "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+          "actual": "2026-01-15T12:02:30.000Z",
+          "note": "Window 11:57:30–12:02:30 contains now (12:00:00Z), 5 minutes wide"
+        },
+        {
+          "path": "/Response/Assertion/Subject/NameID/@Format",
+          "actual": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+          "expected": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress"
+        },
+        {
+          "path": "/Response/Signature/SignedInfo/SignatureMethod/@Algorithm",
+          "actual": "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
+          "note": "Response is signed with RSA-SHA256 and SHA-256 digest; reference covers the Response ID"
+        },
+        {
+          "path": "/Response/Assertion/AttributeStatement/Attribute[@Name='email']",
+          "actual": "present, non-empty (redacted)"
+        },
+        {
+          "path": "/Response/Assertion/AttributeStatement/Attribute[@Name='firstName']",
+          "actual": "present, non-empty (redacted)"
+        }
+      ],
+      "fix": "No fault found. Keep validating the Response signature against the configured IdP certificate (not the embedded KeyInfo), and keep enforcing audience, destination, InResponseTo and the validity window with clock skew of 5 minutes or less. The assertion itself is unsigned, which is acceptable because the enclosing Response is signed and the reference covers it. Make sure your library binds the signed element to the assertion it processes.",
+      "alternatives": [
+        {
+          "code": "SAML_SIGNATURE_INVALID",
+          "why_not": "The signature value is redacted, so cryptographic verification can't be checked from the artifact. The embedded certificate appears to match the configured one, and nothing in the symptom suggests failure."
+        }
+      ],
+      "questions": [
+        "Does the SP's own signature verification actually pass? If it fails, share the library's error message."
+      ]
+    },
+    "ttft_ms": 11741,
+    "type": "result",
+    "duration_ms": 17963,
+    "uuid": "7bbec3fe-f4b4-4fae-9dcb-4e0f648069e9",
+    "ttft_stream_ms": 9325,
+    "time_to_request_ms": 155,
+    "first_content_frame_ms": 9325,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

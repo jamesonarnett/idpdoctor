@@ -1,0 +1,10 @@
+{
+  "id": "oidc_request_binding_mismatch-03",
+  "kind": "jwt",
+  "mutator": "jwt_nonce_mismatch",
+  "expected_completeness": "partial",
+  "symptom_from": "vendor_strings.json",
+  "seed": 42,
+  "index": 3,
+  "hash": "5d104e39f9a22f9a"
+}

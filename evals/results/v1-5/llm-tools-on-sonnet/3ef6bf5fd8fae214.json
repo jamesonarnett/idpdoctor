@@ -1,0 +1,217 @@
+{
+  "case_id": "saml_status_not_success-02",
+  "case_hash": "3ef6bf5fd8fae214",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_STATUS_NOT_SUCCESS",
+    "posture_codes": [],
+    "evidence_path": "/Response/Status/StatusCode/@Value",
+    "fix_keys": [
+      "statuscode",
+      "sub-code",
+      "statusmessage:",
+      "responder"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_status_not_success-02",
+    "kind": "saml_response",
+    "dialect": "generic",
+    "mutator": "status_responder",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 2,
+    "hash": "3ef6bf5fd8fae214"
+  },
+  "output": {
+    "root_cause_code": "SAML_STATUS_NOT_SUCCESS",
+    "confidence": 0.85,
+    "evidence": [
+      {
+        "path": "/Response/Status/StatusCode/@Value",
+        "actual": "urn:oasis:names:tc:SAML:2.0:status:Responder",
+        "expected": "urn:oasis:names:tc:SAML:2.0:status:Success"
+      },
+      {
+        "path": "/Response/Status/StatusCode/StatusCode/@Value",
+        "actual": "urn:oasis:names:tc:SAML:2.0:status:RequestDenied",
+        "note": "Sub-code shows the IdP deliberately denied the request."
+      },
+      {
+        "path": "/Response/Status/StatusMessage",
+        "actual": "The user is not assigned to this application.",
+        "note": "Points to user or group assignment, or an access policy, on the IdP."
+      }
+    ],
+    "fix": "The SP side is fine. Issuer, Destination and InResponseTo all match. Fix this on the ADFS side. Check the SP's relying party trust and its Issuance Authorization Rules, or the access control policy, for the affected group. Add the group (or the right claim condition) so those users are permitted, then retest. Do not loosen SP-side validation to work around the denial. Keep signature, audience and time checks strict. The response carries no assertion, so there is nothing to sign-verify here.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "IDP_POLICY_REFUSAL",
+        "why_not": "This is a close fit, because the denial is an authorization policy outside the artifact. The deterministic validator classifies it as a non-Success status, and the status codes in the artifact support that directly."
+      }
+    ],
+    "questions": [
+      "Which group of users is affected, and is it missing from the ADFS relying party trust's authorization rules or access control policy?"
+    ]
+  },
+  "started": "2026-10-27T10:13:23.547861-05:00",
+  "duration_ms": 16808,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2354,
+    "cache_creation_input_tokens": 7063,
+    "cache_read_input_tokens": 28377
+  },
+  "cost_usd": 0.0546377,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2354,
+      "cacheReadInputTokens": 28377,
+      "cacheCreationInputTokens": 7063,
+      "costUSD": 0.0546377,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 16739,
+    "stop_reason": "tool_use",
+    "session_id": "2c74e28a-1d1d-4b97-952d-b9b3396ee8d7",
+    "total_cost_usd": 0.0546377,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 7063,
+      "cache_read_input_tokens": 28377,
+      "output_tokens": 2354,
+      "output_tokens_details": {
+        "thinking_tokens": 142
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 7063,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 896,
+          "cache_read_input_tokens": 16091,
+          "cache_creation_input_tokens": 3258,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 3258
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2354,
+        "cacheReadInputTokens": 28377,
+        "cacheCreationInputTokens": 7063,
+        "webSearchRequests": 0,
+        "costUSD": 0.0546377,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 142,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 7063,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_STATUS_NOT_SUCCESS\",\"confidence\":0.85,\"evidence\":[{\"path\":\"/Response/Status/StatusCode/@Value\",\"actual\":\"urn:oasis:names:tc:SAML:2.0:status:Responder\",\"expected\":\"urn:oasis:names:tc:SAML:2.0:status:Success\"},{\"path\":\"/Response/Status/StatusCode/StatusCode/@Value\",\"actual\":\"urn:oasis:names:tc:SAML:2.0:status:RequestDenied\",\"note\":\"Sub-code shows the IdP deliberately denied the request.\"},{\"path\":\"/Response/Status/StatusMessage\",\"actual\":\"The user is not assigned to this application.\",\"note\":\"Points to user or group assignment, or an access policy, on the IdP.\"}],\"fix\":\"The SP side is fine. Issuer, Destination and InResponseTo all match. Fix this on the ADFS side. Check the SP's relying party trust and its Issuance Authorization Rules, or the access control policy, for the affected group. Add the group (or the right claim condition) so those users are permitted, then retest. Do not loosen SP-side validation to work around the denial. Keep signature, audience and time checks strict. The response carries no assertion, so there is nothing to sign-verify here.\",\"alternatives\":[{\"code\":\"IDP_POLICY_REFUSAL\",\"why_not\":\"This is a close fit, because the denial is an authorization policy outside the artifact. The deterministic validator classifies it as a non-Success status, and the status codes in the artifact support that directly.\"}],\"questions\":[\"Which group of users is affected, and is it missing from the ADFS relying party trust's authorization rules or access control policy?\"]}",
+    "structured_output": {
+      "root_cause_code": "SAML_STATUS_NOT_SUCCESS",
+      "confidence": 0.85,
+      "evidence": [
+        {
+          "path": "/Response/Status/StatusCode/@Value",
+          "actual": "urn:oasis:names:tc:SAML:2.0:status:Responder",
+          "expected": "urn:oasis:names:tc:SAML:2.0:status:Success"
+        },
+        {
+          "path": "/Response/Status/StatusCode/StatusCode/@Value",
+          "actual": "urn:oasis:names:tc:SAML:2.0:status:RequestDenied",
+          "note": "Sub-code shows the IdP deliberately denied the request."
+        },
+        {
+          "path": "/Response/Status/StatusMessage",
+          "actual": "The user is not assigned to this application.",
+          "note": "Points to user or group assignment, or an access policy, on the IdP."
+        }
+      ],
+      "fix": "The SP side is fine. Issuer, Destination and InResponseTo all match. Fix this on the ADFS side. Check the SP's relying party trust and its Issuance Authorization Rules, or the access control policy, for the affected group. Add the group (or the right claim condition) so those users are permitted, then retest. Do not loosen SP-side validation to work around the denial. Keep signature, audience and time checks strict. The response carries no assertion, so there is nothing to sign-verify here.",
+      "alternatives": [
+        {
+          "code": "IDP_POLICY_REFUSAL",
+          "why_not": "This is a close fit, because the denial is an authorization policy outside the artifact. The deterministic validator classifies it as a non-Success status, and the status codes in the artifact support that directly."
+        }
+      ],
+      "questions": [
+        "Which group of users is affected, and is it missing from the ADFS relying party trust's authorization rules or access control policy?"
+      ]
+    },
+    "ttft_ms": 8457,
+    "type": "result",
+    "duration_ms": 16808,
+    "uuid": "559b74f3-f7b1-4c23-b7af-54200437345e",
+    "ttft_stream_ms": 1688,
+    "time_to_request_ms": 58,
+    "first_content_frame_ms": 1688,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "code": "SAML_DESTINATION_OR_RECIPIENT_MISMATCH",
+  "posture_codes": [],
+  "evidence_path": "/Response/@Destination",
+  "fix_keys": [
+    "application",
+    "reply",
+    "assertion",
+    "consumer"
+  ],
+  "needs": [
+    "acs_url"
+  ]
+}

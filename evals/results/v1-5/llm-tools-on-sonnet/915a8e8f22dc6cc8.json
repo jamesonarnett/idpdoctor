@@ -1,0 +1,201 @@
+{
+  "case_id": "posture_validity_window_too_long-00",
+  "case_hash": "915a8e8f22dc6cc8",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_VALIDITY_WINDOW_TOO_LONG"
+    ],
+    "evidence_path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+    "fix_keys": [
+      "shorten",
+      "assertion",
+      "token",
+      "lifetimes"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_validity_window_too_long-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "posture_long_window",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "915a8e8f22dc6cc8"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+        "actual": "2h0m0s validity window",
+        "expected": "\u003c= 10m0s",
+        "note": "The assertion validates, but the window is long. That widens the replay surface. The measured window is 2h, not the 1h the developer mentioned."
+      }
+    ],
+    "fix": "The assertion validates, so nothing is broken. A long validity window is still a security weakness. Shorten the assertion lifetime on the IdP (NotOnOrAfter) to about 5–10 minutes. Keep the SP clock accurate with NTP, and keep clock skew at 5 minutes or less. Don't widen the window to work around timing problems. Session length belongs in SessionNotOnOrAfter, not in the assertion window.",
+    "posture_codes": [
+      "POSTURE_VALIDITY_WINDOW_TOO_LONG"
+    ],
+    "alternatives": [
+      {
+        "code": "SAML_TIME_WINDOW_INVALID",
+        "why_not": "The time_window check passed at the replay time. The assertion is inside its window; the window is just too long."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T10:03:36.044537-05:00",
+  "duration_ms": 11809,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1927,
+    "cache_creation_input_tokens": 6383,
+    "cache_read_input_tokens": 28637
+  },
+  "cost_usd": 0.0476737,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1927,
+      "cacheReadInputTokens": 28637,
+      "cacheCreationInputTokens": 6383,
+      "costUSD": 0.0476737,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 11740,
+    "stop_reason": "tool_use",
+    "session_id": "826735c4-9d20-48a5-afc3-501d798c0ede",
+    "total_cost_usd": 0.0476737,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 6383,
+      "cache_read_input_tokens": 28637,
+      "output_tokens": 1927,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6383,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 516,
+          "cache_read_input_tokens": 16258,
+          "cache_creation_input_tokens": 2504,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2504
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1927,
+        "cacheReadInputTokens": 28637,
+        "cacheCreationInputTokens": 6383,
+        "webSearchRequests": 0,
+        "costUSD": 0.0476737,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6383,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/Response/Assertion/Conditions/@NotOnOrAfter\",\"actual\":\"2h0m0s validity window\",\"expected\":\"\u003c= 10m0s\",\"note\":\"The assertion validates, but the window is long. That widens the replay surface. The measured window is 2h, not the 1h the developer mentioned.\"}],\"fix\":\"The assertion validates, so nothing is broken. A long validity window is still a security weakness. Shorten the assertion lifetime on the IdP (NotOnOrAfter) to about 5–10 minutes. Keep the SP clock accurate with NTP, and keep clock skew at 5 minutes or less. Don't widen the window to work around timing problems. Session length belongs in SessionNotOnOrAfter, not in the assertion window.\",\"posture_codes\":[\"POSTURE_VALIDITY_WINDOW_TOO_LONG\"],\"alternatives\":[{\"code\":\"SAML_TIME_WINDOW_INVALID\",\"why_not\":\"The time_window check passed at the replay time. The assertion is inside its window; the window is just too long.\"}]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+          "actual": "2h0m0s validity window",
+          "expected": "\u003c= 10m0s",
+          "note": "The assertion validates, but the window is long. That widens the replay surface. The measured window is 2h, not the 1h the developer mentioned."
+        }
+      ],
+      "fix": "The assertion validates, so nothing is broken. A long validity window is still a security weakness. Shorten the assertion lifetime on the IdP (NotOnOrAfter) to about 5–10 minutes. Keep the SP clock accurate with NTP, and keep clock skew at 5 minutes or less. Don't widen the window to work around timing problems. Session length belongs in SessionNotOnOrAfter, not in the assertion window.",
+      "posture_codes": [
+        "POSTURE_VALIDITY_WINDOW_TOO_LONG"
+      ],
+      "alternatives": [
+        {
+          "code": "SAML_TIME_WINDOW_INVALID",
+          "why_not": "The time_window check passed at the replay time. The assertion is inside its window; the window is just too long."
+        }
+      ]
+    },
+    "ttft_ms": 7816,
+    "type": "result",
+    "duration_ms": 11809,
+    "uuid": "d94fcce9-44d1-4c8f-b141-07b2ec2c9f68",
+    "ttft_stream_ms": 1421,
+    "time_to_request_ms": 51,
+    "first_content_frame_ms": 1421,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

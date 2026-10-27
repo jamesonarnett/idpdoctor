@@ -1,0 +1,187 @@
+{
+  "case_id": "saml_destination_or_recipient_mismatch-02",
+  "case_hash": "919733fafd704014",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_DESTINATION_OR_RECIPIENT_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/Response/@Destination",
+    "fix_keys": [
+      "application",
+      "reply",
+      "assertion",
+      "consumer"
+    ],
+    "needs": [
+      "acs_url"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_destination_or_recipient_mismatch-02",
+    "kind": "saml_response",
+    "dialect": "generic",
+    "mutator": "destination_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 2,
+    "hash": "919733fafd704014"
+  },
+  "output": {
+    "root_cause_code": "SAML_DESTINATION_OR_RECIPIENT_MISMATCH",
+    "confidence": 0.97,
+    "evidence": [
+      {
+        "path": "/Response/@Destination",
+        "actual": "https://sp-staging.example.com/saml/acs",
+        "expected": "https://sp.example.com/saml/acs",
+        "note": "Destination still points at the old/staging hostname; every other check (signature, issuer, audience, recipient, time, InResponseTo) passes."
+      }
+    ],
+    "fix": "In the Google Workspace SAML app configuration, set the ACS URL to exactly https://sp.example.com/saml/acs (scheme, host, port and path). Make sure the SP's metadata and the AuthnRequest's AssertionConsumerServiceURL use the new hostname too. Then retry the login. Keep Destination validation, signature validation and the other checks enabled on the SP.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T10:06:07.605923-05:00",
+  "duration_ms": 14834,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1882,
+    "cache_creation_input_tokens": 6784,
+    "cache_read_input_tokens": 28662
+  },
+  "cost_usd": 0.048830200000000004,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1882,
+      "cacheReadInputTokens": 28662,
+      "cacheCreationInputTokens": 6784,
+      "costUSD": 0.048830200000000004,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 14743,
+    "stop_reason": "tool_use",
+    "session_id": "e7b40fa7-eb23-4f4d-9973-35e7b904b18b",
+    "total_cost_usd": 0.048830200000000004,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 6784,
+      "cache_read_input_tokens": 28662,
+      "output_tokens": 1882,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6784,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 409,
+          "cache_read_input_tokens": 16283,
+          "cache_creation_input_tokens": 2880,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2880
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1882,
+        "cacheReadInputTokens": 28662,
+        "cacheCreationInputTokens": 6784,
+        "webSearchRequests": 0,
+        "costUSD": 0.048830200000000004,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6784,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_DESTINATION_OR_RECIPIENT_MISMATCH\",\"confidence\":0.97,\"evidence\":[{\"path\":\"/Response/@Destination\",\"actual\":\"https://sp-staging.example.com/saml/acs\",\"expected\":\"https://sp.example.com/saml/acs\",\"note\":\"Destination still points at the old/staging hostname; every other check (signature, issuer, audience, recipient, time, InResponseTo) passes.\"}],\"fix\":\"In the Google Workspace SAML app configuration, set the ACS URL to exactly https://sp.example.com/saml/acs (scheme, host, port and path). Make sure the SP's metadata and the AuthnRequest's AssertionConsumerServiceURL use the new hostname too. Then retry the login. Keep Destination validation, signature validation and the other checks enabled on the SP.\",\"alternatives\":[]}",
+    "structured_output": {
+      "root_cause_code": "SAML_DESTINATION_OR_RECIPIENT_MISMATCH",
+      "confidence": 0.97,
+      "evidence": [
+        {
+          "path": "/Response/@Destination",
+          "actual": "https://sp-staging.example.com/saml/acs",
+          "expected": "https://sp.example.com/saml/acs",
+          "note": "Destination still points at the old/staging hostname; every other check (signature, issuer, audience, recipient, time, InResponseTo) passes."
+        }
+      ],
+      "fix": "In the Google Workspace SAML app configuration, set the ACS URL to exactly https://sp.example.com/saml/acs (scheme, host, port and path). Make sure the SP's metadata and the AuthnRequest's AssertionConsumerServiceURL use the new hostname too. Then retry the login. Keep Destination validation, signature validation and the other checks enabled on the SP.",
+      "alternatives": []
+    },
+    "ttft_ms": 10721,
+    "type": "result",
+    "duration_ms": 14834,
+    "uuid": "e3563b0f-864e-47bb-95de-f54e8fb0f79a",
+    "ttft_stream_ms": 3949,
+    "time_to_request_ms": 74,
+    "first_content_frame_ms": 3949,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

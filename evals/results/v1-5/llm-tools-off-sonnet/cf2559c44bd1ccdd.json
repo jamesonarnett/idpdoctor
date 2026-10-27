@@ -1,0 +1,220 @@
+{
+  "case_id": "jwt_aud_or_azp_mismatch-00",
+  "case_hash": "cf2559c44bd1ccdd",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_AUD_OR_AZP_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/claims/aud",
+    "fix_keys": [
+      "request",
+      "token",
+      "client",
+      "correct"
+    ],
+    "needs": [
+      "client_id"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_aud_or_azp_mismatch-00",
+    "kind": "jwt",
+    "mutator": "jwt_aud_mismatch",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "cf2559c44bd1ccdd"
+  },
+  "output": {
+    "root_cause_code": "JWT_AUD_OR_AZP_MISMATCH",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/claims/aud",
+        "actual": "api://some-other-client",
+        "expected": "client-abc123",
+        "note": "Audience does not include the configured client_id; azp is also absent."
+      },
+      {
+        "path": "/claims/iss",
+        "actual": "https://login.example.com/tenant-1/v2.0",
+        "expected": "https://login.example.com/tenant-1/v2.0",
+        "note": "Issuer matches."
+      },
+      {
+        "path": "/claims/nonce",
+        "actual": "n-0S6_WzA2Mj",
+        "expected": "n-0S6_WzA2Mj",
+        "note": "Nonce matches."
+      },
+      {
+        "path": "/claims/exp",
+        "actual": "1768482000",
+        "note": "Token is valid at the expected now (2026-01-15T12:00:00Z), between nbf and exp."
+      }
+    ],
+    "fix": "Make the token's aud claim contain this client's ID (client-abc123). Check that the authorization request used the correct client_id. If the token was issued for an API (api://some-other-client), don't use it as an ID token for this client. Keep strict audience validation on the SP. Don't loosen the audience check or accept tokens issued to other clients.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T09:33:23.854656-05:00",
+  "duration_ms": 6154,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 547,
+    "cache_creation_input_tokens": 1744,
+    "cache_read_input_tokens": 3886
+  },
+  "cost_usd": 0.012838599999999999,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 547,
+      "cacheReadInputTokens": 3886,
+      "cacheCreationInputTokens": 1744,
+      "costUSD": 0.012838599999999999,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 6051,
+    "stop_reason": "tool_use",
+    "session_id": "c14636e9-dfcf-43e0-ba63-e6c45a7fb3f1",
+    "total_cost_usd": 0.012838599999999999,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1744,
+      "cache_read_input_tokens": 3886,
+      "output_tokens": 547,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1744,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 547,
+          "cache_read_input_tokens": 3886,
+          "cache_creation_input_tokens": 1744,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1744
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 547,
+        "cacheReadInputTokens": 3886,
+        "cacheCreationInputTokens": 1744,
+        "webSearchRequests": 0,
+        "costUSD": 0.012838599999999999,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1744,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"JWT_AUD_OR_AZP_MISMATCH\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/claims/aud\",\"actual\":\"api://some-other-client\",\"expected\":\"client-abc123\",\"note\":\"Audience does not include the configured client_id; azp is also absent.\"},{\"path\":\"/claims/iss\",\"actual\":\"https://login.example.com/tenant-1/v2.0\",\"expected\":\"https://login.example.com/tenant-1/v2.0\",\"note\":\"Issuer matches.\"},{\"path\":\"/claims/nonce\",\"actual\":\"n-0S6_WzA2Mj\",\"expected\":\"n-0S6_WzA2Mj\",\"note\":\"Nonce matches.\"},{\"path\":\"/claims/exp\",\"actual\":\"1768482000\",\"note\":\"Token is valid at the expected now (2026-01-15T12:00:00Z), between nbf and exp.\"}],\"fix\":\"Make the token's aud claim contain this client's ID (client-abc123). Check that the authorization request used the correct client_id. If the token was issued for an API (api://some-other-client), don't use it as an ID token for this client. Keep strict audience validation on the SP. Don't loosen the audience check or accept tokens issued to other clients.\",\"alternatives\":[],\"questions\":[]}",
+    "structured_output": {
+      "root_cause_code": "JWT_AUD_OR_AZP_MISMATCH",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/claims/aud",
+          "actual": "api://some-other-client",
+          "expected": "client-abc123",
+          "note": "Audience does not include the configured client_id; azp is also absent."
+        },
+        {
+          "path": "/claims/iss",
+          "actual": "https://login.example.com/tenant-1/v2.0",
+          "expected": "https://login.example.com/tenant-1/v2.0",
+          "note": "Issuer matches."
+        },
+        {
+          "path": "/claims/nonce",
+          "actual": "n-0S6_WzA2Mj",
+          "expected": "n-0S6_WzA2Mj",
+          "note": "Nonce matches."
+        },
+        {
+          "path": "/claims/exp",
+          "actual": "1768482000",
+          "note": "Token is valid at the expected now (2026-01-15T12:00:00Z), between nbf and exp."
+        }
+      ],
+      "fix": "Make the token's aud claim contain this client's ID (client-abc123). Check that the authorization request used the correct client_id. If the token was issued for an API (api://some-other-client), don't use it as an ID token for this client. Keep strict audience validation on the SP. Don't loosen the audience check or accept tokens issued to other clients.",
+      "alternatives": [],
+      "questions": []
+    },
+    "ttft_ms": 6125,
+    "type": "result",
+    "duration_ms": 6154,
+    "uuid": "985b26d7-d9dd-4cf5-8459-c7b64197c4be",
+    "ttft_stream_ms": 2782,
+    "time_to_request_ms": 100,
+    "first_content_frame_ms": 2782,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

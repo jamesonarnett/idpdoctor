@@ -1,0 +1,191 @@
+{
+  "case_id": "saml_inresponseto_mismatch_or_unsolicited-03",
+  "case_hash": "2712fa8e75e15bae",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED",
+    "posture_codes": [],
+    "evidence_path": "/Response/@InResponseTo",
+    "fix_keys": [
+      "ensure",
+      "keeps",
+      "authnrequest",
+      "across"
+    ],
+    "needs": [
+      "request_id"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_inresponseto_mismatch_or_unsolicited-03",
+    "kind": "saml_response",
+    "dialect": "okta",
+    "mutator": "unsolicited",
+    "expected_completeness": "partial",
+    "seed": 42,
+    "index": 3,
+    "hash": "2712fa8e75e15bae"
+  },
+  "output": {
+    "root_cause_code": "SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/Response/@InResponseTo",
+        "actual": "absent",
+        "expected": "_req_1234567890abcdef",
+        "note": "Response carries no InResponseTo, so it looks IdP-initiated or unsolicited, but the SP sent an AuthnRequest. All other checks pass: status, issuer, destination, signature, audience, recipient, time window, NameID, attributes and structure."
+      }
+    ],
+    "fix": "Make the SP keep the AuthnRequest ID across the round trip, in a session or cookie, and compare it with InResponseTo. Check that the IdP echoes the ID in Response/@InResponseTo and in SubjectConfirmationData/@InResponseTo. If the user started at the IdP (IdP-initiated SSO), either enable that flow explicitly on the SP with its other protections, or start login from the SP. Don't relax signature, audience or time checks to get around this.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": [
+      "Did the user start login from the SP, or from the IdP portal tile (IdP-initiated)?"
+    ]
+  },
+  "started": "2026-10-27T10:07:12.779936-05:00",
+  "duration_ms": 18680,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1902,
+    "cache_creation_input_tokens": 6852,
+    "cache_read_input_tokens": 28627
+  },
+  "cost_usd": 0.0492987,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1902,
+      "cacheReadInputTokens": 28627,
+      "cacheCreationInputTokens": 6852,
+      "costUSD": 0.0492987,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 18591,
+    "stop_reason": "tool_use",
+    "session_id": "0fffb983-17b0-41b3-ad74-e9803668b492",
+    "total_cost_usd": 0.0492987,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 6852,
+      "cache_read_input_tokens": 28627,
+      "output_tokens": 1902,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6852,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 521,
+          "cache_read_input_tokens": 16248,
+          "cache_creation_input_tokens": 2983,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2983
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1902,
+        "cacheReadInputTokens": 28627,
+        "cacheCreationInputTokens": 6852,
+        "webSearchRequests": 0,
+        "costUSD": 0.0492987,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6852,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/Response/@InResponseTo\",\"actual\":\"absent\",\"expected\":\"_req_1234567890abcdef\",\"note\":\"Response carries no InResponseTo, so it looks IdP-initiated or unsolicited, but the SP sent an AuthnRequest. All other checks pass: status, issuer, destination, signature, audience, recipient, time window, NameID, attributes and structure.\"}],\"fix\":\"Make the SP keep the AuthnRequest ID across the round trip, in a session or cookie, and compare it with InResponseTo. Check that the IdP echoes the ID in Response/@InResponseTo and in SubjectConfirmationData/@InResponseTo. If the user started at the IdP (IdP-initiated SSO), either enable that flow explicitly on the SP with its other protections, or start login from the SP. Don't relax signature, audience or time checks to get around this.\",\"questions\":[\"Did the user start login from the SP, or from the IdP portal tile (IdP-initiated)?\"],\"alternatives\":[]}",
+    "structured_output": {
+      "root_cause_code": "SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/Response/@InResponseTo",
+          "actual": "absent",
+          "expected": "_req_1234567890abcdef",
+          "note": "Response carries no InResponseTo, so it looks IdP-initiated or unsolicited, but the SP sent an AuthnRequest. All other checks pass: status, issuer, destination, signature, audience, recipient, time window, NameID, attributes and structure."
+        }
+      ],
+      "fix": "Make the SP keep the AuthnRequest ID across the round trip, in a session or cookie, and compare it with InResponseTo. Check that the IdP echoes the ID in Response/@InResponseTo and in SubjectConfirmationData/@InResponseTo. If the user started at the IdP (IdP-initiated SSO), either enable that flow explicitly on the SP with its other protections, or start login from the SP. Don't relax signature, audience or time checks to get around this.",
+      "questions": [
+        "Did the user start login from the SP, or from the IdP portal tile (IdP-initiated)?"
+      ],
+      "alternatives": []
+    },
+    "ttft_ms": 7607,
+    "type": "result",
+    "duration_ms": 18680,
+    "uuid": "081425dd-aff9-4166-8979-d335e9153eea",
+    "ttft_stream_ms": 1239,
+    "time_to_request_ms": 72,
+    "first_content_frame_ms": 1239,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

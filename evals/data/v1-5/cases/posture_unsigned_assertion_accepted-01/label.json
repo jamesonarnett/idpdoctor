@@ -1,0 +1,13 @@
+{
+  "code": "HEALTHY",
+  "posture_codes": [
+    "POSTURE_UNSIGNED_ASSERTION_ACCEPTED"
+  ],
+  "evidence_path": "/Response/Assertion/Signature",
+  "fix_keys": [
+    "require",
+    "signed",
+    "assertion",
+    "response"
+  ]
+}

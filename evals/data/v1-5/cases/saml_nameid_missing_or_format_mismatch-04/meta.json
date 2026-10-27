@@ -1,0 +1,10 @@
+{
+  "id": "saml_nameid_missing_or_format_mismatch-04",
+  "kind": "saml_response",
+  "dialect": "entra",
+  "mutator": "nameid_format_mismatch",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 4,
+  "hash": "8f76e6015349e44a"
+}

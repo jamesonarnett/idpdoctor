@@ -1,0 +1,10 @@
+{
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "dataset": "evals/data/v1-5",
+  "started": "2026-10-27T09:48:40.2975-05:00",
+  "claude_version": "2.1.311 (Claude Code)",
+  "idpdoctor_version": "dev",
+  "prompt_version": 2,
+  "concurrency": 1
+}

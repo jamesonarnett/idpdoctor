@@ -1,0 +1,11 @@
+{
+  "code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+  "posture_codes": [],
+  "evidence_path": "/claims/exp",
+  "fix_keys": [
+    "refresh",
+    "token",
+    "re-run",
+    "login"
+  ]
+}

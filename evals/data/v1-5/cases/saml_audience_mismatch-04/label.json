@@ -1,0 +1,14 @@
+{
+  "code": "SAML_AUDIENCE_MISMATCH",
+  "posture_codes": [],
+  "evidence_path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+  "fix_keys": [
+    "application",
+    "audience",
+    "entity",
+    "configured"
+  ],
+  "needs": [
+    "sp_entity_id"
+  ]
+}

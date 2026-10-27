@@ -1,0 +1,10 @@
+{
+  "id": "healthy-jwt-02",
+  "kind": "jwt",
+  "expected_completeness": "full",
+  "symptom_from": "misleading",
+  "misleading_symptom": true,
+  "seed": 42,
+  "index": 2,
+  "hash": "2ef068ec1dfb0299"
+}

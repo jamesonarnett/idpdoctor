@@ -1,0 +1,58 @@
+{
+  "case_id": "oidc_issuer_mismatch-01",
+  "case_hash": "addb545da33273a1",
+  "arm": "rules",
+  "label": {
+    "code": "OIDC_ISSUER_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/discovery/issuer",
+    "fix_keys": [
+      "configure",
+      "issuer",
+      "exact",
+      "string"
+    ],
+    "needs": [
+      "issuer"
+    ]
+  },
+  "kind": "oidc_discovery",
+  "meta": {
+    "id": "oidc_issuer_mismatch-01",
+    "kind": "oidc_discovery",
+    "mutator": "discovery_issuer_mismatch",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 1,
+    "hash": "addb545da33273a1"
+  },
+  "output": {
+    "root_cause_code": "OIDC_ISSUER_MISMATCH",
+    "confidence": 1,
+    "evidence": [
+      {
+        "path": "/discovery/issuer",
+        "actual": "https://login.example.com/tenant-1/v2.0/",
+        "expected": "https://login.example.com/tenant-1/v2.0",
+        "note": "differs only by trailing slash"
+      }
+    ],
+    "fix": "Configure the SP's issuer to the exact string the OP publishes in its discovery document (scheme, host, tenant path, trailing slash) and request tokens from that endpoint version.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T09:29:17.710813-05:00",
+  "duration_ms": 0,
+  "tool_calls": 0,
+  "num_turns": 0,
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0
+  },
+  "cost_usd": 0,
+  "hallucinated": [],
+  "valid_citations": 1
+}

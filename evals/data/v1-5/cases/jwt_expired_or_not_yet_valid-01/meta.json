@@ -1,0 +1,9 @@
+{
+  "id": "jwt_expired_or_not_yet_valid-01",
+  "kind": "jwt",
+  "mutator": "jwt_not_yet_valid",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 1,
+  "hash": "73038f4fd7736937"
+}

@@ -1,0 +1,217 @@
+{
+  "case_id": "saml_time_window_invalid-02",
+  "case_hash": "88667c034a134029",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_TIME_WINDOW_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+    "fix_keys": [
+      "synchronise",
+      "clocks",
+      "sides",
+      "clock"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_time_window_invalid-02",
+    "kind": "saml_response",
+    "dialect": "generic",
+    "mutator": "expired",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 2,
+    "hash": "88667c034a134029"
+  },
+  "output": {
+    "root_cause_code": "SAML_TIME_WINDOW_INVALID",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+        "actual": "2026-01-15T11:40:00.000Z",
+        "expected": "later than now (2026-01-15T12:00:00Z, within 5 min skew)",
+        "note": "Assertion expired 20 minutes before validation time"
+      },
+      {
+        "path": "/Response/Assertion/Conditions/@NotBefore",
+        "actual": "2026-01-15T11:35:00.000Z",
+        "note": "Window is 11:35-11:40, entirely before the assertion's own IssueInstant"
+      },
+      {
+        "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@NotOnOrAfter",
+        "actual": "2026-01-15T11:40:00.000Z",
+        "expected": "later than now",
+        "note": "Bearer confirmation also expired"
+      },
+      {
+        "path": "/Response/Assertion/@IssueInstant",
+        "actual": "2026-01-15T12:00:00.000Z",
+        "note": "Issued after its own validity window ended, suggesting IdP clock/timezone error"
+      }
+    ],
+    "fix": "Fix the IdP's clock or time-zone handling (use NTP-synced time) so Conditions and SubjectConfirmationData windows contain the issue time, e.g. NotBefore at or slightly before issue and NotOnOrAfter about 5 minutes after. Keep SP clock skew at 5 minutes or less; do not loosen time checks on the SP.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T09:48:13.300196-05:00",
+  "duration_ms": 9776,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1394,
+    "cache_creation_input_tokens": 6560,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.0407032,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1394,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 6560,
+      "costUSD": 0.0407032,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 9646,
+    "stop_reason": "tool_use",
+    "session_id": "1550b8ee-08cc-4fe1-9712-7fcc45acd539",
+    "total_cost_usd": 0.0407032,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6560,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 1394,
+      "output_tokens_details": {
+        "thinking_tokens": 137
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6560,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1394,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 6560,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 6560
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1394,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 6560,
+        "webSearchRequests": 0,
+        "costUSD": 0.0407032,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 137,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6560,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_TIME_WINDOW_INVALID\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/Response/Assertion/Conditions/@NotOnOrAfter\",\"actual\":\"2026-01-15T11:40:00.000Z\",\"expected\":\"later than now (2026-01-15T12:00:00Z, within 5 min skew)\",\"note\":\"Assertion expired 20 minutes before validation time\"},{\"path\":\"/Response/Assertion/Conditions/@NotBefore\",\"actual\":\"2026-01-15T11:35:00.000Z\",\"note\":\"Window is 11:35-11:40, entirely before the assertion's own IssueInstant\"},{\"path\":\"/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@NotOnOrAfter\",\"actual\":\"2026-01-15T11:40:00.000Z\",\"expected\":\"later than now\",\"note\":\"Bearer confirmation also expired\"},{\"path\":\"/Response/Assertion/@IssueInstant\",\"actual\":\"2026-01-15T12:00:00.000Z\",\"note\":\"Issued after its own validity window ended, suggesting IdP clock/timezone error\"}],\"fix\":\"Fix the IdP's clock or time-zone handling (use NTP-synced time) so Conditions and SubjectConfirmationData windows contain the issue time, e.g. NotBefore at or slightly before issue and NotOnOrAfter about 5 minutes after. Keep SP clock skew at 5 minutes or less; do not loosen time checks on the SP.\",\"alternatives\":[],\"questions\":[],\"posture_codes\":[]}",
+    "structured_output": {
+      "root_cause_code": "SAML_TIME_WINDOW_INVALID",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+          "actual": "2026-01-15T11:40:00.000Z",
+          "expected": "later than now (2026-01-15T12:00:00Z, within 5 min skew)",
+          "note": "Assertion expired 20 minutes before validation time"
+        },
+        {
+          "path": "/Response/Assertion/Conditions/@NotBefore",
+          "actual": "2026-01-15T11:35:00.000Z",
+          "note": "Window is 11:35-11:40, entirely before the assertion's own IssueInstant"
+        },
+        {
+          "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@NotOnOrAfter",
+          "actual": "2026-01-15T11:40:00.000Z",
+          "expected": "later than now",
+          "note": "Bearer confirmation also expired"
+        },
+        {
+          "path": "/Response/Assertion/@IssueInstant",
+          "actual": "2026-01-15T12:00:00.000Z",
+          "note": "Issued after its own validity window ended, suggesting IdP clock/timezone error"
+        }
+      ],
+      "fix": "Fix the IdP's clock or time-zone handling (use NTP-synced time) so Conditions and SubjectConfirmationData windows contain the issue time, e.g. NotBefore at or slightly before issue and NotOnOrAfter about 5 minutes after. Keep SP clock skew at 5 minutes or less; do not loosen time checks on the SP.",
+      "alternatives": [],
+      "questions": [],
+      "posture_codes": []
+    },
+    "ttft_ms": 2328,
+    "type": "result",
+    "duration_ms": 9776,
+    "uuid": "404e232b-08e9-4a98-b1b7-71754725a3d7",
+    "ttft_stream_ms": 1454,
+    "time_to_request_ms": 126,
+    "first_content_frame_ms": 1455,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,206 @@
+{
+  "case_id": "oidc_discovery_doc_invalid-03",
+  "case_hash": "0965e380477a7079",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OIDC_DISCOVERY_DOC_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/discovery/id_token_signing_alg_values_supported",
+    "fix_keys": [
+      "point",
+      "canonical"
+    ]
+  },
+  "kind": "oidc_discovery",
+  "meta": {
+    "id": "oidc_discovery_doc_invalid-03",
+    "kind": "oidc_discovery",
+    "mutator": "discovery_no_rs256",
+    "expected_completeness": "partial",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 3,
+    "hash": "0965e380477a7079"
+  },
+  "output": {
+    "root_cause_code": "OIDC_DISCOVERY_DOC_INVALID",
+    "confidence": 0.7,
+    "evidence": [
+      {
+        "path": "/discovery/id_token_signing_alg_values_supported",
+        "actual": "ES256",
+        "expected": "includes RS256",
+        "note": "OIDC Discovery requires RS256 to be included; the document does not advertise it."
+      }
+    ],
+    "fix": "Load the discovery document from the OP's canonical /.well-known/openid-configuration URL for the correct tenant. The issuer in the document already matches the configured value. If the OP's document is non-conformant because RS256 is missing, ask the OP owner to fix it, or configure the endpoints explicitly. Don't weaken token validation. AADSTS50049 is an Entra error about an unknown or invalid instance or authority. It suggests the authority or tenant host used to fetch the document is wrong for this issuer. Check that the authority host and tenant ID in the SP configuration are the ones the OP actually serves.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+        "why_not": "AADSTS50049 points to a wrong authority or instance, but the artifact shows no client registration problem. The validator found a concrete defect in the document."
+      },
+      {
+        "code": "OIDC_ISSUER_MISMATCH",
+        "why_not": "The issuer in the document matches the expected value, so the issuer_match check passed."
+      }
+    ],
+    "questions": [
+      "Which URL did the SP use to fetch the discovery document? The fetch status and content type were not supplied, so the content_type check was skipped.",
+      "Is login.example.com the real OP host, or is it a proxy in front of Entra? AADSTS50049 suggests the authority or instance may be wrong."
+    ]
+  },
+  "started": "2026-10-27T09:58:50.524241-05:00",
+  "duration_ms": 8738,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 871,
+    "cache_creation_input_tokens": 2869,
+    "cache_read_input_tokens": 23933
+  },
+  "cost_usd": 0.0225873,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 871,
+      "cacheReadInputTokens": 23933,
+      "cacheCreationInputTokens": 2869,
+      "costUSD": 0.0225873,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 8627,
+    "stop_reason": "tool_use",
+    "session_id": "3096e9f4-0b8e-4cfc-8e62-6ce0d4387ffc",
+    "total_cost_usd": 0.0225873,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 2869,
+      "cache_read_input_tokens": 23933,
+      "output_tokens": 871,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 2869,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 700,
+          "cache_read_input_tokens": 12708,
+          "cache_creation_input_tokens": 1386,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1386
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 871,
+        "cacheReadInputTokens": 23933,
+        "cacheCreationInputTokens": 2869,
+        "webSearchRequests": 0,
+        "costUSD": 0.0225873,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 2869,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OIDC_DISCOVERY_DOC_INVALID\",\"confidence\":0.7,\"evidence\":[{\"path\":\"/discovery/id_token_signing_alg_values_supported\",\"actual\":\"ES256\",\"expected\":\"includes RS256\",\"note\":\"OIDC Discovery requires RS256 to be included; the document does not advertise it.\"}],\"fix\":\"Load the discovery document from the OP's canonical /.well-known/openid-configuration URL for the correct tenant. The issuer in the document already matches the configured value. If the OP's document is non-conformant because RS256 is missing, ask the OP owner to fix it, or configure the endpoints explicitly. Don't weaken token validation. AADSTS50049 is an Entra error about an unknown or invalid instance or authority. It suggests the authority or tenant host used to fetch the document is wrong for this issuer. Check that the authority host and tenant ID in the SP configuration are the ones the OP actually serves.\",\"alternatives\":[{\"code\":\"OAUTH_CLIENT_CONFIG_REJECTED\",\"why_not\":\"AADSTS50049 points to a wrong authority or instance, but the artifact shows no client registration problem. The validator found a concrete defect in the document.\"},{\"code\":\"OIDC_ISSUER_MISMATCH\",\"why_not\":\"The issuer in the document matches the expected value, so the issuer_match check passed.\"}],\"questions\":[\"Which URL did the SP use to fetch the discovery document? The fetch status and content type were not supplied, so the content_type check was skipped.\",\"Is login.example.com the real OP host, or is it a proxy in front of Entra? AADSTS50049 suggests the authority or instance may be wrong.\"]}",
+    "structured_output": {
+      "root_cause_code": "OIDC_DISCOVERY_DOC_INVALID",
+      "confidence": 0.7,
+      "evidence": [
+        {
+          "path": "/discovery/id_token_signing_alg_values_supported",
+          "actual": "ES256",
+          "expected": "includes RS256",
+          "note": "OIDC Discovery requires RS256 to be included; the document does not advertise it."
+        }
+      ],
+      "fix": "Load the discovery document from the OP's canonical /.well-known/openid-configuration URL for the correct tenant. The issuer in the document already matches the configured value. If the OP's document is non-conformant because RS256 is missing, ask the OP owner to fix it, or configure the endpoints explicitly. Don't weaken token validation. AADSTS50049 is an Entra error about an unknown or invalid instance or authority. It suggests the authority or tenant host used to fetch the document is wrong for this issuer. Check that the authority host and tenant ID in the SP configuration are the ones the OP actually serves.",
+      "alternatives": [
+        {
+          "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+          "why_not": "AADSTS50049 points to a wrong authority or instance, but the artifact shows no client registration problem. The validator found a concrete defect in the document."
+        },
+        {
+          "code": "OIDC_ISSUER_MISMATCH",
+          "why_not": "The issuer in the document matches the expected value, so the issuer_match check passed."
+        }
+      ],
+      "questions": [
+        "Which URL did the SP use to fetch the discovery document? The fetch status and content type were not supplied, so the content_type check was skipped.",
+        "Is login.example.com the real OP host, or is it a proxy in front of Entra? AADSTS50049 suggests the authority or instance may be wrong."
+      ]
+    },
+    "ttft_ms": 2670,
+    "type": "result",
+    "duration_ms": 8738,
+    "uuid": "8bce63ca-7621-4ff4-8b5f-8aff66d31f28",
+    "ttft_stream_ms": 1956,
+    "time_to_request_ms": 99,
+    "first_content_frame_ms": 1956,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

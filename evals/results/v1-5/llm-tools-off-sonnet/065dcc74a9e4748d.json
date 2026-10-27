@@ -1,0 +1,244 @@
+{
+  "case_id": "posture_expired_cert_accepted-01",
+  "case_hash": "065dcc74a9e4748d",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_EXPIRED_CERT_ACCEPTED"
+    ],
+    "evidence_path": "/Signature/KeyInfo/X509Data/X509Certificate/NotAfter",
+    "fix_keys": [
+      "rotate",
+      "signing",
+      "certificate",
+      "configure"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_expired_cert_accepted-01",
+    "kind": "saml_response",
+    "dialect": "auth0",
+    "mutator": "posture_expired_cert",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 1,
+    "hash": "065dcc74a9e4748d"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.7,
+    "evidence": [
+      {
+        "path": "/expected/idp_cert_pem",
+        "actual": "Configured trusted IdP certificate has notAfter 2026-01-14T12:00:00Z, which is before the evaluation time 2026-01-15T12:00:00Z",
+        "expected": "Certificate valid at 'now'"
+      },
+      {
+        "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate/NotAfter",
+        "actual": "2026-01-14T12:00:00Z (embedded cert is the same expired certificate)",
+        "expected": "notAfter later than 2026-01-15T12:00:00Z"
+      },
+      {
+        "path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm",
+        "actual": "rsa-sha256",
+        "note": "Strong algorithm; the assertion is signed, as required."
+      },
+      {
+        "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+        "actual": "https://sp.example.com/saml/metadata",
+        "expected": "https://sp.example.com/saml/metadata"
+      },
+      {
+        "path": "/Response/@Destination",
+        "actual": "https://sp.example.com/saml/acs",
+        "expected": "https://sp.example.com/saml/acs"
+      }
+    ],
+    "fix": "Ask the IdP for its current signing certificate (or refresh the IdP metadata) and replace the expired one in the SP trust store. Then make the SP reject signatures from certificates outside their validity period. Keep signature verification pinned to the configured certificate, not the one embedded in the message. Add monitoring that alerts at least 30 days before the IdP certificate expires. Every other check passes: audience, destination, recipient, InResponseTo, issuer, time window of 5 minutes, NameID format, and the required attributes.",
+    "posture_codes": [
+      "POSTURE_EXPIRED_CERT_ACCEPTED"
+    ],
+    "alternatives": [
+      {
+        "code": "CERT_EXPIRED_OR_WEAK",
+        "why_not": "The symptom says logins still succeed, so the SP accepts the signature despite the expired certificate. That makes this a posture issue (expired cert accepted), not a validation fault. If the SP is meant to reject expired certificates, this would be the cause."
+      }
+    ],
+    "questions": [
+      "Does the SP's validation library check certificate validity dates? If so, why is this response still accepted?"
+    ]
+  },
+  "started": "2026-10-27T09:39:17.516242-05:00",
+  "duration_ms": 10773,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1329,
+    "cache_creation_input_tokens": 6520,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.039893200000000004,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1329,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 6520,
+      "costUSD": 0.039893200000000004,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 5,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 10604,
+    "stop_reason": "tool_use",
+    "session_id": "235ca88f-efeb-4da4-866f-b7b48dc23443",
+    "total_cost_usd": 0.039893200000000004,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6520,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 1329,
+      "output_tokens_details": {
+        "thinking_tokens": 386
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6520,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1329,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 6520,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 6520
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1329,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 6520,
+        "webSearchRequests": 0,
+        "costUSD": 0.039893200000000004,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 386,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6520,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.7,\"posture_codes\":[\"POSTURE_EXPIRED_CERT_ACCEPTED\"],\"evidence\":[{\"path\":\"/expected/idp_cert_pem\",\"actual\":\"Configured trusted IdP certificate has notAfter 2026-01-14T12:00:00Z, which is before the evaluation time 2026-01-15T12:00:00Z\",\"expected\":\"Certificate valid at 'now'\"},{\"path\":\"/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate/NotAfter\",\"actual\":\"2026-01-14T12:00:00Z (embedded cert is the same expired certificate)\",\"expected\":\"notAfter later than 2026-01-15T12:00:00Z\"},{\"path\":\"/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm\",\"actual\":\"rsa-sha256\",\"note\":\"Strong algorithm; the assertion is signed, as required.\"},{\"path\":\"/Response/Assertion/Conditions/AudienceRestriction/Audience\",\"actual\":\"https://sp.example.com/saml/metadata\",\"expected\":\"https://sp.example.com/saml/metadata\"},{\"path\":\"/Response/@Destination\",\"actual\":\"https://sp.example.com/saml/acs\",\"expected\":\"https://sp.example.com/saml/acs\"}],\"fix\":\"Ask the IdP for its current signing certificate (or refresh the IdP metadata) and replace the expired one in the SP trust store. Then make the SP reject signatures from certificates outside their validity period. Keep signature verification pinned to the configured certificate, not the one embedded in the message. Add monitoring that alerts at least 30 days before the IdP certificate expires. Every other check passes: audience, destination, recipient, InResponseTo, issuer, time window of 5 minutes, NameID format, and the required attributes.\",\"alternatives\":[{\"code\":\"CERT_EXPIRED_OR_WEAK\",\"why_not\":\"The symptom says logins still succeed, so the SP accepts the signature despite the expired certificate. That makes this a posture issue (expired cert accepted), not a validation fault. If the SP is meant to reject expired certificates, this would be the cause.\"}],\"questions\":[\"Does the SP's validation library check certificate validity dates? If so, why is this response still accepted?\"]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.7,
+      "posture_codes": [
+        "POSTURE_EXPIRED_CERT_ACCEPTED"
+      ],
+      "evidence": [
+        {
+          "path": "/expected/idp_cert_pem",
+          "actual": "Configured trusted IdP certificate has notAfter 2026-01-14T12:00:00Z, which is before the evaluation time 2026-01-15T12:00:00Z",
+          "expected": "Certificate valid at 'now'"
+        },
+        {
+          "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate/NotAfter",
+          "actual": "2026-01-14T12:00:00Z (embedded cert is the same expired certificate)",
+          "expected": "notAfter later than 2026-01-15T12:00:00Z"
+        },
+        {
+          "path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm",
+          "actual": "rsa-sha256",
+          "note": "Strong algorithm; the assertion is signed, as required."
+        },
+        {
+          "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+          "actual": "https://sp.example.com/saml/metadata",
+          "expected": "https://sp.example.com/saml/metadata"
+        },
+        {
+          "path": "/Response/@Destination",
+          "actual": "https://sp.example.com/saml/acs",
+          "expected": "https://sp.example.com/saml/acs"
+        }
+      ],
+      "fix": "Ask the IdP for its current signing certificate (or refresh the IdP metadata) and replace the expired one in the SP trust store. Then make the SP reject signatures from certificates outside their validity period. Keep signature verification pinned to the configured certificate, not the one embedded in the message. Add monitoring that alerts at least 30 days before the IdP certificate expires. Every other check passes: audience, destination, recipient, InResponseTo, issuer, time window of 5 minutes, NameID format, and the required attributes.",
+      "alternatives": [
+        {
+          "code": "CERT_EXPIRED_OR_WEAK",
+          "why_not": "The symptom says logins still succeed, so the SP accepts the signature despite the expired certificate. That makes this a posture issue (expired cert accepted), not a validation fault. If the SP is meant to reject expired certificates, this would be the cause."
+        }
+      ],
+      "questions": [
+        "Does the SP's validation library check certificate validity dates? If so, why is this response still accepted?"
+      ]
+    },
+    "ttft_ms": 5583,
+    "type": "result",
+    "duration_ms": 10773,
+    "uuid": "8c99c585-2cac-49e0-8eb8-fc754b3dcb26",
+    "ttft_stream_ms": 2559,
+    "time_to_request_ms": 166,
+    "first_content_frame_ms": 2560,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

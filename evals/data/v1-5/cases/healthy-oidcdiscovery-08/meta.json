@@ -1,0 +1,10 @@
+{
+  "id": "healthy-oidcdiscovery-08",
+  "kind": "oidc_discovery",
+  "expected_completeness": "full",
+  "symptom_from": "misleading",
+  "misleading_symptom": true,
+  "seed": 42,
+  "index": 8,
+  "hash": "42d16e3a89b58d88"
+}

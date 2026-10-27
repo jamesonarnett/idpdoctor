@@ -1,0 +1,13 @@
+{
+  "code": "HEALTHY",
+  "posture_codes": [
+    "POSTURE_WEAK_ALGORITHM"
+  ],
+  "evidence_path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm",
+  "fix_keys": [
+    "application",
+    "rsa-sha256",
+    "2048-bit",
+    "larger"
+  ]
+}

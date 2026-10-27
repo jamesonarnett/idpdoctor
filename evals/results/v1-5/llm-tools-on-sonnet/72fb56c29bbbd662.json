@@ -1,0 +1,186 @@
+{
+  "case_id": "saml_required_attribute_missing-00",
+  "case_hash": "72fb56c29bbbd662",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_REQUIRED_ATTRIBUTE_MISSING",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/AttributeStatement/Attribute[@Name='email']",
+    "fix_keys": [
+      "missing",
+      "attribute",
+      "claim",
+      "application"
+    ],
+    "needs": [
+      "required_attributes"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_required_attribute_missing-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "attribute_missing",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "72fb56c29bbbd662"
+  },
+  "output": {
+    "root_cause_code": "SAML_REQUIRED_ATTRIBUTE_MISSING",
+    "confidence": 0.97,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/AttributeStatement/Attribute[@Name='email']",
+        "actual": "absent; present attributes: firstName, groups",
+        "expected": "email",
+        "note": "The email attribute is missing from the signed assertion. The other checks pass: status, issuer, destination, InResponseTo, signature, audience, recipient, time window and NameID."
+      }
+    ],
+    "fix": "In the IdP application's attribute statement, add a claim named exactly \"email\" (case-sensitive). Map it to the user's email profile field and confirm the test user has a value for it. Then capture a new response and re-validate. Keep the assertion signature validation enabled. Don't relax the SP's required-attribute check.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T10:10:56.96449-05:00",
+  "duration_ms": 11747,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1828,
+    "cache_creation_input_tokens": 6758,
+    "cache_read_input_tokens": 28682
+  },
+  "cost_usd": 0.04818820000000001,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1828,
+      "cacheReadInputTokens": 28682,
+      "cacheCreationInputTokens": 6758,
+      "costUSD": 0.04818820000000001,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 11577,
+    "stop_reason": "tool_use",
+    "session_id": "9f5803f5-1815-442b-9e9c-7e2543704e71",
+    "total_cost_usd": 0.04818820000000001,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 6758,
+      "cache_read_input_tokens": 28682,
+      "output_tokens": 1828,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6758,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 369,
+          "cache_read_input_tokens": 16303,
+          "cache_creation_input_tokens": 2834,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2834
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1828,
+        "cacheReadInputTokens": 28682,
+        "cacheCreationInputTokens": 6758,
+        "webSearchRequests": 0,
+        "costUSD": 0.04818820000000001,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6758,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_REQUIRED_ATTRIBUTE_MISSING\",\"confidence\":0.97,\"evidence\":[{\"path\":\"/Response/Assertion/AttributeStatement/Attribute[@Name='email']\",\"expected\":\"email\",\"actual\":\"absent; present attributes: firstName, groups\",\"note\":\"The email attribute is missing from the signed assertion. The other checks pass: status, issuer, destination, InResponseTo, signature, audience, recipient, time window and NameID.\"}],\"fix\":\"In the IdP application's attribute statement, add a claim named exactly \\\"email\\\" (case-sensitive). Map it to the user's email profile field and confirm the test user has a value for it. Then capture a new response and re-validate. Keep the assertion signature validation enabled. Don't relax the SP's required-attribute check.\"}",
+    "structured_output": {
+      "root_cause_code": "SAML_REQUIRED_ATTRIBUTE_MISSING",
+      "confidence": 0.97,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/AttributeStatement/Attribute[@Name='email']",
+          "expected": "email",
+          "actual": "absent; present attributes: firstName, groups",
+          "note": "The email attribute is missing from the signed assertion. The other checks pass: status, issuer, destination, InResponseTo, signature, audience, recipient, time window and NameID."
+        }
+      ],
+      "fix": "In the IdP application's attribute statement, add a claim named exactly \"email\" (case-sensitive). Map it to the user's email profile field and confirm the test user has a value for it. Then capture a new response and re-validate. Keep the assertion signature validation enabled. Don't relax the SP's required-attribute check."
+    },
+    "ttft_ms": 7895,
+    "type": "result",
+    "duration_ms": 11747,
+    "uuid": "dd3133c5-332e-4011-81e7-00c3e598ea48",
+    "ttft_stream_ms": 1446,
+    "time_to_request_ms": 156,
+    "first_content_frame_ms": 1446,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "id": "saml_time_window_invalid-00",
+  "kind": "saml_response",
+  "dialect": "entra",
+  "mutator": "expired",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 0,
+  "hash": "38c39829b70f051a"
+}

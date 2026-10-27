@@ -1,0 +1,229 @@
+{
+  "case_id": "saml_status_not_success-02",
+  "case_hash": "3ef6bf5fd8fae214",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_STATUS_NOT_SUCCESS",
+    "posture_codes": [],
+    "evidence_path": "/Response/Status/StatusCode/@Value",
+    "fix_keys": [
+      "statuscode",
+      "sub-code",
+      "statusmessage:",
+      "responder"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_status_not_success-02",
+    "kind": "saml_response",
+    "dialect": "generic",
+    "mutator": "status_responder",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 2,
+    "hash": "3ef6bf5fd8fae214"
+  },
+  "output": {
+    "root_cause_code": "IDP_POLICY_REFUSAL",
+    "confidence": 0.85,
+    "evidence": [
+      {
+        "path": "/Response/Status/StatusCode/@Value",
+        "actual": "urn:oasis:names:tc:SAML:2.0:status:Responder",
+        "note": "IdP reports it, not the requester, as the source of the failure"
+      },
+      {
+        "path": "/Response/Status/StatusCode/StatusCode/@Value",
+        "actual": "urn:oasis:names:tc:SAML:2.0:status:RequestDenied",
+        "note": "IdP declined to authenticate the request"
+      },
+      {
+        "path": "/Response/Status/StatusMessage",
+        "actual": "The user is not assigned to this application.",
+        "note": "The refusal is an assignment/authorization policy at the IdP"
+      },
+      {
+        "path": "/Response/@InResponseTo",
+        "actual": "_req_1234567890abcdef",
+        "expected": "_req_1234567890abcdef",
+        "note": "Matches the request, so the SP request was understood"
+      }
+    ],
+    "fix": "The refusal comes from the IdP's access policy, not from the SP configuration. In ADFS, or the IdP's admin console, assign the affected user group to this relying party/application, or add it to the issuance authorization rule that permits access. Then retry. The SP should keep treating non-Success responses as failures and should not process any assertion from them. No SP-side security settings need to change.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "SAML_STATUS_NOT_SUCCESS",
+        "why_not": "This is technically true, but the status message shows a specific IdP-side policy refusal (user not assigned), so IDP_POLICY_REFUSAL is more precise."
+      }
+    ],
+    "questions": [
+      "Which group of users is affected, and is it assigned to the relying party in ADFS?"
+    ]
+  },
+  "started": "2026-10-27T09:46:52.987786-05:00",
+  "duration_ms": 7192,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 700,
+    "cache_creation_input_tokens": 3929,
+    "cache_read_input_tokens": 5099
+  },
+  "cost_usd": 0.0232299,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 700,
+      "cacheReadInputTokens": 5099,
+      "cacheCreationInputTokens": 3929,
+      "costUSD": 0.0232299,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 7092,
+    "stop_reason": "tool_use",
+    "session_id": "9cb1e755-c3db-4b58-aee1-eb3134f7bed6",
+    "total_cost_usd": 0.0232299,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 3929,
+      "cache_read_input_tokens": 5099,
+      "output_tokens": 700,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3929,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 700,
+          "cache_read_input_tokens": 5099,
+          "cache_creation_input_tokens": 3929,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 3929
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 700,
+        "cacheReadInputTokens": 5099,
+        "cacheCreationInputTokens": 3929,
+        "webSearchRequests": 0,
+        "costUSD": 0.0232299,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3929,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"IDP_POLICY_REFUSAL\",\"confidence\":0.85,\"evidence\":[{\"path\":\"/Response/Status/StatusCode/@Value\",\"actual\":\"urn:oasis:names:tc:SAML:2.0:status:Responder\",\"note\":\"IdP reports it, not the requester, as the source of the failure\"},{\"path\":\"/Response/Status/StatusCode/StatusCode/@Value\",\"actual\":\"urn:oasis:names:tc:SAML:2.0:status:RequestDenied\",\"note\":\"IdP declined to authenticate the request\"},{\"path\":\"/Response/Status/StatusMessage\",\"actual\":\"The user is not assigned to this application.\",\"note\":\"The refusal is an assignment/authorization policy at the IdP\"},{\"path\":\"/Response/@InResponseTo\",\"actual\":\"_req_1234567890abcdef\",\"expected\":\"_req_1234567890abcdef\",\"note\":\"Matches the request, so the SP request was understood\"}],\"fix\":\"The refusal comes from the IdP's access policy, not from the SP configuration. In ADFS, or the IdP's admin console, assign the affected user group to this relying party/application, or add it to the issuance authorization rule that permits access. Then retry. The SP should keep treating non-Success responses as failures and should not process any assertion from them. No SP-side security settings need to change.\",\"alternatives\":[{\"code\":\"SAML_STATUS_NOT_SUCCESS\",\"why_not\":\"This is technically true, but the status message shows a specific IdP-side policy refusal (user not assigned), so IDP_POLICY_REFUSAL is more precise.\"}],\"questions\":[\"Which group of users is affected, and is it assigned to the relying party in ADFS?\"]}",
+    "structured_output": {
+      "root_cause_code": "IDP_POLICY_REFUSAL",
+      "confidence": 0.85,
+      "evidence": [
+        {
+          "path": "/Response/Status/StatusCode/@Value",
+          "actual": "urn:oasis:names:tc:SAML:2.0:status:Responder",
+          "note": "IdP reports it, not the requester, as the source of the failure"
+        },
+        {
+          "path": "/Response/Status/StatusCode/StatusCode/@Value",
+          "actual": "urn:oasis:names:tc:SAML:2.0:status:RequestDenied",
+          "note": "IdP declined to authenticate the request"
+        },
+        {
+          "path": "/Response/Status/StatusMessage",
+          "actual": "The user is not assigned to this application.",
+          "note": "The refusal is an assignment/authorization policy at the IdP"
+        },
+        {
+          "path": "/Response/@InResponseTo",
+          "actual": "_req_1234567890abcdef",
+          "expected": "_req_1234567890abcdef",
+          "note": "Matches the request, so the SP request was understood"
+        }
+      ],
+      "fix": "The refusal comes from the IdP's access policy, not from the SP configuration. In ADFS, or the IdP's admin console, assign the affected user group to this relying party/application, or add it to the issuance authorization rule that permits access. Then retry. The SP should keep treating non-Success responses as failures and should not process any assertion from them. No SP-side security settings need to change.",
+      "alternatives": [
+        {
+          "code": "SAML_STATUS_NOT_SUCCESS",
+          "why_not": "This is technically true, but the status message shows a specific IdP-side policy refusal (user not assigned), so IDP_POLICY_REFUSAL is more precise."
+        }
+      ],
+      "questions": [
+        "Which group of users is affected, and is it assigned to the relying party in ADFS?"
+      ]
+    },
+    "ttft_ms": 7165,
+    "type": "result",
+    "duration_ms": 7192,
+    "uuid": "8ab31bcc-eb75-4e97-b701-be9c27c3fa22",
+    "ttft_stream_ms": 2594,
+    "time_to_request_ms": 96,
+    "first_content_frame_ms": 2594,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

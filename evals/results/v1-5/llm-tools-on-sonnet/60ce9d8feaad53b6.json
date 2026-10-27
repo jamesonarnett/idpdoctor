@@ -1,0 +1,193 @@
+{
+  "case_id": "oidc_issuer_mismatch-02",
+  "case_hash": "60ce9d8feaad53b6",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OIDC_ISSUER_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/claims/iss",
+    "fix_keys": [
+      "configure",
+      "issuer",
+      "exact",
+      "string"
+    ],
+    "needs": [
+      "issuer"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "oidc_issuer_mismatch-02",
+    "kind": "jwt",
+    "mutator": "jwt_iss_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 2,
+    "hash": "60ce9d8feaad53b6"
+  },
+  "output": {
+    "root_cause_code": "OIDC_ISSUER_MISMATCH",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/claims/iss",
+        "actual": "https://login.example.com/tenant-1/",
+        "expected": "https://login.example.com/tenant-1/v2.0",
+        "note": "The token's iss differs from the configured issuer. It lacks the /v2.0 path and ends in a trailing slash. The signature, kid, aud, exp, nbf, iat and nonce checks all pass."
+      }
+    ],
+    "fix": "Set the SP's issuer to the exact string the OP publishes as `issuer` in its discovery document, and compare it byte for byte. Don't normalize or strip the trailing slash. This token's iss is `https://login.example.com/tenant-1/`, which has no `/v2.0` suffix. That suggests the token came from a different endpoint version than the one you configured (v1 versus v2.0). Make sure the authorize and token requests, the discovery URL and the configured issuer all use the same endpoint version. Then check that the discovery document's `issuer` equals the `iss` in the tokens it issues. Keep signature and issuer validation enabled.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": [
+      "Which discovery URL does the SP use, the v1 or the v2.0 endpoint? Does its `issuer` value exactly equal this token's iss?",
+      "access_token (optional): supply it to enable the at_hash check, which was skipped."
+    ]
+  },
+  "started": "2026-10-27T09:59:30.929563-05:00",
+  "duration_ms": 9042,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1249,
+    "cache_creation_input_tokens": 3700,
+    "cache_read_input_tokens": 23939
+  },
+  "cost_usd": 0.0296919,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1249,
+      "cacheReadInputTokens": 23939,
+      "cacheCreationInputTokens": 3700,
+      "costUSD": 0.0296919,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 8923,
+    "stop_reason": "tool_use",
+    "session_id": "f996a888-371b-47d0-8363-104b799e4049",
+    "total_cost_usd": 0.0296919,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3700,
+      "cache_read_input_tokens": 23939,
+      "output_tokens": 1249,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3700,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 602,
+          "cache_read_input_tokens": 12866,
+          "cache_creation_input_tokens": 1907,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1907
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1249,
+        "cacheReadInputTokens": 23939,
+        "cacheCreationInputTokens": 3700,
+        "webSearchRequests": 0,
+        "costUSD": 0.0296919,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3700,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OIDC_ISSUER_MISMATCH\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/claims/iss\",\"actual\":\"https://login.example.com/tenant-1/\",\"expected\":\"https://login.example.com/tenant-1/v2.0\",\"note\":\"The token's iss differs from the configured issuer. It lacks the /v2.0 path and ends in a trailing slash. The signature, kid, aud, exp, nbf, iat and nonce checks all pass.\"}],\"fix\":\"Set the SP's issuer to the exact string the OP publishes as `issuer` in its discovery document, and compare it byte for byte. Don't normalize or strip the trailing slash. This token's iss is `https://login.example.com/tenant-1/`, which has no `/v2.0` suffix. That suggests the token came from a different endpoint version than the one you configured (v1 versus v2.0). Make sure the authorize and token requests, the discovery URL and the configured issuer all use the same endpoint version. Then check that the discovery document's `issuer` equals the `iss` in the tokens it issues. Keep signature and issuer validation enabled.\",\"alternatives\":[],\"questions\":[\"Which discovery URL does the SP use, the v1 or the v2.0 endpoint? Does its `issuer` value exactly equal this token's iss?\",\"access_token (optional): supply it to enable the at_hash check, which was skipped.\"]}",
+    "structured_output": {
+      "root_cause_code": "OIDC_ISSUER_MISMATCH",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/claims/iss",
+          "actual": "https://login.example.com/tenant-1/",
+          "expected": "https://login.example.com/tenant-1/v2.0",
+          "note": "The token's iss differs from the configured issuer. It lacks the /v2.0 path and ends in a trailing slash. The signature, kid, aud, exp, nbf, iat and nonce checks all pass."
+        }
+      ],
+      "fix": "Set the SP's issuer to the exact string the OP publishes as `issuer` in its discovery document, and compare it byte for byte. Don't normalize or strip the trailing slash. This token's iss is `https://login.example.com/tenant-1/`, which has no `/v2.0` suffix. That suggests the token came from a different endpoint version than the one you configured (v1 versus v2.0). Make sure the authorize and token requests, the discovery URL and the configured issuer all use the same endpoint version. Then check that the discovery document's `issuer` equals the `iss` in the tokens it issues. Keep signature and issuer validation enabled.",
+      "alternatives": [],
+      "questions": [
+        "Which discovery URL does the SP use, the v1 or the v2.0 endpoint? Does its `issuer` value exactly equal this token's iss?",
+        "access_token (optional): supply it to enable the at_hash check, which was skipped."
+      ]
+    },
+    "ttft_ms": 4127,
+    "type": "result",
+    "duration_ms": 9042,
+    "uuid": "06d983bc-c2e7-483b-af35-4975369080d6",
+    "ttft_stream_ms": 1449,
+    "time_to_request_ms": 108,
+    "first_content_frame_ms": 1449,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

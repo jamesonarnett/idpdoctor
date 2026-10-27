@@ -1,0 +1,245 @@
+{
+  "case_id": "healthy-oauthredirect-09",
+  "case_hash": "44ec6182b3e68fca",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [],
+    "fix_keys": [
+      "no change needed",
+      "the artifact validates"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "healthy-oauthredirect-09",
+    "kind": "oauth_redirect",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 9,
+    "hash": "44ec6182b3e68fca"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "path": "/redirect/code",
+        "actual": "[REDACTED:code:d818addb]",
+        "note": "Authorization code is present and no error parameter was returned."
+      },
+      {
+        "path": "/request/redirect_uri",
+        "actual": "https://app.example.com/callback",
+        "expected": "https://app.example.com/callback",
+        "note": "The redirect host and path (app.example.com/callback) match the configured redirect_uri."
+      },
+      {
+        "path": "/request/registered_redirect_uris",
+        "actual": "[\"https://app.example.com/callback\"]",
+        "note": "The redirect_uri is in the registered list."
+      },
+      {
+        "path": "/request/code_challenge_method",
+        "actual": "S256",
+        "expected": "S256",
+        "note": "The public client uses PKCE S256, so there is no PKCE posture issue."
+      },
+      {
+        "path": "/redirect/state",
+        "actual": "st-7Hq2Lx9P",
+        "note": "State is returned. No expected state was supplied, so I could not compare it."
+      }
+    ],
+    "fix": "No fault was found in the redirect. Exchange the code once at the token endpoint. Send the same redirect_uri, the original code_verifier and the client_id. Confirm the returned state matches the value stored in the user's session before you exchange the code. Keep PKCE S256.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OAUTH_INVALID_GRANT_CODE",
+        "why_not": "The code is present and nothing in the redirect shows it was expired or reused. That could only appear at the token exchange."
+      },
+      {
+        "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+        "why_not": "The verifier cannot be checked from the redirect alone. Nothing suggests a mismatch with the supplied challenge."
+      }
+    ],
+    "questions": [
+      "What state value did the SP store for this session? The captured state could not be compared with it.",
+      "Did the token endpoint reject the code exchange? If it did, share the error response."
+    ]
+  },
+  "started": "2026-10-27T09:30:53.764664-05:00",
+  "duration_ms": 8390,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 872,
+    "cache_creation_input_tokens": 362,
+    "cache_read_input_tokens": 4858
+  },
+  "cost_usd": 0.0106578,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 872,
+      "cacheReadInputTokens": 4858,
+      "cacheCreationInputTokens": 362,
+      "costUSD": 0.0106578,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 5,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 8281,
+    "stop_reason": "tool_use",
+    "session_id": "2d2acecc-72e3-48e0-b319-b02fbf756bba",
+    "total_cost_usd": 0.0106578,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 362,
+      "cache_read_input_tokens": 4858,
+      "output_tokens": 872,
+      "output_tokens_details": {
+        "thinking_tokens": 113
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 362,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 872,
+          "cache_read_input_tokens": 4858,
+          "cache_creation_input_tokens": 362,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 362
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 872,
+        "cacheReadInputTokens": 4858,
+        "cacheCreationInputTokens": 362,
+        "webSearchRequests": 0,
+        "costUSD": 0.0106578,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 113,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 362,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.8,\"evidence\":[{\"path\":\"/redirect/code\",\"actual\":\"[REDACTED:code:d818addb]\",\"note\":\"Authorization code is present and no error parameter was returned.\"},{\"path\":\"/request/redirect_uri\",\"actual\":\"https://app.example.com/callback\",\"expected\":\"https://app.example.com/callback\",\"note\":\"The redirect host and path (app.example.com/callback) match the configured redirect_uri.\"},{\"path\":\"/request/registered_redirect_uris\",\"actual\":\"[\\\"https://app.example.com/callback\\\"]\",\"note\":\"The redirect_uri is in the registered list.\"},{\"path\":\"/request/code_challenge_method\",\"actual\":\"S256\",\"expected\":\"S256\",\"note\":\"The public client uses PKCE S256, so there is no PKCE posture issue.\"},{\"path\":\"/redirect/state\",\"actual\":\"st-7Hq2Lx9P\",\"note\":\"State is returned. No expected state was supplied, so I could not compare it.\"}],\"fix\":\"No fault was found in the redirect. Exchange the code once at the token endpoint. Send the same redirect_uri, the original code_verifier and the client_id. Confirm the returned state matches the value stored in the user's session before you exchange the code. Keep PKCE S256.\",\"questions\":[\"What state value did the SP store for this session? The captured state could not be compared with it.\",\"Did the token endpoint reject the code exchange? If it did, share the error response.\"],\"alternatives\":[{\"code\":\"OAUTH_INVALID_GRANT_CODE\",\"why_not\":\"The code is present and nothing in the redirect shows it was expired or reused. That could only appear at the token exchange.\"},{\"code\":\"OAUTH_PKCE_VERIFIER_MISMATCH\",\"why_not\":\"The verifier cannot be checked from the redirect alone. Nothing suggests a mismatch with the supplied challenge.\"}]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "path": "/redirect/code",
+          "actual": "[REDACTED:code:d818addb]",
+          "note": "Authorization code is present and no error parameter was returned."
+        },
+        {
+          "path": "/request/redirect_uri",
+          "actual": "https://app.example.com/callback",
+          "expected": "https://app.example.com/callback",
+          "note": "The redirect host and path (app.example.com/callback) match the configured redirect_uri."
+        },
+        {
+          "path": "/request/registered_redirect_uris",
+          "actual": "[\"https://app.example.com/callback\"]",
+          "note": "The redirect_uri is in the registered list."
+        },
+        {
+          "path": "/request/code_challenge_method",
+          "actual": "S256",
+          "expected": "S256",
+          "note": "The public client uses PKCE S256, so there is no PKCE posture issue."
+        },
+        {
+          "path": "/redirect/state",
+          "actual": "st-7Hq2Lx9P",
+          "note": "State is returned. No expected state was supplied, so I could not compare it."
+        }
+      ],
+      "fix": "No fault was found in the redirect. Exchange the code once at the token endpoint. Send the same redirect_uri, the original code_verifier and the client_id. Confirm the returned state matches the value stored in the user's session before you exchange the code. Keep PKCE S256.",
+      "questions": [
+        "What state value did the SP store for this session? The captured state could not be compared with it.",
+        "Did the token endpoint reject the code exchange? If it did, share the error response."
+      ],
+      "alternatives": [
+        {
+          "code": "OAUTH_INVALID_GRANT_CODE",
+          "why_not": "The code is present and nothing in the redirect shows it was expired or reused. That could only appear at the token exchange."
+        },
+        {
+          "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+          "why_not": "The verifier cannot be checked from the redirect alone. Nothing suggests a mismatch with the supplied challenge."
+        }
+      ]
+    },
+    "ttft_ms": 3728,
+    "type": "result",
+    "duration_ms": 8390,
+    "uuid": "c005b930-9269-44df-a304-60555423ec7f",
+    "ttft_stream_ms": 2184,
+    "time_to_request_ms": 106,
+    "first_content_frame_ms": 2184,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

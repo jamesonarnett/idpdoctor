@@ -1,0 +1,1 @@
+WorkOS idp_initiated_sso_disabled when users click the tile in the IdP portal.

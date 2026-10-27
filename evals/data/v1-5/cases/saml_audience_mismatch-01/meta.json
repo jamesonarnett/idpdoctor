@@ -1,0 +1,10 @@
+{
+  "id": "saml_audience_mismatch-01",
+  "kind": "saml_response",
+  "dialect": "auth0",
+  "mutator": "audience_mismatch",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 1,
+  "hash": "f961e54359c6ed74"
+}

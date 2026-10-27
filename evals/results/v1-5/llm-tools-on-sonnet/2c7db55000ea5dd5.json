@@ -1,0 +1,202 @@
+{
+  "case_id": "saml_issuer_mismatch-00",
+  "case_hash": "2c7db55000ea5dd5",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_ISSUER_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/Response/Issuer",
+    "fix_keys": [
+      "entityid",
+      "metadata",
+      "verbatim",
+      "issuer"
+    ],
+    "needs": [
+      "idp_entity_id"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_issuer_mismatch-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "issuer_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "2c7db55000ea5dd5"
+  },
+  "output": {
+    "root_cause_code": "SAML_ISSUER_MISMATCH",
+    "confidence": 0.85,
+    "evidence": [
+      {
+        "path": "/Response/Issuer",
+        "actual": "https://idp.example.com/saml/",
+        "expected": "https://idp.example.com/saml",
+        "note": "Differs only by a trailing slash. Signature, audience, destination, recipient, InResponseTo, time window, NameID and attributes all pass."
+      }
+    ],
+    "fix": "Make the IdP entityID configured on the SP match the Issuer in the response exactly, character for character, including the trailing slash. Copy it from the IdP metadata instead of typing it. Keep the strict comparison and don't normalize or ignore the issuer check. Also check the Google SAML app settings. The Entity ID and ACS URL there must match the SP values (https://sp.example.com/saml/metadata and https://sp.example.com/saml/acs). The app_not_configured_for_user error usually means Google can't match the SP's Entity ID or ACS to the app, even when the user is assigned.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "IDP_POLICY_REFUSAL",
+        "why_not": "The error text suggests a Google-side assignment or config problem. However, the captured response is a Success response with a verified signature, and the only failing check is the Issuer trailing-slash difference."
+      }
+    ],
+    "questions": [
+      "Does the Entity ID in the Google SAML app configuration exactly match the SP entity ID? The captured Issuer is a Success response, so the app_not_configured_for_user error may have come from a different request than this capture."
+    ]
+  },
+  "started": "2026-10-27T10:07:43.90754-05:00",
+  "duration_ms": 12940,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2092,
+    "cache_creation_input_tokens": 6705,
+    "cache_read_input_tokens": 28647
+  },
+  "cost_usd": 0.050612700000000004,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2092,
+      "cacheReadInputTokens": 28647,
+      "cacheCreationInputTokens": 6705,
+      "costUSD": 0.050612700000000004,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 12834,
+    "stop_reason": "tool_use",
+    "session_id": "33327bc0-9cae-460d-b805-16954578a216",
+    "total_cost_usd": 0.050612700000000004,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 6705,
+      "cache_read_input_tokens": 28647,
+      "output_tokens": 2092,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6705,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 635,
+          "cache_read_input_tokens": 16268,
+          "cache_creation_input_tokens": 2816,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2816
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2092,
+        "cacheReadInputTokens": 28647,
+        "cacheCreationInputTokens": 6705,
+        "webSearchRequests": 0,
+        "costUSD": 0.050612700000000004,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6705,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_ISSUER_MISMATCH\",\"confidence\":0.85,\"evidence\":[{\"path\":\"/Response/Issuer\",\"actual\":\"https://idp.example.com/saml/\",\"expected\":\"https://idp.example.com/saml\",\"note\":\"Differs only by a trailing slash. Signature, audience, destination, recipient, InResponseTo, time window, NameID and attributes all pass.\"}],\"fix\":\"Make the IdP entityID configured on the SP match the Issuer in the response exactly, character for character, including the trailing slash. Copy it from the IdP metadata instead of typing it. Keep the strict comparison and don't normalize or ignore the issuer check. Also check the Google SAML app settings. The Entity ID and ACS URL there must match the SP values (https://sp.example.com/saml/metadata and https://sp.example.com/saml/acs). The app_not_configured_for_user error usually means Google can't match the SP's Entity ID or ACS to the app, even when the user is assigned.\",\"alternatives\":[{\"code\":\"IDP_POLICY_REFUSAL\",\"why_not\":\"The error text suggests a Google-side assignment or config problem. However, the captured response is a Success response with a verified signature, and the only failing check is the Issuer trailing-slash difference.\"}],\"questions\":[\"Does the Entity ID in the Google SAML app configuration exactly match the SP entity ID? The captured Issuer is a Success response, so the app_not_configured_for_user error may have come from a different request than this capture.\"]}",
+    "structured_output": {
+      "root_cause_code": "SAML_ISSUER_MISMATCH",
+      "confidence": 0.85,
+      "evidence": [
+        {
+          "path": "/Response/Issuer",
+          "actual": "https://idp.example.com/saml/",
+          "expected": "https://idp.example.com/saml",
+          "note": "Differs only by a trailing slash. Signature, audience, destination, recipient, InResponseTo, time window, NameID and attributes all pass."
+        }
+      ],
+      "fix": "Make the IdP entityID configured on the SP match the Issuer in the response exactly, character for character, including the trailing slash. Copy it from the IdP metadata instead of typing it. Keep the strict comparison and don't normalize or ignore the issuer check. Also check the Google SAML app settings. The Entity ID and ACS URL there must match the SP values (https://sp.example.com/saml/metadata and https://sp.example.com/saml/acs). The app_not_configured_for_user error usually means Google can't match the SP's Entity ID or ACS to the app, even when the user is assigned.",
+      "alternatives": [
+        {
+          "code": "IDP_POLICY_REFUSAL",
+          "why_not": "The error text suggests a Google-side assignment or config problem. However, the captured response is a Success response with a verified signature, and the only failing check is the Issuer trailing-slash difference."
+        }
+      ],
+      "questions": [
+        "Does the Entity ID in the Google SAML app configuration exactly match the SP entity ID? The captured Issuer is a Success response, so the app_not_configured_for_user error may have come from a different request than this capture."
+      ]
+    },
+    "ttft_ms": 7875,
+    "type": "result",
+    "duration_ms": 12940,
+    "uuid": "dc5c7747-892f-4025-8f64-abb2014a9bc6",
+    "ttft_stream_ms": 1343,
+    "time_to_request_ms": 88,
+    "first_content_frame_ms": 1343,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

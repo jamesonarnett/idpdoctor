@@ -1,0 +1,13 @@
+{
+  "code": "HEALTHY",
+  "posture_codes": [
+    "POSTURE_PARSER_DIFFERENTIAL_EXPOSURE"
+  ],
+  "evidence_path": "/Response/Assertion/Subject/NameID",
+  "fix_keys": [
+    "reject",
+    "doctype",
+    "entity",
+    "declarations"
+  ]
+}

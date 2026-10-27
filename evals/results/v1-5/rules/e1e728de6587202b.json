@@ -1,0 +1,59 @@
+{
+  "case_id": "saml_time_window_invalid-03",
+  "case_hash": "e1e728de6587202b",
+  "arm": "rules",
+  "label": {
+    "code": "SAML_TIME_WINDOW_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/Conditions/@NotBefore",
+    "fix_keys": [
+      "synchronise",
+      "clocks",
+      "sides",
+      "clock"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_time_window_invalid-03",
+    "kind": "saml_response",
+    "dialect": "okta",
+    "mutator": "not_yet_valid",
+    "expected_completeness": "partial",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 3,
+    "hash": "e1e728de6587202b"
+  },
+  "output": {
+    "root_cause_code": "SAML_TIME_WINDOW_INVALID",
+    "confidence": 1,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Conditions/@NotBefore",
+        "actual": "2026-01-15T12:10:00.000Z",
+        "expected": "\u003c= 2026-01-15T12:00:00Z + skew 3m0s",
+        "note": "assertion not yet valid: IdP clock ahead, or the capture is being replayed from before it was issued"
+      }
+    ],
+    "fix": "Synchronise clocks on both sides with NTP and keep SP clock skew tolerance at or below 3 minutes; if the capture is old, replay it with its capture time via the now parameter.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": [
+      "request_id"
+    ]
+  },
+  "started": "2026-10-27T09:29:17.727126-05:00",
+  "duration_ms": 0,
+  "tool_calls": 0,
+  "num_turns": 0,
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0
+  },
+  "cost_usd": 0,
+  "hallucinated": [],
+  "valid_citations": 1
+}

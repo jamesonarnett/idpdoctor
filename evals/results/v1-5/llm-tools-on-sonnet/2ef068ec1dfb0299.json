@@ -1,0 +1,233 @@
+{
+  "case_id": "healthy-jwt-02",
+  "case_hash": "2ef068ec1dfb0299",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [],
+    "fix_keys": [
+      "no change needed",
+      "the artifact validates"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "healthy-jwt-02",
+    "kind": "jwt",
+    "expected_completeness": "full",
+    "symptom_from": "misleading",
+    "misleading_symptom": true,
+    "seed": 42,
+    "index": 2,
+    "hash": "2ef068ec1dfb0299"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "path": "/signature",
+        "actual": "verified with jwks_json (RSA 2048)"
+      },
+      {
+        "path": "/claims/iss",
+        "actual": "matches expected issuer"
+      },
+      {
+        "path": "/claims/aud",
+        "actual": "contains client-abc123"
+      },
+      {
+        "path": "/claims/exp",
+        "actual": "expires in 1h0m0s at the replay time"
+      },
+      {
+        "path": "/claims/nonce",
+        "actual": "matches expected nonce"
+      }
+    ],
+    "fix": "The ID token is valid, so the login loop is probably not caused by this token. Check what the SP does after it receives the token. Look at the session cookie: SameSite, Secure and domain settings, and whether the cookie is set on the callback response. Check that the state and nonce are stored and read back correctly across the redirect. Check that the callback route doesn't send unauthenticated users back to the IdP. Check that the app doesn't reject the token for a reason of its own, such as a missing claim it requires. Keep signature, issuer, audience, nonce and expiry validation on while debugging. If the loop continues, capture the callback request and response headers.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OIDC_REQUEST_BINDING_MISMATCH",
+        "why_not": "The nonce matches. The at_hash check was skipped because no access_token was supplied, so it is unverified."
+      },
+      {
+        "code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+        "why_not": "exp, nbf and iat all pass at the replayed time 2026-01-15T12:00:00Z. The tool's wall-clock time is later, so a live check would fail on expiry."
+      }
+    ],
+    "questions": [
+      "access_token (to run the at_hash check, if the flow returns one)",
+      "Does the SP set a session cookie on the callback response, and is it sent on the next request?"
+    ]
+  },
+  "started": "2026-10-27T09:49:45.608467-05:00",
+  "duration_ms": 10628,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1379,
+    "cache_creation_input_tokens": 14001,
+    "cache_read_input_tokens": 12853
+  },
+  "cost_usd": 0.0710873,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1379,
+      "cacheReadInputTokens": 12853,
+      "cacheCreationInputTokens": 14001,
+      "costUSD": 0.0710873,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 5,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 10498,
+    "stop_reason": "tool_use",
+    "session_id": "bc7f8c1d-9872-4001-9556-e578095547ed",
+    "total_cost_usd": 0.0710873,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 14001,
+      "cache_read_input_tokens": 12853,
+      "output_tokens": 1379,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 14001,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 736,
+          "cache_read_input_tokens": 12853,
+          "cache_creation_input_tokens": 1148,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1148
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1379,
+        "cacheReadInputTokens": 12853,
+        "cacheCreationInputTokens": 14001,
+        "webSearchRequests": 0,
+        "costUSD": 0.0710873,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 14001,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.8,\"evidence\":[{\"path\":\"/signature\",\"actual\":\"verified with jwks_json (RSA 2048)\"},{\"path\":\"/claims/iss\",\"actual\":\"matches expected issuer\"},{\"path\":\"/claims/aud\",\"actual\":\"contains client-abc123\"},{\"path\":\"/claims/exp\",\"actual\":\"expires in 1h0m0s at the replay time\"},{\"path\":\"/claims/nonce\",\"actual\":\"matches expected nonce\"}],\"fix\":\"The ID token is valid, so the login loop is probably not caused by this token. Check what the SP does after it receives the token. Look at the session cookie: SameSite, Secure and domain settings, and whether the cookie is set on the callback response. Check that the state and nonce are stored and read back correctly across the redirect. Check that the callback route doesn't send unauthenticated users back to the IdP. Check that the app doesn't reject the token for a reason of its own, such as a missing claim it requires. Keep signature, issuer, audience, nonce and expiry validation on while debugging. If the loop continues, capture the callback request and response headers.\",\"questions\":[\"access_token (to run the at_hash check, if the flow returns one)\",\"Does the SP set a session cookie on the callback response, and is it sent on the next request?\"],\"alternatives\":[{\"code\":\"OIDC_REQUEST_BINDING_MISMATCH\",\"why_not\":\"The nonce matches. The at_hash check was skipped because no access_token was supplied, so it is unverified.\"},{\"code\":\"JWT_EXPIRED_OR_NOT_YET_VALID\",\"why_not\":\"exp, nbf and iat all pass at the replayed time 2026-01-15T12:00:00Z. The tool's wall-clock time is later, so a live check would fail on expiry.\"}]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "path": "/signature",
+          "actual": "verified with jwks_json (RSA 2048)"
+        },
+        {
+          "path": "/claims/iss",
+          "actual": "matches expected issuer"
+        },
+        {
+          "path": "/claims/aud",
+          "actual": "contains client-abc123"
+        },
+        {
+          "path": "/claims/exp",
+          "actual": "expires in 1h0m0s at the replay time"
+        },
+        {
+          "path": "/claims/nonce",
+          "actual": "matches expected nonce"
+        }
+      ],
+      "fix": "The ID token is valid, so the login loop is probably not caused by this token. Check what the SP does after it receives the token. Look at the session cookie: SameSite, Secure and domain settings, and whether the cookie is set on the callback response. Check that the state and nonce are stored and read back correctly across the redirect. Check that the callback route doesn't send unauthenticated users back to the IdP. Check that the app doesn't reject the token for a reason of its own, such as a missing claim it requires. Keep signature, issuer, audience, nonce and expiry validation on while debugging. If the loop continues, capture the callback request and response headers.",
+      "questions": [
+        "access_token (to run the at_hash check, if the flow returns one)",
+        "Does the SP set a session cookie on the callback response, and is it sent on the next request?"
+      ],
+      "alternatives": [
+        {
+          "code": "OIDC_REQUEST_BINDING_MISMATCH",
+          "why_not": "The nonce matches. The at_hash check was skipped because no access_token was supplied, so it is unverified."
+        },
+        {
+          "code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+          "why_not": "exp, nbf and iat all pass at the replayed time 2026-01-15T12:00:00Z. The tool's wall-clock time is later, so a live check would fail on expiry."
+        }
+      ]
+    },
+    "ttft_ms": 4374,
+    "type": "result",
+    "duration_ms": 10628,
+    "uuid": "5eff9076-d682-433c-b23a-dc166b188365",
+    "ttft_stream_ms": 1725,
+    "time_to_request_ms": 114,
+    "first_content_frame_ms": 1725,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,255 @@
+{
+  "case_id": "jwt_alg_none_or_confusion-04",
+  "case_hash": "98407770fa75ad4a",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_ALG_NONE_OR_CONFUSION",
+    "posture_codes": [],
+    "evidence_path": "/header/jku",
+    "fix_keys": [
+      "reject",
+      "token"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_alg_none_or_confusion-04",
+    "kind": "jwt",
+    "mutator": "jwt_jku_header",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 4,
+    "hash": "98407770fa75ad4a"
+  },
+  "output": {
+    "root_cause_code": "JWT_ALG_NONE_OR_CONFUSION",
+    "confidence": 0.45,
+    "evidence": [
+      {
+        "path": "/header/alg",
+        "actual": "RS256",
+        "expected": "RS256 only, matching the RSA JWKS",
+        "note": "The captured header says RS256, but the developer reports HS256. Either the capture is not the rejected token, or the verifier is deciding the algorithm from something other than the pinned key type."
+      },
+      {
+        "path": "/header/jku",
+        "actual": "https://attacker.example/jwks.json",
+        "expected": "absent, or ignored in favour of the configured JWKS",
+        "note": "The token points to an attacker-controlled key set. The SP must never fetch or trust a key URL from the token header."
+      },
+      {
+        "path": "/keys/jwks_json",
+        "actual": "one RSA key, kid test-key-1, alg RS256",
+        "expected": "only asymmetric keys",
+        "note": "The OP publishes only RSA keys. An HS256 token cannot legitimately be verified against them, and using an RSA public key as an HMAC secret is the classic key-confusion attack."
+      },
+      {
+        "path": "/header/kid",
+        "actual": "test-key-1",
+        "expected": "test-key-1",
+        "note": "The kid matches the JWKS, so this is not a missing-key problem."
+      },
+      {
+        "path": "/claims/exp",
+        "actual": "1768482000",
+        "expected": "later than now (2026-01-15T12:00:00Z)",
+        "note": "Time claims are valid. The iss, aud and nonce claims also match the expected values, so they are not the cause."
+      }
+    ],
+    "fix": "Pin the allowed algorithms to the OP's published set (RS256 here) and choose the verification key by the configured algorithm and key type. Reject any token whose alg is HS*, none, or not on the allowlist. Never use an RSA public key or PEM as an HMAC secret. Ignore the jku, x5u, jwk and x5c header parameters and resolve keys only from the configured issuer's JWKS URL or a pinned JWKS. Then re-capture the exact token that was rejected, because this header shows RS256, not HS256.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "HEALTHY",
+        "why_not": "The claims validate, but the header carries an attacker-controlled jku and the reported HS256 symptom is unexplained. There is also no signature material to confirm the token verifies."
+      },
+      {
+        "code": "JWT_KID_NOT_FOUND_IN_JWKS",
+        "why_not": "The kid test-key-1 is present in the configured JWKS."
+      }
+    ],
+    "questions": [
+      "Is the captured token the same one that was rejected? The header shows RS256 but the symptom says HS256.",
+      "What exact error does the verifier return, and which algorithm allowlist is configured?"
+    ]
+  },
+  "started": "2026-10-27T09:33:06.343656-05:00",
+  "duration_ms": 17162,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1517,
+    "cache_creation_input_tokens": 1793,
+    "cache_read_input_tokens": 3893
+  },
+  "cost_usd": 0.0227353,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1517,
+      "cacheReadInputTokens": 3893,
+      "cacheCreationInputTokens": 1793,
+      "costUSD": 0.0227353,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 5,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 17026,
+    "stop_reason": "tool_use",
+    "session_id": "7b738964-c2b8-4546-aef5-df594aa8b8f0",
+    "total_cost_usd": 0.0227353,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1793,
+      "cache_read_input_tokens": 3893,
+      "output_tokens": 1517,
+      "output_tokens_details": {
+        "thinking_tokens": 483
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1793,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1517,
+          "cache_read_input_tokens": 3893,
+          "cache_creation_input_tokens": 1793,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1793
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1517,
+        "cacheReadInputTokens": 3893,
+        "cacheCreationInputTokens": 1793,
+        "webSearchRequests": 0,
+        "costUSD": 0.0227353,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 483,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1793,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"JWT_ALG_NONE_OR_CONFUSION\",\"confidence\":0.45,\"evidence\":[{\"path\":\"/header/alg\",\"actual\":\"RS256\",\"expected\":\"RS256 only, matching the RSA JWKS\",\"note\":\"The captured header says RS256, but the developer reports HS256. Either the capture is not the rejected token, or the verifier is deciding the algorithm from something other than the pinned key type.\"},{\"path\":\"/header/jku\",\"actual\":\"https://attacker.example/jwks.json\",\"expected\":\"absent, or ignored in favour of the configured JWKS\",\"note\":\"The token points to an attacker-controlled key set. The SP must never fetch or trust a key URL from the token header.\"},{\"path\":\"/keys/jwks_json\",\"actual\":\"one RSA key, kid test-key-1, alg RS256\",\"expected\":\"only asymmetric keys\",\"note\":\"The OP publishes only RSA keys. An HS256 token cannot legitimately be verified against them, and using an RSA public key as an HMAC secret is the classic key-confusion attack.\"},{\"path\":\"/header/kid\",\"actual\":\"test-key-1\",\"expected\":\"test-key-1\",\"note\":\"The kid matches the JWKS, so this is not a missing-key problem.\"},{\"path\":\"/claims/exp\",\"actual\":\"1768482000\",\"expected\":\"later than now (2026-01-15T12:00:00Z)\",\"note\":\"Time claims are valid. The iss, aud and nonce claims also match the expected values, so they are not the cause.\"}],\"fix\":\"Pin the allowed algorithms to the OP's published set (RS256 here) and choose the verification key by the configured algorithm and key type. Reject any token whose alg is HS*, none, or not on the allowlist. Never use an RSA public key or PEM as an HMAC secret. Ignore the jku, x5u, jwk and x5c header parameters and resolve keys only from the configured issuer's JWKS URL or a pinned JWKS. Then re-capture the exact token that was rejected, because this header shows RS256, not HS256.\",\"alternatives\":[{\"code\":\"HEALTHY\",\"why_not\":\"The claims validate, but the header carries an attacker-controlled jku and the reported HS256 symptom is unexplained. There is also no signature material to confirm the token verifies.\"},{\"code\":\"JWT_KID_NOT_FOUND_IN_JWKS\",\"why_not\":\"The kid test-key-1 is present in the configured JWKS.\"}],\"questions\":[\"Is the captured token the same one that was rejected? The header shows RS256 but the symptom says HS256.\",\"What exact error does the verifier return, and which algorithm allowlist is configured?\"],\"posture_codes\":[]}",
+    "structured_output": {
+      "root_cause_code": "JWT_ALG_NONE_OR_CONFUSION",
+      "confidence": 0.45,
+      "evidence": [
+        {
+          "path": "/header/alg",
+          "actual": "RS256",
+          "expected": "RS256 only, matching the RSA JWKS",
+          "note": "The captured header says RS256, but the developer reports HS256. Either the capture is not the rejected token, or the verifier is deciding the algorithm from something other than the pinned key type."
+        },
+        {
+          "path": "/header/jku",
+          "actual": "https://attacker.example/jwks.json",
+          "expected": "absent, or ignored in favour of the configured JWKS",
+          "note": "The token points to an attacker-controlled key set. The SP must never fetch or trust a key URL from the token header."
+        },
+        {
+          "path": "/keys/jwks_json",
+          "actual": "one RSA key, kid test-key-1, alg RS256",
+          "expected": "only asymmetric keys",
+          "note": "The OP publishes only RSA keys. An HS256 token cannot legitimately be verified against them, and using an RSA public key as an HMAC secret is the classic key-confusion attack."
+        },
+        {
+          "path": "/header/kid",
+          "actual": "test-key-1",
+          "expected": "test-key-1",
+          "note": "The kid matches the JWKS, so this is not a missing-key problem."
+        },
+        {
+          "path": "/claims/exp",
+          "actual": "1768482000",
+          "expected": "later than now (2026-01-15T12:00:00Z)",
+          "note": "Time claims are valid. The iss, aud and nonce claims also match the expected values, so they are not the cause."
+        }
+      ],
+      "fix": "Pin the allowed algorithms to the OP's published set (RS256 here) and choose the verification key by the configured algorithm and key type. Reject any token whose alg is HS*, none, or not on the allowlist. Never use an RSA public key or PEM as an HMAC secret. Ignore the jku, x5u, jwk and x5c header parameters and resolve keys only from the configured issuer's JWKS URL or a pinned JWKS. Then re-capture the exact token that was rejected, because this header shows RS256, not HS256.",
+      "alternatives": [
+        {
+          "code": "HEALTHY",
+          "why_not": "The claims validate, but the header carries an attacker-controlled jku and the reported HS256 symptom is unexplained. There is also no signature material to confirm the token verifies."
+        },
+        {
+          "code": "JWT_KID_NOT_FOUND_IN_JWKS",
+          "why_not": "The kid test-key-1 is present in the configured JWKS."
+        }
+      ],
+      "questions": [
+        "Is the captured token the same one that was rejected? The header shows RS256 but the symptom says HS256.",
+        "What exact error does the verifier return, and which algorithm allowlist is configured?"
+      ],
+      "posture_codes": []
+    },
+    "ttft_ms": 10827,
+    "type": "result",
+    "duration_ms": 17162,
+    "uuid": "f19f4ae7-a0b4-4832-a0a3-ab57fd83c513",
+    "ttft_stream_ms": 5983,
+    "time_to_request_ms": 132,
+    "first_content_frame_ms": 5983,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

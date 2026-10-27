@@ -1,0 +1,229 @@
+{
+  "case_id": "oauth_redirect_uri_mismatch-03",
+  "case_hash": "e3c61b6d6ff85c8a",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_REDIRECT_URI_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/request/redirect_uri",
+    "fix_keys": [
+      "register",
+      "exact",
+      "redirect",
+      "scheme"
+    ],
+    "needs": [
+      "registered_redirect_uris"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_redirect_uri_mismatch-03",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_redirect_uri_mismatch_auth0",
+    "expected_completeness": "partial",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 3,
+    "hash": "e3c61b6d6ff85c8a"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_REDIRECT_URI_MISMATCH",
+    "confidence": 0.93,
+    "evidence": [
+      {
+        "path": "/redirect/error_description",
+        "actual": "Callback URL mismatch. http://app.example.com/callback is not in the list of allowed callback URLs",
+        "note": "The authorization server rejected the redirect_uri sent in the request."
+      },
+      {
+        "path": "/request/redirect_uri",
+        "actual": "http://app.example.com/callback",
+        "expected": "https://app.example.com/callback",
+        "note": "The request uses http, but the registered URI uses https."
+      },
+      {
+        "path": "/request/registered_redirect_uris",
+        "actual": "[\"https://app.example.com/callback\"]",
+        "note": "Only the https URI is registered. There is no localhost or 127.0.0.1 entry."
+      },
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_request"
+      }
+    ],
+    "fix": "Make the redirect_uri the app sends match a registered callback URL exactly, including scheme, host, port and path. The sent URI is http://app.example.com/callback, but only https://app.example.com/callback is registered. Use the https URI in the app, or register the exact http URI if policy allows it. For local development, register each origin you use as its own entry, for example http://localhost:3000/callback and http://127.0.0.1:3000/callback. Auth0 and similar servers treat localhost and 127.0.0.1 as different hosts. Don't use wildcards or loosen matching.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+        "why_not": "The error text names the callback URL list specifically, so this is a redirect URI mismatch and not a general client configuration problem."
+      }
+    ],
+    "questions": [
+      "What redirect_uri does the app actually send when it runs on 127.0.0.1:3000? The captured value is the app.example.com URI, not a localhost or 127.0.0.1 one."
+    ]
+  },
+  "started": "2026-10-27T09:36:26.698465-05:00",
+  "duration_ms": 5749,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 753,
+    "cache_creation_input_tokens": 1440,
+    "cache_read_input_tokens": 3872
+  },
+  "cost_usd": 0.013681200000000001,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 753,
+      "cacheReadInputTokens": 3872,
+      "cacheCreationInputTokens": 1440,
+      "costUSD": 0.013681200000000001,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 5607,
+    "stop_reason": "tool_use",
+    "session_id": "3d911ccb-36e0-4460-bbf5-7dfeb0f7f9de",
+    "total_cost_usd": 0.013681200000000001,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1440,
+      "cache_read_input_tokens": 3872,
+      "output_tokens": 753,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1440,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 753,
+          "cache_read_input_tokens": 3872,
+          "cache_creation_input_tokens": 1440,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1440
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 753,
+        "cacheReadInputTokens": 3872,
+        "cacheCreationInputTokens": 1440,
+        "webSearchRequests": 0,
+        "costUSD": 0.013681200000000001,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1440,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_REDIRECT_URI_MISMATCH\",\"confidence\":0.93,\"evidence\":[{\"path\":\"/redirect/error_description\",\"actual\":\"Callback URL mismatch. http://app.example.com/callback is not in the list of allowed callback URLs\",\"note\":\"The authorization server rejected the redirect_uri sent in the request.\"},{\"path\":\"/request/redirect_uri\",\"actual\":\"http://app.example.com/callback\",\"expected\":\"https://app.example.com/callback\",\"note\":\"The request uses http, but the registered URI uses https.\"},{\"path\":\"/request/registered_redirect_uris\",\"actual\":\"[\\\"https://app.example.com/callback\\\"]\",\"note\":\"Only the https URI is registered. There is no localhost or 127.0.0.1 entry.\"},{\"path\":\"/redirect/error\",\"actual\":\"invalid_request\"}],\"fix\":\"Make the redirect_uri the app sends match a registered callback URL exactly, including scheme, host, port and path. The sent URI is http://app.example.com/callback, but only https://app.example.com/callback is registered. Use the https URI in the app, or register the exact http URI if policy allows it. For local development, register each origin you use as its own entry, for example http://localhost:3000/callback and http://127.0.0.1:3000/callback. Auth0 and similar servers treat localhost and 127.0.0.1 as different hosts. Don't use wildcards or loosen matching.\",\"alternatives\":[{\"code\":\"OAUTH_CLIENT_CONFIG_REJECTED\",\"why_not\":\"The error text names the callback URL list specifically, so this is a redirect URI mismatch and not a general client configuration problem.\"}],\"questions\":[\"What redirect_uri does the app actually send when it runs on 127.0.0.1:3000? The captured value is the app.example.com URI, not a localhost or 127.0.0.1 one.\"]}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_REDIRECT_URI_MISMATCH",
+      "confidence": 0.93,
+      "evidence": [
+        {
+          "path": "/redirect/error_description",
+          "actual": "Callback URL mismatch. http://app.example.com/callback is not in the list of allowed callback URLs",
+          "note": "The authorization server rejected the redirect_uri sent in the request."
+        },
+        {
+          "path": "/request/redirect_uri",
+          "actual": "http://app.example.com/callback",
+          "expected": "https://app.example.com/callback",
+          "note": "The request uses http, but the registered URI uses https."
+        },
+        {
+          "path": "/request/registered_redirect_uris",
+          "actual": "[\"https://app.example.com/callback\"]",
+          "note": "Only the https URI is registered. There is no localhost or 127.0.0.1 entry."
+        },
+        {
+          "path": "/redirect/error",
+          "actual": "invalid_request"
+        }
+      ],
+      "fix": "Make the redirect_uri the app sends match a registered callback URL exactly, including scheme, host, port and path. The sent URI is http://app.example.com/callback, but only https://app.example.com/callback is registered. Use the https URI in the app, or register the exact http URI if policy allows it. For local development, register each origin you use as its own entry, for example http://localhost:3000/callback and http://127.0.0.1:3000/callback. Auth0 and similar servers treat localhost and 127.0.0.1 as different hosts. Don't use wildcards or loosen matching.",
+      "alternatives": [
+        {
+          "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+          "why_not": "The error text names the callback URL list specifically, so this is a redirect URI mismatch and not a general client configuration problem."
+        }
+      ],
+      "questions": [
+        "What redirect_uri does the app actually send when it runs on 127.0.0.1:3000? The captured value is the app.example.com URI, not a localhost or 127.0.0.1 one."
+      ]
+    },
+    "ttft_ms": 5723,
+    "type": "result",
+    "duration_ms": 5749,
+    "uuid": "3869fdb6-7515-4cba-8a9b-da136542e8a0",
+    "ttft_stream_ms": 1371,
+    "time_to_request_ms": 139,
+    "first_content_frame_ms": 1371,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

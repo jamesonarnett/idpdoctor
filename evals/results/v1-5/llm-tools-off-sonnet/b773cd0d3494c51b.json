@@ -1,0 +1,251 @@
+{
+  "case_id": "oidc_request_binding_mismatch-04",
+  "case_hash": "b773cd0d3494c51b",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "OIDC_REQUEST_BINDING_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/claims/at_hash",
+    "fix_keys": [
+      "generate",
+      "fresh",
+      "nonce",
+      "authorization"
+    ],
+    "needs": [
+      "access_token"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "oidc_request_binding_mismatch-04",
+    "kind": "jwt",
+    "mutator": "jwt_at_hash_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 4,
+    "hash": "b773cd0d3494c51b"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.7,
+    "evidence": [
+      {
+        "path": "/claims/nonce",
+        "actual": "n-0S6_WzA2Mj",
+        "expected": "n-0S6_WzA2Mj",
+        "note": "The nonce claim is present and matches the expected value. This contradicts the reported 'missing nonce' symptom."
+      },
+      {
+        "path": "/claims/iss",
+        "actual": "https://login.example.com/tenant-1/v2.0",
+        "expected": "https://login.example.com/tenant-1/v2.0"
+      },
+      {
+        "path": "/claims/aud",
+        "actual": "client-abc123",
+        "expected": "client-abc123"
+      },
+      {
+        "path": "/claims/exp",
+        "actual": "1768482000",
+        "note": "This is 1 hour after the expected 'now' of 2026-01-15T12:00:00Z, so the token is within its validity window."
+      },
+      {
+        "path": "/header/kid",
+        "actual": "test-key-1",
+        "note": "The kid is present in the supplied JWKS."
+      },
+      {
+        "path": "/header/alg",
+        "actual": "RS256"
+      }
+    ],
+    "fix": "The captured id_token validates against the expected values, and its nonce is present and correct. AADSTS50027 is therefore probably caused by a different token or request than this one. Check these points:\n1. The authorization request must send a nonce parameter, and the SP must store it per session and compare it to the returned id_token.\n2. Confirm the token you are validating is the id_token from the same login attempt, not a stale or cached one, and not an access or refresh token.\n3. Make sure no proxy or middleware strips or rewrites the nonce parameter.\n4. Keep signature verification, exp/nbf checks, and clock skew at 5 minutes or less.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OIDC_REQUEST_BINDING_MISMATCH",
+        "why_not": "The nonce claim is present and equals the expected value. at_hash can't be checked without the raw access token, but nothing indicates a mismatch."
+      }
+    ],
+    "questions": [
+      "Does the failing request send the same nonce as this captured token, or was a different id_token captured?",
+      "Can you share the raw access_token, so that at_hash can be checked?"
+    ]
+  },
+  "started": "2026-10-27T09:38:19.242774-05:00",
+  "duration_ms": 8665,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1062,
+    "cache_creation_input_tokens": 363,
+    "cache_read_input_tokens": 5383
+  },
+  "cost_usd": 0.012614300000000002,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1062,
+      "cacheReadInputTokens": 5383,
+      "cacheCreationInputTokens": 363,
+      "costUSD": 0.012614300000000002,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 6,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 8563,
+    "stop_reason": "tool_use",
+    "session_id": "52b199b1-bd21-4705-a49d-1367d24aaf58",
+    "total_cost_usd": 0.012614300000000002,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 363,
+      "cache_read_input_tokens": 5383,
+      "output_tokens": 1062,
+      "output_tokens_details": {
+        "thinking_tokens": 237
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 363,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1062,
+          "cache_read_input_tokens": 5383,
+          "cache_creation_input_tokens": 363,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 363
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1062,
+        "cacheReadInputTokens": 5383,
+        "cacheCreationInputTokens": 363,
+        "webSearchRequests": 0,
+        "costUSD": 0.012614300000000002,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 237,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 363,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.7,\"evidence\":[{\"path\":\"/claims/nonce\",\"actual\":\"n-0S6_WzA2Mj\",\"expected\":\"n-0S6_WzA2Mj\",\"note\":\"The nonce claim is present and matches the expected value. This contradicts the reported 'missing nonce' symptom.\"},{\"path\":\"/claims/iss\",\"actual\":\"https://login.example.com/tenant-1/v2.0\",\"expected\":\"https://login.example.com/tenant-1/v2.0\"},{\"path\":\"/claims/aud\",\"actual\":\"client-abc123\",\"expected\":\"client-abc123\"},{\"path\":\"/claims/exp\",\"actual\":\"1768482000\",\"note\":\"This is 1 hour after the expected 'now' of 2026-01-15T12:00:00Z, so the token is within its validity window.\"},{\"path\":\"/header/kid\",\"actual\":\"test-key-1\",\"note\":\"The kid is present in the supplied JWKS.\"},{\"path\":\"/header/alg\",\"actual\":\"RS256\"}],\"fix\":\"The captured id_token validates against the expected values, and its nonce is present and correct. AADSTS50027 is therefore probably caused by a different token or request than this one. Check these points:\\n1. The authorization request must send a nonce parameter, and the SP must store it per session and compare it to the returned id_token.\\n2. Confirm the token you are validating is the id_token from the same login attempt, not a stale or cached one, and not an access or refresh token.\\n3. Make sure no proxy or middleware strips or rewrites the nonce parameter.\\n4. Keep signature verification, exp/nbf checks, and clock skew at 5 minutes or less.\",\"questions\":[\"Does the failing request send the same nonce as this captured token, or was a different id_token captured?\",\"Can you share the raw access_token, so that at_hash can be checked?\"],\"alternatives\":[{\"code\":\"OIDC_REQUEST_BINDING_MISMATCH\",\"why_not\":\"The nonce claim is present and equals the expected value. at_hash can't be checked without the raw access token, but nothing indicates a mismatch.\"}]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.7,
+      "evidence": [
+        {
+          "path": "/claims/nonce",
+          "actual": "n-0S6_WzA2Mj",
+          "expected": "n-0S6_WzA2Mj",
+          "note": "The nonce claim is present and matches the expected value. This contradicts the reported 'missing nonce' symptom."
+        },
+        {
+          "path": "/claims/iss",
+          "actual": "https://login.example.com/tenant-1/v2.0",
+          "expected": "https://login.example.com/tenant-1/v2.0"
+        },
+        {
+          "path": "/claims/aud",
+          "actual": "client-abc123",
+          "expected": "client-abc123"
+        },
+        {
+          "path": "/claims/exp",
+          "actual": "1768482000",
+          "note": "This is 1 hour after the expected 'now' of 2026-01-15T12:00:00Z, so the token is within its validity window."
+        },
+        {
+          "path": "/header/kid",
+          "actual": "test-key-1",
+          "note": "The kid is present in the supplied JWKS."
+        },
+        {
+          "path": "/header/alg",
+          "actual": "RS256"
+        }
+      ],
+      "fix": "The captured id_token validates against the expected values, and its nonce is present and correct. AADSTS50027 is therefore probably caused by a different token or request than this one. Check these points:\n1. The authorization request must send a nonce parameter, and the SP must store it per session and compare it to the returned id_token.\n2. Confirm the token you are validating is the id_token from the same login attempt, not a stale or cached one, and not an access or refresh token.\n3. Make sure no proxy or middleware strips or rewrites the nonce parameter.\n4. Keep signature verification, exp/nbf checks, and clock skew at 5 minutes or less.",
+      "questions": [
+        "Does the failing request send the same nonce as this captured token, or was a different id_token captured?",
+        "Can you share the raw access_token, so that at_hash can be checked?"
+      ],
+      "alternatives": [
+        {
+          "code": "OIDC_REQUEST_BINDING_MISMATCH",
+          "why_not": "The nonce claim is present and equals the expected value. at_hash can't be checked without the raw access token, but nothing indicates a mismatch."
+        }
+      ]
+    },
+    "ttft_ms": 3627,
+    "type": "result",
+    "duration_ms": 8665,
+    "uuid": "43aa7adc-dd86-4b6b-a96d-82d69daf8db4",
+    "ttft_stream_ms": 1250,
+    "time_to_request_ms": 99,
+    "first_content_frame_ms": 1250,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

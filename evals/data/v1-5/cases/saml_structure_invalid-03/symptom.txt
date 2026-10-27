@@ -1,0 +1,1 @@
+Our library logs 'multiple assertions found' and rejects the response.

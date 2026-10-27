@@ -1,0 +1,11 @@
+{
+  "id": "saml_status_not_success-01",
+  "kind": "saml_response",
+  "dialect": "auth0",
+  "mutator": "status_responder",
+  "expected_completeness": "full",
+  "symptom_from": "vendor_strings.json",
+  "seed": 42,
+  "index": 1,
+  "hash": "7f0fcc717bcdf8e1"
+}

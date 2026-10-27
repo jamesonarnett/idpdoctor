@@ -1,0 +1,214 @@
+{
+  "case_id": "oauth_redirect_uri_mismatch-03",
+  "case_hash": "e3c61b6d6ff85c8a",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_REDIRECT_URI_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/request/redirect_uri",
+    "fix_keys": [
+      "register",
+      "exact",
+      "redirect",
+      "scheme"
+    ],
+    "needs": [
+      "registered_redirect_uris"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_redirect_uri_mismatch-03",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_redirect_uri_mismatch_auth0",
+    "expected_completeness": "partial",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 3,
+    "hash": "e3c61b6d6ff85c8a"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_REDIRECT_URI_MISMATCH",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_request"
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "Callback URL mismatch. http://app.example.com/callback is not in the list of allowed callback URLs"
+      },
+      {
+        "path": "/request/redirect_uri",
+        "actual": "http://app.example.com/callback",
+        "expected": "https://app.example.com/callback",
+        "note": "differs only by scheme (http vs https)"
+      },
+      {
+        "path": "/request/registered_redirect_uris",
+        "actual": "https://app.example.com/callback"
+      }
+    ],
+    "fix": "Make the redirect_uri sent in the authorize and token requests exactly match a registered value, including scheme, host, port and path. The request uses http://app.example.com/callback, but only https://app.example.com/callback is registered. Send the https URI. Or register each extra origin you need, such as http://localhost:3000/callback and http://127.0.0.1:3000/callback for development, as its own exact entry. localhost and 127.0.0.1 are different hosts to an exact-match comparison, so they are not interchangeable. Don't loosen matching with wildcards.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": [
+      "The captured request uses app.example.com, not 127.0.0.1:3000. Is this capture from the failing 127.0.0.1 run? If not, please send that one, because 127.0.0.1:3000 probably isn't registered either."
+    ]
+  },
+  "started": "2026-10-27T09:58:10.282768-05:00",
+  "duration_ms": 8540,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 912,
+    "cache_creation_input_tokens": 3703,
+    "cache_read_input_tokens": 23630
+  },
+  "cost_usd": 0.026303,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 912,
+      "cacheReadInputTokens": 23630,
+      "cacheCreationInputTokens": 3703,
+      "costUSD": 0.026303,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 8418,
+    "stop_reason": "tool_use",
+    "session_id": "cea985ed-9926-4dae-bfcf-74bfc1d21252",
+    "total_cost_usd": 0.026303,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3703,
+      "cache_read_input_tokens": 23630,
+      "output_tokens": 912,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3703,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 600,
+          "cache_read_input_tokens": 12571,
+          "cache_creation_input_tokens": 2191,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2191
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 912,
+        "cacheReadInputTokens": 23630,
+        "cacheCreationInputTokens": 3703,
+        "webSearchRequests": 0,
+        "costUSD": 0.026303,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3703,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_REDIRECT_URI_MISMATCH\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"invalid_request\"},{\"path\":\"/redirect/error_description\",\"actual\":\"Callback URL mismatch. http://app.example.com/callback is not in the list of allowed callback URLs\"},{\"path\":\"/request/redirect_uri\",\"actual\":\"http://app.example.com/callback\",\"expected\":\"https://app.example.com/callback\",\"note\":\"differs only by scheme (http vs https)\"},{\"path\":\"/request/registered_redirect_uris\",\"actual\":\"https://app.example.com/callback\"}],\"fix\":\"Make the redirect_uri sent in the authorize and token requests exactly match a registered value, including scheme, host, port and path. The request uses http://app.example.com/callback, but only https://app.example.com/callback is registered. Send the https URI. Or register each extra origin you need, such as http://localhost:3000/callback and http://127.0.0.1:3000/callback for development, as its own exact entry. localhost and 127.0.0.1 are different hosts to an exact-match comparison, so they are not interchangeable. Don't loosen matching with wildcards.\",\"questions\":[\"The captured request uses app.example.com, not 127.0.0.1:3000. Is this capture from the failing 127.0.0.1 run? If not, please send that one, because 127.0.0.1:3000 probably isn't registered either.\"]}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_REDIRECT_URI_MISMATCH",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "invalid_request"
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "Callback URL mismatch. http://app.example.com/callback is not in the list of allowed callback URLs"
+        },
+        {
+          "path": "/request/redirect_uri",
+          "actual": "http://app.example.com/callback",
+          "expected": "https://app.example.com/callback",
+          "note": "differs only by scheme (http vs https)"
+        },
+        {
+          "path": "/request/registered_redirect_uris",
+          "actual": "https://app.example.com/callback"
+        }
+      ],
+      "fix": "Make the redirect_uri sent in the authorize and token requests exactly match a registered value, including scheme, host, port and path. The request uses http://app.example.com/callback, but only https://app.example.com/callback is registered. Send the https URI. Or register each extra origin you need, such as http://localhost:3000/callback and http://127.0.0.1:3000/callback for development, as its own exact entry. localhost and 127.0.0.1 are different hosts to an exact-match comparison, so they are not interchangeable. Don't loosen matching with wildcards.",
+      "questions": [
+        "The captured request uses app.example.com, not 127.0.0.1:3000. Is this capture from the failing 127.0.0.1 run? If not, please send that one, because 127.0.0.1:3000 probably isn't registered either."
+      ]
+    },
+    "ttft_ms": 3590,
+    "type": "result",
+    "duration_ms": 8540,
+    "uuid": "56d2c144-3f42-418e-91d3-3703d38cc1c2",
+    "ttft_stream_ms": 2363,
+    "time_to_request_ms": 113,
+    "first_content_frame_ms": 2363,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

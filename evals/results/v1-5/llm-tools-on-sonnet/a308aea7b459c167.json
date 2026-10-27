@@ -1,0 +1,207 @@
+{
+  "case_id": "jwt_kid_not_found_in_jwks-00",
+  "case_hash": "a308aea7b459c167",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_KID_NOT_FOUND_IN_JWKS",
+    "posture_codes": [],
+    "evidence_path": "/header/kid",
+    "fix_keys": [
+      "refresh",
+      "jwks_uri",
+      "rotate"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_kid_not_found_in_jwks-00",
+    "kind": "jwt",
+    "mutator": "jwt_kid_unknown",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "a308aea7b459c167"
+  },
+  "output": {
+    "root_cause_code": "JWT_KID_NOT_FOUND_IN_JWKS",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/header/kid",
+        "actual": "rotated-key-9",
+        "expected": "one of: test-key-1",
+        "note": "The token's kid is not in the cached JWKS, which fits a key rollover or a wrong tenant."
+      },
+      {
+        "path": "/keys/jwks_json",
+        "actual": "contains only kid test-key-1",
+        "note": "The cached JWKS is stale, so the signature check was skipped."
+      }
+    ],
+    "fix": "Re-fetch the JWKS from the OP's jwks_uri, taken from the discovery document for the exact issuer. Then re-verify the signature with the matching key. Make the JWKS cache refresh once when it sees an unknown kid. Rate-limit that refresh. Keep the signature check on and keep the algorithm allow-list as it is. Confirm the SP fetches keys from the same tenant that issued the token.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OIDC_ISSUER_MISMATCH",
+        "why_not": "The iss claim matches the expected issuer."
+      }
+    ],
+    "questions": [
+      "access_token (optional, needed for the at_hash check)"
+    ]
+  },
+  "started": "2026-10-27T09:55:11.314878-05:00",
+  "duration_ms": 8425,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1214,
+    "cache_creation_input_tokens": 3764,
+    "cache_read_input_tokens": 23938
+  },
+  "cost_usd": 0.029597799999999997,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1214,
+      "cacheReadInputTokens": 23938,
+      "cacheCreationInputTokens": 3764,
+      "costUSD": 0.029597799999999997,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 2,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 8301,
+    "stop_reason": "tool_use",
+    "session_id": "07c05c15-f092-478f-a5d3-9c9943ce8b5b",
+    "total_cost_usd": 0.029597799999999997,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3764,
+      "cache_read_input_tokens": 23938,
+      "output_tokens": 1214,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3764,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 522,
+          "cache_read_input_tokens": 12865,
+          "cache_creation_input_tokens": 1972,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1972
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1214,
+        "cacheReadInputTokens": 23938,
+        "cacheCreationInputTokens": 3764,
+        "webSearchRequests": 0,
+        "costUSD": 0.029597799999999997,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3764,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"JWT_KID_NOT_FOUND_IN_JWKS\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/header/kid\",\"actual\":\"rotated-key-9\",\"expected\":\"one of: test-key-1\",\"note\":\"The token's kid is not in the cached JWKS, which fits a key rollover or a wrong tenant.\"},{\"path\":\"/keys/jwks_json\",\"actual\":\"contains only kid test-key-1\",\"note\":\"The cached JWKS is stale, so the signature check was skipped.\"}],\"fix\":\"Re-fetch the JWKS from the OP's jwks_uri, taken from the discovery document for the exact issuer. Then re-verify the signature with the matching key. Make the JWKS cache refresh once when it sees an unknown kid. Rate-limit that refresh. Keep the signature check on and keep the algorithm allow-list as it is. Confirm the SP fetches keys from the same tenant that issued the token.\",\"alternatives\":[{\"code\":\"OIDC_ISSUER_MISMATCH\",\"why_not\":\"The iss claim matches the expected issuer.\"}],\"questions\":[\"access_token (optional, needed for the at_hash check)\"]}",
+    "structured_output": {
+      "root_cause_code": "JWT_KID_NOT_FOUND_IN_JWKS",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/header/kid",
+          "actual": "rotated-key-9",
+          "expected": "one of: test-key-1",
+          "note": "The token's kid is not in the cached JWKS, which fits a key rollover or a wrong tenant."
+        },
+        {
+          "path": "/keys/jwks_json",
+          "actual": "contains only kid test-key-1",
+          "note": "The cached JWKS is stale, so the signature check was skipped."
+        }
+      ],
+      "fix": "Re-fetch the JWKS from the OP's jwks_uri, taken from the discovery document for the exact issuer. Then re-verify the signature with the matching key. Make the JWKS cache refresh once when it sees an unknown kid. Rate-limit that refresh. Keep the signature check on and keep the algorithm allow-list as it is. Confirm the SP fetches keys from the same tenant that issued the token.",
+      "alternatives": [
+        {
+          "code": "OIDC_ISSUER_MISMATCH",
+          "why_not": "The iss claim matches the expected issuer."
+        }
+      ],
+      "questions": [
+        "access_token (optional, needed for the at_hash check)"
+      ]
+    },
+    "ttft_ms": 4285,
+    "type": "result",
+    "duration_ms": 8425,
+    "uuid": "f4fe7075-2428-475e-b4cb-c10b5eae234f",
+    "ttft_stream_ms": 1402,
+    "time_to_request_ms": 109,
+    "first_content_frame_ms": 1403,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

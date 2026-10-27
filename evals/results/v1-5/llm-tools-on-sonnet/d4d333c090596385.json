@@ -1,0 +1,212 @@
+{
+  "case_id": "cert_expired_or_weak-04",
+  "case_hash": "d4d333c090596385",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "CERT_EXPIRED_OR_WEAK",
+    "posture_codes": [],
+    "evidence_path": "/Signature/KeyInfo/X509Data/X509Certificate/PublicKey",
+    "fix_keys": [
+      "rotate",
+      "signing",
+      "certificate",
+      "generate"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "cert_expired_or_weak-04",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "cert_weak_key",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 4,
+    "hash": "d4d333c090596385"
+  },
+  "output": {
+    "root_cause_code": "CERT_EXPIRED_OR_WEAK",
+    "confidence": 0.85,
+    "evidence": [
+      {
+        "path": "/Signature/KeyInfo/X509Data/X509Certificate/PublicKey",
+        "actual": "RSA 1024 bits",
+        "expected": "RSA \u003e= 2048 bits",
+        "note": "The signing certificate uses a weak 1024-bit RSA key. The signature verifies against the configured cert, and every other check passes. The configured cert's validity runs 2026-01-01 to 2126-01-01, so it is not expired at the replay time, despite the symptom."
+      }
+    ],
+    "fix": "The cause is a weak key, not an expired date. Have the IdP issue a new signing certificate with RSA-2048 or larger (or an EC key) and SHA-256 signatures. Publish the updated metadata, install the new certificate on the SP, then activate it at the IdP. Keep signature validation on and keep trusting only the configured IdP certificate. Then check whether the IdP rotated its certificate at midnight. If it did, the SP is still pinned to the old one, so the signature would fail against it.",
+    "posture_codes": [
+      "POSTURE_WEAK_ALGORITHM"
+    ],
+    "alternatives": [
+      {
+        "code": "SAML_SIGNATURE_INVALID",
+        "why_not": "The signature_verify check passed against the configured idp_cert_pem."
+      },
+      {
+        "code": "SAML_TIME_WINDOW_INVALID",
+        "why_not": "The time_window check passed at the replay time of 2026-01-15T12:00:00Z."
+      }
+    ],
+    "questions": [
+      "Does the SP's real-time clock or its certificate store differ from the replay time of 2026-01-15? Which certificate does the IdP sign with after midnight: the one you configured, or a newly rotated one?"
+    ]
+  },
+  "started": "2026-10-27T09:49:31.162604-05:00",
+  "duration_ms": 13914,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1965,
+    "cache_creation_input_tokens": 6132,
+    "cache_read_input_tokens": 28346
+  },
+  "cost_usd": 0.047020599999999996,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1965,
+      "cacheReadInputTokens": 28346,
+      "cacheCreationInputTokens": 6132,
+      "costUSD": 0.047020599999999996,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 13818,
+    "stop_reason": "tool_use",
+    "session_id": "d6c2672b-6e16-42b6-b1c3-7aa1572d2d01",
+    "total_cost_usd": 0.047020599999999996,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 6132,
+      "cache_read_input_tokens": 28346,
+      "output_tokens": 1965,
+      "output_tokens_details": {
+        "thinking_tokens": 109
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6132,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 842,
+          "cache_read_input_tokens": 15967,
+          "cache_creation_input_tokens": 2544,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2544
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1965,
+        "cacheReadInputTokens": 28346,
+        "cacheCreationInputTokens": 6132,
+        "webSearchRequests": 0,
+        "costUSD": 0.047020599999999996,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 109,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6132,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"CERT_EXPIRED_OR_WEAK\",\"confidence\":0.85,\"evidence\":[{\"path\":\"/Signature/KeyInfo/X509Data/X509Certificate/PublicKey\",\"actual\":\"RSA 1024 bits\",\"expected\":\"RSA \u003e= 2048 bits\",\"note\":\"The signing certificate uses a weak 1024-bit RSA key. The signature verifies against the configured cert, and every other check passes. The configured cert's validity runs 2026-01-01 to 2126-01-01, so it is not expired at the replay time, despite the symptom.\"}],\"fix\":\"The cause is a weak key, not an expired date. Have the IdP issue a new signing certificate with RSA-2048 or larger (or an EC key) and SHA-256 signatures. Publish the updated metadata, install the new certificate on the SP, then activate it at the IdP. Keep signature validation on and keep trusting only the configured IdP certificate. Then check whether the IdP rotated its certificate at midnight. If it did, the SP is still pinned to the old one, so the signature would fail against it.\",\"alternatives\":[{\"code\":\"SAML_SIGNATURE_INVALID\",\"why_not\":\"The signature_verify check passed against the configured idp_cert_pem.\"},{\"code\":\"SAML_TIME_WINDOW_INVALID\",\"why_not\":\"The time_window check passed at the replay time of 2026-01-15T12:00:00Z.\"}],\"posture_codes\":[\"POSTURE_WEAK_ALGORITHM\"],\"questions\":[\"Does the SP's real-time clock or its certificate store differ from the replay time of 2026-01-15? Which certificate does the IdP sign with after midnight: the one you configured, or a newly rotated one?\"]}",
+    "structured_output": {
+      "root_cause_code": "CERT_EXPIRED_OR_WEAK",
+      "confidence": 0.85,
+      "evidence": [
+        {
+          "path": "/Signature/KeyInfo/X509Data/X509Certificate/PublicKey",
+          "actual": "RSA 1024 bits",
+          "expected": "RSA \u003e= 2048 bits",
+          "note": "The signing certificate uses a weak 1024-bit RSA key. The signature verifies against the configured cert, and every other check passes. The configured cert's validity runs 2026-01-01 to 2126-01-01, so it is not expired at the replay time, despite the symptom."
+        }
+      ],
+      "fix": "The cause is a weak key, not an expired date. Have the IdP issue a new signing certificate with RSA-2048 or larger (or an EC key) and SHA-256 signatures. Publish the updated metadata, install the new certificate on the SP, then activate it at the IdP. Keep signature validation on and keep trusting only the configured IdP certificate. Then check whether the IdP rotated its certificate at midnight. If it did, the SP is still pinned to the old one, so the signature would fail against it.",
+      "alternatives": [
+        {
+          "code": "SAML_SIGNATURE_INVALID",
+          "why_not": "The signature_verify check passed against the configured idp_cert_pem."
+        },
+        {
+          "code": "SAML_TIME_WINDOW_INVALID",
+          "why_not": "The time_window check passed at the replay time of 2026-01-15T12:00:00Z."
+        }
+      ],
+      "posture_codes": [
+        "POSTURE_WEAK_ALGORITHM"
+      ],
+      "questions": [
+        "Does the SP's real-time clock or its certificate store differ from the replay time of 2026-01-15? Which certificate does the IdP sign with after midnight: the one you configured, or a newly rotated one?"
+      ]
+    },
+    "ttft_ms": 6577,
+    "type": "result",
+    "duration_ms": 13914,
+    "uuid": "f9c47727-1ac6-4bab-ac23-ef8910867f3c",
+    "ttft_stream_ms": 1668,
+    "time_to_request_ms": 82,
+    "first_content_frame_ms": 1668,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

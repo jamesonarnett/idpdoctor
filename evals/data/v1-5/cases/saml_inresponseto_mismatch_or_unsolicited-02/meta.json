@@ -1,0 +1,10 @@
+{
+  "id": "saml_inresponseto_mismatch_or_unsolicited-02",
+  "kind": "saml_response",
+  "dialect": "generic",
+  "mutator": "in_response_to_mismatch",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 2,
+  "hash": "734e0252e5350b1c"
+}

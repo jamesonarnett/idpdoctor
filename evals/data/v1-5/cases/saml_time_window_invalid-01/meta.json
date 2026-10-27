@@ -1,0 +1,11 @@
+{
+  "id": "saml_time_window_invalid-01",
+  "kind": "saml_response",
+  "dialect": "auth0",
+  "mutator": "not_yet_valid",
+  "expected_completeness": "full",
+  "symptom_from": "vendor_strings.json",
+  "seed": 42,
+  "index": 1,
+  "hash": "9d867d16d5195b30"
+}

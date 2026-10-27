@@ -1,0 +1,210 @@
+{
+  "case_id": "oauth_invalid_grant_code-03",
+  "case_hash": "8298b5a2b039498e",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_INVALID_GRANT_CODE",
+    "posture_codes": [],
+    "evidence_path": "/redirect/error",
+    "fix_keys": [
+      "exchange",
+      "within",
+      "minutes",
+      "issuance"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_invalid_grant_code-03",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_invalid_grant_reused",
+    "expected_completeness": "partial",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 3,
+    "hash": "8298b5a2b039498e"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_INVALID_GRANT_CODE",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_grant",
+        "expected": "no error"
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "The authorization code has already been redeemed.",
+        "note": "Code reuse: StrictMode double-invokes effects in development, so the callback exchange runs twice with the same one-time code."
+      }
+    ],
+    "fix": "Make the code exchange happen exactly once per authorization response. Guard the callback handler so a second effect run doesn't redeem the code again. For example, keep a module-level or ref flag, or memoize the in-flight exchange promise keyed by the code. Alternatively, do the exchange outside the React effect, in a router loader or a server-side callback. Remove the code and state from the URL after the first read. Don't retry a redeemed code. If a second attempt does happen, start a new authorization request with a fresh state and PKCE verifier. Keep PKCE S256 enabled and keep the registered redirect URI exact.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+        "why_not": "The error says the code was already redeemed, not that the verifier failed. The intermittent pattern matches StrictMode double invocation."
+      },
+      {
+        "code": "OAUTH_REDIRECT_URI_MISMATCH",
+        "why_not": "The error description names code reuse, not the redirect URI, and the configured redirect_uri is registered."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:35:31.41577-05:00",
+  "duration_ms": 5217,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 642,
+    "cache_creation_input_tokens": 1352,
+    "cache_read_input_tokens": 3864
+  },
+  "cost_usd": 0.0122184,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 642,
+      "cacheReadInputTokens": 3864,
+      "cacheCreationInputTokens": 1352,
+      "costUSD": 0.0122184,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 2,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 5072,
+    "stop_reason": "tool_use",
+    "session_id": "702a87c7-a131-42e9-aa9f-77424e4b11a6",
+    "total_cost_usd": 0.0122184,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1352,
+      "cache_read_input_tokens": 3864,
+      "output_tokens": 642,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1352,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 642,
+          "cache_read_input_tokens": 3864,
+          "cache_creation_input_tokens": 1352,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1352
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 642,
+        "cacheReadInputTokens": 3864,
+        "cacheCreationInputTokens": 1352,
+        "webSearchRequests": 0,
+        "costUSD": 0.0122184,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1352,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_INVALID_GRANT_CODE\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"invalid_grant\",\"expected\":\"no error\"},{\"path\":\"/redirect/error_description\",\"actual\":\"The authorization code has already been redeemed.\",\"note\":\"Code reuse: StrictMode double-invokes effects in development, so the callback exchange runs twice with the same one-time code.\"}],\"fix\":\"Make the code exchange happen exactly once per authorization response. Guard the callback handler so a second effect run doesn't redeem the code again. For example, keep a module-level or ref flag, or memoize the in-flight exchange promise keyed by the code. Alternatively, do the exchange outside the React effect, in a router loader or a server-side callback. Remove the code and state from the URL after the first read. Don't retry a redeemed code. If a second attempt does happen, start a new authorization request with a fresh state and PKCE verifier. Keep PKCE S256 enabled and keep the registered redirect URI exact.\",\"alternatives\":[{\"code\":\"OAUTH_PKCE_VERIFIER_MISMATCH\",\"why_not\":\"The error says the code was already redeemed, not that the verifier failed. The intermittent pattern matches StrictMode double invocation.\"},{\"code\":\"OAUTH_REDIRECT_URI_MISMATCH\",\"why_not\":\"The error description names code reuse, not the redirect URI, and the configured redirect_uri is registered.\"}],\"posture_codes\":[]}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_INVALID_GRANT_CODE",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "invalid_grant",
+          "expected": "no error"
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "The authorization code has already been redeemed.",
+          "note": "Code reuse: StrictMode double-invokes effects in development, so the callback exchange runs twice with the same one-time code."
+        }
+      ],
+      "fix": "Make the code exchange happen exactly once per authorization response. Guard the callback handler so a second effect run doesn't redeem the code again. For example, keep a module-level or ref flag, or memoize the in-flight exchange promise keyed by the code. Alternatively, do the exchange outside the React effect, in a router loader or a server-side callback. Remove the code and state from the URL after the first read. Don't retry a redeemed code. If a second attempt does happen, start a new authorization request with a fresh state and PKCE verifier. Keep PKCE S256 enabled and keep the registered redirect URI exact.",
+      "alternatives": [
+        {
+          "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+          "why_not": "The error says the code was already redeemed, not that the verifier failed. The intermittent pattern matches StrictMode double invocation."
+        },
+        {
+          "code": "OAUTH_REDIRECT_URI_MISMATCH",
+          "why_not": "The error description names code reuse, not the redirect URI, and the configured redirect_uri is registered."
+        }
+      ],
+      "posture_codes": []
+    },
+    "ttft_ms": 5189,
+    "type": "result",
+    "duration_ms": 5217,
+    "uuid": "6776afc8-a8f0-4617-8361-52952b394c8d",
+    "ttft_stream_ms": 1363,
+    "time_to_request_ms": 141,
+    "first_content_frame_ms": 1364,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

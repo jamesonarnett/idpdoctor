@@ -1,0 +1,204 @@
+{
+  "case_id": "saml_signature_invalid-00",
+  "case_hash": "cb820e39d5930245",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_SIGNATURE_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/Signature",
+    "fix_keys": [
+      "download",
+      "current",
+      "signing",
+      "certificate"
+    ],
+    "needs": [
+      "idp_cert_pem"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_signature_invalid-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "signature_tampered",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "cb820e39d5930245"
+  },
+  "output": {
+    "root_cause_code": "SAML_SIGNATURE_INVALID",
+    "confidence": 0.85,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature",
+        "actual": "digest or signature mismatch",
+        "expected": "verifies with the configured IdP certificate (SHA-256 fingerprint 2B:39:20:62:...:D9:D9)",
+        "note": "The assertion is signed and every other check passes (status, issuer, destination, InResponseTo, audience, recipient, time window, NameID, attributes, structure). Only signature verification fails."
+      }
+    ],
+    "fix": "First confirm the assertion was not modified after the IdP signed it. A proxy, gateway, or middleware that re-serializes, re-encodes, or rewrites the XML will break the digest, and so will a copy/paste that changes whitespace. Then compare the signing certificate in the IdP's current metadata against the configured certificate. If the IdP rotated keys, install the new certificate from the IdP's metadata, which you should fetch over a trusted channel. Keep validation on, and don't trust the certificate embedded in the response.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "SAML_STRUCTURE_INVALID",
+        "why_not": "The structure check passed: there is a single Assertion and the version is SAML 2.0. There are no signs of signature wrapping."
+      }
+    ],
+    "questions": [
+      "Does any proxy, load balancer, or middleware sit between the IdP and the SP and could modify the response body?",
+      "Did the IdP rotate its signing certificate recently? Does the configured certificate fingerprint match the IdP's current metadata?"
+    ]
+  },
+  "started": "2026-10-27T10:11:47.34412-05:00",
+  "duration_ms": 13180,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2109,
+    "cache_creation_input_tokens": 7045,
+    "cache_read_input_tokens": 28648
+  },
+  "cost_usd": 0.052142799999999996,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2109,
+      "cacheReadInputTokens": 28648,
+      "cacheCreationInputTokens": 7045,
+      "costUSD": 0.052142799999999996,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 13053,
+    "stop_reason": "tool_use",
+    "session_id": "d24f49b6-40dc-4204-97b6-9984defd4326",
+    "total_cost_usd": 0.052142799999999996,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 7045,
+      "cache_read_input_tokens": 28648,
+      "output_tokens": 2109,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 7045,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 651,
+          "cache_read_input_tokens": 16269,
+          "cache_creation_input_tokens": 3155,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 3155
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2109,
+        "cacheReadInputTokens": 28648,
+        "cacheCreationInputTokens": 7045,
+        "webSearchRequests": 0,
+        "costUSD": 0.052142799999999996,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 7045,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_SIGNATURE_INVALID\",\"confidence\":0.85,\"evidence\":[{\"path\":\"/Response/Assertion/Signature\",\"actual\":\"digest or signature mismatch\",\"expected\":\"verifies with the configured IdP certificate (SHA-256 fingerprint 2B:39:20:62:...:D9:D9)\",\"note\":\"The assertion is signed and every other check passes (status, issuer, destination, InResponseTo, audience, recipient, time window, NameID, attributes, structure). Only signature verification fails.\"}],\"fix\":\"First confirm the assertion was not modified after the IdP signed it. A proxy, gateway, or middleware that re-serializes, re-encodes, or rewrites the XML will break the digest, and so will a copy/paste that changes whitespace. Then compare the signing certificate in the IdP's current metadata against the configured certificate. If the IdP rotated keys, install the new certificate from the IdP's metadata, which you should fetch over a trusted channel. Keep validation on, and don't trust the certificate embedded in the response.\",\"alternatives\":[{\"code\":\"SAML_STRUCTURE_INVALID\",\"why_not\":\"The structure check passed: there is a single Assertion and the version is SAML 2.0. There are no signs of signature wrapping.\"}],\"questions\":[\"Does any proxy, load balancer, or middleware sit between the IdP and the SP and could modify the response body?\",\"Did the IdP rotate its signing certificate recently? Does the configured certificate fingerprint match the IdP's current metadata?\"]}",
+    "structured_output": {
+      "root_cause_code": "SAML_SIGNATURE_INVALID",
+      "confidence": 0.85,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Signature",
+          "actual": "digest or signature mismatch",
+          "expected": "verifies with the configured IdP certificate (SHA-256 fingerprint 2B:39:20:62:...:D9:D9)",
+          "note": "The assertion is signed and every other check passes (status, issuer, destination, InResponseTo, audience, recipient, time window, NameID, attributes, structure). Only signature verification fails."
+        }
+      ],
+      "fix": "First confirm the assertion was not modified after the IdP signed it. A proxy, gateway, or middleware that re-serializes, re-encodes, or rewrites the XML will break the digest, and so will a copy/paste that changes whitespace. Then compare the signing certificate in the IdP's current metadata against the configured certificate. If the IdP rotated keys, install the new certificate from the IdP's metadata, which you should fetch over a trusted channel. Keep validation on, and don't trust the certificate embedded in the response.",
+      "alternatives": [
+        {
+          "code": "SAML_STRUCTURE_INVALID",
+          "why_not": "The structure check passed: there is a single Assertion and the version is SAML 2.0. There are no signs of signature wrapping."
+        }
+      ],
+      "questions": [
+        "Does any proxy, load balancer, or middleware sit between the IdP and the SP and could modify the response body?",
+        "Did the IdP rotate its signing certificate recently? Does the configured certificate fingerprint match the IdP's current metadata?"
+      ]
+    },
+    "ttft_ms": 8088,
+    "type": "result",
+    "duration_ms": 13180,
+    "uuid": "bbbaf785-7a39-4b24-8ab5-145992e041d6",
+    "ttft_stream_ms": 1331,
+    "time_to_request_ms": 108,
+    "first_content_frame_ms": 1331,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

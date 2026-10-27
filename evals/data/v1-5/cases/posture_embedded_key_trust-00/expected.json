@@ -1,0 +1,13 @@
+{
+  "sp_entity_id": "https://sp.example.com/saml/metadata",
+  "acs_url": "https://sp.example.com/saml/acs",
+  "idp_entity_id": "https://idp.example.com/saml",
+  "request_id": "_req_1234567890abcdef",
+  "name_id_format": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+  "required_attributes": [
+    "email",
+    "firstName"
+  ],
+  "require_signed_assertion": true,
+  "now": "2026-01-15T12:00:00Z"
+}

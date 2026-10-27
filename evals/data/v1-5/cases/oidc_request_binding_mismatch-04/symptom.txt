@@ -1,0 +1,1 @@
+Entra AADSTS50027: the id_token doesn't contain the expected nonce claim.

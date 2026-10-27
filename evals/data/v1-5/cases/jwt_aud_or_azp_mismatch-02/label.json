@@ -1,0 +1,14 @@
+{
+  "code": "JWT_AUD_OR_AZP_MISMATCH",
+  "posture_codes": [],
+  "evidence_path": "/claims/aud",
+  "fix_keys": [
+    "request",
+    "token",
+    "client",
+    "correct"
+  ],
+  "needs": [
+    "client_id"
+  ]
+}

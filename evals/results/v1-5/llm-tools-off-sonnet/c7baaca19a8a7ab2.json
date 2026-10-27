@@ -1,0 +1,187 @@
+{
+  "case_id": "oidc_issuer_mismatch-04",
+  "case_hash": "c7baaca19a8a7ab2",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "OIDC_ISSUER_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/claims/iss",
+    "fix_keys": [
+      "configure",
+      "issuer",
+      "exact",
+      "string"
+    ],
+    "needs": [
+      "issuer"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "oidc_issuer_mismatch-04",
+    "kind": "jwt",
+    "mutator": "jwt_iss_mismatch",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 4,
+    "hash": "c7baaca19a8a7ab2"
+  },
+  "output": {
+    "root_cause_code": "OIDC_ISSUER_MISMATCH",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/claims/iss",
+        "actual": "https://login.example.com/tenant-1/",
+        "expected": "https://login.example.com/tenant-1/v2.0",
+        "note": "Issuer is missing the /v2.0 suffix; strings must match exactly."
+      }
+    ],
+    "fix": "Compare the token's iss to the issuer in the OP's discovery document and make the configured issuer match it exactly. If the OP issues v1-style tokens with iss ending in /tenant-1/, either configure that exact issuer or request v2.0 tokens (for example, by selecting the v2.0 endpoint or setting the app's accepted token version). Keep signature verification, exact-match issuer validation and the existing audience, nonce and expiry checks. Don't loosen them with prefix matching.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T09:37:47.504738-05:00",
+  "duration_ms": 4090,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 460,
+    "cache_creation_input_tokens": 1739,
+    "cache_read_input_tokens": 3886
+  },
+  "cost_usd": 0.0119486,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 460,
+      "cacheReadInputTokens": 3886,
+      "cacheCreationInputTokens": 1739,
+      "costUSD": 0.0119486,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 3987,
+    "stop_reason": "tool_use",
+    "session_id": "a7dfd216-0fd0-4a54-a27c-760ecebd0fcc",
+    "total_cost_usd": 0.0119486,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1739,
+      "cache_read_input_tokens": 3886,
+      "output_tokens": 460,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1739,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 460,
+          "cache_read_input_tokens": 3886,
+          "cache_creation_input_tokens": 1739,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1739
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 460,
+        "cacheReadInputTokens": 3886,
+        "cacheCreationInputTokens": 1739,
+        "webSearchRequests": 0,
+        "costUSD": 0.0119486,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1739,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OIDC_ISSUER_MISMATCH\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/claims/iss\",\"actual\":\"https://login.example.com/tenant-1/\",\"expected\":\"https://login.example.com/tenant-1/v2.0\",\"note\":\"Issuer is missing the /v2.0 suffix; strings must match exactly.\"}],\"fix\":\"Compare the token's iss to the issuer in the OP's discovery document and make the configured issuer match it exactly. If the OP issues v1-style tokens with iss ending in /tenant-1/, either configure that exact issuer or request v2.0 tokens (for example, by selecting the v2.0 endpoint or setting the app's accepted token version). Keep signature verification, exact-match issuer validation and the existing audience, nonce and expiry checks. Don't loosen them with prefix matching.\",\"alternatives\":[],\"posture_codes\":[],\"questions\":[]}",
+    "structured_output": {
+      "root_cause_code": "OIDC_ISSUER_MISMATCH",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/claims/iss",
+          "actual": "https://login.example.com/tenant-1/",
+          "expected": "https://login.example.com/tenant-1/v2.0",
+          "note": "Issuer is missing the /v2.0 suffix; strings must match exactly."
+        }
+      ],
+      "fix": "Compare the token's iss to the issuer in the OP's discovery document and make the configured issuer match it exactly. If the OP issues v1-style tokens with iss ending in /tenant-1/, either configure that exact issuer or request v2.0 tokens (for example, by selecting the v2.0 endpoint or setting the app's accepted token version). Keep signature verification, exact-match issuer validation and the existing audience, nonce and expiry checks. Don't loosen them with prefix matching.",
+      "alternatives": [],
+      "posture_codes": [],
+      "questions": []
+    },
+    "ttft_ms": 4059,
+    "type": "result",
+    "duration_ms": 4090,
+    "uuid": "10f03b51-789c-4c04-80a4-54c362aadb1c",
+    "ttft_stream_ms": 1398,
+    "time_to_request_ms": 100,
+    "first_content_frame_ms": 1398,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

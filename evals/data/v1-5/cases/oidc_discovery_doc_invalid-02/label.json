@@ -1,0 +1,9 @@
+{
+  "code": "OIDC_DISCOVERY_DOC_INVALID",
+  "posture_codes": [],
+  "evidence_path": "/discovery/subject_types_supported",
+  "fix_keys": [
+    "point",
+    "canonical"
+  ]
+}

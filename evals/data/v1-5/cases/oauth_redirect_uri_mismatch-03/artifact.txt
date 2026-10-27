@@ -1,0 +1,1 @@
+https://example-tenant.us.auth0.com/authorize?error=invalid_request&error_description=Callback+URL+mismatch.+http%3A%2F%2Fapp.example.com%2Fcallback+is+not+in+the+list+of+allowed+callback+URLs&state=st-7Hq2Lx9P

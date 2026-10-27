@@ -1,0 +1,231 @@
+{
+  "case_id": "saml_signature_invalid-01",
+  "case_hash": "bb3f8f291e5a91e8",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_SIGNATURE_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/Signature/KeyInfo/X509Data/X509Certificate",
+    "fix_keys": [
+      "download",
+      "current",
+      "signing",
+      "certificate"
+    ],
+    "needs": [
+      "idp_cert_pem"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_signature_invalid-01",
+    "kind": "saml_response",
+    "dialect": "auth0",
+    "mutator": "wrong_cert",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 1,
+    "hash": "bb3f8f291e5a91e8"
+  },
+  "output": {
+    "root_cause_code": "SAML_SIGNATURE_INVALID",
+    "confidence": 0.85,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate",
+        "actual": "Embedded certificate has subject CN 'TEST ONLY rotated fixture IdP' and serial 0x6955B900",
+        "expected": "Configured IdP cert has subject CN 'TEST ONLY idpdoctor fixture IdP' and serial 0x01352505",
+        "note": "The assertion was signed by a different (rotated) key than the one the SP trusts, so verification against the configured cert fails."
+      },
+      {
+        "path": "/expected/idp_cert_pem",
+        "actual": "Configured certificate is the original fixture IdP cert, not the rotated one",
+        "note": "The SP trust anchor was not updated after the IdP rotated its signing key."
+      },
+      {
+        "path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm",
+        "actual": "rsa-sha256",
+        "note": "The algorithm is acceptable, so the failure is key mismatch and not a weak algorithm."
+      }
+    ],
+    "fix": "The IdP appears to have rotated its signing certificate, but the SP still trusts the old one. Get the new signing certificate from the IdP through a trusted channel, such as signed IdP metadata or the admin console. Check its fingerprint out-of-band. Then replace (or add alongside the old one during the rollover) the IdP certificate in the SP/Scalekit connection. Keep signature validation on and keep requiring a signed assertion. Do not trust the certificate embedded in the response just because it arrived there. If the IdP says it did not rotate, treat the response as suspect and investigate.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "CERT_EXPIRED_OR_WEAK",
+        "why_not": "The embedded certificate is valid from 2026-01-01 to 2126, and the algorithms are SHA-256, so expiry and weakness are not the problem."
+      },
+      {
+        "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+        "why_not": "The assertion is signed, and that is the element required by require_signed_assertion."
+      }
+    ],
+    "questions": [
+      "Did the IdP recently rotate its signing certificate, and can it provide the new certificate or metadata?"
+    ]
+  },
+  "started": "2026-10-27T09:45:55.776028-05:00",
+  "duration_ms": 9342,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1089,
+    "cache_creation_input_tokens": 6574,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.0377092,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1089,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 6574,
+      "costUSD": 0.0377092,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 9170,
+    "stop_reason": "tool_use",
+    "session_id": "7517c8d1-9d25-4ba1-8c7b-0199ef7089d5",
+    "total_cost_usd": 0.0377092,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6574,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 1089,
+      "output_tokens_details": {
+        "thinking_tokens": 160
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6574,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1089,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 6574,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 6574
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1089,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 6574,
+        "webSearchRequests": 0,
+        "costUSD": 0.0377092,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 160,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6574,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_SIGNATURE_INVALID\",\"confidence\":0.85,\"evidence\":[{\"path\":\"/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate\",\"actual\":\"Embedded certificate has subject CN 'TEST ONLY rotated fixture IdP' and serial 0x6955B900\",\"expected\":\"Configured IdP cert has subject CN 'TEST ONLY idpdoctor fixture IdP' and serial 0x01352505\",\"note\":\"The assertion was signed by a different (rotated) key than the one the SP trusts, so verification against the configured cert fails.\"},{\"path\":\"/expected/idp_cert_pem\",\"actual\":\"Configured certificate is the original fixture IdP cert, not the rotated one\",\"note\":\"The SP trust anchor was not updated after the IdP rotated its signing key.\"},{\"path\":\"/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm\",\"actual\":\"rsa-sha256\",\"note\":\"The algorithm is acceptable, so the failure is key mismatch and not a weak algorithm.\"}],\"fix\":\"The IdP appears to have rotated its signing certificate, but the SP still trusts the old one. Get the new signing certificate from the IdP through a trusted channel, such as signed IdP metadata or the admin console. Check its fingerprint out-of-band. Then replace (or add alongside the old one during the rollover) the IdP certificate in the SP/Scalekit connection. Keep signature validation on and keep requiring a signed assertion. Do not trust the certificate embedded in the response just because it arrived there. If the IdP says it did not rotate, treat the response as suspect and investigate.\",\"alternatives\":[{\"code\":\"CERT_EXPIRED_OR_WEAK\",\"why_not\":\"The embedded certificate is valid from 2026-01-01 to 2126, and the algorithms are SHA-256, so expiry and weakness are not the problem.\"},{\"code\":\"SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED\",\"why_not\":\"The assertion is signed, and that is the element required by require_signed_assertion.\"}],\"questions\":[\"Did the IdP recently rotate its signing certificate, and can it provide the new certificate or metadata?\"],\"posture_codes\":[]}",
+    "structured_output": {
+      "root_cause_code": "SAML_SIGNATURE_INVALID",
+      "confidence": 0.85,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate",
+          "actual": "Embedded certificate has subject CN 'TEST ONLY rotated fixture IdP' and serial 0x6955B900",
+          "expected": "Configured IdP cert has subject CN 'TEST ONLY idpdoctor fixture IdP' and serial 0x01352505",
+          "note": "The assertion was signed by a different (rotated) key than the one the SP trusts, so verification against the configured cert fails."
+        },
+        {
+          "path": "/expected/idp_cert_pem",
+          "actual": "Configured certificate is the original fixture IdP cert, not the rotated one",
+          "note": "The SP trust anchor was not updated after the IdP rotated its signing key."
+        },
+        {
+          "path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm",
+          "actual": "rsa-sha256",
+          "note": "The algorithm is acceptable, so the failure is key mismatch and not a weak algorithm."
+        }
+      ],
+      "fix": "The IdP appears to have rotated its signing certificate, but the SP still trusts the old one. Get the new signing certificate from the IdP through a trusted channel, such as signed IdP metadata or the admin console. Check its fingerprint out-of-band. Then replace (or add alongside the old one during the rollover) the IdP certificate in the SP/Scalekit connection. Keep signature validation on and keep requiring a signed assertion. Do not trust the certificate embedded in the response just because it arrived there. If the IdP says it did not rotate, treat the response as suspect and investigate.",
+      "alternatives": [
+        {
+          "code": "CERT_EXPIRED_OR_WEAK",
+          "why_not": "The embedded certificate is valid from 2026-01-01 to 2126, and the algorithms are SHA-256, so expiry and weakness are not the problem."
+        },
+        {
+          "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+          "why_not": "The assertion is signed, and that is the element required by require_signed_assertion."
+        }
+      ],
+      "questions": [
+        "Did the IdP recently rotate its signing certificate, and can it provide the new certificate or metadata?"
+      ],
+      "posture_codes": []
+    },
+    "ttft_ms": 4094,
+    "type": "result",
+    "duration_ms": 9342,
+    "uuid": "3eba25d1-207f-45a8-a872-db33271ea51b",
+    "ttft_stream_ms": 1899,
+    "time_to_request_ms": 171,
+    "first_content_frame_ms": 1900,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

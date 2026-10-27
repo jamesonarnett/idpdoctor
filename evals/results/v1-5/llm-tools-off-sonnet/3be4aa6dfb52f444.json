@@ -1,0 +1,331 @@
+{
+  "case_id": "healthy-samlresponse-06",
+  "case_hash": "3be4aa6dfb52f444",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [],
+    "fix_keys": [
+      "no change needed",
+      "the artifact validates"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "healthy-samlresponse-06",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 6,
+    "hash": "3be4aa6dfb52f444"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature",
+        "actual": "Assertion is signed; the Reference URI points to the assertion ID",
+        "expected": "Signed assertion (require_signed_assertion=true)"
+      },
+      {
+        "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate",
+        "actual": "Embedded certificate matches the configured IdP certificate",
+        "expected": "Configured IdP cert",
+        "note": "The configured certificate is the trust anchor, not the embedded one."
+      },
+      {
+        "path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm",
+        "actual": "rsa-sha256",
+        "expected": "A non-weak algorithm"
+      },
+      {
+        "path": "/Response/Assertion/Signature/SignedInfo/Reference/DigestMethod/@Algorithm",
+        "actual": "sha256",
+        "expected": "A non-weak digest"
+      },
+      {
+        "path": "/Response/Status/StatusCode/@Value",
+        "actual": "urn:oasis:names:tc:SAML:2.0:status:Success",
+        "expected": "Success"
+      },
+      {
+        "path": "/Response/Issuer",
+        "actual": "https://idp.example.com/saml",
+        "expected": "https://idp.example.com/saml"
+      },
+      {
+        "path": "/Response/@Destination",
+        "actual": "https://sp.example.com/saml/acs",
+        "expected": "https://sp.example.com/saml/acs"
+      },
+      {
+        "path": "/Response/@InResponseTo",
+        "actual": "_req_1234567890abcdef",
+        "expected": "_req_1234567890abcdef"
+      },
+      {
+        "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@Recipient",
+        "actual": "https://sp.example.com/saml/acs",
+        "expected": "https://sp.example.com/saml/acs"
+      },
+      {
+        "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+        "actual": "https://sp.example.com/saml/metadata",
+        "expected": "https://sp.example.com/saml/metadata"
+      },
+      {
+        "path": "/Response/Assertion/Conditions/@NotBefore",
+        "actual": "2026-01-15T11:57:30Z",
+        "expected": "At or before now (12:00:00Z)"
+      },
+      {
+        "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+        "actual": "2026-01-15T12:02:30Z",
+        "expected": "After now (12:00:00Z)"
+      },
+      {
+        "path": "/Response/Assertion/Subject/NameID/@Format",
+        "actual": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+        "expected": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress"
+      },
+      {
+        "path": "/Response/Assertion/AttributeStatement/Attribute[@Name='email']",
+        "actual": "Present with a value (redacted)"
+      },
+      {
+        "path": "/Response/Assertion/AttributeStatement/Attribute[@Name='firstName']",
+        "actual": "Present with a value (redacted)"
+      }
+    ],
+    "fix": "No change is needed. Keep verifying the signature against the configured IdP certificate, not the embedded KeyInfo. Keep the clock skew at 5 minutes or less. Keep requiring a signed assertion with the audience, recipient, destination and InResponseTo checks.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "SAML_SIGNATURE_INVALID",
+        "why_not": "I could not run the cryptographic verification myself. The certificate matches the configured one, the algorithms are strong, and no structural sign suggests tampering."
+      }
+    ],
+    "questions": [
+      "What error does the SP report, if any? No symptom was given, and I could not run the cryptographic signature check myself."
+    ]
+  },
+  "started": "2026-10-27T09:31:52.110965-05:00",
+  "duration_ms": 13977,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1625,
+    "cache_creation_input_tokens": 6404,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.0423892,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1625,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 6404,
+      "costUSD": 0.0423892,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 15,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 13846,
+    "stop_reason": "tool_use",
+    "session_id": "0dfa48af-af28-47d1-a1c7-5aec55879e01",
+    "total_cost_usd": 0.0423892,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6404,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 1625,
+      "output_tokens_details": {
+        "thinking_tokens": 224
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6404,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1625,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 6404,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 6404
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1625,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 6404,
+        "webSearchRequests": 0,
+        "costUSD": 0.0423892,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 224,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6404,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.8,\"evidence\":[{\"path\":\"/Response/Assertion/Signature\",\"actual\":\"Assertion is signed; the Reference URI points to the assertion ID\",\"expected\":\"Signed assertion (require_signed_assertion=true)\"},{\"path\":\"/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate\",\"actual\":\"Embedded certificate matches the configured IdP certificate\",\"expected\":\"Configured IdP cert\",\"note\":\"The configured certificate is the trust anchor, not the embedded one.\"},{\"path\":\"/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm\",\"actual\":\"rsa-sha256\",\"expected\":\"A non-weak algorithm\"},{\"path\":\"/Response/Assertion/Signature/SignedInfo/Reference/DigestMethod/@Algorithm\",\"actual\":\"sha256\",\"expected\":\"A non-weak digest\"},{\"path\":\"/Response/Status/StatusCode/@Value\",\"actual\":\"urn:oasis:names:tc:SAML:2.0:status:Success\",\"expected\":\"Success\"},{\"path\":\"/Response/Issuer\",\"actual\":\"https://idp.example.com/saml\",\"expected\":\"https://idp.example.com/saml\"},{\"path\":\"/Response/@Destination\",\"actual\":\"https://sp.example.com/saml/acs\",\"expected\":\"https://sp.example.com/saml/acs\"},{\"path\":\"/Response/@InResponseTo\",\"actual\":\"_req_1234567890abcdef\",\"expected\":\"_req_1234567890abcdef\"},{\"path\":\"/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@Recipient\",\"actual\":\"https://sp.example.com/saml/acs\",\"expected\":\"https://sp.example.com/saml/acs\"},{\"path\":\"/Response/Assertion/Conditions/AudienceRestriction/Audience\",\"actual\":\"https://sp.example.com/saml/metadata\",\"expected\":\"https://sp.example.com/saml/metadata\"},{\"path\":\"/Response/Assertion/Conditions/@NotBefore\",\"actual\":\"2026-01-15T11:57:30Z\",\"expected\":\"At or before now (12:00:00Z)\"},{\"path\":\"/Response/Assertion/Conditions/@NotOnOrAfter\",\"actual\":\"2026-01-15T12:02:30Z\",\"expected\":\"After now (12:00:00Z)\"},{\"path\":\"/Response/Assertion/Subject/NameID/@Format\",\"actual\":\"urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress\",\"expected\":\"urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress\"},{\"path\":\"/Response/Assertion/AttributeStatement/Attribute[@Name='email']\",\"actual\":\"Present with a value (redacted)\"},{\"path\":\"/Response/Assertion/AttributeStatement/Attribute[@Name='firstName']\",\"actual\":\"Present with a value (redacted)\"}],\"fix\":\"No change is needed. Keep verifying the signature against the configured IdP certificate, not the embedded KeyInfo. Keep the clock skew at 5 minutes or less. Keep requiring a signed assertion with the audience, recipient, destination and InResponseTo checks.\",\"alternatives\":[{\"code\":\"SAML_SIGNATURE_INVALID\",\"why_not\":\"I could not run the cryptographic verification myself. The certificate matches the configured one, the algorithms are strong, and no structural sign suggests tampering.\"}],\"questions\":[\"What error does the SP report, if any? No symptom was given, and I could not run the cryptographic signature check myself.\"],\"posture_codes\":[]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Signature",
+          "actual": "Assertion is signed; the Reference URI points to the assertion ID",
+          "expected": "Signed assertion (require_signed_assertion=true)"
+        },
+        {
+          "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate",
+          "actual": "Embedded certificate matches the configured IdP certificate",
+          "expected": "Configured IdP cert",
+          "note": "The configured certificate is the trust anchor, not the embedded one."
+        },
+        {
+          "path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm",
+          "actual": "rsa-sha256",
+          "expected": "A non-weak algorithm"
+        },
+        {
+          "path": "/Response/Assertion/Signature/SignedInfo/Reference/DigestMethod/@Algorithm",
+          "actual": "sha256",
+          "expected": "A non-weak digest"
+        },
+        {
+          "path": "/Response/Status/StatusCode/@Value",
+          "actual": "urn:oasis:names:tc:SAML:2.0:status:Success",
+          "expected": "Success"
+        },
+        {
+          "path": "/Response/Issuer",
+          "actual": "https://idp.example.com/saml",
+          "expected": "https://idp.example.com/saml"
+        },
+        {
+          "path": "/Response/@Destination",
+          "actual": "https://sp.example.com/saml/acs",
+          "expected": "https://sp.example.com/saml/acs"
+        },
+        {
+          "path": "/Response/@InResponseTo",
+          "actual": "_req_1234567890abcdef",
+          "expected": "_req_1234567890abcdef"
+        },
+        {
+          "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@Recipient",
+          "actual": "https://sp.example.com/saml/acs",
+          "expected": "https://sp.example.com/saml/acs"
+        },
+        {
+          "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+          "actual": "https://sp.example.com/saml/metadata",
+          "expected": "https://sp.example.com/saml/metadata"
+        },
+        {
+          "path": "/Response/Assertion/Conditions/@NotBefore",
+          "actual": "2026-01-15T11:57:30Z",
+          "expected": "At or before now (12:00:00Z)"
+        },
+        {
+          "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+          "actual": "2026-01-15T12:02:30Z",
+          "expected": "After now (12:00:00Z)"
+        },
+        {
+          "path": "/Response/Assertion/Subject/NameID/@Format",
+          "actual": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+          "expected": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress"
+        },
+        {
+          "path": "/Response/Assertion/AttributeStatement/Attribute[@Name='email']",
+          "actual": "Present with a value (redacted)"
+        },
+        {
+          "path": "/Response/Assertion/AttributeStatement/Attribute[@Name='firstName']",
+          "actual": "Present with a value (redacted)"
+        }
+      ],
+      "fix": "No change is needed. Keep verifying the signature against the configured IdP certificate, not the embedded KeyInfo. Keep the clock skew at 5 minutes or less. Keep requiring a signed assertion with the audience, recipient, destination and InResponseTo checks.",
+      "alternatives": [
+        {
+          "code": "SAML_SIGNATURE_INVALID",
+          "why_not": "I could not run the cryptographic verification myself. The certificate matches the configured one, the algorithms are strong, and no structural sign suggests tampering."
+        }
+      ],
+      "questions": [
+        "What error does the SP report, if any? No symptom was given, and I could not run the cryptographic signature check myself."
+      ],
+      "posture_codes": []
+    },
+    "ttft_ms": 7498,
+    "type": "result",
+    "duration_ms": 13977,
+    "uuid": "4ef85a4d-5974-4039-b41c-11e700303be5",
+    "ttft_stream_ms": 5504,
+    "time_to_request_ms": 129,
+    "first_content_frame_ms": 5505,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

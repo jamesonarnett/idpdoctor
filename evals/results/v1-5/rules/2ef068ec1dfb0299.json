@@ -1,0 +1,48 @@
+{
+  "case_id": "healthy-jwt-02",
+  "case_hash": "2ef068ec1dfb0299",
+  "arm": "rules",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [],
+    "fix_keys": [
+      "no change needed",
+      "the artifact validates"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "healthy-jwt-02",
+    "kind": "jwt",
+    "expected_completeness": "full",
+    "symptom_from": "misleading",
+    "misleading_symptom": true,
+    "seed": 42,
+    "index": 2,
+    "hash": "2ef068ec1dfb0299"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 1,
+    "evidence": [],
+    "fix": "No change needed: every applicable check passed.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": [
+      "access_token"
+    ]
+  },
+  "started": "2026-10-27T09:29:17.704409-05:00",
+  "duration_ms": 0,
+  "tool_calls": 0,
+  "num_turns": 0,
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0
+  },
+  "cost_usd": 0,
+  "hallucinated": [],
+  "valid_citations": 0
+}

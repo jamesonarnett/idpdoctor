@@ -1,0 +1,192 @@
+{
+  "case_id": "saml_issuer_mismatch-03",
+  "case_hash": "d0a6c7bc279cdbe8",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_ISSUER_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/Response/Issuer",
+    "fix_keys": [
+      "entityid",
+      "metadata",
+      "verbatim",
+      "issuer"
+    ],
+    "needs": [
+      "idp_entity_id"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_issuer_mismatch-03",
+    "kind": "saml_response",
+    "dialect": "okta",
+    "mutator": "issuer_mismatch",
+    "expected_completeness": "partial",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 3,
+    "hash": "d0a6c7bc279cdbe8"
+  },
+  "output": {
+    "root_cause_code": "SAML_ISSUER_MISMATCH",
+    "confidence": 0.97,
+    "evidence": [
+      {
+        "path": "/Response/Issuer",
+        "actual": "https://idp.example.com/saml/",
+        "expected": "https://idp.example.com/saml",
+        "note": "Differs only by a trailing slash. Signature, audience, destination, recipient, time window, NameID and attributes all pass."
+      }
+    ],
+    "fix": "Copy the IdP entityID from the IdP metadata exactly, including any trailing slash, into the SP's IdP issuer setting. The Response currently carries \"https://idp.example.com/saml/\". Either update the SP setting to match, or correct the IdP's configured issuer if the slash-less value is the intended one. Keep exact string matching and keep signature validation on.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": [
+      "request_id (the AuthnRequest ID) so the InResponseTo check can run; the response carries an InResponseTo value but it was not compared."
+    ]
+  },
+  "started": "2026-10-27T10:08:22.719943-05:00",
+  "duration_ms": 11393,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1887,
+    "cache_creation_input_tokens": 6707,
+    "cache_read_input_tokens": 28628
+  },
+  "cost_usd": 0.0485688,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1887,
+      "cacheReadInputTokens": 28628,
+      "cacheCreationInputTokens": 6707,
+      "costUSD": 0.0485688,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 11259,
+    "stop_reason": "tool_use",
+    "session_id": "3d07fe7d-a5f3-4d76-834b-b2d6b250f780",
+    "total_cost_usd": 0.0485688,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 6707,
+      "cache_read_input_tokens": 28628,
+      "output_tokens": 1887,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6707,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 445,
+          "cache_read_input_tokens": 16249,
+          "cache_creation_input_tokens": 2837,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2837
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1887,
+        "cacheReadInputTokens": 28628,
+        "cacheCreationInputTokens": 6707,
+        "webSearchRequests": 0,
+        "costUSD": 0.0485688,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6707,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_ISSUER_MISMATCH\",\"confidence\":0.97,\"evidence\":[{\"path\":\"/Response/Issuer\",\"actual\":\"https://idp.example.com/saml/\",\"expected\":\"https://idp.example.com/saml\",\"note\":\"Differs only by a trailing slash. Signature, audience, destination, recipient, time window, NameID and attributes all pass.\"}],\"fix\":\"Copy the IdP entityID from the IdP metadata exactly, including any trailing slash, into the SP's IdP issuer setting. The Response currently carries \\\"https://idp.example.com/saml/\\\". Either update the SP setting to match, or correct the IdP's configured issuer if the slash-less value is the intended one. Keep exact string matching and keep signature validation on.\",\"questions\":[\"request_id (the AuthnRequest ID) so the InResponseTo check can run; the response carries an InResponseTo value but it was not compared.\"],\"alternatives\":[]}",
+    "structured_output": {
+      "root_cause_code": "SAML_ISSUER_MISMATCH",
+      "confidence": 0.97,
+      "evidence": [
+        {
+          "path": "/Response/Issuer",
+          "actual": "https://idp.example.com/saml/",
+          "expected": "https://idp.example.com/saml",
+          "note": "Differs only by a trailing slash. Signature, audience, destination, recipient, time window, NameID and attributes all pass."
+        }
+      ],
+      "fix": "Copy the IdP entityID from the IdP metadata exactly, including any trailing slash, into the SP's IdP issuer setting. The Response currently carries \"https://idp.example.com/saml/\". Either update the SP setting to match, or correct the IdP's configured issuer if the slash-less value is the intended one. Keep exact string matching and keep signature validation on.",
+      "questions": [
+        "request_id (the AuthnRequest ID) so the InResponseTo check can run; the response carries an InResponseTo value but it was not compared."
+      ],
+      "alternatives": []
+    },
+    "ttft_ms": 7905,
+    "type": "result",
+    "duration_ms": 11393,
+    "uuid": "13c1172b-7162-4df2-a5eb-121f7878fb45",
+    "ttft_stream_ms": 1362,
+    "time_to_request_ms": 117,
+    "first_content_frame_ms": 1362,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

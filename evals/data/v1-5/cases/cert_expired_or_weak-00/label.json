@@ -1,0 +1,11 @@
+{
+  "code": "CERT_EXPIRED_OR_WEAK",
+  "posture_codes": [],
+  "evidence_path": "/Signature/KeyInfo/X509Data/X509Certificate/PublicKey",
+  "fix_keys": [
+    "rotate",
+    "signing",
+    "certificate",
+    "generate"
+  ]
+}

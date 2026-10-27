@@ -1,0 +1,9 @@
+{
+  "id": "jwt_kid_not_found_in_jwks-04",
+  "kind": "jwt",
+  "mutator": "jwt_kid_unknown",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 4,
+  "hash": "fa13db85eb01c4d3"
+}

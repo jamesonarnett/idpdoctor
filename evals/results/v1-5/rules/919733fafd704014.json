@@ -1,0 +1,60 @@
+{
+  "case_id": "saml_destination_or_recipient_mismatch-02",
+  "case_hash": "919733fafd704014",
+  "arm": "rules",
+  "label": {
+    "code": "SAML_DESTINATION_OR_RECIPIENT_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/Response/@Destination",
+    "fix_keys": [
+      "application",
+      "reply",
+      "assertion",
+      "consumer"
+    ],
+    "needs": [
+      "acs_url"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_destination_or_recipient_mismatch-02",
+    "kind": "saml_response",
+    "dialect": "generic",
+    "mutator": "destination_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 2,
+    "hash": "919733fafd704014"
+  },
+  "output": {
+    "root_cause_code": "SAML_DESTINATION_OR_RECIPIENT_MISMATCH",
+    "confidence": 1,
+    "evidence": [
+      {
+        "path": "/Response/@Destination",
+        "actual": "https://sp-staging.example.com/saml/acs",
+        "expected": "https://sp.example.com/saml/acs",
+        "note": "looks like a different environment"
+      }
+    ],
+    "fix": "Set the IdP application's ACS / Reply URL to exactly the SP's assertion consumer URL (scheme, host, port, path).",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T09:29:17.71727-05:00",
+  "duration_ms": 0,
+  "tool_calls": 0,
+  "num_turns": 0,
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0
+  },
+  "cost_usd": 0,
+  "hallucinated": [],
+  "valid_citations": 1
+}

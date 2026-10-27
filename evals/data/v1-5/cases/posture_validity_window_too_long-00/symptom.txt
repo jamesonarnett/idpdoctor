@@ -1,0 +1,1 @@
+Assertions stay valid for an hour; is that a problem?

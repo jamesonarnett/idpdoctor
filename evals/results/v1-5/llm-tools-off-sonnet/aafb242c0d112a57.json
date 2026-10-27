@@ -1,0 +1,240 @@
+{
+  "case_id": "oauth_pkce_verifier_mismatch-00",
+  "case_hash": "aafb242c0d112a57",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/request/code_verifier",
+    "fix_keys": [
+      "generate",
+      "verifier",
+      "store",
+      "session"
+    ],
+    "needs": [
+      "code_verifier"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_pkce_verifier_mismatch-00",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_pkce_plain_mismatch",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "aafb242c0d112a57"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+    "confidence": 0.93,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_grant",
+        "note": "Token endpoint rejected the code exchange"
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "AADSTS501481: The Code_Verifier does not match the code_challenge supplied in the authorization request.",
+        "note": "Entra explicitly reports a PKCE verifier/challenge mismatch"
+      },
+      {
+        "path": "/request/code_challenge_method",
+        "actual": "plain",
+        "expected": "S256",
+        "note": "Public client is using plain PKCE"
+      },
+      {
+        "path": "/request/code_verifier",
+        "actual": "[REDACTED]",
+        "note": "Configured verifier differs from the configured code_challenge; for plain, challenge must equal verifier"
+      },
+      {
+        "path": "/request/code_challenge",
+        "actual": "[REDACTED]",
+        "note": "Does not equal the code_verifier"
+      }
+    ],
+    "fix": "Generate one high-entropy code_verifier per authorization request and keep it with that request's state (for example in the session). Derive code_challenge = BASE64URL(SHA256(code_verifier)) and send code_challenge_method=S256 in the authorization request. Send that same code_verifier, unchanged, in the token request. Don't reuse a challenge from a different request or regenerate the verifier between the redirect and the callback. Stop using the plain method for this public client.",
+    "posture_codes": [
+      "POSTURE_PKCE_PLAIN_OR_ABSENT"
+    ],
+    "alternatives": [
+      {
+        "code": "OAUTH_INVALID_GRANT_CODE",
+        "why_not": "invalid_grant is generic, but the AADSTS501481 description names the code_verifier/code_challenge mismatch, not an expired or reused code."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:35:37.195019-05:00",
+  "duration_ms": 5832,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 730,
+    "cache_creation_input_tokens": 1432,
+    "cache_read_input_tokens": 3864
+  },
+  "cost_usd": 0.013418399999999999,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 730,
+      "cacheReadInputTokens": 3864,
+      "cacheCreationInputTokens": 1432,
+      "costUSD": 0.013418399999999999,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 5,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 5719,
+    "stop_reason": "tool_use",
+    "session_id": "65b8b952-4729-4784-ad79-2d37e34af060",
+    "total_cost_usd": 0.013418399999999999,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1432,
+      "cache_read_input_tokens": 3864,
+      "output_tokens": 730,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1432,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 730,
+          "cache_read_input_tokens": 3864,
+          "cache_creation_input_tokens": 1432,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1432
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 730,
+        "cacheReadInputTokens": 3864,
+        "cacheCreationInputTokens": 1432,
+        "webSearchRequests": 0,
+        "costUSD": 0.013418399999999999,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1432,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_PKCE_VERIFIER_MISMATCH\",\"confidence\":0.93,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"invalid_grant\",\"note\":\"Token endpoint rejected the code exchange\"},{\"path\":\"/redirect/error_description\",\"actual\":\"AADSTS501481: The Code_Verifier does not match the code_challenge supplied in the authorization request.\",\"note\":\"Entra explicitly reports a PKCE verifier/challenge mismatch\"},{\"path\":\"/request/code_challenge_method\",\"actual\":\"plain\",\"expected\":\"S256\",\"note\":\"Public client is using plain PKCE\"},{\"path\":\"/request/code_verifier\",\"actual\":\"[REDACTED]\",\"note\":\"Configured verifier differs from the configured code_challenge; for plain, challenge must equal verifier\"},{\"path\":\"/request/code_challenge\",\"actual\":\"[REDACTED]\",\"note\":\"Does not equal the code_verifier\"}],\"fix\":\"Generate one high-entropy code_verifier per authorization request and keep it with that request's state (for example in the session). Derive code_challenge = BASE64URL(SHA256(code_verifier)) and send code_challenge_method=S256 in the authorization request. Send that same code_verifier, unchanged, in the token request. Don't reuse a challenge from a different request or regenerate the verifier between the redirect and the callback. Stop using the plain method for this public client.\",\"posture_codes\":[\"POSTURE_PKCE_PLAIN_OR_ABSENT\"],\"alternatives\":[{\"code\":\"OAUTH_INVALID_GRANT_CODE\",\"why_not\":\"invalid_grant is generic, but the AADSTS501481 description names the code_verifier/code_challenge mismatch, not an expired or reused code.\"}]}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+      "confidence": 0.93,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "invalid_grant",
+          "note": "Token endpoint rejected the code exchange"
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "AADSTS501481: The Code_Verifier does not match the code_challenge supplied in the authorization request.",
+          "note": "Entra explicitly reports a PKCE verifier/challenge mismatch"
+        },
+        {
+          "path": "/request/code_challenge_method",
+          "actual": "plain",
+          "expected": "S256",
+          "note": "Public client is using plain PKCE"
+        },
+        {
+          "path": "/request/code_verifier",
+          "actual": "[REDACTED]",
+          "note": "Configured verifier differs from the configured code_challenge; for plain, challenge must equal verifier"
+        },
+        {
+          "path": "/request/code_challenge",
+          "actual": "[REDACTED]",
+          "note": "Does not equal the code_verifier"
+        }
+      ],
+      "fix": "Generate one high-entropy code_verifier per authorization request and keep it with that request's state (for example in the session). Derive code_challenge = BASE64URL(SHA256(code_verifier)) and send code_challenge_method=S256 in the authorization request. Send that same code_verifier, unchanged, in the token request. Don't reuse a challenge from a different request or regenerate the verifier between the redirect and the callback. Stop using the plain method for this public client.",
+      "posture_codes": [
+        "POSTURE_PKCE_PLAIN_OR_ABSENT"
+      ],
+      "alternatives": [
+        {
+          "code": "OAUTH_INVALID_GRANT_CODE",
+          "why_not": "invalid_grant is generic, but the AADSTS501481 description names the code_verifier/code_challenge mismatch, not an expired or reused code."
+        }
+      ]
+    },
+    "ttft_ms": 5805,
+    "type": "result",
+    "duration_ms": 5832,
+    "uuid": "5aa0e9b4-3d42-486f-975b-01a08d4834d8",
+    "ttft_stream_ms": 1411,
+    "time_to_request_ms": 108,
+    "first_content_frame_ms": 1411,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

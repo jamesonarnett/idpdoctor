@@ -1,0 +1,11 @@
+{
+  "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+  "posture_codes": [],
+  "evidence_path": "/redirect/error",
+  "fix_keys": [
+    "compare",
+    "client",
+    "registered",
+    "grant"
+  ]
+}

@@ -1,0 +1,230 @@
+{
+  "case_id": "posture_expired_cert_accepted-00",
+  "case_hash": "3519ef2a514ea63c",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_EXPIRED_CERT_ACCEPTED"
+    ],
+    "evidence_path": "/Signature/KeyInfo/X509Data/X509Certificate/NotAfter",
+    "fix_keys": [
+      "rotate",
+      "signing",
+      "certificate",
+      "configure"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_expired_cert_accepted-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "posture_expired_cert",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "3519ef2a514ea63c"
+  },
+  "output": {
+    "root_cause_code": "CERT_EXPIRED_OR_WEAK",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate/NotAfter",
+        "actual": "2026-01-14T12:00:00Z",
+        "expected": "later than the evaluation time 2026-01-15T12:00:00Z",
+        "note": "Signing certificate expired about a day before the evaluation time."
+      },
+      {
+        "path": "/expected/idp_cert_pem",
+        "actual": "Configured IdP certificate has the same validity window (NotAfter 2026-01-14T12:00:00Z) and matches the embedded cert",
+        "note": "The configured trust anchor itself is expired, so the SP appears to be accepting an expired cert."
+      },
+      {
+        "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+        "actual": "2026-01-15T12:02:30.000Z",
+        "note": "The assertion time window is valid, and audience, destination, recipient, InResponseTo, issuer, NameID format and required attributes all match. The certificate is the only fault."
+      }
+    ],
+    "fix": "Get the renewed signing certificate from the IdP, preferably through its metadata. Replace the expired certificate in the SP trust configuration, and ask the IdP to rotate its signing key. Make the SP reject signatures whose certificate is outside its NotBefore/NotAfter validity, so an expired certificate fails loudly instead of being accepted silently. Add monitoring that alerts at 30, 14 and 7 days before certificate expiry. Keep trusting only the configured certificate, never the one embedded in the message.",
+    "posture_codes": [
+      "POSTURE_EXPIRED_CERT_ACCEPTED"
+    ],
+    "alternatives": [
+      {
+        "code": "HEALTHY",
+        "why_not": "The assertion's fields all validate, but the signing certificate is expired. The SP should reject it, so this is not healthy."
+      },
+      {
+        "code": "SAML_SIGNATURE_INVALID",
+        "why_not": "The embedded certificate matches the configured one, and the symptom says logins succeed, so the signature is not failing to verify."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:39:06.766344-05:00",
+  "duration_ms": 10083,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1288,
+    "cache_creation_input_tokens": 6385,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.0389432,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1288,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 6385,
+      "costUSD": 0.0389432,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 9940,
+    "stop_reason": "tool_use",
+    "session_id": "2e796b7d-ab7a-484e-9144-225cb8cfc17c",
+    "total_cost_usd": 0.0389432,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6385,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 1288,
+      "output_tokens_details": {
+        "thinking_tokens": 427
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6385,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1288,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 6385,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 6385
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1288,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 6385,
+        "webSearchRequests": 0,
+        "costUSD": 0.0389432,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 427,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6385,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"CERT_EXPIRED_OR_WEAK\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate/NotAfter\",\"actual\":\"2026-01-14T12:00:00Z\",\"expected\":\"later than the evaluation time 2026-01-15T12:00:00Z\",\"note\":\"Signing certificate expired about a day before the evaluation time.\"},{\"path\":\"/expected/idp_cert_pem\",\"actual\":\"Configured IdP certificate has the same validity window (NotAfter 2026-01-14T12:00:00Z) and matches the embedded cert\",\"note\":\"The configured trust anchor itself is expired, so the SP appears to be accepting an expired cert.\"},{\"path\":\"/Response/Assertion/Conditions/@NotOnOrAfter\",\"actual\":\"2026-01-15T12:02:30.000Z\",\"note\":\"The assertion time window is valid, and audience, destination, recipient, InResponseTo, issuer, NameID format and required attributes all match. The certificate is the only fault.\"}],\"fix\":\"Get the renewed signing certificate from the IdP, preferably through its metadata. Replace the expired certificate in the SP trust configuration, and ask the IdP to rotate its signing key. Make the SP reject signatures whose certificate is outside its NotBefore/NotAfter validity, so an expired certificate fails loudly instead of being accepted silently. Add monitoring that alerts at 30, 14 and 7 days before certificate expiry. Keep trusting only the configured certificate, never the one embedded in the message.\",\"posture_codes\":[\"POSTURE_EXPIRED_CERT_ACCEPTED\"],\"alternatives\":[{\"code\":\"HEALTHY\",\"why_not\":\"The assertion's fields all validate, but the signing certificate is expired. The SP should reject it, so this is not healthy.\"},{\"code\":\"SAML_SIGNATURE_INVALID\",\"why_not\":\"The embedded certificate matches the configured one, and the symptom says logins succeed, so the signature is not failing to verify.\"}],\"questions\":[]}",
+    "structured_output": {
+      "root_cause_code": "CERT_EXPIRED_OR_WEAK",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate/NotAfter",
+          "actual": "2026-01-14T12:00:00Z",
+          "expected": "later than the evaluation time 2026-01-15T12:00:00Z",
+          "note": "Signing certificate expired about a day before the evaluation time."
+        },
+        {
+          "path": "/expected/idp_cert_pem",
+          "actual": "Configured IdP certificate has the same validity window (NotAfter 2026-01-14T12:00:00Z) and matches the embedded cert",
+          "note": "The configured trust anchor itself is expired, so the SP appears to be accepting an expired cert."
+        },
+        {
+          "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+          "actual": "2026-01-15T12:02:30.000Z",
+          "note": "The assertion time window is valid, and audience, destination, recipient, InResponseTo, issuer, NameID format and required attributes all match. The certificate is the only fault."
+        }
+      ],
+      "fix": "Get the renewed signing certificate from the IdP, preferably through its metadata. Replace the expired certificate in the SP trust configuration, and ask the IdP to rotate its signing key. Make the SP reject signatures whose certificate is outside its NotBefore/NotAfter validity, so an expired certificate fails loudly instead of being accepted silently. Add monitoring that alerts at 30, 14 and 7 days before certificate expiry. Keep trusting only the configured certificate, never the one embedded in the message.",
+      "posture_codes": [
+        "POSTURE_EXPIRED_CERT_ACCEPTED"
+      ],
+      "alternatives": [
+        {
+          "code": "HEALTHY",
+          "why_not": "The assertion's fields all validate, but the signing certificate is expired. The SP should reject it, so this is not healthy."
+        },
+        {
+          "code": "SAML_SIGNATURE_INVALID",
+          "why_not": "The embedded certificate matches the configured one, and the symptom says logins succeed, so the signature is not failing to verify."
+        }
+      ],
+      "questions": []
+    },
+    "ttft_ms": 5039,
+    "type": "result",
+    "duration_ms": 10083,
+    "uuid": "4cb14729-3406-4ae8-a882-bf8531b737ed",
+    "ttft_stream_ms": 1446,
+    "time_to_request_ms": 140,
+    "first_content_frame_ms": 1446,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

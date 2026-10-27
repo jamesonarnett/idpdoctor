@@ -1,0 +1,11 @@
+{
+  "id": "posture_unsigned_assertion_accepted-01",
+  "kind": "saml_response",
+  "dialect": "auth0",
+  "mutator": "posture_unsigned_assertion",
+  "expected_completeness": "full",
+  "symptom_from": "vendor_strings.json",
+  "seed": 42,
+  "index": 1,
+  "hash": "0f3a1e905888efe1"
+}

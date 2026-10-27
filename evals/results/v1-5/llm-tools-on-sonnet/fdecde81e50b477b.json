@@ -1,0 +1,187 @@
+{
+  "case_id": "saml_audience_mismatch-00",
+  "case_hash": "fdecde81e50b477b",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_AUDIENCE_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+    "fix_keys": [
+      "application",
+      "audience",
+      "entity",
+      "configured"
+    ],
+    "needs": [
+      "sp_entity_id"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_audience_mismatch-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "audience_mismatch",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "fdecde81e50b477b"
+  },
+  "output": {
+    "root_cause_code": "SAML_AUDIENCE_MISMATCH",
+    "confidence": 0.97,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+        "actual": "https://sp.example.com/saml/metadata/",
+        "expected": "https://sp.example.com/saml/metadata",
+        "note": "Differs only by a trailing slash. SAML audience comparison is an exact string match."
+      }
+    ],
+    "fix": "Make the IdP application's Audience URI (SP entity ID) exactly equal to the SP's entity ID, \"https://sp.example.com/saml/metadata\", with no trailing slash. If the SP's real entity ID has the slash, change the SP configuration instead. Keep signature validation and the other checks enabled. Don't loosen the audience comparison on the SP side.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T10:04:31.771569-05:00",
+  "duration_ms": 10906,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1827,
+    "cache_creation_input_tokens": 6832,
+    "cache_read_input_tokens": 28650
+  },
+  "cost_usd": 0.048471,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1827,
+      "cacheReadInputTokens": 28650,
+      "cacheCreationInputTokens": 6832,
+      "costUSD": 0.048471,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 10783,
+    "stop_reason": "tool_use",
+    "session_id": "7f9d7421-622b-4f51-a326-4b58dd1bbe06",
+    "total_cost_usd": 0.048471,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 6832,
+      "cache_read_input_tokens": 28650,
+      "output_tokens": 1827,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6832,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 415,
+          "cache_read_input_tokens": 16271,
+          "cache_creation_input_tokens": 2940,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2940
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1827,
+        "cacheReadInputTokens": 28650,
+        "cacheCreationInputTokens": 6832,
+        "webSearchRequests": 0,
+        "costUSD": 0.048471,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6832,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_AUDIENCE_MISMATCH\",\"confidence\":0.97,\"evidence\":[{\"path\":\"/Response/Assertion/Conditions/AudienceRestriction/Audience\",\"actual\":\"https://sp.example.com/saml/metadata/\",\"expected\":\"https://sp.example.com/saml/metadata\",\"note\":\"Differs only by a trailing slash. SAML audience comparison is an exact string match.\"}],\"fix\":\"Make the IdP application's Audience URI (SP entity ID) exactly equal to the SP's entity ID, \\\"https://sp.example.com/saml/metadata\\\", with no trailing slash. If the SP's real entity ID has the slash, change the SP configuration instead. Keep signature validation and the other checks enabled. Don't loosen the audience comparison on the SP side.\",\"alternatives\":[],\"questions\":[]}",
+    "structured_output": {
+      "root_cause_code": "SAML_AUDIENCE_MISMATCH",
+      "confidence": 0.97,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+          "actual": "https://sp.example.com/saml/metadata/",
+          "expected": "https://sp.example.com/saml/metadata",
+          "note": "Differs only by a trailing slash. SAML audience comparison is an exact string match."
+        }
+      ],
+      "fix": "Make the IdP application's Audience URI (SP entity ID) exactly equal to the SP's entity ID, \"https://sp.example.com/saml/metadata\", with no trailing slash. If the SP's real entity ID has the slash, change the SP configuration instead. Keep signature validation and the other checks enabled. Don't loosen the audience comparison on the SP side.",
+      "alternatives": [],
+      "questions": []
+    },
+    "ttft_ms": 7649,
+    "type": "result",
+    "duration_ms": 10906,
+    "uuid": "6e07f86d-6282-452d-8d01-2a8df1b076c6",
+    "ttft_stream_ms": 1505,
+    "time_to_request_ms": 114,
+    "first_content_frame_ms": 1506,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

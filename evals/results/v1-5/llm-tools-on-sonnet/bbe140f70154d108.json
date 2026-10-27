@@ -1,0 +1,206 @@
+{
+  "case_id": "oidc_discovery_doc_invalid-04",
+  "case_hash": "bbe140f70154d108",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OIDC_DISCOVERY_DOC_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/discovery/jwks_uri",
+    "fix_keys": [
+      "point",
+      "canonical"
+    ]
+  },
+  "kind": "oidc_discovery",
+  "meta": {
+    "id": "oidc_discovery_doc_invalid-04",
+    "kind": "oidc_discovery",
+    "mutator": "discovery_offhost_endpoint",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 4,
+    "hash": "bbe140f70154d108"
+  },
+  "output": {
+    "root_cause_code": "OIDC_DISCOVERY_DOC_INVALID",
+    "confidence": 0.55,
+    "evidence": [
+      {
+        "path": "/discovery/jwks_uri",
+        "actual": "keys.cdn-example.net",
+        "expected": "login.example.com",
+        "note": "jwks_uri is served from a different domain than the issuer host. Confirm it belongs to the OP's own infrastructure before trusting keys from it."
+      }
+    ],
+    "fix": "Point the SP at the canonical https://login.example.com/tenant-1/v2.0/.well-known/openid-configuration for the correct tenant. Confirm that the off-host jwks_uri (keys.cdn-example.net) is the OP's own key-hosting domain. If it isn't, fix or replace the document. Don't trust keys from an unverified host. AADSTS50049 is an Entra error about an unknown instance or tenant. Check that the authority and tenant in the URL match a real Entra tenant, and that the document wasn't served by a different or custom host.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OIDC_ISSUER_MISMATCH",
+        "why_not": "The issuer in the document matches the expected value, so the issuer_match check passed."
+      },
+      {
+        "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+        "why_not": "The artifact is a discovery document, not an authorization server rejection. The only evidence of a fault is in the document itself."
+      }
+    ],
+    "questions": [
+      "Is keys.cdn-example.net the OP's own key-hosting domain?",
+      "What exact URL was the discovery document fetched from? Does the tenant and instance in it match the Entra tenant?"
+    ]
+  },
+  "started": "2026-10-27T09:58:59.899963-05:00",
+  "duration_ms": 10261,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 832,
+    "cache_creation_input_tokens": 2856,
+    "cache_read_input_tokens": 23908
+  },
+  "cost_usd": 0.0221428,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 832,
+      "cacheReadInputTokens": 23908,
+      "cacheCreationInputTokens": 2856,
+      "costUSD": 0.0221428,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 10188,
+    "stop_reason": "tool_use",
+    "session_id": "9e026b67-6200-4a86-b194-867f6fcdc78b",
+    "total_cost_usd": 0.0221428,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 2856,
+      "cache_read_input_tokens": 23908,
+      "output_tokens": 832,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 2856,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 662,
+          "cache_read_input_tokens": 12683,
+          "cache_creation_input_tokens": 1398,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1398
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 832,
+        "cacheReadInputTokens": 23908,
+        "cacheCreationInputTokens": 2856,
+        "webSearchRequests": 0,
+        "costUSD": 0.0221428,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 2856,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OIDC_DISCOVERY_DOC_INVALID\",\"confidence\":0.55,\"evidence\":[{\"path\":\"/discovery/jwks_uri\",\"actual\":\"keys.cdn-example.net\",\"expected\":\"login.example.com\",\"note\":\"jwks_uri is served from a different domain than the issuer host. Confirm it belongs to the OP's own infrastructure before trusting keys from it.\"}],\"fix\":\"Point the SP at the canonical https://login.example.com/tenant-1/v2.0/.well-known/openid-configuration for the correct tenant. Confirm that the off-host jwks_uri (keys.cdn-example.net) is the OP's own key-hosting domain. If it isn't, fix or replace the document. Don't trust keys from an unverified host. AADSTS50049 is an Entra error about an unknown instance or tenant. Check that the authority and tenant in the URL match a real Entra tenant, and that the document wasn't served by a different or custom host.\",\"alternatives\":[{\"code\":\"OIDC_ISSUER_MISMATCH\",\"why_not\":\"The issuer in the document matches the expected value, so the issuer_match check passed.\"},{\"code\":\"OAUTH_CLIENT_CONFIG_REJECTED\",\"why_not\":\"The artifact is a discovery document, not an authorization server rejection. The only evidence of a fault is in the document itself.\"}],\"questions\":[\"Is keys.cdn-example.net the OP's own key-hosting domain?\",\"What exact URL was the discovery document fetched from? Does the tenant and instance in it match the Entra tenant?\"]}",
+    "structured_output": {
+      "root_cause_code": "OIDC_DISCOVERY_DOC_INVALID",
+      "confidence": 0.55,
+      "evidence": [
+        {
+          "path": "/discovery/jwks_uri",
+          "actual": "keys.cdn-example.net",
+          "expected": "login.example.com",
+          "note": "jwks_uri is served from a different domain than the issuer host. Confirm it belongs to the OP's own infrastructure before trusting keys from it."
+        }
+      ],
+      "fix": "Point the SP at the canonical https://login.example.com/tenant-1/v2.0/.well-known/openid-configuration for the correct tenant. Confirm that the off-host jwks_uri (keys.cdn-example.net) is the OP's own key-hosting domain. If it isn't, fix or replace the document. Don't trust keys from an unverified host. AADSTS50049 is an Entra error about an unknown instance or tenant. Check that the authority and tenant in the URL match a real Entra tenant, and that the document wasn't served by a different or custom host.",
+      "alternatives": [
+        {
+          "code": "OIDC_ISSUER_MISMATCH",
+          "why_not": "The issuer in the document matches the expected value, so the issuer_match check passed."
+        },
+        {
+          "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+          "why_not": "The artifact is a discovery document, not an authorization server rejection. The only evidence of a fault is in the document itself."
+        }
+      ],
+      "questions": [
+        "Is keys.cdn-example.net the OP's own key-hosting domain?",
+        "What exact URL was the discovery document fetched from? Does the tenant and instance in it match the Entra tenant?"
+      ]
+    },
+    "ttft_ms": 3634,
+    "type": "result",
+    "duration_ms": 10261,
+    "uuid": "10ab6efd-0665-4786-8b60-361ea926f7b0",
+    "ttft_stream_ms": 2858,
+    "time_to_request_ms": 61,
+    "first_content_frame_ms": 2859,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

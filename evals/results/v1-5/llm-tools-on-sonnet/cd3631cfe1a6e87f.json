@@ -1,0 +1,214 @@
+{
+  "case_id": "idp_policy_refusal-02",
+  "case_hash": "cd3631cfe1a6e87f",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "IDP_POLICY_REFUSAL",
+    "posture_codes": [],
+    "evidence_path": "/redirect/error",
+    "fix_keys": [
+      "resolve",
+      "side:",
+      "assign",
+      "group"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "idp_policy_refusal-02",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_consent_required",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 2,
+    "hash": "cd3631cfe1a6e87f"
+  },
+  "output": {
+    "root_cause_code": "IDP_POLICY_REFUSAL",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "consent_required",
+        "note": "The captured redirect carries consent_required, not login_required as the developer reported."
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "The user or administrator has not consented to use the application.",
+        "note": "The IdP is refusing for a tenant consent policy reason."
+      }
+    ],
+    "fix": "Fix this on the IdP side. Grant admin consent for the application, or have users complete an interactive consent flow once. Also check that the users or groups are assigned to the app and that any access policy is satisfied. Confirm the authorization request targets the correct tenant endpoint. After that, retry prompt=none. If prompt=none still fails, fall back to an interactive prompt=login or prompt=consent flow. Don't weaken any validation to get around this.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+        "why_not": "The client configuration checks all passed: a public client with the authorization_code grant, PKCE S256, and an exact redirect_uri match."
+      },
+      {
+        "code": "OAUTH_REDIRECT_URI_MISMATCH",
+        "why_not": "The redirect_uri exactly matches a registered URI."
+      }
+    ],
+    "questions": [
+      "The captured redirect shows error=consent_required, but you reported login_required. Is this the right capture, and does login_required appear in other responses?"
+    ]
+  },
+  "started": "2026-10-27T09:52:25.191314-05:00",
+  "duration_ms": 11457,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 965,
+    "cache_creation_input_tokens": 3066,
+    "cache_read_input_tokens": 23622
+  },
+  "cost_usd": 0.0242842,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 965,
+      "cacheReadInputTokens": 23622,
+      "cacheCreationInputTokens": 3066,
+      "costUSD": 0.0242842,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 2,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 11144,
+    "stop_reason": "tool_use",
+    "session_id": "1bbaef44-242d-4a04-96e2-271eb02531c2",
+    "total_cost_usd": 0.0242842,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3066,
+      "cache_read_input_tokens": 23622,
+      "output_tokens": 965,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3066,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 614,
+          "cache_read_input_tokens": 12563,
+          "cache_creation_input_tokens": 1562,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1562
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 965,
+        "cacheReadInputTokens": 23622,
+        "cacheCreationInputTokens": 3066,
+        "webSearchRequests": 0,
+        "costUSD": 0.0242842,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3066,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"IDP_POLICY_REFUSAL\",\"confidence\":0.8,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"consent_required\",\"note\":\"The captured redirect carries consent_required, not login_required as the developer reported.\"},{\"path\":\"/redirect/error_description\",\"actual\":\"The user or administrator has not consented to use the application.\",\"note\":\"The IdP is refusing for a tenant consent policy reason.\"}],\"fix\":\"Fix this on the IdP side. Grant admin consent for the application, or have users complete an interactive consent flow once. Also check that the users or groups are assigned to the app and that any access policy is satisfied. Confirm the authorization request targets the correct tenant endpoint. After that, retry prompt=none. If prompt=none still fails, fall back to an interactive prompt=login or prompt=consent flow. Don't weaken any validation to get around this.\",\"alternatives\":[{\"code\":\"OAUTH_CLIENT_CONFIG_REJECTED\",\"why_not\":\"The client configuration checks all passed: a public client with the authorization_code grant, PKCE S256, and an exact redirect_uri match.\"},{\"code\":\"OAUTH_REDIRECT_URI_MISMATCH\",\"why_not\":\"The redirect_uri exactly matches a registered URI.\"}],\"questions\":[\"The captured redirect shows error=consent_required, but you reported login_required. Is this the right capture, and does login_required appear in other responses?\"]}",
+    "structured_output": {
+      "root_cause_code": "IDP_POLICY_REFUSAL",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "consent_required",
+          "note": "The captured redirect carries consent_required, not login_required as the developer reported."
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "The user or administrator has not consented to use the application.",
+          "note": "The IdP is refusing for a tenant consent policy reason."
+        }
+      ],
+      "fix": "Fix this on the IdP side. Grant admin consent for the application, or have users complete an interactive consent flow once. Also check that the users or groups are assigned to the app and that any access policy is satisfied. Confirm the authorization request targets the correct tenant endpoint. After that, retry prompt=none. If prompt=none still fails, fall back to an interactive prompt=login or prompt=consent flow. Don't weaken any validation to get around this.",
+      "alternatives": [
+        {
+          "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+          "why_not": "The client configuration checks all passed: a public client with the authorization_code grant, PKCE S256, and an exact redirect_uri match."
+        },
+        {
+          "code": "OAUTH_REDIRECT_URI_MISMATCH",
+          "why_not": "The redirect_uri exactly matches a registered URI."
+        }
+      ],
+      "questions": [
+        "The captured redirect shows error=consent_required, but you reported login_required. Is this the right capture, and does login_required appear in other responses?"
+      ]
+    },
+    "ttft_ms": 5937,
+    "type": "result",
+    "duration_ms": 11457,
+    "uuid": "4d225907-f1a4-4825-92d4-f4778da3a45d",
+    "ttft_stream_ms": 4370,
+    "time_to_request_ms": 299,
+    "first_content_frame_ms": 4371,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

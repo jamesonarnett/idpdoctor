@@ -1,0 +1,261 @@
+{
+  "case_id": "healthy-jwt-02",
+  "case_hash": "2ef068ec1dfb0299",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [],
+    "fix_keys": [
+      "no change needed",
+      "the artifact validates"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "healthy-jwt-02",
+    "kind": "jwt",
+    "expected_completeness": "full",
+    "symptom_from": "misleading",
+    "misleading_symptom": true,
+    "seed": 42,
+    "index": 2,
+    "hash": "2ef068ec1dfb0299"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.6,
+    "evidence": [
+      {
+        "path": "/claims/iss",
+        "actual": "https://login.example.com/tenant-1/v2.0",
+        "expected": "https://login.example.com/tenant-1/v2.0",
+        "note": "issuer matches"
+      },
+      {
+        "path": "/claims/aud",
+        "actual": "client-abc123",
+        "expected": "client-abc123",
+        "note": "audience matches client_id"
+      },
+      {
+        "path": "/claims/nonce",
+        "actual": "n-0S6_WzA2Mj",
+        "expected": "n-0S6_WzA2Mj",
+        "note": "nonce binds to request"
+      },
+      {
+        "path": "/claims/exp",
+        "actual": "1768482000",
+        "note": "one hour after the supplied now (1768478400); not expired"
+      },
+      {
+        "path": "/claims/nbf",
+        "actual": "1768478400",
+        "note": "equals now; valid"
+      },
+      {
+        "path": "/header/kid",
+        "actual": "test-key-1",
+        "note": "present in supplied JWKS"
+      },
+      {
+        "path": "/header/alg",
+        "actual": "RS256",
+        "note": "allowed asymmetric algorithm"
+      }
+    ],
+    "fix": "The ID token passes every claim check, so look at the SP's post-callback handling. Make sure the session cookie is set and persisted (SameSite, Secure, domain/path), and that the state and nonce store survives the redirect round trip. Make sure the app doesn't treat a valid callback as unauthenticated and restart the authorization request. Keep signature validation, the 5-minute-or-less clock skew, and the issuer, audience and nonce checks enabled.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "UNKNOWN",
+        "why_not": "All claims validate, so a token fault class isn't supported, and the loop is more likely in SP session handling."
+      }
+    ],
+    "questions": [
+      "Does the signature verify against the JWKS key test-key-1? The artifact does not include the signature bytes, so I could not check it.",
+      "What do the SP logs show after the callback: session creation, state/nonce lookup, or redirect target?"
+    ]
+  },
+  "started": "2026-10-27T09:30:27.96874-05:00",
+  "duration_ms": 10571,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1321,
+    "cache_creation_input_tokens": 5644,
+    "cache_read_input_tokens": 0
+  },
+  "cost_usd": 0.03579,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1321,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 5644,
+      "costUSD": 0.03579,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 7,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 10421,
+    "stop_reason": "tool_use",
+    "session_id": "691ef8f3-a859-4bd2-99a3-9fe0120bc50f",
+    "total_cost_usd": 0.03579,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 5644,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 1321,
+      "output_tokens_details": {
+        "thinking_tokens": 222
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 5644,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1321,
+          "cache_read_input_tokens": 0,
+          "cache_creation_input_tokens": 5644,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 5644
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1321,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 5644,
+        "webSearchRequests": 0,
+        "costUSD": 0.03579,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 222,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 5644,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.6,\"evidence\":[{\"path\":\"/claims/iss\",\"actual\":\"https://login.example.com/tenant-1/v2.0\",\"expected\":\"https://login.example.com/tenant-1/v2.0\",\"note\":\"issuer matches\"},{\"path\":\"/claims/aud\",\"actual\":\"client-abc123\",\"expected\":\"client-abc123\",\"note\":\"audience matches client_id\"},{\"path\":\"/claims/nonce\",\"actual\":\"n-0S6_WzA2Mj\",\"expected\":\"n-0S6_WzA2Mj\",\"note\":\"nonce binds to request\"},{\"path\":\"/claims/exp\",\"actual\":\"1768482000\",\"note\":\"one hour after the supplied now (1768478400); not expired\"},{\"path\":\"/claims/nbf\",\"actual\":\"1768478400\",\"note\":\"equals now; valid\"},{\"path\":\"/header/kid\",\"actual\":\"test-key-1\",\"note\":\"present in supplied JWKS\"},{\"path\":\"/header/alg\",\"actual\":\"RS256\",\"note\":\"allowed asymmetric algorithm\"}],\"fix\":\"The ID token passes every claim check, so look at the SP's post-callback handling. Make sure the session cookie is set and persisted (SameSite, Secure, domain/path), and that the state and nonce store survives the redirect round trip. Make sure the app doesn't treat a valid callback as unauthenticated and restart the authorization request. Keep signature validation, the 5-minute-or-less clock skew, and the issuer, audience and nonce checks enabled.\",\"questions\":[\"Does the signature verify against the JWKS key test-key-1? The artifact does not include the signature bytes, so I could not check it.\",\"What do the SP logs show after the callback: session creation, state/nonce lookup, or redirect target?\"],\"alternatives\":[{\"code\":\"UNKNOWN\",\"why_not\":\"All claims validate, so a token fault class isn't supported, and the loop is more likely in SP session handling.\"}]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.6,
+      "evidence": [
+        {
+          "path": "/claims/iss",
+          "actual": "https://login.example.com/tenant-1/v2.0",
+          "expected": "https://login.example.com/tenant-1/v2.0",
+          "note": "issuer matches"
+        },
+        {
+          "path": "/claims/aud",
+          "actual": "client-abc123",
+          "expected": "client-abc123",
+          "note": "audience matches client_id"
+        },
+        {
+          "path": "/claims/nonce",
+          "actual": "n-0S6_WzA2Mj",
+          "expected": "n-0S6_WzA2Mj",
+          "note": "nonce binds to request"
+        },
+        {
+          "path": "/claims/exp",
+          "actual": "1768482000",
+          "note": "one hour after the supplied now (1768478400); not expired"
+        },
+        {
+          "path": "/claims/nbf",
+          "actual": "1768478400",
+          "note": "equals now; valid"
+        },
+        {
+          "path": "/header/kid",
+          "actual": "test-key-1",
+          "note": "present in supplied JWKS"
+        },
+        {
+          "path": "/header/alg",
+          "actual": "RS256",
+          "note": "allowed asymmetric algorithm"
+        }
+      ],
+      "fix": "The ID token passes every claim check, so look at the SP's post-callback handling. Make sure the session cookie is set and persisted (SameSite, Secure, domain/path), and that the state and nonce store survives the redirect round trip. Make sure the app doesn't treat a valid callback as unauthenticated and restart the authorization request. Keep signature validation, the 5-minute-or-less clock skew, and the issuer, audience and nonce checks enabled.",
+      "questions": [
+        "Does the signature verify against the JWKS key test-key-1? The artifact does not include the signature bytes, so I could not check it.",
+        "What do the SP logs show after the callback: session creation, state/nonce lookup, or redirect target?"
+      ],
+      "alternatives": [
+        {
+          "code": "UNKNOWN",
+          "why_not": "All claims validate, so a token fault class isn't supported, and the loop is more likely in SP session handling."
+        }
+      ]
+    },
+    "ttft_ms": 3130,
+    "type": "result",
+    "duration_ms": 10571,
+    "uuid": "e5a990cf-2e9c-4473-a403-ae12e906adae",
+    "ttft_stream_ms": 1495,
+    "time_to_request_ms": 148,
+    "first_content_frame_ms": 1496,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,205 @@
+{
+  "case_id": "saml_signature_invalid-01",
+  "case_hash": "bb3f8f291e5a91e8",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_SIGNATURE_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/Signature/KeyInfo/X509Data/X509Certificate",
+    "fix_keys": [
+      "download",
+      "current",
+      "signing",
+      "certificate"
+    ],
+    "needs": [
+      "idp_cert_pem"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_signature_invalid-01",
+    "kind": "saml_response",
+    "dialect": "auth0",
+    "mutator": "wrong_cert",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 1,
+    "hash": "bb3f8f291e5a91e8"
+  },
+  "output": {
+    "root_cause_code": "SAML_SIGNATURE_INVALID",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/Signature/KeyInfo/X509Data/X509Certificate",
+        "actual": "SHA-256 fingerprint of the signing cert in the response: C1:E0:C2:26:A4:54:34:7F:BA:05:32:F8:55:DE:81:06:92:D1:AC:20:FF:DC:B0:75:13:8C:66:FF:C8:15:88:78",
+        "expected": "2B:39:20:62:E2:10:4F:4C:82:20:A5:28:13:BA:02:A3:2A:39:4F:5E:4D:71:0F:64:E1:39:F2:88:BF:FA:D9:D9",
+        "note": "The assertion is signed by a certificate other than the configured IdP certificate. The IdP probably rotated keys, or the response comes from a different IdP or tenant."
+      }
+    ],
+    "fix": "Get the current signing certificate from the IdP's metadata, through a channel you trust and not from the response itself. Replace the IdP certificate configured in the SP (Scalekit connection). Confirm its fingerprint with the IdP admin. Keep signature validation on and don't trust the certificate embedded in the response. If the IdP is rotating keys, configure both the old and new certificates during the overlap, then remove the old one. Also check that the connection points at the right IdP tenant or environment.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "CERT_EXPIRED_OR_WEAK",
+        "why_not": "The signing certificate is valid until 2126, so expiry and weakness are not the problem."
+      },
+      {
+        "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+        "why_not": "The Assertion is signed, which meets the signed-assertion requirement. The signature fails only because the certificate doesn't match."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T10:12:01.078798-05:00",
+  "duration_ms": 12534,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2197,
+    "cache_creation_input_tokens": 7420,
+    "cache_read_input_tokens": 28667
+  },
+  "cost_usd": 0.054524699999999995,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2197,
+      "cacheReadInputTokens": 28667,
+      "cacheCreationInputTokens": 7420,
+      "costUSD": 0.054524699999999995,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 12418,
+    "stop_reason": "tool_use",
+    "session_id": "24969fd7-adc6-44e7-bd99-f3f6780e4f33",
+    "total_cost_usd": 0.054524699999999995,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 7420,
+      "cache_read_input_tokens": 28667,
+      "output_tokens": 2197,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 7420,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 743,
+          "cache_read_input_tokens": 16288,
+          "cache_creation_input_tokens": 3511,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 3511
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2197,
+        "cacheReadInputTokens": 28667,
+        "cacheCreationInputTokens": 7420,
+        "webSearchRequests": 0,
+        "costUSD": 0.054524699999999995,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 7420,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_SIGNATURE_INVALID\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/Signature/KeyInfo/X509Data/X509Certificate\",\"actual\":\"SHA-256 fingerprint of the signing cert in the response: C1:E0:C2:26:A4:54:34:7F:BA:05:32:F8:55:DE:81:06:92:D1:AC:20:FF:DC:B0:75:13:8C:66:FF:C8:15:88:78\",\"expected\":\"2B:39:20:62:E2:10:4F:4C:82:20:A5:28:13:BA:02:A3:2A:39:4F:5E:4D:71:0F:64:E1:39:F2:88:BF:FA:D9:D9\",\"note\":\"The assertion is signed by a certificate other than the configured IdP certificate. The IdP probably rotated keys, or the response comes from a different IdP or tenant.\"}],\"fix\":\"Get the current signing certificate from the IdP's metadata, through a channel you trust and not from the response itself. Replace the IdP certificate configured in the SP (Scalekit connection). Confirm its fingerprint with the IdP admin. Keep signature validation on and don't trust the certificate embedded in the response. If the IdP is rotating keys, configure both the old and new certificates during the overlap, then remove the old one. Also check that the connection points at the right IdP tenant or environment.\",\"alternatives\":[{\"code\":\"CERT_EXPIRED_OR_WEAK\",\"why_not\":\"The signing certificate is valid until 2126, so expiry and weakness are not the problem.\"},{\"code\":\"SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED\",\"why_not\":\"The Assertion is signed, which meets the signed-assertion requirement. The signature fails only because the certificate doesn't match.\"}]}",
+    "structured_output": {
+      "root_cause_code": "SAML_SIGNATURE_INVALID",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/Signature/KeyInfo/X509Data/X509Certificate",
+          "actual": "SHA-256 fingerprint of the signing cert in the response: C1:E0:C2:26:A4:54:34:7F:BA:05:32:F8:55:DE:81:06:92:D1:AC:20:FF:DC:B0:75:13:8C:66:FF:C8:15:88:78",
+          "expected": "2B:39:20:62:E2:10:4F:4C:82:20:A5:28:13:BA:02:A3:2A:39:4F:5E:4D:71:0F:64:E1:39:F2:88:BF:FA:D9:D9",
+          "note": "The assertion is signed by a certificate other than the configured IdP certificate. The IdP probably rotated keys, or the response comes from a different IdP or tenant."
+        }
+      ],
+      "fix": "Get the current signing certificate from the IdP's metadata, through a channel you trust and not from the response itself. Replace the IdP certificate configured in the SP (Scalekit connection). Confirm its fingerprint with the IdP admin. Keep signature validation on and don't trust the certificate embedded in the response. If the IdP is rotating keys, configure both the old and new certificates during the overlap, then remove the old one. Also check that the connection points at the right IdP tenant or environment.",
+      "alternatives": [
+        {
+          "code": "CERT_EXPIRED_OR_WEAK",
+          "why_not": "The signing certificate is valid until 2126, so expiry and weakness are not the problem."
+        },
+        {
+          "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+          "why_not": "The Assertion is signed, which meets the signed-assertion requirement. The signature fails only because the certificate doesn't match."
+        }
+      ]
+    },
+    "ttft_ms": 7538,
+    "type": "result",
+    "duration_ms": 12534,
+    "uuid": "ff3615cd-9980-410a-8eda-295b00a7a0ee",
+    "ttft_stream_ms": 1252,
+    "time_to_request_ms": 100,
+    "first_content_frame_ms": 1253,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

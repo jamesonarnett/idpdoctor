@@ -1,0 +1,11 @@
+{
+  "id": "saml_status_not_success-03",
+  "kind": "saml_response",
+  "dialect": "okta",
+  "mutator": "status_responder",
+  "expected_completeness": "partial",
+  "symptom_from": "vendor_strings.json",
+  "seed": 42,
+  "index": 3,
+  "hash": "95a44c497bf81349"
+}

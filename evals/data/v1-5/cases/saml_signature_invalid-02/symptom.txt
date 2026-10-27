@@ -1,0 +1,1 @@
+The digital signature in the SAML response did not validate with the Identity Provider's certificate.

@@ -1,0 +1,230 @@
+{
+  "case_id": "oauth_invalid_grant_code-03",
+  "case_hash": "8298b5a2b039498e",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_INVALID_GRANT_CODE",
+    "posture_codes": [],
+    "evidence_path": "/redirect/error",
+    "fix_keys": [
+      "exchange",
+      "within",
+      "minutes",
+      "issuance"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_invalid_grant_code-03",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_invalid_grant_reused",
+    "expected_completeness": "partial",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 3,
+    "hash": "8298b5a2b039498e"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_INVALID_GRANT_CODE",
+    "confidence": 0.97,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_grant",
+        "note": "Token endpoint rejected the authorization code."
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "The authorization code has already been redeemed.",
+        "note": "The code was exchanged twice. React StrictMode runs effects twice in development, which fits the intermittent failures."
+      },
+      {
+        "path": "/request/redirect_uri",
+        "actual": "https://app.example.com/callback",
+        "note": "This exactly matches a registered URI, so redirect_uri is not the cause."
+      },
+      {
+        "path": "/request/code_challenge_method",
+        "actual": "S256",
+        "note": "The PKCE verifier matches the challenge, so PKCE is not the cause."
+      }
+    ],
+    "fix": "Make sure the callback exchanges the authorization code exactly once. In React, don't run the token exchange directly in a useEffect that StrictMode double-invokes. Use a module-level or useRef \"already started\" guard, or store the in-flight exchange promise keyed by the code and reuse it. Remove the code and state from the URL once the exchange starts, for example with history.replaceState. Don't retry a failed exchange with the same code. If it fails, start a new authorization request. Keep PKCE S256 and the exact redirect_uri on that single exchange. StrictMode double-invocation happens only in development, so check production builds separately, since a retry or a second tab could cause the same error there.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+        "why_not": "The verifier matches the S256 challenge, and the error says the code was already redeemed."
+      },
+      {
+        "code": "OAUTH_REDIRECT_URI_MISMATCH",
+        "why_not": "The redirect_uri exactly matches the registered URI."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:56:47.316753-05:00",
+  "duration_ms": 14458,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1067,
+    "cache_creation_input_tokens": 3073,
+    "cache_read_input_tokens": 23612
+  },
+  "cost_usd": 0.025331199999999998,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1067,
+      "cacheReadInputTokens": 23612,
+      "cacheCreationInputTokens": 3073,
+      "costUSD": 0.025331199999999998,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 14340,
+    "stop_reason": "tool_use",
+    "session_id": "420aada2-7497-4d6e-927b-ed5e1ad20321",
+    "total_cost_usd": 0.025331199999999998,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3073,
+      "cache_read_input_tokens": 23612,
+      "output_tokens": 1067,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3073,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 755,
+          "cache_read_input_tokens": 12561,
+          "cache_creation_input_tokens": 1563,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1563
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1067,
+        "cacheReadInputTokens": 23612,
+        "cacheCreationInputTokens": 3073,
+        "webSearchRequests": 0,
+        "costUSD": 0.025331199999999998,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3073,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_INVALID_GRANT_CODE\",\"confidence\":0.97,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"invalid_grant\",\"note\":\"Token endpoint rejected the authorization code.\"},{\"path\":\"/redirect/error_description\",\"actual\":\"The authorization code has already been redeemed.\",\"note\":\"The code was exchanged twice. React StrictMode runs effects twice in development, which fits the intermittent failures.\"},{\"path\":\"/request/redirect_uri\",\"actual\":\"https://app.example.com/callback\",\"note\":\"This exactly matches a registered URI, so redirect_uri is not the cause.\"},{\"path\":\"/request/code_challenge_method\",\"actual\":\"S256\",\"note\":\"The PKCE verifier matches the challenge, so PKCE is not the cause.\"}],\"fix\":\"Make sure the callback exchanges the authorization code exactly once. In React, don't run the token exchange directly in a useEffect that StrictMode double-invokes. Use a module-level or useRef \\\"already started\\\" guard, or store the in-flight exchange promise keyed by the code and reuse it. Remove the code and state from the URL once the exchange starts, for example with history.replaceState. Don't retry a failed exchange with the same code. If it fails, start a new authorization request. Keep PKCE S256 and the exact redirect_uri on that single exchange. StrictMode double-invocation happens only in development, so check production builds separately, since a retry or a second tab could cause the same error there.\",\"alternatives\":[{\"code\":\"OAUTH_PKCE_VERIFIER_MISMATCH\",\"why_not\":\"The verifier matches the S256 challenge, and the error says the code was already redeemed.\"},{\"code\":\"OAUTH_REDIRECT_URI_MISMATCH\",\"why_not\":\"The redirect_uri exactly matches the registered URI.\"}],\"posture_codes\":[]}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_INVALID_GRANT_CODE",
+      "confidence": 0.97,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "invalid_grant",
+          "note": "Token endpoint rejected the authorization code."
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "The authorization code has already been redeemed.",
+          "note": "The code was exchanged twice. React StrictMode runs effects twice in development, which fits the intermittent failures."
+        },
+        {
+          "path": "/request/redirect_uri",
+          "actual": "https://app.example.com/callback",
+          "note": "This exactly matches a registered URI, so redirect_uri is not the cause."
+        },
+        {
+          "path": "/request/code_challenge_method",
+          "actual": "S256",
+          "note": "The PKCE verifier matches the challenge, so PKCE is not the cause."
+        }
+      ],
+      "fix": "Make sure the callback exchanges the authorization code exactly once. In React, don't run the token exchange directly in a useEffect that StrictMode double-invokes. Use a module-level or useRef \"already started\" guard, or store the in-flight exchange promise keyed by the code and reuse it. Remove the code and state from the URL once the exchange starts, for example with history.replaceState. Don't retry a failed exchange with the same code. If it fails, start a new authorization request. Keep PKCE S256 and the exact redirect_uri on that single exchange. StrictMode double-invocation happens only in development, so check production builds separately, since a retry or a second tab could cause the same error there.",
+      "alternatives": [
+        {
+          "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+          "why_not": "The verifier matches the S256 challenge, and the error says the code was already redeemed."
+        },
+        {
+          "code": "OAUTH_REDIRECT_URI_MISMATCH",
+          "why_not": "The redirect_uri exactly matches the registered URI."
+        }
+      ],
+      "posture_codes": []
+    },
+    "ttft_ms": 7634,
+    "type": "result",
+    "duration_ms": 14458,
+    "uuid": "d3fcccf6-f900-444d-9049-397f02010d6a",
+    "ttft_stream_ms": 6275,
+    "time_to_request_ms": 112,
+    "first_content_frame_ms": 6275,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

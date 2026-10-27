@@ -1,0 +1,13 @@
+{
+  "code": "HEALTHY",
+  "posture_codes": [
+    "POSTURE_EMBEDDED_KEY_TRUST"
+  ],
+  "evidence_path": "/Signature/KeyInfo/X509Data/X509Certificate",
+  "fix_keys": [
+    "configure",
+    "signing",
+    "certificate",
+    "metadata"
+  ]
+}

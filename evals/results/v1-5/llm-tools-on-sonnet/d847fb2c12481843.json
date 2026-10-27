@@ -1,0 +1,199 @@
+{
+  "case_id": "saml_structure_invalid-02",
+  "case_hash": "d847fb2c12481843",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_STRUCTURE_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion",
+    "fix_keys": [
+      "treat",
+      "response",
+      "hostile",
+      "unless"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_structure_invalid-02",
+    "kind": "saml_response",
+    "dialect": "generic",
+    "mutator": "structure_multi_assertion",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 2,
+    "hash": "d847fb2c12481843"
+  },
+  "output": {
+    "root_cause_code": "SAML_STRUCTURE_INVALID",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/Response/Assertion",
+        "actual": "2 assertions",
+        "expected": "1",
+        "note": "Multiple assertions in one Response, which matches the pentest's second unsigned assertion. The signed assertion verified against the configured IdP certificate, so this is a signature-wrapping or assertion-injection shape and not a signature failure."
+      }
+    ],
+    "fix": "Make the SP reject any Response that contains more than one Assertion. If it must accept multiple, make it consume only the assertion whose signature verified against the configured IdP certificate. Bind the signature Reference URI to that element's ID. Read NameID, attributes and conditions from that verified element only, and never re-query the document by name or XPath after verification. Keep require_signed_assertion on, and use schema-validating XML parsing with a single parser. Ask the IdP to emit one assertion with the Signature as a direct child of it.",
+    "posture_codes": [
+      "POSTURE_UNSIGNED_ASSERTION_ACCEPTED"
+    ],
+    "alternatives": [
+      {
+        "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+        "why_not": "The signed assertion is present, correctly placed and verified. The fault is the extra unsigned assertion, which is a structural problem."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T10:14:28.404746-05:00",
+  "duration_ms": 14571,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2047,
+    "cache_creation_input_tokens": 3534,
+    "cache_read_input_tokens": 31952
+  },
+  "cost_usd": 0.0378092,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2047,
+      "cacheReadInputTokens": 31952,
+      "cacheCreationInputTokens": 3534,
+      "costUSD": 0.0378092,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 14464,
+    "stop_reason": "tool_use",
+    "session_id": "1dd34b6d-f56c-4f7e-b794-448f9d8a95a2",
+    "total_cost_usd": 0.0378092,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3534,
+      "cache_read_input_tokens": 31952,
+      "output_tokens": 2047,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3534,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 587,
+          "cache_read_input_tokens": 16271,
+          "cache_creation_input_tokens": 2944,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2944
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2047,
+        "cacheReadInputTokens": 31952,
+        "cacheCreationInputTokens": 3534,
+        "webSearchRequests": 0,
+        "costUSD": 0.0378092,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3534,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_STRUCTURE_INVALID\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/Response/Assertion\",\"actual\":\"2 assertions\",\"expected\":\"1\",\"note\":\"Multiple assertions in one Response, which matches the pentest's second unsigned assertion. The signed assertion verified against the configured IdP certificate, so this is a signature-wrapping or assertion-injection shape and not a signature failure.\"}],\"fix\":\"Make the SP reject any Response that contains more than one Assertion. If it must accept multiple, make it consume only the assertion whose signature verified against the configured IdP certificate. Bind the signature Reference URI to that element's ID. Read NameID, attributes and conditions from that verified element only, and never re-query the document by name or XPath after verification. Keep require_signed_assertion on, and use schema-validating XML parsing with a single parser. Ask the IdP to emit one assertion with the Signature as a direct child of it.\",\"alternatives\":[{\"code\":\"SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED\",\"why_not\":\"The signed assertion is present, correctly placed and verified. The fault is the extra unsigned assertion, which is a structural problem.\"}],\"posture_codes\":[\"POSTURE_UNSIGNED_ASSERTION_ACCEPTED\"]}",
+    "structured_output": {
+      "root_cause_code": "SAML_STRUCTURE_INVALID",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/Response/Assertion",
+          "actual": "2 assertions",
+          "expected": "1",
+          "note": "Multiple assertions in one Response, which matches the pentest's second unsigned assertion. The signed assertion verified against the configured IdP certificate, so this is a signature-wrapping or assertion-injection shape and not a signature failure."
+        }
+      ],
+      "fix": "Make the SP reject any Response that contains more than one Assertion. If it must accept multiple, make it consume only the assertion whose signature verified against the configured IdP certificate. Bind the signature Reference URI to that element's ID. Read NameID, attributes and conditions from that verified element only, and never re-query the document by name or XPath after verification. Keep require_signed_assertion on, and use schema-validating XML parsing with a single parser. Ask the IdP to emit one assertion with the Signature as a direct child of it.",
+      "alternatives": [
+        {
+          "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+          "why_not": "The signed assertion is present, correctly placed and verified. The fault is the extra unsigned assertion, which is a structural problem."
+        }
+      ],
+      "posture_codes": [
+        "POSTURE_UNSIGNED_ASSERTION_ACCEPTED"
+      ]
+    },
+    "ttft_ms": 9038,
+    "type": "result",
+    "duration_ms": 14571,
+    "uuid": "269be0dc-49c3-4b95-b3f7-831d3be7f74d",
+    "ttft_stream_ms": 2490,
+    "time_to_request_ms": 97,
+    "first_content_frame_ms": 2490,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

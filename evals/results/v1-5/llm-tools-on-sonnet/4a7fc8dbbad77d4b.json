@@ -1,0 +1,188 @@
+{
+  "case_id": "jwt_kid_not_found_in_jwks-03",
+  "case_hash": "4a7fc8dbbad77d4b",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_KID_NOT_FOUND_IN_JWKS",
+    "posture_codes": [],
+    "evidence_path": "/header/kid",
+    "fix_keys": [
+      "refresh",
+      "jwks_uri",
+      "rotate"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_kid_not_found_in_jwks-03",
+    "kind": "jwt",
+    "mutator": "jwt_kid_unknown",
+    "expected_completeness": "partial",
+    "seed": 42,
+    "index": 3,
+    "hash": "4a7fc8dbbad77d4b"
+  },
+  "output": {
+    "root_cause_code": "JWT_KID_NOT_FOUND_IN_JWKS",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/header/kid",
+        "actual": "rotated-key-9",
+        "expected": "one of: test-key-1",
+        "note": "The token's kid is not in the supplied JWKS, so the signature could not be verified. The keys may have rotated, or the JWKS may come from the wrong tenant."
+      }
+    ],
+    "fix": "Fetch the current JWKS from the OP's jwks_uri (from its discovery document) for the same issuer and tenant that minted the token, then re-validate. Cache keys, and refetch once when you see an unknown kid so key rotation is handled. Keep signature verification on and keep the algorithm allow-list as it is. Don't fall back to trusting a key embedded in the token.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": [
+      "nonce (the value sent in the authorization request)",
+      "access_token (needed for the at_hash check)"
+    ]
+  },
+  "started": "2026-10-27T09:55:33.202504-05:00",
+  "duration_ms": 9270,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1070,
+    "cache_creation_input_tokens": 3663,
+    "cache_read_input_tokens": 23889
+  },
+  "cost_usd": 0.0277489,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1070,
+      "cacheReadInputTokens": 23889,
+      "cacheCreationInputTokens": 3663,
+      "costUSD": 0.0277489,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 9154,
+    "stop_reason": "tool_use",
+    "session_id": "a7841438-710c-4717-a33e-ccb32b005d8c",
+    "total_cost_usd": 0.0277489,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3663,
+      "cache_read_input_tokens": 23889,
+      "output_tokens": 1070,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3663,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 444,
+          "cache_read_input_tokens": 12816,
+          "cache_creation_input_tokens": 1920,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1920
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1070,
+        "cacheReadInputTokens": 23889,
+        "cacheCreationInputTokens": 3663,
+        "webSearchRequests": 0,
+        "costUSD": 0.0277489,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3663,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"JWT_KID_NOT_FOUND_IN_JWKS\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/header/kid\",\"actual\":\"rotated-key-9\",\"expected\":\"one of: test-key-1\",\"note\":\"The token's kid is not in the supplied JWKS, so the signature could not be verified. The keys may have rotated, or the JWKS may come from the wrong tenant.\"}],\"fix\":\"Fetch the current JWKS from the OP's jwks_uri (from its discovery document) for the same issuer and tenant that minted the token, then re-validate. Cache keys, and refetch once when you see an unknown kid so key rotation is handled. Keep signature verification on and keep the algorithm allow-list as it is. Don't fall back to trusting a key embedded in the token.\",\"alternatives\":[],\"questions\":[\"nonce (the value sent in the authorization request)\",\"access_token (needed for the at_hash check)\"]}",
+    "structured_output": {
+      "root_cause_code": "JWT_KID_NOT_FOUND_IN_JWKS",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/header/kid",
+          "actual": "rotated-key-9",
+          "expected": "one of: test-key-1",
+          "note": "The token's kid is not in the supplied JWKS, so the signature could not be verified. The keys may have rotated, or the JWKS may come from the wrong tenant."
+        }
+      ],
+      "fix": "Fetch the current JWKS from the OP's jwks_uri (from its discovery document) for the same issuer and tenant that minted the token, then re-validate. Cache keys, and refetch once when you see an unknown kid so key rotation is handled. Keep signature verification on and keep the algorithm allow-list as it is. Don't fall back to trusting a key embedded in the token.",
+      "alternatives": [],
+      "questions": [
+        "nonce (the value sent in the authorization request)",
+        "access_token (needed for the at_hash check)"
+      ]
+    },
+    "ttft_ms": 4302,
+    "type": "result",
+    "duration_ms": 9270,
+    "uuid": "a927a8a0-d856-499d-a07e-c214a2a5eded",
+    "ttft_stream_ms": 1333,
+    "time_to_request_ms": 104,
+    "first_content_frame_ms": 1333,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

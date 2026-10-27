@@ -1,0 +1,8 @@
+{
+  "id": "healthy-oidcdiscovery-03",
+  "kind": "oidc_discovery",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 3,
+  "hash": "4925d3eeb0cae93a"
+}

@@ -1,0 +1,226 @@
+{
+  "case_id": "saml_signature_invalid-03",
+  "case_hash": "3ec426c94b8dca29",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_SIGNATURE_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/Signature/KeyInfo/X509Data/X509Certificate",
+    "fix_keys": [
+      "download",
+      "current",
+      "signing",
+      "certificate"
+    ],
+    "needs": [
+      "idp_cert_pem"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_signature_invalid-03",
+    "kind": "saml_response",
+    "dialect": "okta",
+    "mutator": "wrong_cert",
+    "expected_completeness": "partial",
+    "seed": 42,
+    "index": 3,
+    "hash": "3ec426c94b8dca29"
+  },
+  "output": {
+    "root_cause_code": "SAML_SIGNATURE_INVALID",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate",
+        "actual": "Embedded cert subject is 'TEST ONLY rotated fixture IdP' (different serial and key)",
+        "expected": "Cert subject 'TEST ONLY idpdoctor fixture IdP'",
+        "note": "The signing certificate in the assertion is not the configured trusted IdP certificate, so the signature will not verify against it."
+      },
+      {
+        "path": "/expected/idp_cert_pem",
+        "actual": "Configured cert is the 'idpdoctor fixture IdP' certificate",
+        "note": "The SP trusts a different key from the one that signed the assertion, which fits an IdP key rotation."
+      },
+      {
+        "path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm",
+        "actual": "rsa-sha256",
+        "note": "The algorithm is acceptable, so the problem is the key and not the algorithm."
+      }
+    ],
+    "fix": "Get the IdP's current signing certificate from its metadata through a trusted channel, and check its fingerprint with the IdP admin. Then update the SP's trusted IdP certificate. During the rotation, you can configure both the old and new certificates as trusted. Keep signature validation on, and don't trust the certificate embedded in the message. After the update, re-test and confirm the assertion signature verifies against the configured certificate.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "CERT_EXPIRED_OR_WEAK",
+        "why_not": "Both certificates are valid for 2026 through 2126, and the key is RSA-2048 with SHA-256, so neither is expired or weak."
+      },
+      {
+        "code": "HEALTHY",
+        "why_not": "The signing key is not the configured trusted certificate, so the signature cannot validate."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:46:23.377043-05:00",
+  "duration_ms": 11550,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1314,
+    "cache_creation_input_tokens": 6573,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.039955199999999996,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1314,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 6573,
+      "costUSD": 0.039955199999999996,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 11392,
+    "stop_reason": "tool_use",
+    "session_id": "209ff3fd-6e9e-4945-bb1d-8e162f6fa533",
+    "total_cost_usd": 0.039955199999999996,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6573,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 1314,
+      "output_tokens_details": {
+        "thinking_tokens": 244
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6573,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1314,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 6573,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 6573
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1314,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 6573,
+        "webSearchRequests": 0,
+        "costUSD": 0.039955199999999996,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 244,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6573,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_SIGNATURE_INVALID\",\"confidence\":0.8,\"evidence\":[{\"path\":\"/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate\",\"actual\":\"Embedded cert subject is 'TEST ONLY rotated fixture IdP' (different serial and key)\",\"expected\":\"Cert subject 'TEST ONLY idpdoctor fixture IdP'\",\"note\":\"The signing certificate in the assertion is not the configured trusted IdP certificate, so the signature will not verify against it.\"},{\"path\":\"/expected/idp_cert_pem\",\"actual\":\"Configured cert is the 'idpdoctor fixture IdP' certificate\",\"note\":\"The SP trusts a different key from the one that signed the assertion, which fits an IdP key rotation.\"},{\"path\":\"/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm\",\"actual\":\"rsa-sha256\",\"note\":\"The algorithm is acceptable, so the problem is the key and not the algorithm.\"}],\"fix\":\"Get the IdP's current signing certificate from its metadata through a trusted channel, and check its fingerprint with the IdP admin. Then update the SP's trusted IdP certificate. During the rotation, you can configure both the old and new certificates as trusted. Keep signature validation on, and don't trust the certificate embedded in the message. After the update, re-test and confirm the assertion signature verifies against the configured certificate.\",\"alternatives\":[{\"code\":\"CERT_EXPIRED_OR_WEAK\",\"why_not\":\"Both certificates are valid for 2026 through 2126, and the key is RSA-2048 with SHA-256, so neither is expired or weak.\"},{\"code\":\"HEALTHY\",\"why_not\":\"The signing key is not the configured trusted certificate, so the signature cannot validate.\"}],\"posture_codes\":[],\"questions\":[]}",
+    "structured_output": {
+      "root_cause_code": "SAML_SIGNATURE_INVALID",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate",
+          "actual": "Embedded cert subject is 'TEST ONLY rotated fixture IdP' (different serial and key)",
+          "expected": "Cert subject 'TEST ONLY idpdoctor fixture IdP'",
+          "note": "The signing certificate in the assertion is not the configured trusted IdP certificate, so the signature will not verify against it."
+        },
+        {
+          "path": "/expected/idp_cert_pem",
+          "actual": "Configured cert is the 'idpdoctor fixture IdP' certificate",
+          "note": "The SP trusts a different key from the one that signed the assertion, which fits an IdP key rotation."
+        },
+        {
+          "path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm",
+          "actual": "rsa-sha256",
+          "note": "The algorithm is acceptable, so the problem is the key and not the algorithm."
+        }
+      ],
+      "fix": "Get the IdP's current signing certificate from its metadata through a trusted channel, and check its fingerprint with the IdP admin. Then update the SP's trusted IdP certificate. During the rotation, you can configure both the old and new certificates as trusted. Keep signature validation on, and don't trust the certificate embedded in the message. After the update, re-test and confirm the assertion signature verifies against the configured certificate.",
+      "alternatives": [
+        {
+          "code": "CERT_EXPIRED_OR_WEAK",
+          "why_not": "Both certificates are valid for 2026 through 2126, and the key is RSA-2048 with SHA-256, so neither is expired or weak."
+        },
+        {
+          "code": "HEALTHY",
+          "why_not": "The signing key is not the configured trusted certificate, so the signature cannot validate."
+        }
+      ],
+      "posture_codes": [],
+      "questions": []
+    },
+    "ttft_ms": 5171,
+    "type": "result",
+    "duration_ms": 11550,
+    "uuid": "82ef9ebc-6bdf-46ce-a16d-e79cbb3b7f55",
+    "ttft_stream_ms": 2930,
+    "time_to_request_ms": 155,
+    "first_content_frame_ms": 2930,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

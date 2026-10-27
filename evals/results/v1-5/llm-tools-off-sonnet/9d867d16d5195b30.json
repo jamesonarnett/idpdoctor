@@ -1,0 +1,229 @@
+{
+  "case_id": "saml_time_window_invalid-01",
+  "case_hash": "9d867d16d5195b30",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_TIME_WINDOW_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/Conditions/@NotBefore",
+    "fix_keys": [
+      "synchronise",
+      "clocks",
+      "sides",
+      "clock"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_time_window_invalid-01",
+    "kind": "saml_response",
+    "dialect": "auth0",
+    "mutator": "not_yet_valid",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 1,
+    "hash": "9d867d16d5195b30"
+  },
+  "output": {
+    "root_cause_code": "SAML_TIME_WINDOW_INVALID",
+    "confidence": 0.93,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Conditions/@NotBefore",
+        "actual": "2026-01-15T12:10:00.000Z",
+        "expected": "NotBefore at or before now (2026-01-15T12:00:00Z, within 5 min skew)",
+        "note": "NotBefore is 10 minutes after the evaluation time and after the assertion IssueInstant. The assertion is not yet valid."
+      },
+      {
+        "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+        "actual": "2026-01-15T12:15:00.000Z",
+        "note": "The window is 12:10 to 12:15, which is 5 minutes long. The window itself is reasonable but is shifted into the future."
+      },
+      {
+        "path": "/Response/Assertion/@IssueInstant",
+        "actual": "2026-01-15T12:00:00.000Z",
+        "note": "The assertion was issued 10 minutes before its own NotBefore."
+      },
+      {
+        "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@NotOnOrAfter",
+        "actual": "2026-01-15T12:02:30.000Z",
+        "note": "This ends before Conditions/@NotBefore, so the two windows never overlap and the assertion can never be valid under both."
+      }
+    ],
+    "fix": "Fix the IdP's time handling. Sync the IdP clock with NTP. Make Conditions NotBefore equal to IssueInstant, or up to 5 minutes earlier to absorb skew, not 10 minutes later. Keep the SubjectConfirmationData NotOnOrAfter inside the Conditions window. Check whether the IdP adds a fixed offset or uses a wrong time zone. That fits the intermittent, morning-only failures, because an offset like that can look different depending on the time of day or on which IdP node answers. On the SP side, make sure its clock is NTP-synced. Keep the allowed clock skew at 5 minutes or less. Do not widen it, and do not skip the time checks.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "CERT_EXPIRED_OR_WEAK",
+        "why_not": "The certificate is valid from 2026 to 2126 and matches the configured IdP certificate."
+      }
+    ],
+    "questions": [
+      "Does the IdP use a clock offset or a time zone setting that differs between nodes or times of day?"
+    ]
+  },
+  "started": "2026-10-27T09:48:03.819888-05:00",
+  "duration_ms": 9031,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 928,
+    "cache_creation_input_tokens": 6581,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.0361272,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 928,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 6581,
+      "costUSD": 0.0361272,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 8902,
+    "stop_reason": "tool_use",
+    "session_id": "7660afb4-2800-4bda-943b-a31a5831202a",
+    "total_cost_usd": 0.0361272,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6581,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 928,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6581,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 928,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 6581,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 6581
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 928,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 6581,
+        "webSearchRequests": 0,
+        "costUSD": 0.0361272,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6581,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_TIME_WINDOW_INVALID\",\"confidence\":0.93,\"evidence\":[{\"path\":\"/Response/Assertion/Conditions/@NotBefore\",\"actual\":\"2026-01-15T12:10:00.000Z\",\"expected\":\"NotBefore at or before now (2026-01-15T12:00:00Z, within 5 min skew)\",\"note\":\"NotBefore is 10 minutes after the evaluation time and after the assertion IssueInstant. The assertion is not yet valid.\"},{\"path\":\"/Response/Assertion/Conditions/@NotOnOrAfter\",\"actual\":\"2026-01-15T12:15:00.000Z\",\"note\":\"The window is 12:10 to 12:15, which is 5 minutes long. The window itself is reasonable but is shifted into the future.\"},{\"path\":\"/Response/Assertion/@IssueInstant\",\"actual\":\"2026-01-15T12:00:00.000Z\",\"note\":\"The assertion was issued 10 minutes before its own NotBefore.\"},{\"path\":\"/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@NotOnOrAfter\",\"actual\":\"2026-01-15T12:02:30.000Z\",\"note\":\"This ends before Conditions/@NotBefore, so the two windows never overlap and the assertion can never be valid under both.\"}],\"fix\":\"Fix the IdP's time handling. Sync the IdP clock with NTP. Make Conditions NotBefore equal to IssueInstant, or up to 5 minutes earlier to absorb skew, not 10 minutes later. Keep the SubjectConfirmationData NotOnOrAfter inside the Conditions window. Check whether the IdP adds a fixed offset or uses a wrong time zone. That fits the intermittent, morning-only failures, because an offset like that can look different depending on the time of day or on which IdP node answers. On the SP side, make sure its clock is NTP-synced. Keep the allowed clock skew at 5 minutes or less. Do not widen it, and do not skip the time checks.\",\"alternatives\":[{\"code\":\"CERT_EXPIRED_OR_WEAK\",\"why_not\":\"The certificate is valid from 2026 to 2126 and matches the configured IdP certificate.\"}],\"questions\":[\"Does the IdP use a clock offset or a time zone setting that differs between nodes or times of day?\"]}",
+    "structured_output": {
+      "root_cause_code": "SAML_TIME_WINDOW_INVALID",
+      "confidence": 0.93,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Conditions/@NotBefore",
+          "actual": "2026-01-15T12:10:00.000Z",
+          "expected": "NotBefore at or before now (2026-01-15T12:00:00Z, within 5 min skew)",
+          "note": "NotBefore is 10 minutes after the evaluation time and after the assertion IssueInstant. The assertion is not yet valid."
+        },
+        {
+          "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+          "actual": "2026-01-15T12:15:00.000Z",
+          "note": "The window is 12:10 to 12:15, which is 5 minutes long. The window itself is reasonable but is shifted into the future."
+        },
+        {
+          "path": "/Response/Assertion/@IssueInstant",
+          "actual": "2026-01-15T12:00:00.000Z",
+          "note": "The assertion was issued 10 minutes before its own NotBefore."
+        },
+        {
+          "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@NotOnOrAfter",
+          "actual": "2026-01-15T12:02:30.000Z",
+          "note": "This ends before Conditions/@NotBefore, so the two windows never overlap and the assertion can never be valid under both."
+        }
+      ],
+      "fix": "Fix the IdP's time handling. Sync the IdP clock with NTP. Make Conditions NotBefore equal to IssueInstant, or up to 5 minutes earlier to absorb skew, not 10 minutes later. Keep the SubjectConfirmationData NotOnOrAfter inside the Conditions window. Check whether the IdP adds a fixed offset or uses a wrong time zone. That fits the intermittent, morning-only failures, because an offset like that can look different depending on the time of day or on which IdP node answers. On the SP side, make sure its clock is NTP-synced. Keep the allowed clock skew at 5 minutes or less. Do not widen it, and do not skip the time checks.",
+      "alternatives": [
+        {
+          "code": "CERT_EXPIRED_OR_WEAK",
+          "why_not": "The certificate is valid from 2026 to 2126 and matches the configured IdP certificate."
+        }
+      ],
+      "questions": [
+        "Does the IdP use a clock offset or a time zone setting that differs between nodes or times of day?"
+      ]
+    },
+    "ttft_ms": 9004,
+    "type": "result",
+    "duration_ms": 9031,
+    "uuid": "446f2eed-2988-4962-add0-d7770e9f36cb",
+    "ttft_stream_ms": 3390,
+    "time_to_request_ms": 125,
+    "first_content_frame_ms": 3391,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

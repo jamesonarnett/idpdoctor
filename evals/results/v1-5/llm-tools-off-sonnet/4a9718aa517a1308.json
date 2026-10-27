@@ -1,0 +1,214 @@
+{
+  "case_id": "oauth_invalid_grant_code-01",
+  "case_hash": "4a9718aa517a1308",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_INVALID_GRANT_CODE",
+    "posture_codes": [],
+    "evidence_path": "/redirect/error",
+    "fix_keys": [
+      "exchange",
+      "within",
+      "minutes",
+      "issuance"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_invalid_grant_code-01",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_invalid_grant_reused",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 1,
+    "hash": "4a9718aa517a1308"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_INVALID_GRANT_CODE",
+    "confidence": 0.85,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_grant",
+        "expected": "no error"
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "The authorization code has already been redeemed.",
+        "note": "The code was reused. The reported AADSTS70008 symptom says expired, but the captured body says already redeemed. Both are invalid-code classes."
+      }
+    ],
+    "fix": "Treat each authorization code as single-use. Exchange it exactly once, right after the redirect, and within the IdP's short lifetime (typically about 10 minutes or less). Prevent duplicate redemption: dedupe the callback handler so a page refresh, browser retry, prefetch or parallel request doesn't redeem the code a second time. Don't retry the token request with the same code. If the exchange fails, restart the authorization flow to get a fresh code and a new PKCE verifier/challenge pair. Keep S256 PKCE and the exact registered redirect_uri on the exchange.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+        "why_not": "The error description says the code was already redeemed, not that the verifier failed. The expected challenge and verifier are present, but nothing in the artifact shows a mismatch."
+      },
+      {
+        "code": "OAUTH_REDIRECT_URI_MISMATCH",
+        "why_not": "The error is invalid_grant with a redeemed-code message. It has no redirect_uri complaint."
+      }
+    ],
+    "questions": [
+      "Is the callback handler invoked more than once for the same code, for example by a refresh, retry or double submit?"
+    ]
+  },
+  "started": "2026-10-27T09:35:18.424947-05:00",
+  "duration_ms": 5504,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 685,
+    "cache_creation_input_tokens": 1343,
+    "cache_read_input_tokens": 3864
+  },
+  "cost_usd": 0.0126124,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 685,
+      "cacheReadInputTokens": 3864,
+      "cacheCreationInputTokens": 1343,
+      "costUSD": 0.0126124,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 2,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 5373,
+    "stop_reason": "tool_use",
+    "session_id": "8ba0a704-a115-45cb-bf86-3b5e6e6896d4",
+    "total_cost_usd": 0.0126124,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1343,
+      "cache_read_input_tokens": 3864,
+      "output_tokens": 685,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1343,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 685,
+          "cache_read_input_tokens": 3864,
+          "cache_creation_input_tokens": 1343,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1343
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 685,
+        "cacheReadInputTokens": 3864,
+        "cacheCreationInputTokens": 1343,
+        "webSearchRequests": 0,
+        "costUSD": 0.0126124,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1343,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_INVALID_GRANT_CODE\",\"confidence\":0.85,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"invalid_grant\",\"expected\":\"no error\"},{\"path\":\"/redirect/error_description\",\"actual\":\"The authorization code has already been redeemed.\",\"note\":\"The code was reused. The reported AADSTS70008 symptom says expired, but the captured body says already redeemed. Both are invalid-code classes.\"}],\"fix\":\"Treat each authorization code as single-use. Exchange it exactly once, right after the redirect, and within the IdP's short lifetime (typically about 10 minutes or less). Prevent duplicate redemption: dedupe the callback handler so a page refresh, browser retry, prefetch or parallel request doesn't redeem the code a second time. Don't retry the token request with the same code. If the exchange fails, restart the authorization flow to get a fresh code and a new PKCE verifier/challenge pair. Keep S256 PKCE and the exact registered redirect_uri on the exchange.\",\"alternatives\":[{\"code\":\"OAUTH_PKCE_VERIFIER_MISMATCH\",\"why_not\":\"The error description says the code was already redeemed, not that the verifier failed. The expected challenge and verifier are present, but nothing in the artifact shows a mismatch.\"},{\"code\":\"OAUTH_REDIRECT_URI_MISMATCH\",\"why_not\":\"The error is invalid_grant with a redeemed-code message. It has no redirect_uri complaint.\"}],\"questions\":[\"Is the callback handler invoked more than once for the same code, for example by a refresh, retry or double submit?\"]}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_INVALID_GRANT_CODE",
+      "confidence": 0.85,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "invalid_grant",
+          "expected": "no error"
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "The authorization code has already been redeemed.",
+          "note": "The code was reused. The reported AADSTS70008 symptom says expired, but the captured body says already redeemed. Both are invalid-code classes."
+        }
+      ],
+      "fix": "Treat each authorization code as single-use. Exchange it exactly once, right after the redirect, and within the IdP's short lifetime (typically about 10 minutes or less). Prevent duplicate redemption: dedupe the callback handler so a page refresh, browser retry, prefetch or parallel request doesn't redeem the code a second time. Don't retry the token request with the same code. If the exchange fails, restart the authorization flow to get a fresh code and a new PKCE verifier/challenge pair. Keep S256 PKCE and the exact registered redirect_uri on the exchange.",
+      "alternatives": [
+        {
+          "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+          "why_not": "The error description says the code was already redeemed, not that the verifier failed. The expected challenge and verifier are present, but nothing in the artifact shows a mismatch."
+        },
+        {
+          "code": "OAUTH_REDIRECT_URI_MISMATCH",
+          "why_not": "The error is invalid_grant with a redeemed-code message. It has no redirect_uri complaint."
+        }
+      ],
+      "questions": [
+        "Is the callback handler invoked more than once for the same code, for example by a refresh, retry or double submit?"
+      ]
+    },
+    "ttft_ms": 5470,
+    "type": "result",
+    "duration_ms": 5504,
+    "uuid": "36b564cd-1654-410f-b8b7-5236c3c6332d",
+    "ttft_stream_ms": 1335,
+    "time_to_request_ms": 128,
+    "first_content_frame_ms": 1336,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

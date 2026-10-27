@@ -1,0 +1,211 @@
+{
+  "case_id": "healthy-oidcdiscovery-08",
+  "case_hash": "42d16e3a89b58d88",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [],
+    "fix_keys": [
+      "no change needed",
+      "the artifact validates"
+    ]
+  },
+  "kind": "oidc_discovery",
+  "meta": {
+    "id": "healthy-oidcdiscovery-08",
+    "kind": "oidc_discovery",
+    "expected_completeness": "full",
+    "symptom_from": "misleading",
+    "misleading_symptom": true,
+    "seed": 42,
+    "index": 8,
+    "hash": "42d16e3a89b58d88"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.7,
+    "evidence": [
+      {
+        "path": "/discovery/issuer",
+        "actual": "matches the configured issuer https://login.example.com/tenant-1/v2.0",
+        "expected": "https://login.example.com/tenant-1/v2.0"
+      },
+      {
+        "path": "/discovery/token_endpoint",
+        "actual": "present and https"
+      },
+      {
+        "path": "/discovery/id_token_signing_alg_values_supported",
+        "actual": "includes RS256"
+      }
+    ],
+    "fix": "The discovery document is valid, so it isn't the cause. Turn on detailed logging in the SP library to get the real failure reason. Then validate a captured ID token or the failing token-endpoint response with the validators. Check that the library's configured issuer matches the discovery issuer exactly, including the /v2.0 suffix and with no trailing slash. Also check that the client_id, redirect_uri and signing algorithms are configured correctly.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OIDC_ISSUER_MISMATCH",
+        "why_not": "The discovery issuer equals the expected issuer. A mismatch could still exist between the library config and the iss claim in the token, but there is no token to check."
+      }
+    ],
+    "questions": [
+      "Can you share a captured id_token, or the error redirect or token-endpoint error body, from the failing login?",
+      "Was the discovery document fetched live? The content-type check was skipped because no fetch status was supplied."
+    ]
+  },
+  "started": "2026-10-27T09:50:53.188221-05:00",
+  "duration_ms": 8804,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 756,
+    "cache_creation_input_tokens": 1994,
+    "cache_read_input_tokens": 23884
+  },
+  "cost_usd": 0.0179324,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 756,
+      "cacheReadInputTokens": 23884,
+      "cacheCreationInputTokens": 1994,
+      "costUSD": 0.0179324,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 8623,
+    "stop_reason": "tool_use",
+    "session_id": "d01570b2-8169-4132-bfb4-4925cf753d37",
+    "total_cost_usd": 0.0179324,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 1994,
+      "cache_read_input_tokens": 23884,
+      "output_tokens": 756,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1994,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 593,
+          "cache_read_input_tokens": 12659,
+          "cache_creation_input_tokens": 560,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 560
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 756,
+        "cacheReadInputTokens": 23884,
+        "cacheCreationInputTokens": 1994,
+        "webSearchRequests": 0,
+        "costUSD": 0.0179324,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1994,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.7,\"evidence\":[{\"path\":\"/discovery/issuer\",\"actual\":\"matches the configured issuer https://login.example.com/tenant-1/v2.0\",\"expected\":\"https://login.example.com/tenant-1/v2.0\"},{\"path\":\"/discovery/token_endpoint\",\"actual\":\"present and https\"},{\"path\":\"/discovery/id_token_signing_alg_values_supported\",\"actual\":\"includes RS256\"}],\"fix\":\"The discovery document is valid, so it isn't the cause. Turn on detailed logging in the SP library to get the real failure reason. Then validate a captured ID token or the failing token-endpoint response with the validators. Check that the library's configured issuer matches the discovery issuer exactly, including the /v2.0 suffix and with no trailing slash. Also check that the client_id, redirect_uri and signing algorithms are configured correctly.\",\"questions\":[\"Can you share a captured id_token, or the error redirect or token-endpoint error body, from the failing login?\",\"Was the discovery document fetched live? The content-type check was skipped because no fetch status was supplied.\"],\"alternatives\":[{\"code\":\"OIDC_ISSUER_MISMATCH\",\"why_not\":\"The discovery issuer equals the expected issuer. A mismatch could still exist between the library config and the iss claim in the token, but there is no token to check.\"}]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.7,
+      "evidence": [
+        {
+          "path": "/discovery/issuer",
+          "actual": "matches the configured issuer https://login.example.com/tenant-1/v2.0",
+          "expected": "https://login.example.com/tenant-1/v2.0"
+        },
+        {
+          "path": "/discovery/token_endpoint",
+          "actual": "present and https"
+        },
+        {
+          "path": "/discovery/id_token_signing_alg_values_supported",
+          "actual": "includes RS256"
+        }
+      ],
+      "fix": "The discovery document is valid, so it isn't the cause. Turn on detailed logging in the SP library to get the real failure reason. Then validate a captured ID token or the failing token-endpoint response with the validators. Check that the library's configured issuer matches the discovery issuer exactly, including the /v2.0 suffix and with no trailing slash. Also check that the client_id, redirect_uri and signing algorithms are configured correctly.",
+      "questions": [
+        "Can you share a captured id_token, or the error redirect or token-endpoint error body, from the failing login?",
+        "Was the discovery document fetched live? The content-type check was skipped because no fetch status was supplied."
+      ],
+      "alternatives": [
+        {
+          "code": "OIDC_ISSUER_MISMATCH",
+          "why_not": "The discovery issuer equals the expected issuer. A mismatch could still exist between the library config and the iss claim in the token, but there is no token to check."
+        }
+      ]
+    },
+    "ttft_ms": 2360,
+    "type": "result",
+    "duration_ms": 8804,
+    "uuid": "fad3d58b-cc74-4d6c-a306-30665dbfae06",
+    "ttft_stream_ms": 1683,
+    "time_to_request_ms": 167,
+    "first_content_frame_ms": 1684,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,198 @@
+{
+  "case_id": "saml_nameid_missing_or_format_mismatch-00",
+  "case_hash": "8b49bb368da127ca",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/Subject/NameID/@Format",
+    "fix_keys": [
+      "stable",
+      "identifier",
+      "nameid",
+      "application"
+    ],
+    "needs": [
+      "name_id_format"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_nameid_missing_or_format_mismatch-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "nameid_format_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "8b49bb368da127ca"
+  },
+  "output": {
+    "root_cause_code": "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH",
+    "confidence": 0.93,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Subject/NameID/@Format",
+        "actual": "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
+        "expected": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+        "note": "NameID format changed by the admin's claim edit no longer matches the SP-configured emailAddress format."
+      }
+    ],
+    "fix": "In the Entra enterprise app's SAML settings (Attributes \u0026 Claims \u003e Unique User Identifier / NameID), set the Name identifier format to Email address (urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress) and map the source to the user's email attribute. Keep the SP's NameIDPolicy and its expected format consistent with that. Don't loosen SP validation to accept transient. The signature, audience, destination, InResponseTo and time window all look correct, so you should not need to change them.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "IDP_POLICY_REFUSAL",
+        "why_not": "AADSTS75016 comes from a NameIDPolicy format the IdP can't satisfy. This captured response is a Success, and its NameID format differs from the SP's expected format."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:43:43.648784-05:00",
+  "duration_ms": 5200,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 592,
+    "cache_creation_input_tokens": 6450,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.0322432,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 592,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 6450,
+      "costUSD": 0.0322432,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 5053,
+    "stop_reason": "tool_use",
+    "session_id": "8d51701f-8a9b-4652-9291-a554db3f5af6",
+    "total_cost_usd": 0.0322432,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6450,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 592,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6450,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 592,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 6450,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 6450
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 592,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 6450,
+        "webSearchRequests": 0,
+        "costUSD": 0.0322432,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6450,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH\",\"confidence\":0.93,\"evidence\":[{\"path\":\"/Response/Assertion/Subject/NameID/@Format\",\"actual\":\"urn:oasis:names:tc:SAML:2.0:nameid-format:transient\",\"expected\":\"urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress\",\"note\":\"NameID format changed by the admin's claim edit no longer matches the SP-configured emailAddress format.\"}],\"fix\":\"In the Entra enterprise app's SAML settings (Attributes \u0026 Claims \u003e Unique User Identifier / NameID), set the Name identifier format to Email address (urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress) and map the source to the user's email attribute. Keep the SP's NameIDPolicy and its expected format consistent with that. Don't loosen SP validation to accept transient. The signature, audience, destination, InResponseTo and time window all look correct, so you should not need to change them.\",\"alternatives\":[{\"code\":\"IDP_POLICY_REFUSAL\",\"why_not\":\"AADSTS75016 comes from a NameIDPolicy format the IdP can't satisfy. This captured response is a Success, and its NameID format differs from the SP's expected format.\"}],\"questions\":[]}",
+    "structured_output": {
+      "root_cause_code": "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH",
+      "confidence": 0.93,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Subject/NameID/@Format",
+          "actual": "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
+          "expected": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+          "note": "NameID format changed by the admin's claim edit no longer matches the SP-configured emailAddress format."
+        }
+      ],
+      "fix": "In the Entra enterprise app's SAML settings (Attributes \u0026 Claims \u003e Unique User Identifier / NameID), set the Name identifier format to Email address (urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress) and map the source to the user's email attribute. Keep the SP's NameIDPolicy and its expected format consistent with that. Don't loosen SP validation to accept transient. The signature, audience, destination, InResponseTo and time window all look correct, so you should not need to change them.",
+      "alternatives": [
+        {
+          "code": "IDP_POLICY_REFUSAL",
+          "why_not": "AADSTS75016 comes from a NameIDPolicy format the IdP can't satisfy. This captured response is a Success, and its NameID format differs from the SP's expected format."
+        }
+      ],
+      "questions": []
+    },
+    "ttft_ms": 5173,
+    "type": "result",
+    "duration_ms": 5200,
+    "uuid": "20e6eb74-213f-4139-a306-a3cef4529948",
+    "ttft_stream_ms": 1577,
+    "time_to_request_ms": 143,
+    "first_content_frame_ms": 1577,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

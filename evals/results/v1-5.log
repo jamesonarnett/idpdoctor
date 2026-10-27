@@ -1,0 +1,557 @@
+== Tue Oct 27 09:29:16 CDT 2026 gen ==
+wrote 146 cases to evals/data/v1-5 (120 fault, 10 control, 16 posture; seed 42)
+== Tue Oct 27 09:29:17 CDT 2026 run ==
+== arm rules (model sonnet, concurrency 1) ==
+[1/146] cert_expired_or_weak-00                    0.0s  ok   CERT_EXPIRED_OR_WEAK  $0.0000  acc 100%
+[2/146] cert_expired_or_weak-01                    0.0s  ok   CERT_EXPIRED_OR_WEAK  $0.0000  acc 100%
+[3/146] cert_expired_or_weak-02                    0.0s  ok   CERT_EXPIRED_OR_WEAK  $0.0000  acc 100%
+[4/146] cert_expired_or_weak-03                    0.0s  ok   CERT_EXPIRED_OR_WEAK  $0.0000  acc 100%
+[5/146] cert_expired_or_weak-04                    0.0s  ok   CERT_EXPIRED_OR_WEAK  $0.0000  acc 100%
+[6/146] healthy-jwt-02                             0.0s  ok   HEALTHY  $0.0000  acc 100%
+[7/146] healthy-jwt-07                             0.0s  ok   HEALTHY  $0.0000  acc 100%
+[8/146] healthy-oauthredirect-04                   0.0s  ok   HEALTHY  $0.0000  acc 100%
+[9/146] healthy-oauthredirect-09                   0.0s  ok   HEALTHY  $0.0000  acc 100%
+[10/146] healthy-oidcdiscovery-03                   0.0s  ok   HEALTHY  $0.0000  acc 100%
+[11/146] healthy-oidcdiscovery-08                   0.0s  ok   HEALTHY  $0.0000  acc 100%
+[12/146] healthy-samlresponse-00                    0.0s  ok   HEALTHY  $0.0000  acc 100%
+[13/146] healthy-samlresponse-01                    0.0s  ok   HEALTHY  $0.0000  acc 100%
+[14/146] healthy-samlresponse-05                    0.0s  ok   HEALTHY  $0.0000  acc 100%
+[15/146] healthy-samlresponse-06                    0.0s  ok   HEALTHY  $0.0000  acc 100%
+[16/146] idp_policy_refusal-00                      0.0s  ok   IDP_POLICY_REFUSAL  $0.0000  acc 100%
+[17/146] idp_policy_refusal-01                      0.0s  ok   IDP_POLICY_REFUSAL  $0.0000  acc 100%
+[18/146] idp_policy_refusal-03                    cached  ok   IDP_POLICY_REFUSAL  acc 100%
+[19/146] idp_policy_refusal-02                      0.0s  ok   IDP_POLICY_REFUSAL  $0.0000  acc 100%
+[20/146] idp_policy_refusal-04                      0.0s  ok   IDP_POLICY_REFUSAL  $0.0000  acc 100%
+[21/146] jwt_alg_none_or_confusion-00               0.0s  ok   JWT_ALG_NONE_OR_CONFUSION  $0.0000  acc 100%
+[22/146] jwt_alg_none_or_confusion-01               0.0s  ok   JWT_ALG_NONE_OR_CONFUSION  $0.0000  acc 100%
+[23/146] jwt_alg_none_or_confusion-02               0.0s  ok   JWT_ALG_NONE_OR_CONFUSION  $0.0000  acc 100%
+[24/146] jwt_alg_none_or_confusion-03               0.0s  ok   JWT_ALG_NONE_OR_CONFUSION  $0.0000  acc 100%
+[25/146] jwt_alg_none_or_confusion-04               0.0s  ok   JWT_ALG_NONE_OR_CONFUSION  $0.0000  acc 100%
+[26/146] jwt_aud_or_azp_mismatch-00                 0.0s  ok   JWT_AUD_OR_AZP_MISMATCH  $0.0000  acc 100%
+[27/146] jwt_aud_or_azp_mismatch-02               cached  ok   JWT_AUD_OR_AZP_MISMATCH  acc 100%
+[28/146] jwt_aud_or_azp_mismatch-01                 0.0s  ok   JWT_AUD_OR_AZP_MISMATCH  $0.0000  acc 100%
+[29/146] jwt_aud_or_azp_mismatch-04               cached  ok   JWT_AUD_OR_AZP_MISMATCH  acc 100%
+[30/146] jwt_aud_or_azp_mismatch-03                 0.0s  ok   JWT_AUD_OR_AZP_MISMATCH  $0.0000  acc 100%
+[31/146] jwt_expired_or_not_yet_valid-00            0.0s  ok   JWT_EXPIRED_OR_NOT_YET_VALID  $0.0000  acc 100%
+[32/146] jwt_expired_or_not_yet_valid-01            0.0s  ok   JWT_EXPIRED_OR_NOT_YET_VALID  $0.0000  acc 100%
+[33/146] jwt_expired_or_not_yet_valid-02            0.0s  ok   JWT_EXPIRED_OR_NOT_YET_VALID  $0.0000  acc 100%
+[34/146] jwt_expired_or_not_yet_valid-04          cached  ok   JWT_EXPIRED_OR_NOT_YET_VALID  acc 100%
+[35/146] jwt_expired_or_not_yet_valid-03            0.0s  ok   JWT_EXPIRED_OR_NOT_YET_VALID  $0.0000  acc 100%
+[36/146] jwt_kid_not_found_in_jwks-00               0.0s  ok   JWT_KID_NOT_FOUND_IN_JWKS  $0.0000  acc 100%
+[37/146] jwt_kid_not_found_in_jwks-02             cached  ok   JWT_KID_NOT_FOUND_IN_JWKS  acc 100%
+[38/146] jwt_kid_not_found_in_jwks-01               0.0s  ok   JWT_KID_NOT_FOUND_IN_JWKS  $0.0000  acc 100%
+[39/146] jwt_kid_not_found_in_jwks-04             cached  ok   JWT_KID_NOT_FOUND_IN_JWKS  acc 100%
+[40/146] jwt_kid_not_found_in_jwks-03               0.0s  ok   JWT_KID_NOT_FOUND_IN_JWKS  $0.0000  acc 100%
+[41/146] oauth_client_config_rejected-00            0.0s  ok   OAUTH_CLIENT_CONFIG_REJECTED  $0.0000  acc 100%
+[42/146] oauth_client_config_rejected-01            0.0s  ok   OAUTH_CLIENT_CONFIG_REJECTED  $0.0000  acc 100%
+[43/146] oauth_client_config_rejected-03          cached  ok   OAUTH_CLIENT_CONFIG_REJECTED  acc 100%
+[44/146] oauth_client_config_rejected-04          cached  ok   OAUTH_CLIENT_CONFIG_REJECTED  acc 100%
+[45/146] oauth_client_config_rejected-02            0.0s  ok   OAUTH_CLIENT_CONFIG_REJECTED  $0.0000  acc 100%
+[46/146] oauth_invalid_grant_code-00                0.0s  ok   OAUTH_INVALID_GRANT_CODE  $0.0000  acc 100%
+[47/146] oauth_invalid_grant_code-01                0.0s  ok   OAUTH_INVALID_GRANT_CODE  $0.0000  acc 100%
+[48/146] oauth_invalid_grant_code-02                0.0s  ok   OAUTH_INVALID_GRANT_CODE  $0.0000  acc 100%
+[49/146] oauth_invalid_grant_code-04              cached  ok   OAUTH_INVALID_GRANT_CODE  acc 100%
+[50/146] oauth_invalid_grant_code-03                0.0s  ok   OAUTH_INVALID_GRANT_CODE  $0.0000  acc 100%
+[51/146] oauth_pkce_verifier_mismatch-00            0.0s  ok   OAUTH_PKCE_VERIFIER_MISMATCH  $0.0000  acc 100%
+[52/146] oauth_pkce_verifier_mismatch-01            0.0s  ok   OAUTH_PKCE_VERIFIER_MISMATCH  $0.0000  acc 100%
+[53/146] oauth_pkce_verifier_mismatch-03          cached  ok   OAUTH_PKCE_VERIFIER_MISMATCH  acc 100%
+[54/146] oauth_pkce_verifier_mismatch-02            0.0s  ok   OAUTH_PKCE_VERIFIER_MISMATCH  $0.0000  acc 100%
+[55/146] oauth_pkce_verifier_mismatch-04            0.0s  ok   OAUTH_PKCE_VERIFIER_MISMATCH  $0.0000  acc 100%
+[56/146] oauth_redirect_uri_mismatch-00             0.0s  ok   OAUTH_REDIRECT_URI_MISMATCH  $0.0000  acc 100%
+[57/146] oauth_redirect_uri_mismatch-01             0.0s  ok   OAUTH_REDIRECT_URI_MISMATCH  $0.0000  acc 100%
+[58/146] oauth_redirect_uri_mismatch-02             0.0s  ok   OAUTH_REDIRECT_URI_MISMATCH  $0.0000  acc 100%
+[59/146] oauth_redirect_uri_mismatch-03             0.0s  ok   OAUTH_REDIRECT_URI_MISMATCH  $0.0000  acc 100%
+[60/146] oauth_redirect_uri_mismatch-04             0.0s  ok   OAUTH_REDIRECT_URI_MISMATCH  $0.0000  acc 100%
+[61/146] oidc_discovery_doc_invalid-00              0.0s  ok   OIDC_DISCOVERY_DOC_INVALID  $0.0000  acc 100%
+[62/146] oidc_discovery_doc_invalid-01              0.0s  ok   OIDC_DISCOVERY_DOC_INVALID  $0.0000  acc 100%
+[63/146] oidc_discovery_doc_invalid-02              0.0s  ok   OIDC_DISCOVERY_DOC_INVALID  $0.0000  acc 100%
+[64/146] oidc_discovery_doc_invalid-03              0.0s  ok   OIDC_DISCOVERY_DOC_INVALID  $0.0000  acc 100%
+[65/146] oidc_discovery_doc_invalid-04              0.0s  ok   OIDC_DISCOVERY_DOC_INVALID  $0.0000  acc 100%
+[66/146] oidc_issuer_mismatch-00                    0.0s  ok   OIDC_ISSUER_MISMATCH  $0.0000  acc 100%
+[67/146] oidc_issuer_mismatch-01                    0.0s  ok   OIDC_ISSUER_MISMATCH  $0.0000  acc 100%
+[68/146] oidc_issuer_mismatch-02                    0.0s  ok   OIDC_ISSUER_MISMATCH  $0.0000  acc 100%
+[69/146] oidc_issuer_mismatch-03                    0.0s  ok   OIDC_ISSUER_MISMATCH  $0.0000  acc 100%
+[70/146] oidc_issuer_mismatch-04                    0.0s  ok   OIDC_ISSUER_MISMATCH  $0.0000  acc 100%
+[71/146] oidc_request_binding_mismatch-00           0.0s  ok   OIDC_REQUEST_BINDING_MISMATCH  $0.0000  acc 100%
+[72/146] oidc_request_binding_mismatch-01           0.0s  ok   OIDC_REQUEST_BINDING_MISMATCH  $0.0000  acc 100%
+[73/146] oidc_request_binding_mismatch-03         cached  ok   OIDC_REQUEST_BINDING_MISMATCH  acc 100%
+[74/146] oidc_request_binding_mismatch-02           0.0s  ok   OIDC_REQUEST_BINDING_MISMATCH  $0.0000  acc 100%
+[75/146] oidc_request_binding_mismatch-04           0.0s  ok   OIDC_REQUEST_BINDING_MISMATCH  $0.0000  acc 100%
+[76/146] posture_decrypt_before_verify-00           0.0s  ok   HEALTHY  $0.0000  acc 100%
+[77/146] posture_decrypt_before_verify-01           0.0s  ok   HEALTHY  $0.0000  acc 100%
+[78/146] posture_embedded_key_trust-00              0.0s  ok   HEALTHY  $0.0000  acc 100%
+[79/146] posture_embedded_key_trust-01              0.0s  ok   HEALTHY  $0.0000  acc 100%
+[80/146] posture_expired_cert_accepted-00           0.0s  ok   HEALTHY  $0.0000  acc 100%
+[81/146] posture_expired_cert_accepted-01           0.0s  ok   HEALTHY  $0.0000  acc 100%
+[82/146] posture_parser_differential_exposure-00    0.0s  ok   HEALTHY  $0.0000  acc 100%
+[83/146] posture_parser_differential_exposure-01    0.0s  ok   HEALTHY  $0.0000  acc 100%
+[84/146] posture_pkce_plain_or_absent-00            0.0s  ok   HEALTHY  $0.0000  acc 100%
+[85/146] posture_pkce_plain_or_absent-01            0.0s  ok   HEALTHY  $0.0000  acc 100%
+[86/146] posture_unsigned_assertion_accepted-00     0.0s  ok   HEALTHY  $0.0000  acc 100%
+[87/146] posture_unsigned_assertion_accepted-01     0.0s  ok   HEALTHY  $0.0000  acc 100%
+[88/146] posture_validity_window_too_long-00        0.0s  ok   HEALTHY  $0.0000  acc 100%
+[89/146] posture_validity_window_too_long-01        0.0s  ok   HEALTHY  $0.0000  acc 100%
+[90/146] posture_weak_algorithm-00                  0.0s  ok   HEALTHY  $0.0000  acc 100%
+[91/146] posture_weak_algorithm-01                  0.0s  ok   HEALTHY  $0.0000  acc 100%
+[92/146] saml_audience_mismatch-00                  0.0s  ok   SAML_AUDIENCE_MISMATCH  $0.0000  acc 100%
+[93/146] saml_audience_mismatch-01                  0.0s  ok   SAML_AUDIENCE_MISMATCH  $0.0000  acc 100%
+[94/146] saml_audience_mismatch-02                  0.0s  ok   SAML_AUDIENCE_MISMATCH  $0.0000  acc 100%
+[95/146] saml_audience_mismatch-03                  0.0s  ok   SAML_AUDIENCE_MISMATCH  $0.0000  acc 100%
+[96/146] saml_audience_mismatch-04                  0.0s  ok   SAML_AUDIENCE_MISMATCH  $0.0000  acc 100%
+[97/146] saml_destination_or_recipient_mismatch-00   0.0s  ok   SAML_DESTINATION_OR_RECIPIENT_MISMATCH  $0.0000  acc 100%
+[98/146] saml_destination_or_recipient_mismatch-01   0.0s  ok   SAML_DESTINATION_OR_RECIPIENT_MISMATCH  $0.0000  acc 100%
+[99/146] saml_destination_or_recipient_mismatch-02   0.0s  ok   SAML_DESTINATION_OR_RECIPIENT_MISMATCH  $0.0000  acc 100%
+[100/146] saml_destination_or_recipient_mismatch-04 cached  ok   SAML_DESTINATION_OR_RECIPIENT_MISMATCH  acc 100%
+[101/146] saml_destination_or_recipient_mismatch-03   0.0s  ok   SAML_DESTINATION_OR_RECIPIENT_MISMATCH  $0.0000  acc 100%
+[102/146] saml_inresponseto_mismatch_or_unsolicited-00   0.0s  ok   SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED  $0.0000  acc 100%
+[103/146] saml_inresponseto_mismatch_or_unsolicited-01   0.0s  ok   SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED  $0.0000  acc 100%
+[104/146] saml_inresponseto_mismatch_or_unsolicited-02   0.0s  ok   SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED  $0.0000  acc 100%
+[105/146] saml_inresponseto_mismatch_or_unsolicited-03   0.0s  ok   SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED  $0.0000  acc 100%
+[106/146] saml_inresponseto_mismatch_or_unsolicited-04   0.0s  ok   SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED  $0.0000  acc 100%
+[107/146] saml_issuer_mismatch-00                    0.0s  ok   SAML_ISSUER_MISMATCH  $0.0000  acc 100%
+[108/146] saml_issuer_mismatch-01                    0.0s  ok   SAML_ISSUER_MISMATCH  $0.0000  acc 100%
+[109/146] saml_issuer_mismatch-02                    0.0s  ok   SAML_ISSUER_MISMATCH  $0.0000  acc 100%
+[110/146] saml_issuer_mismatch-03                    0.0s  ok   SAML_ISSUER_MISMATCH  $0.0000  acc 100%
+[111/146] saml_issuer_mismatch-04                    0.0s  ok   SAML_ISSUER_MISMATCH  $0.0000  acc 100%
+[112/146] saml_nameid_missing_or_format_mismatch-00   0.0s  ok   SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH  $0.0000  acc 100%
+[113/146] saml_nameid_missing_or_format_mismatch-01   0.0s  ok   SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH  $0.0000  acc 100%
+[114/146] saml_nameid_missing_or_format_mismatch-02   0.0s  ok   SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH  $0.0000  acc 100%
+[115/146] saml_nameid_missing_or_format_mismatch-03   0.0s  ok   SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH  $0.0000  acc 100%
+[116/146] saml_nameid_missing_or_format_mismatch-04   0.0s  ok   SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH  $0.0000  acc 100%
+[117/146] saml_not_signed_or_wrong_element_signed-00   0.0s  ok   SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED  $0.0000  acc 100%
+[118/146] saml_not_signed_or_wrong_element_signed-01   0.0s  ok   SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED  $0.0000  acc 100%
+[119/146] saml_not_signed_or_wrong_element_signed-02   0.0s  ok   SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED  $0.0000  acc 100%
+[120/146] saml_not_signed_or_wrong_element_signed-03   0.0s  ok   SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED  $0.0000  acc 100%
+[121/146] saml_not_signed_or_wrong_element_signed-04   0.0s  ok   SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED  $0.0000  acc 100%
+[122/146] saml_required_attribute_missing-00         0.0s  ok   SAML_REQUIRED_ATTRIBUTE_MISSING  $0.0000  acc 100%
+[123/146] saml_required_attribute_missing-01         0.0s  ok   SAML_REQUIRED_ATTRIBUTE_MISSING  $0.0000  acc 100%
+[124/146] saml_required_attribute_missing-02         0.0s  ok   SAML_REQUIRED_ATTRIBUTE_MISSING  $0.0000  acc 100%
+[125/146] saml_required_attribute_missing-04       cached  ok   SAML_REQUIRED_ATTRIBUTE_MISSING  acc 100%
+[126/146] saml_required_attribute_missing-03         0.0s  ok   SAML_REQUIRED_ATTRIBUTE_MISSING  $0.0000  acc 100%
+[127/146] saml_signature_invalid-00                  0.0s  ok   SAML_SIGNATURE_INVALID  $0.0000  acc 100%
+[128/146] saml_signature_invalid-01                  0.0s  ok   SAML_SIGNATURE_INVALID  $0.0000  acc 100%
+[129/146] saml_signature_invalid-02                  0.0s  ok   SAML_SIGNATURE_INVALID  $0.0000  acc 100%
+[130/146] saml_signature_invalid-04                cached  ok   SAML_SIGNATURE_INVALID  acc 100%
+[131/146] saml_signature_invalid-03                  0.0s  ok   SAML_SIGNATURE_INVALID  $0.0000  acc 100%
+[132/146] saml_status_not_success-00                 0.0s  ok   SAML_STATUS_NOT_SUCCESS  $0.0000  acc 100%
+[133/146] saml_status_not_success-01                 0.0s  ok   SAML_STATUS_NOT_SUCCESS  $0.0000  acc 100%
+[134/146] saml_status_not_success-02                 0.0s  ok   SAML_STATUS_NOT_SUCCESS  $0.0000  acc 100%
+[135/146] saml_status_not_success-04               cached  ok   SAML_STATUS_NOT_SUCCESS  acc 100%
+[136/146] saml_status_not_success-03                 0.0s  ok   SAML_STATUS_NOT_SUCCESS  $0.0000  acc 100%
+[137/146] saml_structure_invalid-00                  0.0s  ok   SAML_STRUCTURE_INVALID  $0.0000  acc 100%
+[138/146] saml_structure_invalid-01                  0.0s  ok   SAML_STRUCTURE_INVALID  $0.0000  acc 100%
+[139/146] saml_structure_invalid-02                  0.0s  ok   SAML_STRUCTURE_INVALID  $0.0000  acc 100%
+[140/146] saml_structure_invalid-03                  0.0s  ok   SAML_STRUCTURE_INVALID  $0.0000  acc 100%
+[141/146] saml_structure_invalid-04                  0.0s  ok   SAML_STRUCTURE_INVALID  $0.0000  acc 100%
+[142/146] saml_time_window_invalid-00                0.0s  ok   SAML_TIME_WINDOW_INVALID  $0.0000  acc 100%
+[143/146] saml_time_window_invalid-01                0.0s  ok   SAML_TIME_WINDOW_INVALID  $0.0000  acc 100%
+[144/146] saml_time_window_invalid-02                0.0s  ok   SAML_TIME_WINDOW_INVALID  $0.0000  acc 100%
+[145/146] saml_time_window_invalid-03                0.0s  ok   SAML_TIME_WINDOW_INVALID  $0.0000  acc 100%
+[146/146] saml_time_window_invalid-04                0.0s  ok   SAML_TIME_WINDOW_INVALID  $0.0000  acc 100%
+rules: 146 cases, 146 correct, 0 errors, 0 real calls
+== arm llm-tools-off (model sonnet, concurrency 1) ==
+[1/146] cert_expired_or_weak-00                   10.8s  MISS HEALTHY (label CERT_EXPIRED_OR_WEAK)  $0.0594  acc 0%
+[2/146] cert_expired_or_weak-01                   20.0s  MISS HEALTHY (label CERT_EXPIRED_OR_WEAK)  $0.0455  acc 0%
+[3/146] cert_expired_or_weak-02                   10.9s  MISS HEALTHY (label CERT_EXPIRED_OR_WEAK)  $0.0395  acc 0%
+[4/146] cert_expired_or_weak-03                   10.3s  MISS HEALTHY (label CERT_EXPIRED_OR_WEAK)  $0.0384  acc 0%
+[5/146] cert_expired_or_weak-04                   15.6s  MISS HEALTHY (label CERT_EXPIRED_OR_WEAK)  $0.0470  acc 0%
+[6/146] healthy-jwt-02                            10.6s  ok   HEALTHY  $0.0358  acc 17%
+[7/146] healthy-jwt-07                             8.8s  ok   HEALTHY  $0.0164  acc 29%
+[8/146] healthy-oauthredirect-04                   5.1s  ok   HEALTHY  $0.0266  acc 38%
+[9/146] healthy-oauthredirect-09                   8.4s  ok   HEALTHY  $0.0107  acc 44%
+[10/146] healthy-oidcdiscovery-03                   7.8s  ok   HEALTHY  $0.0333  acc 50%
+[11/146] healthy-oidcdiscovery-08                   8.3s  ok   HEALTHY  $0.0192  acc 55%
+[12/146] healthy-samlresponse-00                    9.2s  ok   HEALTHY  $0.0400  acc 58%
+[13/146] healthy-samlresponse-01                    8.7s  ok   HEALTHY  $0.0400  acc 62%
+[14/146] healthy-samlresponse-05                   13.2s  ok   HEALTHY  $0.0504  acc 64%
+[15/146] healthy-samlresponse-06                   14.0s  ok   HEALTHY  $0.0424  acc 67%
+[16/146] idp_policy_refusal-00                      5.5s  ok   IDP_POLICY_REFUSAL  $0.0284  acc 69%
+[17/146] idp_policy_refusal-01                      5.6s  ok   IDP_POLICY_REFUSAL  $0.0118  acc 71%
+[18/146] idp_policy_refusal-03                    cached  ok   IDP_POLICY_REFUSAL  acc 72%
+[19/146] idp_policy_refusal-02                      6.0s  ok   IDP_POLICY_REFUSAL  $0.0129  acc 74%
+[20/146] idp_policy_refusal-04                      7.5s  ok   IDP_POLICY_REFUSAL  $0.0123  acc 75%
+[21/146] jwt_alg_none_or_confusion-00               5.5s  ok   JWT_ALG_NONE_OR_CONFUSION  $0.0134  acc 76%
+[22/146] jwt_alg_none_or_confusion-01               9.1s  MISS HEALTHY (label JWT_ALG_NONE_OR_CONFUSION)  $0.0351  acc 73%
+[23/146] jwt_alg_none_or_confusion-02              10.0s  MISS HEALTHY (label JWT_ALG_NONE_OR_CONFUSION)  $0.0208  acc 70%
+[24/146] jwt_alg_none_or_confusion-03               6.9s  ok   JWT_ALG_NONE_OR_CONFUSION  $0.0164  acc 71%
+[25/146] jwt_alg_none_or_confusion-04              17.2s  ok   JWT_ALG_NONE_OR_CONFUSION  $0.0227  acc 72%
+[26/146] jwt_aud_or_azp_mismatch-00                 6.2s  ok   JWT_AUD_OR_AZP_MISMATCH  $0.0128  acc 73%
+[27/146] jwt_aud_or_azp_mismatch-02               cached  ok   JWT_AUD_OR_AZP_MISMATCH  acc 74%
+[28/146] jwt_aud_or_azp_mismatch-01                 7.3s  MISS HEALTHY (label JWT_AUD_OR_AZP_MISMATCH)  $0.0326  acc 71%
+[29/146] jwt_aud_or_azp_mismatch-04               cached  ok   JWT_AUD_OR_AZP_MISMATCH  acc 72%
+[30/146] jwt_aud_or_azp_mismatch-03                13.0s  MISS HEALTHY (label JWT_AUD_OR_AZP_MISMATCH)  $0.0189  acc 70%
+[31/146] jwt_expired_or_not_yet_valid-00            7.9s  ok   JWT_EXPIRED_OR_NOT_YET_VALID  $0.0163  acc 71%
+[32/146] jwt_expired_or_not_yet_valid-01            7.4s  ok   JWT_EXPIRED_OR_NOT_YET_VALID  $0.0158  acc 72%
+[33/146] jwt_expired_or_not_yet_valid-02            7.0s  ok   JWT_EXPIRED_OR_NOT_YET_VALID  $0.0158  acc 73%
+[34/146] jwt_expired_or_not_yet_valid-04          cached  ok   JWT_EXPIRED_OR_NOT_YET_VALID  acc 74%
+[35/146] jwt_expired_or_not_yet_valid-03           10.5s  ok   JWT_EXPIRED_OR_NOT_YET_VALID  $0.0170  acc 74%
+[36/146] jwt_kid_not_found_in_jwks-00               7.7s  ok   JWT_KID_NOT_FOUND_IN_JWKS  $0.0127  acc 75%
+[37/146] jwt_kid_not_found_in_jwks-02             cached  ok   JWT_KID_NOT_FOUND_IN_JWKS  acc 76%
+[38/146] jwt_kid_not_found_in_jwks-01               5.1s  ok   JWT_KID_NOT_FOUND_IN_JWKS  $0.0135  acc 76%
+[39/146] jwt_kid_not_found_in_jwks-04             cached  ok   JWT_KID_NOT_FOUND_IN_JWKS  acc 77%
+[40/146] jwt_kid_not_found_in_jwks-03               7.7s  ok   JWT_KID_NOT_FOUND_IN_JWKS  $0.0146  acc 78%
+[41/146] oauth_client_config_rejected-00            6.7s  ok   OAUTH_CLIENT_CONFIG_REJECTED  $0.0283  acc 78%
+[42/146] oauth_client_config_rejected-01            7.2s  ok   OAUTH_CLIENT_CONFIG_REJECTED  $0.0136  acc 79%
+[43/146] oauth_client_config_rejected-03          cached  ok   OAUTH_CLIENT_CONFIG_REJECTED  acc 79%
+[44/146] oauth_client_config_rejected-04          cached  ok   OAUTH_CLIENT_CONFIG_REJECTED  acc 80%
+[45/146] oauth_client_config_rejected-02            4.1s  ok   OAUTH_CLIENT_CONFIG_REJECTED  $0.0123  acc 80%
+[46/146] oauth_invalid_grant_code-00               10.0s  ok   OAUTH_INVALID_GRANT_CODE  $0.0135  acc 80%
+[47/146] oauth_invalid_grant_code-01                5.5s  ok   OAUTH_INVALID_GRANT_CODE  $0.0126  acc 81%
+[48/146] oauth_invalid_grant_code-02                6.4s  ok   OAUTH_INVALID_GRANT_CODE  $0.0123  acc 81%
+[49/146] oauth_invalid_grant_code-04              cached  ok   OAUTH_INVALID_GRANT_CODE  acc 82%
+[50/146] oauth_invalid_grant_code-03                5.2s  ok   OAUTH_INVALID_GRANT_CODE  $0.0122  acc 82%
+[51/146] oauth_pkce_verifier_mismatch-00            5.8s  ok   OAUTH_PKCE_VERIFIER_MISMATCH  $0.0134  acc 82%
+[52/146] oauth_pkce_verifier_mismatch-01            7.8s  ok   OAUTH_PKCE_VERIFIER_MISMATCH  $0.0145  acc 83%
+[53/146] oauth_pkce_verifier_mismatch-03          cached  ok   OAUTH_PKCE_VERIFIER_MISMATCH  acc 83%
+[54/146] oauth_pkce_verifier_mismatch-02            8.2s  ok   OAUTH_PKCE_VERIFIER_MISMATCH  $0.0168  acc 83%
+[55/146] oauth_pkce_verifier_mismatch-04            9.1s  ok   OAUTH_PKCE_VERIFIER_MISMATCH  $0.0139  acc 84%
+[56/146] oauth_redirect_uri_mismatch-00             5.8s  ok   OAUTH_REDIRECT_URI_MISMATCH  $0.0121  acc 84%
+[57/146] oauth_redirect_uri_mismatch-01             4.4s  ok   OAUTH_REDIRECT_URI_MISMATCH  $0.0116  acc 84%
+[58/146] oauth_redirect_uri_mismatch-02             4.8s  ok   OAUTH_REDIRECT_URI_MISMATCH  $0.0128  acc 84%
+[59/146] oauth_redirect_uri_mismatch-03             5.7s  ok   OAUTH_REDIRECT_URI_MISMATCH  $0.0137  acc 85%
+[60/146] oauth_redirect_uri_mismatch-04             6.0s  ok   OAUTH_REDIRECT_URI_MISMATCH  $0.0142  acc 85%
+[61/146] oidc_discovery_doc_invalid-00              7.6s  ok   OIDC_DISCOVERY_DOC_INVALID  $0.0178  acc 85%
+[62/146] oidc_discovery_doc_invalid-01              8.9s  ok   OIDC_DISCOVERY_DOC_INVALID  $0.0184  acc 85%
+[63/146] oidc_discovery_doc_invalid-02              5.9s  ok   OIDC_DISCOVERY_DOC_INVALID  $0.0154  acc 86%
+[64/146] oidc_discovery_doc_invalid-03             10.0s  MISS HEALTHY (label OIDC_DISCOVERY_DOC_INVALID)  $0.0221  acc 84%
+[65/146] oidc_discovery_doc_invalid-04              9.3s  ok   OIDC_DISCOVERY_DOC_INVALID  $0.0211  acc 85%
+[66/146] oidc_issuer_mismatch-00                    3.9s  ok   OIDC_ISSUER_MISMATCH  $0.0121  acc 85%
+[67/146] oidc_issuer_mismatch-01                    4.4s  ok   OIDC_ISSUER_MISMATCH  $0.0131  acc 85%
+[68/146] oidc_issuer_mismatch-02                    5.0s  ok   OIDC_ISSUER_MISMATCH  $0.0138  acc 85%
+[69/146] oidc_issuer_mismatch-03                    8.4s  ok   OIDC_ISSUER_MISMATCH  $0.0140  acc 86%
+[70/146] oidc_issuer_mismatch-04                    4.1s  ok   OIDC_ISSUER_MISMATCH  $0.0119  acc 86%
+[71/146] oidc_request_binding_mismatch-00           6.8s  MISS HEALTHY (label OIDC_REQUEST_BINDING_MISMATCH)  $0.0323  acc 85%
+[72/146] oidc_request_binding_mismatch-01           9.5s  ok   OIDC_REQUEST_BINDING_MISMATCH  $0.0166  acc 85%
+[73/146] oidc_request_binding_mismatch-03         cached  ok   OIDC_REQUEST_BINDING_MISMATCH  acc 85%
+[74/146] oidc_request_binding_mismatch-02           9.3s  MISS HEALTHY (label OIDC_REQUEST_BINDING_MISMATCH)  $0.0184  acc 84%
+[75/146] oidc_request_binding_mismatch-04           8.7s  MISS HEALTHY (label OIDC_REQUEST_BINDING_MISMATCH)  $0.0126  acc 83%
+[76/146] posture_decrypt_before_verify-00           9.8s  MISS SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED (label HEALTHY)  $0.0480  acc 82%
+[77/146] posture_decrypt_before_verify-01          10.2s  ok   HEALTHY  $0.0305  acc 82%
+[78/146] posture_embedded_key_trust-00              7.7s  ok   HEALTHY  $0.0316  acc 82%
+[79/146] posture_embedded_key_trust-01              8.9s  ok   HEALTHY  $0.0311  acc 82%
+[80/146] posture_expired_cert_accepted-00          10.1s  MISS CERT_EXPIRED_OR_WEAK (label HEALTHY)  $0.0389  acc 81%
+[81/146] posture_expired_cert_accepted-01          10.8s  ok   HEALTHY  $0.0399  acc 81%
+[82/146] posture_parser_differential_exposure-00    9.8s  ok   HEALTHY  $0.0398  acc 82%
+[83/146] posture_parser_differential_exposure-01   13.6s  ok   HEALTHY  $0.0420  acc 82%
+[84/146] posture_pkce_plain_or_absent-00            6.4s  ok   HEALTHY  $0.0277  acc 82%
+[85/146] posture_pkce_plain_or_absent-01            5.5s  ok   HEALTHY  $0.0130  acc 82%
+[86/146] posture_unsigned_assertion_accepted-00    18.0s  ok   HEALTHY  $0.0409  acc 83%
+[87/146] posture_unsigned_assertion_accepted-01     7.5s  ok   HEALTHY  $0.0368  acc 83%
+[88/146] posture_validity_window_too_long-00       11.9s  ok   HEALTHY  $0.0409  acc 83%
+[89/146] posture_validity_window_too_long-01        8.9s  ok   HEALTHY  $0.0403  acc 83%
+[90/146] posture_weak_algorithm-00                 13.4s  ok   HEALTHY  $0.0528  acc 83%
+[91/146] posture_weak_algorithm-01                  9.0s  ok   HEALTHY  $0.0390  acc 84%
+[92/146] saml_audience_mismatch-00                  5.7s  ok   SAML_AUDIENCE_MISMATCH  $0.0333  acc 84%
+[93/146] saml_audience_mismatch-01                  5.0s  ok   SAML_AUDIENCE_MISMATCH  $0.0331  acc 84%
+[94/146] saml_audience_mismatch-02                 10.5s  ok   SAML_AUDIENCE_MISMATCH  $0.0312  acc 84%
+[95/146] saml_audience_mismatch-03                  3.1s  ok   SAML_AUDIENCE_MISMATCH  $0.0309  acc 84%
+[96/146] saml_audience_mismatch-04                  4.3s  ok   SAML_AUDIENCE_MISMATCH  $0.0301  acc 84%
+[97/146] saml_destination_or_recipient_mismatch-00   8.1s  ok   SAML_DESTINATION_OR_RECIPIENT_MISMATCH  $0.0365  acc 85%
+[98/146] saml_destination_or_recipient_mismatch-01   3.6s  ok   SAML_DESTINATION_OR_RECIPIENT_MISMATCH  $0.0319  acc 85%
+[99/146] saml_destination_or_recipient_mismatch-02   6.4s  ok   SAML_DESTINATION_OR_RECIPIENT_MISMATCH  $0.0337  acc 85%
+[100/146] saml_destination_or_recipient_mismatch-04 cached  ok   SAML_DESTINATION_OR_RECIPIENT_MISMATCH  acc 85%
+[101/146] saml_destination_or_recipient_mismatch-03   4.3s  ok   SAML_DESTINATION_OR_RECIPIENT_MISMATCH  $0.0326  acc 85%
+[102/146] saml_inresponseto_mismatch_or_unsolicited-00   4.6s  ok   SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED  $0.0324  acc 85%
+[103/146] saml_inresponseto_mismatch_or_unsolicited-01  16.5s  ok   SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED  $0.0392  acc 85%
+[104/146] saml_inresponseto_mismatch_or_unsolicited-02   6.4s  ok   SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED  $0.0320  acc 86%
+[105/146] saml_inresponseto_mismatch_or_unsolicited-03  10.0s  ok   SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED  $0.0402  acc 86%
+[106/146] saml_inresponseto_mismatch_or_unsolicited-04   5.0s  ok   SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED  $0.0312  acc 86%
+[107/146] saml_issuer_mismatch-00                   12.6s  ok   SAML_ISSUER_MISMATCH  $0.0410  acc 86%
+[108/146] saml_issuer_mismatch-01                    8.0s  ok   SAML_ISSUER_MISMATCH  $0.0327  acc 86%
+[109/146] saml_issuer_mismatch-02                   13.8s  ok   SAML_ISSUER_MISMATCH  $0.0377  acc 86%
+[110/146] saml_issuer_mismatch-03                    4.8s  ok   SAML_ISSUER_MISMATCH  $0.0325  acc 86%
+[111/146] saml_issuer_mismatch-04                    3.9s  ok   SAML_ISSUER_MISMATCH  $0.0310  acc 86%
+[112/146] saml_nameid_missing_or_format_mismatch-00   5.2s  ok   SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH  $0.0322  acc 87%
+[113/146] saml_nameid_missing_or_format_mismatch-01   7.1s  ok   SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH  $0.0346  acc 87%
+[114/146] saml_nameid_missing_or_format_mismatch-02   7.6s  ok   SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH  $0.0367  acc 87%
+[115/146] saml_nameid_missing_or_format_mismatch-03   6.1s  ok   SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH  $0.0350  acc 87%
+[116/146] saml_nameid_missing_or_format_mismatch-04  10.3s  ok   SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH  $0.0383  acc 87%
+[117/146] saml_not_signed_or_wrong_element_signed-00   7.6s  ok   SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED  $0.0318  acc 87%
+[118/146] saml_not_signed_or_wrong_element_signed-01  11.8s  ok   SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED  $0.0295  acc 87%
+[119/146] saml_not_signed_or_wrong_element_signed-02   7.1s  ok   SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED  $0.0338  acc 87%
+[120/146] saml_not_signed_or_wrong_element_signed-03  10.5s  ok   SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED  $0.0262  acc 88%
+[121/146] saml_not_signed_or_wrong_element_signed-04   6.4s  ok   SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED  $0.0341  acc 88%
+[122/146] saml_required_attribute_missing-00         5.7s  ok   SAML_REQUIRED_ATTRIBUTE_MISSING  $0.0328  acc 88%
+[123/146] saml_required_attribute_missing-01        14.7s  ok   SAML_REQUIRED_ATTRIBUTE_MISSING  $0.0320  acc 88%
+[124/146] saml_required_attribute_missing-02         6.8s  ok   SAML_REQUIRED_ATTRIBUTE_MISSING  $0.0347  acc 88%
+[125/146] saml_required_attribute_missing-04       cached  ok   SAML_REQUIRED_ATTRIBUTE_MISSING  acc 88%
+[126/146] saml_required_attribute_missing-03         5.1s  ok   SAML_REQUIRED_ATTRIBUTE_MISSING  $0.0323  acc 88%
+[127/146] saml_signature_invalid-00                 12.9s  ok   SAML_SIGNATURE_INVALID  $0.0431  acc 88%
+[128/146] saml_signature_invalid-01                  9.3s  ok   SAML_SIGNATURE_INVALID  $0.0377  acc 88%
+[129/146] saml_signature_invalid-02                 17.4s  ok   SAML_SIGNATURE_INVALID  $0.0452  acc 88%
+[130/146] saml_signature_invalid-04                cached  ok   SAML_SIGNATURE_INVALID  acc 88%
+[131/146] saml_signature_invalid-03                 11.6s  ok   SAML_SIGNATURE_INVALID  $0.0400  acc 89%
+[132/146] saml_status_not_success-00                 7.7s  ok   SAML_STATUS_NOT_SUCCESS  $0.0253  acc 89%
+[133/146] saml_status_not_success-01                 9.0s  ok   SAML_STATUS_NOT_SUCCESS  $0.0241  acc 89%
+[134/146] saml_status_not_success-02                 7.2s  MISS IDP_POLICY_REFUSAL (label SAML_STATUS_NOT_SUCCESS)  $0.0232  acc 88%
+[135/146] saml_status_not_success-04               cached  ok   SAML_STATUS_NOT_SUCCESS  acc 88%
+[136/146] saml_status_not_success-03                 6.1s  ok   SAML_STATUS_NOT_SUCCESS  $0.0240  acc 88%
+[137/146] saml_structure_invalid-00                  9.6s  ok   SAML_STRUCTURE_INVALID  $0.0402  acc 88%
+[138/146] saml_structure_invalid-01                  7.7s  ok   SAML_STRUCTURE_INVALID  $0.0394  acc 88%
+[139/146] saml_structure_invalid-02                  8.1s  ok   SAML_STRUCTURE_INVALID  $0.0131  acc 88%
+[140/146] saml_structure_invalid-03                  7.1s  ok   SAML_STRUCTURE_INVALID  $0.0401  acc 89%
+[141/146] saml_structure_invalid-04                  7.7s  ok   SAML_STRUCTURE_INVALID  $0.0375  acc 89%
+[142/146] saml_time_window_invalid-00               13.8s  ok   SAML_TIME_WINDOW_INVALID  $0.0389  acc 89%
+[143/146] saml_time_window_invalid-01                9.0s  ok   SAML_TIME_WINDOW_INVALID  $0.0361  acc 89%
+[144/146] saml_time_window_invalid-02                9.8s  ok   SAML_TIME_WINDOW_INVALID  $0.0407  acc 89%
+[145/146] saml_time_window_invalid-03                6.5s  ok   SAML_TIME_WINDOW_INVALID  $0.0332  acc 89%
+[146/146] saml_time_window_invalid-04                9.2s  ok   SAML_TIME_WINDOW_INVALID  $0.0356  acc 89%
+llm-tools-off: 146 cases, 130 correct, 0 errors, 131 real calls
+== arm llm-tools-on (model sonnet, concurrency 1) ==
+[1/146] cert_expired_or_weak-00                    9.8s  ok   CERT_EXPIRED_OR_WEAK  $0.0905  acc 100%
+[2/146] cert_expired_or_weak-01                   13.2s  ok   CERT_EXPIRED_OR_WEAK  $0.0446  acc 100%
+[3/146] cert_expired_or_weak-02                   10.5s  ok   CERT_EXPIRED_OR_WEAK  $0.0428  acc 100%
+[4/146] cert_expired_or_weak-03                   15.2s  ok   CERT_EXPIRED_OR_WEAK  $0.0428  acc 100%
+[5/146] cert_expired_or_weak-04                   13.9s  ok   CERT_EXPIRED_OR_WEAK  $0.0470  acc 100%
+[6/146] healthy-jwt-02                            10.6s  ok   HEALTHY  $0.0711  acc 100%
+[7/146] healthy-jwt-07                            21.7s  ok   HEALTHY  $0.0245  acc 100%
+[8/146] healthy-oauthredirect-04                  16.9s  ok   HEALTHY  $0.0611  acc 100%
+[9/146] healthy-oauthredirect-09                   8.5s  ok   HEALTHY  $0.0142  acc 100%
+[10/146] healthy-oidcdiscovery-03                   7.0s  ok   HEALTHY  $0.0587  acc 100%
+[11/146] healthy-oidcdiscovery-08                   8.8s  ok   HEALTHY  $0.0179  acc 100%
+[12/146] healthy-samlresponse-00                   10.7s  ok   HEALTHY  $0.0449  acc 100%
+[13/146] healthy-samlresponse-01                   14.6s  ok   HEALTHY  $0.0442  acc 100%
+[14/146] healthy-samlresponse-05                   18.6s  ok   HEALTHY  $0.0488  acc 100%
+[15/146] healthy-samlresponse-06                   12.9s  ok   HEALTHY  $0.0454  acc 100%
+[16/146] idp_policy_refusal-00                     11.9s  ok   IDP_POLICY_REFUSAL  $0.0679  acc 100%
+[17/146] idp_policy_refusal-01                     10.5s  ok   IDP_POLICY_REFUSAL  $0.0273  acc 100%
+[18/146] idp_policy_refusal-03                    cached  ok   IDP_POLICY_REFUSAL  acc 100%
+[19/146] idp_policy_refusal-02                     11.5s  ok   IDP_POLICY_REFUSAL  $0.0243  acc 100%
+[20/146] idp_policy_refusal-04                      8.2s  ok   IDP_POLICY_REFUSAL  $0.0251  acc 100%
+[21/146] jwt_alg_none_or_confusion-00              14.1s  ok   JWT_ALG_NONE_OR_CONFUSION  $0.0323  acc 100%
+[22/146] jwt_alg_none_or_confusion-01               8.9s  ok   JWT_ALG_NONE_OR_CONFUSION  $0.0734  acc 100%
+[23/146] jwt_alg_none_or_confusion-02              12.1s  ok   JWT_ALG_NONE_OR_CONFUSION  $0.0319  acc 100%
+[24/146] jwt_alg_none_or_confusion-03              17.7s  ok   JWT_ALG_NONE_OR_CONFUSION  $0.0303  acc 100%
+[25/146] jwt_alg_none_or_confusion-04              16.5s  ok   JWT_ALG_NONE_OR_CONFUSION  $0.0319  acc 100%
+[26/146] jwt_aud_or_azp_mismatch-00                12.1s  ok   JWT_AUD_OR_AZP_MISMATCH  $0.0264  acc 100%
+[27/146] jwt_aud_or_azp_mismatch-02               cached  ok   JWT_AUD_OR_AZP_MISMATCH  acc 100%
+[28/146] jwt_aud_or_azp_mismatch-01                 7.7s  ok   JWT_AUD_OR_AZP_MISMATCH  $0.0702  acc 100%
+[29/146] jwt_aud_or_azp_mismatch-04               cached  ok   JWT_AUD_OR_AZP_MISMATCH  acc 100%
+[30/146] jwt_aud_or_azp_mismatch-03                10.8s  ok   JWT_AUD_OR_AZP_MISMATCH  $0.0281  acc 100%
+[31/146] jwt_expired_or_not_yet_valid-00           11.1s  ok   JWT_EXPIRED_OR_NOT_YET_VALID  $0.0283  acc 100%
+[32/146] jwt_expired_or_not_yet_valid-01            7.0s  ok   JWT_EXPIRED_OR_NOT_YET_VALID  $0.0284  acc 100%
+[33/146] jwt_expired_or_not_yet_valid-02            8.5s  ok   JWT_EXPIRED_OR_NOT_YET_VALID  $0.0291  acc 100%
+[34/146] jwt_expired_or_not_yet_valid-04          cached  ok   JWT_EXPIRED_OR_NOT_YET_VALID  acc 100%
+[35/146] jwt_expired_or_not_yet_valid-03           11.6s  ok   JWT_EXPIRED_OR_NOT_YET_VALID  $0.0289  acc 100%
+[36/146] jwt_kid_not_found_in_jwks-00               8.4s  ok   JWT_KID_NOT_FOUND_IN_JWKS  $0.0296  acc 100%
+[37/146] jwt_kid_not_found_in_jwks-02             cached  ok   JWT_KID_NOT_FOUND_IN_JWKS  acc 100%
+[38/146] jwt_kid_not_found_in_jwks-01              12.4s  ok   JWT_KID_NOT_FOUND_IN_JWKS  $0.0311  acc 100%
+[39/146] jwt_kid_not_found_in_jwks-04             cached  ok   JWT_KID_NOT_FOUND_IN_JWKS  acc 100%
+[40/146] jwt_kid_not_found_in_jwks-03               9.3s  ok   JWT_KID_NOT_FOUND_IN_JWKS  $0.0277  acc 100%
+[41/146] oauth_client_config_rejected-00           10.1s  ok   OAUTH_CLIENT_CONFIG_REJECTED  $0.0695  acc 100%
+[42/146] oauth_client_config_rejected-01           11.4s  ok   OAUTH_CLIENT_CONFIG_REJECTED  $0.0275  acc 100%
+[43/146] oauth_client_config_rejected-03          cached  ok   OAUTH_CLIENT_CONFIG_REJECTED  acc 100%
+[44/146] oauth_client_config_rejected-04          cached  ok   OAUTH_CLIENT_CONFIG_REJECTED  acc 100%
+[45/146] oauth_client_config_rejected-02           17.8s  ok   OAUTH_CLIENT_CONFIG_REJECTED  $0.0247  acc 100%
+[46/146] oauth_invalid_grant_code-00                7.5s  ok   OAUTH_INVALID_GRANT_CODE  $0.0269  acc 100%
+[47/146] oauth_invalid_grant_code-01                8.2s  ok   OAUTH_INVALID_GRANT_CODE  $0.0239  acc 100%
+[48/146] oauth_invalid_grant_code-02                6.1s  ok   OAUTH_INVALID_GRANT_CODE  $0.0246  acc 100%
+[49/146] oauth_invalid_grant_code-04              cached  ok   OAUTH_INVALID_GRANT_CODE  acc 100%
+[50/146] oauth_invalid_grant_code-03               14.5s  ok   OAUTH_INVALID_GRANT_CODE  $0.0253  acc 100%
+[51/146] oauth_pkce_verifier_mismatch-00           10.2s  ok   OAUTH_PKCE_VERIFIER_MISMATCH  $0.0283  acc 100%
+[52/146] oauth_pkce_verifier_mismatch-01            7.4s  ok   OAUTH_PKCE_VERIFIER_MISMATCH  $0.0270  acc 100%
+[53/146] oauth_pkce_verifier_mismatch-03          cached  ok   OAUTH_PKCE_VERIFIER_MISMATCH  acc 100%
+[54/146] oauth_pkce_verifier_mismatch-02           11.3s  ok   OAUTH_PKCE_VERIFIER_MISMATCH  $0.0314  acc 100%
+[55/146] oauth_pkce_verifier_mismatch-04            9.3s  ok   OAUTH_PKCE_VERIFIER_MISMATCH  $0.0294  acc 100%
+[56/146] oauth_redirect_uri_mismatch-00             8.5s  ok   OAUTH_REDIRECT_URI_MISMATCH  $0.0267  acc 100%
+[57/146] oauth_redirect_uri_mismatch-01             8.5s  ok   OAUTH_REDIRECT_URI_MISMATCH  $0.0245  acc 100%
+[58/146] oauth_redirect_uri_mismatch-02             8.7s  ok   OAUTH_REDIRECT_URI_MISMATCH  $0.0286  acc 100%
+[59/146] oauth_redirect_uri_mismatch-03             8.5s  ok   OAUTH_REDIRECT_URI_MISMATCH  $0.0263  acc 100%
+[60/146] oauth_redirect_uri_mismatch-04             8.2s  ok   OAUTH_REDIRECT_URI_MISMATCH  $0.0289  acc 100%
+[61/146] oidc_discovery_doc_invalid-00              8.3s  ok   OIDC_DISCOVERY_DOC_INVALID  $0.0222  acc 100%
+[62/146] oidc_discovery_doc_invalid-01              6.8s  ok   OIDC_DISCOVERY_DOC_INVALID  $0.0218  acc 100%
+[63/146] oidc_discovery_doc_invalid-02              5.8s  ok   OIDC_DISCOVERY_DOC_INVALID  $0.0183  acc 100%
+[64/146] oidc_discovery_doc_invalid-03              8.7s  ok   OIDC_DISCOVERY_DOC_INVALID  $0.0226  acc 100%
+[65/146] oidc_discovery_doc_invalid-04             10.3s  ok   OIDC_DISCOVERY_DOC_INVALID  $0.0221  acc 100%
+[66/146] oidc_issuer_mismatch-00                   13.6s  ok   OIDC_ISSUER_MISMATCH  $0.0306  acc 100%
+[67/146] oidc_issuer_mismatch-01                    5.5s  ok   OIDC_ISSUER_MISMATCH  $0.0187  acc 100%
+[68/146] oidc_issuer_mismatch-02                    9.0s  ok   OIDC_ISSUER_MISMATCH  $0.0297  acc 100%
+[69/146] oidc_issuer_mismatch-03                    5.7s  ok   OIDC_ISSUER_MISMATCH  $0.0203  acc 100%
+[70/146] oidc_issuer_mismatch-04                    8.7s  ok   OIDC_ISSUER_MISMATCH  $0.0286  acc 100%
+[71/146] oidc_request_binding_mismatch-00           8.8s  ok   OIDC_REQUEST_BINDING_MISMATCH  $0.0715  acc 100%
+[72/146] oidc_request_binding_mismatch-01           9.6s  ok   OIDC_REQUEST_BINDING_MISMATCH  $0.0298  acc 100%
+[73/146] oidc_request_binding_mismatch-03         cached  ok   OIDC_REQUEST_BINDING_MISMATCH  acc 100%
+[74/146] oidc_request_binding_mismatch-02          11.3s  ok   OIDC_REQUEST_BINDING_MISMATCH  $0.0319  acc 100%
+[75/146] oidc_request_binding_mismatch-04           9.4s  ok   OIDC_REQUEST_BINDING_MISMATCH  $0.0260  acc 100%
+[76/146] posture_decrypt_before_verify-00          20.7s  ok   HEALTHY  $0.0965  acc 100%
+[77/146] posture_decrypt_before_verify-01          12.2s  ok   HEALTHY  $0.0477  acc 100%
+[78/146] posture_embedded_key_trust-00              8.7s  ok   HEALTHY  $0.0307  acc 100%
+[79/146] posture_embedded_key_trust-01             17.5s  ok   HEALTHY  $0.0306  acc 100%
+[80/146] posture_expired_cert_accepted-00          13.9s  ok   HEALTHY  $0.0521  acc 100%
+[81/146] posture_expired_cert_accepted-01          13.9s  MISS CERT_EXPIRED_OR_WEAK (label HEALTHY)  $0.0529  acc 99%
+[82/146] posture_parser_differential_exposure-00   12.1s  ok   HEALTHY  $0.0465  acc 99%
+[83/146] posture_parser_differential_exposure-01   13.0s  ok   HEALTHY  $0.0489  acc 99%
+[84/146] posture_pkce_plain_or_absent-00           14.2s  ok   HEALTHY  $0.0637  acc 99%
+[85/146] posture_pkce_plain_or_absent-01           16.6s  ok   HEALTHY  $0.0211  acc 99%
+[86/146] posture_unsigned_assertion_accepted-00    14.5s  ok   HEALTHY  $0.0469  acc 99%
+[87/146] posture_unsigned_assertion_accepted-01    15.0s  ok   HEALTHY  $0.0483  acc 99%
+[88/146] posture_validity_window_too_long-00       11.8s  ok   HEALTHY  $0.0477  acc 99%
+[89/146] posture_validity_window_too_long-01       12.3s  ok   HEALTHY  $0.0485  acc 99%
+[90/146] posture_weak_algorithm-00                 12.2s  ok   HEALTHY  $0.0489  acc 99%
+[91/146] posture_weak_algorithm-01                 17.3s  ok   HEALTHY  $0.0472  acc 99%
+[92/146] saml_audience_mismatch-00                 10.9s  ok   SAML_AUDIENCE_MISMATCH  $0.0485  acc 99%
+[93/146] saml_audience_mismatch-01                 13.1s  ok   SAML_AUDIENCE_MISMATCH  $0.0488  acc 99%
+[94/146] saml_audience_mismatch-02                 17.4s  ok   SAML_AUDIENCE_MISMATCH  $0.0502  acc 99%
+[95/146] saml_audience_mismatch-03                 11.3s  ok   SAML_AUDIENCE_MISMATCH  $0.0500  acc 99%
+[96/146] saml_audience_mismatch-04                 11.4s  ok   SAML_AUDIENCE_MISMATCH  $0.0498  acc 99%
+[97/146] saml_destination_or_recipient_mismatch-00  12.4s  ok   SAML_DESTINATION_OR_RECIPIENT_MISMATCH  $0.0494  acc 99%
+[98/146] saml_destination_or_recipient_mismatch-01  15.4s  ok   SAML_DESTINATION_OR_RECIPIENT_MISMATCH  $0.0490  acc 99%
+[99/146] saml_destination_or_recipient_mismatch-02  14.8s  ok   SAML_DESTINATION_OR_RECIPIENT_MISMATCH  $0.0488  acc 99%
+[100/146] saml_destination_or_recipient_mismatch-04 cached  ok   SAML_DESTINATION_OR_RECIPIENT_MISMATCH  acc 99%
+[101/146] saml_destination_or_recipient_mismatch-03  11.2s  ok   SAML_DESTINATION_OR_RECIPIENT_MISMATCH  $0.0499  acc 99%
+[102/146] saml_inresponseto_mismatch_or_unsolicited-00  12.1s  ok   SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED  $0.0502  acc 99%
+[103/146] saml_inresponseto_mismatch_or_unsolicited-01  11.9s  ok   SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED  $0.0510  acc 99%
+[104/146] saml_inresponseto_mismatch_or_unsolicited-02  12.1s  ok   SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED  $0.0492  acc 99%
+[105/146] saml_inresponseto_mismatch_or_unsolicited-03  18.7s  ok   SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED  $0.0493  acc 99%
+[106/146] saml_inresponseto_mismatch_or_unsolicited-04  11.4s  ok   SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED  $0.0487  acc 99%
+[107/146] saml_issuer_mismatch-00                   12.9s  ok   SAML_ISSUER_MISMATCH  $0.0506  acc 99%
+[108/146] saml_issuer_mismatch-01                   12.1s  ok   SAML_ISSUER_MISMATCH  $0.0482  acc 99%
+[109/146] saml_issuer_mismatch-02                   12.1s  ok   SAML_ISSUER_MISMATCH  $0.0499  acc 99%
+[110/146] saml_issuer_mismatch-03                   11.4s  ok   SAML_ISSUER_MISMATCH  $0.0486  acc 99%
+[111/146] saml_issuer_mismatch-04                   10.6s  ok   SAML_ISSUER_MISMATCH  $0.0485  acc 99%
+[112/146] saml_nameid_missing_or_format_mismatch-00  15.4s  ok   SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH  $0.0506  acc 99%
+[113/146] saml_nameid_missing_or_format_mismatch-01  11.7s  ok   SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH  $0.0489  acc 99%
+[114/146] saml_nameid_missing_or_format_mismatch-02  14.4s  ok   SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH  $0.0491  acc 99%
+[115/146] saml_nameid_missing_or_format_mismatch-03  11.6s  ok   SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH  $0.0500  acc 99%
+[116/146] saml_nameid_missing_or_format_mismatch-04  11.1s  ok   SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH  $0.0491  acc 99%
+[117/146] saml_not_signed_or_wrong_element_signed-00  11.0s  ok   SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED  $0.0490  acc 99%
+[118/146] saml_not_signed_or_wrong_element_signed-01  11.2s  ok   SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED  $0.0475  acc 99%
+[119/146] saml_not_signed_or_wrong_element_signed-02  11.9s  ok   SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED  $0.0489  acc 99%
+[120/146] saml_not_signed_or_wrong_element_signed-03  12.1s  ok   SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED  $0.0491  acc 99%
+[121/146] saml_not_signed_or_wrong_element_signed-04  15.0s  ok   SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED  $0.0493  acc 99%
+[122/146] saml_required_attribute_missing-00        11.7s  ok   SAML_REQUIRED_ATTRIBUTE_MISSING  $0.0482  acc 99%
+[123/146] saml_required_attribute_missing-01        12.9s  ok   SAML_REQUIRED_ATTRIBUTE_MISSING  $0.0492  acc 99%
+[124/146] saml_required_attribute_missing-02        12.4s  ok   SAML_REQUIRED_ATTRIBUTE_MISSING  $0.0486  acc 99%
+[125/146] saml_required_attribute_missing-04       cached  ok   SAML_REQUIRED_ATTRIBUTE_MISSING  acc 99%
+[126/146] saml_required_attribute_missing-03        11.0s  ok   SAML_REQUIRED_ATTRIBUTE_MISSING  $0.0490  acc 99%
+[127/146] saml_signature_invalid-00                 13.2s  ok   SAML_SIGNATURE_INVALID  $0.0521  acc 99%
+[128/146] saml_signature_invalid-01                 12.5s  ok   SAML_SIGNATURE_INVALID  $0.0545  acc 99%
+[129/146] saml_signature_invalid-02                 13.0s  ok   SAML_SIGNATURE_INVALID  $0.0523  acc 99%
+[130/146] saml_signature_invalid-04                cached  ok   SAML_SIGNATURE_INVALID  acc 99%
+[131/146] saml_signature_invalid-03                 12.3s  ok   SAML_SIGNATURE_INVALID  $0.0533  acc 99%
+[132/146] saml_status_not_success-00                26.7s  ok   SAML_STATUS_NOT_SUCCESS  $0.0519  acc 99%
+[133/146] saml_status_not_success-01                15.3s  ok   SAML_STATUS_NOT_SUCCESS  $0.0559  acc 99%
+[134/146] saml_status_not_success-02                16.8s  ok   SAML_STATUS_NOT_SUCCESS  $0.0546  acc 99%
+[135/146] saml_status_not_success-04               cached  ok   SAML_STATUS_NOT_SUCCESS  acc 99%
+[136/146] saml_status_not_success-03                19.4s  ok   SAML_STATUS_NOT_SUCCESS  $0.0540  acc 99%
+[137/146] saml_structure_invalid-00                 13.6s  ok   SAML_STRUCTURE_INVALID  $0.0511  acc 99%
+[138/146] saml_structure_invalid-01                 13.0s  ok   SAML_STRUCTURE_INVALID  $0.0499  acc 99%
+[139/146] saml_structure_invalid-02                 14.6s  ok   SAML_STRUCTURE_INVALID  $0.0378  acc 99%
+[140/146] saml_structure_invalid-03                 12.9s  ok   SAML_STRUCTURE_INVALID  $0.0490  acc 99%
+[141/146] saml_structure_invalid-04                 12.9s  ok   SAML_STRUCTURE_INVALID  $0.0491  acc 99%
+[142/146] saml_time_window_invalid-00               15.2s  ok   SAML_TIME_WINDOW_INVALID  $0.0525  acc 99%
+[143/146] saml_time_window_invalid-01               15.2s  ok   SAML_TIME_WINDOW_INVALID  $0.0515  acc 99%
+[144/146] saml_time_window_invalid-02               12.8s  ok   SAML_TIME_WINDOW_INVALID  $0.0519  acc 99%
+[145/146] saml_time_window_invalid-03               17.5s  ok   SAML_TIME_WINDOW_INVALID  $0.0501  acc 99%
+[146/146] saml_time_window_invalid-04               13.7s  ok   SAML_TIME_WINDOW_INVALID  $0.0551  acc 99%
+llm-tools-on: 146 cases, 145 correct, 0 errors, 131 real calls
+real claude calls this invocation: 262; results under evals/results/v1-5
+== Tue Oct 27 10:16:27 CDT 2026 report ==
+| Arm | Root-cause acc. | Top-2 | FP rate (controls) | Evidence correct (judge) | Fix score (1-5) | p50 / p95 latency | Tool calls/case | Tokens/case (in / out) | List-price equiv./case |
+|---|---|---|---|---|---|---|---|---|---|
+| rules-only | 100.0% | 100.0% | 0.0% | n/a | n/a | 0.0s / 0.0s | 0.0 | 0 / 0 | $0.0000 |
+| LLM, tools off (sonnet) | 88.3% | 97.7% | 8.0% | n/a | n/a | 7.7s / 14.7s | 0.0 | 9102 / 946 | $0.0280 |
+| LLM, tools on (sonnet) | 99.2% | 100.0% | 4.0% | n/a | n/a | 11.9s / 17.8s | 1.0 | 31760 / 1547 | $0.0424 |
+
+Dataset: 146 cases, generated by `idpdoctor eval gen` (evals/data/v1-5).
+Judge: opus; no hand labels yet, so no kappa.
+Diagnoser via 2.1.311 (Claude Code) headless.
+
+| Arm | Hallucinated citations | Normalised citations | Unsafe fixes (judge or regex) | Posture recall | Abstention quality | Errors |
+|---|---|---|---|---|---|---|
+| rules-only | 0.0% (131 cited) | 0.0% | n/a (0 judged) | 100.0% (16 cases) | n/a (0 cases) | 0 |
+| LLM, tools off (sonnet) | 0.0% (492 cited) | 0.0% | n/a (0 judged) | 75.0% (16 cases) | n/a (0 cases) | 0 |
+| LLM, tools on (sonnet) | 0.0% (229 cited) | 0.0% | n/a (0 judged) | 100.0% (16 cases) | n/a (0 cases) | 0 |
+
+Hallucinated = cited path not on the artifact's allowed list after normalisation. Normalised = an exact check-name citation the harness mapped to its one canonical path; counted here, never as correct.
+
+### Confusion matrix: rules-only
+
+| label \ predicted | CERT_EXPI_OR_WEAK | HEALTHY | IDP_POLI_REFU | JWT_ALG_NONE_OR_CONF | JWT_AUD_OR_AZP_MISM | JWT_EXPI_OR_NOT_YET_VALI | JWT_KID_NOT_FOUN_IN_JWKS | OAUTH_CLIE_CONF_REJE | OAUTH_INVA_GRAN_CODE | OAUTH_PKCE_VERI_MISM | OAUTH_REDI_URI_MISM | OIDC_DISC_DOC_INVA | OIDC_ISSU_MISM | OIDC_REQU_BIND_MISM | SAML_AUDI_MISM | SAML_DEST_OR_RECI_MISM | SAML_INRE_MISM_OR_UNSO | SAML_ISSU_MISM | SAML_NAME_MISS_OR_FORM_MISM | SAML_NOT_SIGN_OR_WRON_ELEM_SIGN | SAML_REQU_ATTR_MISS | SAML_SIGN_INVA | SAML_STAT_NOT_SUCC | SAML_STRU_INVA | SAML_TIME_WIND_INVA |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| CERT_EXPI_OR_WEAK | **5** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| HEALTHY | . | **25** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| IDP_POLI_REFU | . | . | **4** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| JWT_ALG_NONE_OR_CONF | . | . | . | **5** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| JWT_AUD_OR_AZP_MISM | . | . | . | . | **3** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| JWT_EXPI_OR_NOT_YET_VALI | . | . | . | . | . | **4** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| JWT_KID_NOT_FOUN_IN_JWKS | . | . | . | . | . | . | **3** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| OAUTH_CLIE_CONF_REJE | . | . | . | . | . | . | . | **3** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| OAUTH_INVA_GRAN_CODE | . | . | . | . | . | . | . | . | **4** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| OAUTH_PKCE_VERI_MISM | . | . | . | . | . | . | . | . | . | **4** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| OAUTH_REDI_URI_MISM | . | . | . | . | . | . | . | . | . | . | **5** | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| OIDC_DISC_DOC_INVA | . | . | . | . | . | . | . | . | . | . | . | **5** | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| OIDC_ISSU_MISM | . | . | . | . | . | . | . | . | . | . | . | . | **5** | . | . | . | . | . | . | . | . | . | . | . | . |
+| OIDC_REQU_BIND_MISM | . | . | . | . | . | . | . | . | . | . | . | . | . | **3** | . | . | . | . | . | . | . | . | . | . | . |
+| SAML_AUDI_MISM | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **5** | . | . | . | . | . | . | . | . | . | . |
+| SAML_DEST_OR_RECI_MISM | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **4** | . | . | . | . | . | . | . | . | . |
+| SAML_INRE_MISM_OR_UNSO | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **5** | . | . | . | . | . | . | . | . |
+| SAML_ISSU_MISM | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **5** | . | . | . | . | . | . | . |
+| SAML_NAME_MISS_OR_FORM_MISM | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **5** | . | . | . | . | . | . |
+| SAML_NOT_SIGN_OR_WRON_ELEM_SIGN | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **5** | . | . | . | . | . |
+| SAML_REQU_ATTR_MISS | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **4** | . | . | . | . |
+| SAML_SIGN_INVA | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **4** | . | . | . |
+| SAML_STAT_NOT_SUCC | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **4** | . | . |
+| SAML_STRU_INVA | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **4** | . |
+| SAML_TIME_WIND_INVA | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **5** |
+
+### Confusion matrix: LLM, tools off (sonnet)
+
+| label \ predicted | CERT_EXPI_OR_WEAK | HEALTHY | IDP_POLI_REFU | JWT_ALG_NONE_OR_CONF | JWT_AUD_OR_AZP_MISM | JWT_EXPI_OR_NOT_YET_VALI | JWT_KID_NOT_FOUN_IN_JWKS | OAUTH_CLIE_CONF_REJE | OAUTH_INVA_GRAN_CODE | OAUTH_PKCE_VERI_MISM | OAUTH_REDI_URI_MISM | OIDC_DISC_DOC_INVA | OIDC_ISSU_MISM | OIDC_REQU_BIND_MISM | SAML_AUDI_MISM | SAML_DEST_OR_RECI_MISM | SAML_INRE_MISM_OR_UNSO | SAML_ISSU_MISM | SAML_NAME_MISS_OR_FORM_MISM | SAML_NOT_SIGN_OR_WRON_ELEM_SIGN | SAML_REQU_ATTR_MISS | SAML_SIGN_INVA | SAML_STAT_NOT_SUCC | SAML_STRU_INVA | SAML_TIME_WIND_INVA |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| CERT_EXPI_OR_WEAK | . | 5 | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| HEALTHY | 1 | **23** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | 1 | . | . | . | . | . |
+| IDP_POLI_REFU | . | . | **4** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| JWT_ALG_NONE_OR_CONF | . | 2 | . | **3** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| JWT_AUD_OR_AZP_MISM | . | 2 | . | . | **1** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| JWT_EXPI_OR_NOT_YET_VALI | . | . | . | . | . | **4** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| JWT_KID_NOT_FOUN_IN_JWKS | . | . | . | . | . | . | **3** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| OAUTH_CLIE_CONF_REJE | . | . | . | . | . | . | . | **3** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| OAUTH_INVA_GRAN_CODE | . | . | . | . | . | . | . | . | **4** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| OAUTH_PKCE_VERI_MISM | . | . | . | . | . | . | . | . | . | **4** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| OAUTH_REDI_URI_MISM | . | . | . | . | . | . | . | . | . | . | **5** | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| OIDC_DISC_DOC_INVA | . | 1 | . | . | . | . | . | . | . | . | . | **4** | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| OIDC_ISSU_MISM | . | . | . | . | . | . | . | . | . | . | . | . | **5** | . | . | . | . | . | . | . | . | . | . | . | . |
+| OIDC_REQU_BIND_MISM | . | 2 | . | . | . | . | . | . | . | . | . | . | . | **1** | . | . | . | . | . | . | . | . | . | . | . |
+| SAML_AUDI_MISM | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **5** | . | . | . | . | . | . | . | . | . | . |
+| SAML_DEST_OR_RECI_MISM | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **4** | . | . | . | . | . | . | . | . | . |
+| SAML_INRE_MISM_OR_UNSO | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **5** | . | . | . | . | . | . | . | . |
+| SAML_ISSU_MISM | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **5** | . | . | . | . | . | . | . |
+| SAML_NAME_MISS_OR_FORM_MISM | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **5** | . | . | . | . | . | . |
+| SAML_NOT_SIGN_OR_WRON_ELEM_SIGN | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **5** | . | . | . | . | . |
+| SAML_REQU_ATTR_MISS | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **4** | . | . | . | . |
+| SAML_SIGN_INVA | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **4** | . | . | . |
+| SAML_STAT_NOT_SUCC | . | . | 1 | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **3** | . | . |
+| SAML_STRU_INVA | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **4** | . |
+| SAML_TIME_WIND_INVA | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **5** |
+
+### Confusion matrix: LLM, tools on (sonnet)
+
+| label \ predicted | CERT_EXPI_OR_WEAK | HEALTHY | IDP_POLI_REFU | JWT_ALG_NONE_OR_CONF | JWT_AUD_OR_AZP_MISM | JWT_EXPI_OR_NOT_YET_VALI | JWT_KID_NOT_FOUN_IN_JWKS | OAUTH_CLIE_CONF_REJE | OAUTH_INVA_GRAN_CODE | OAUTH_PKCE_VERI_MISM | OAUTH_REDI_URI_MISM | OIDC_DISC_DOC_INVA | OIDC_ISSU_MISM | OIDC_REQU_BIND_MISM | SAML_AUDI_MISM | SAML_DEST_OR_RECI_MISM | SAML_INRE_MISM_OR_UNSO | SAML_ISSU_MISM | SAML_NAME_MISS_OR_FORM_MISM | SAML_NOT_SIGN_OR_WRON_ELEM_SIGN | SAML_REQU_ATTR_MISS | SAML_SIGN_INVA | SAML_STAT_NOT_SUCC | SAML_STRU_INVA | SAML_TIME_WIND_INVA |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| CERT_EXPI_OR_WEAK | **5** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| HEALTHY | 1 | **24** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| IDP_POLI_REFU | . | . | **4** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| JWT_ALG_NONE_OR_CONF | . | . | . | **5** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| JWT_AUD_OR_AZP_MISM | . | . | . | . | **3** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| JWT_EXPI_OR_NOT_YET_VALI | . | . | . | . | . | **4** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| JWT_KID_NOT_FOUN_IN_JWKS | . | . | . | . | . | . | **3** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| OAUTH_CLIE_CONF_REJE | . | . | . | . | . | . | . | **3** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| OAUTH_INVA_GRAN_CODE | . | . | . | . | . | . | . | . | **4** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| OAUTH_PKCE_VERI_MISM | . | . | . | . | . | . | . | . | . | **4** | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| OAUTH_REDI_URI_MISM | . | . | . | . | . | . | . | . | . | . | **5** | . | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| OIDC_DISC_DOC_INVA | . | . | . | . | . | . | . | . | . | . | . | **5** | . | . | . | . | . | . | . | . | . | . | . | . | . |
+| OIDC_ISSU_MISM | . | . | . | . | . | . | . | . | . | . | . | . | **5** | . | . | . | . | . | . | . | . | . | . | . | . |
+| OIDC_REQU_BIND_MISM | . | . | . | . | . | . | . | . | . | . | . | . | . | **3** | . | . | . | . | . | . | . | . | . | . | . |
+| SAML_AUDI_MISM | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **5** | . | . | . | . | . | . | . | . | . | . |
+| SAML_DEST_OR_RECI_MISM | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **4** | . | . | . | . | . | . | . | . | . |
+| SAML_INRE_MISM_OR_UNSO | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **5** | . | . | . | . | . | . | . | . |
+| SAML_ISSU_MISM | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **5** | . | . | . | . | . | . | . |
+| SAML_NAME_MISS_OR_FORM_MISM | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **5** | . | . | . | . | . | . |
+| SAML_NOT_SIGN_OR_WRON_ELEM_SIGN | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **5** | . | . | . | . | . |
+| SAML_REQU_ATTR_MISS | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **4** | . | . | . | . |
+| SAML_SIGN_INVA | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **4** | . | . | . |
+| SAML_STAT_NOT_SUCC | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **4** | . | . |
+| SAML_STRU_INVA | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **4** | . |
+| SAML_TIME_WIND_INVA | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | . | **5** |
+== Tue Oct 27 10:16:27 CDT 2026 done ==

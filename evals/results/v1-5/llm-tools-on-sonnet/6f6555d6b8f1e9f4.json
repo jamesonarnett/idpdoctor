@@ -1,0 +1,191 @@
+{
+  "case_id": "posture_weak_algorithm-01",
+  "case_hash": "6f6555d6b8f1e9f4",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_WEAK_ALGORITHM"
+    ],
+    "evidence_path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm",
+    "fix_keys": [
+      "application",
+      "rsa-sha256",
+      "2048-bit",
+      "larger"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_weak_algorithm-01",
+    "kind": "saml_response",
+    "dialect": "auth0",
+    "mutator": "posture_sha1",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 1,
+    "hash": "6f6555d6b8f1e9f4"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm",
+        "actual": "http://www.w3.org/2000/09/xmldsig#rsa-sha1",
+        "expected": "RSA-SHA256 / SHA-256",
+        "note": "All 14 checks pass (status, issuer, destination, InResponseTo, signature, audience, recipient, time window, NameID, attributes, structure). The only finding is a posture warning: the assertion is signed with RSA-SHA1."
+      }
+    ],
+    "fix": "The response validates against the expected values, so no fault needs fixing. To remove the posture warning, change the IdP application's signature algorithm to RSA-SHA256 with SHA-256 digests. Keep signature validation on, and keep the SP's algorithm allow-list free of SHA-1.",
+    "posture_codes": [
+      "POSTURE_WEAK_ALGORITHM"
+    ],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T10:04:14.032759-05:00",
+  "duration_ms": 17309,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1874,
+    "cache_creation_input_tokens": 6394,
+    "cache_read_input_tokens": 28617
+  },
+  "cost_usd": 0.0471857,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1874,
+      "cacheReadInputTokens": 28617,
+      "cacheCreationInputTokens": 6394,
+      "costUSD": 0.0471857,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 17164,
+    "stop_reason": "tool_use",
+    "session_id": "02926875-a109-4503-967c-08b2b99c7b51",
+    "total_cost_usd": 0.0471857,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 6394,
+      "cache_read_input_tokens": 28617,
+      "output_tokens": 1874,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6394,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 491,
+          "cache_read_input_tokens": 16238,
+          "cache_creation_input_tokens": 2535,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2535
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1874,
+        "cacheReadInputTokens": 28617,
+        "cacheCreationInputTokens": 6394,
+        "webSearchRequests": 0,
+        "costUSD": 0.0471857,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6394,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm\",\"actual\":\"http://www.w3.org/2000/09/xmldsig#rsa-sha1\",\"expected\":\"RSA-SHA256 / SHA-256\",\"note\":\"All 14 checks pass (status, issuer, destination, InResponseTo, signature, audience, recipient, time window, NameID, attributes, structure). The only finding is a posture warning: the assertion is signed with RSA-SHA1.\"}],\"fix\":\"The response validates against the expected values, so no fault needs fixing. To remove the posture warning, change the IdP application's signature algorithm to RSA-SHA256 with SHA-256 digests. Keep signature validation on, and keep the SP's algorithm allow-list free of SHA-1.\",\"posture_codes\":[\"POSTURE_WEAK_ALGORITHM\"],\"alternatives\":[],\"questions\":[]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm",
+          "actual": "http://www.w3.org/2000/09/xmldsig#rsa-sha1",
+          "expected": "RSA-SHA256 / SHA-256",
+          "note": "All 14 checks pass (status, issuer, destination, InResponseTo, signature, audience, recipient, time window, NameID, attributes, structure). The only finding is a posture warning: the assertion is signed with RSA-SHA1."
+        }
+      ],
+      "fix": "The response validates against the expected values, so no fault needs fixing. To remove the posture warning, change the IdP application's signature algorithm to RSA-SHA256 with SHA-256 digests. Keep signature validation on, and keep the SP's algorithm allow-list free of SHA-1.",
+      "posture_codes": [
+        "POSTURE_WEAK_ALGORITHM"
+      ],
+      "alternatives": [],
+      "questions": []
+    },
+    "ttft_ms": 9671,
+    "type": "result",
+    "duration_ms": 17309,
+    "uuid": "e394398a-be7d-4585-9911-dd144edb10c5",
+    "ttft_stream_ms": 3552,
+    "time_to_request_ms": 131,
+    "first_content_frame_ms": 3552,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

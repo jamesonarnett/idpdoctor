@@ -1,0 +1,225 @@
+{
+  "case_id": "saml_time_window_invalid-00",
+  "case_hash": "38c39829b70f051a",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_TIME_WINDOW_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+    "fix_keys": [
+      "synchronise",
+      "clocks",
+      "sides",
+      "clock"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_time_window_invalid-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "expired",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "38c39829b70f051a"
+  },
+  "output": {
+    "root_cause_code": "SAML_TIME_WINDOW_INVALID",
+    "confidence": 0.93,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+        "actual": "2026-01-15T11:40:00.000Z",
+        "expected": "after 2026-01-15T12:00:00Z (now)",
+        "note": "Assertion expired 20 minutes before validation time"
+      },
+      {
+        "path": "/Response/Assertion/Conditions/@NotBefore",
+        "actual": "2026-01-15T11:35:00.000Z",
+        "note": "Window is 11:35-11:40, entirely before now and before the IssueInstant"
+      },
+      {
+        "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@NotOnOrAfter",
+        "actual": "2026-01-15T11:40:00.000Z",
+        "expected": "after 2026-01-15T12:00:00Z (now)",
+        "note": "Bearer confirmation also expired"
+      },
+      {
+        "path": "/Response/Assertion/@IssueInstant",
+        "actual": "2026-01-15T12:00:00.000Z",
+        "note": "Issued after its own Conditions window ended, which points to IdP clock or timestamp generation"
+      }
+    ],
+    "fix": "Have the IdP issue assertions whose Conditions and SubjectConfirmationData windows contain the current time. Sync the IdP clock via NTP, and check for cached or hard-coded timestamps. Use a short window of about 5 minutes around IssueInstant. Keep the SP clock accurate via NTP and clock skew at or below 5 minutes. Do not widen the skew or skip the time checks. Then re-capture a fresh response and re-test.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "SAML_SIGNATURE_INVALID",
+        "why_not": "The embedded certificate appears to match the configured IdP cert and no evidence shows a verification failure. The time window is clearly violated."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:47:49.596107-05:00",
+  "duration_ms": 13784,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1260,
+    "cache_creation_input_tokens": 6433,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.0388552,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1260,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 6433,
+      "costUSD": 0.0388552,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 13644,
+    "stop_reason": "tool_use",
+    "session_id": "e571861f-c347-4a35-b81c-926c10480501",
+    "total_cost_usd": 0.0388552,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6433,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 1260,
+      "output_tokens_details": {
+        "thinking_tokens": 139
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6433,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1260,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 6433,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 6433
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1260,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 6433,
+        "webSearchRequests": 0,
+        "costUSD": 0.0388552,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 139,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6433,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_TIME_WINDOW_INVALID\",\"confidence\":0.93,\"evidence\":[{\"path\":\"/Response/Assertion/Conditions/@NotOnOrAfter\",\"actual\":\"2026-01-15T11:40:00.000Z\",\"expected\":\"after 2026-01-15T12:00:00Z (now)\",\"note\":\"Assertion expired 20 minutes before validation time\"},{\"path\":\"/Response/Assertion/Conditions/@NotBefore\",\"actual\":\"2026-01-15T11:35:00.000Z\",\"note\":\"Window is 11:35-11:40, entirely before now and before the IssueInstant\"},{\"path\":\"/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@NotOnOrAfter\",\"actual\":\"2026-01-15T11:40:00.000Z\",\"expected\":\"after 2026-01-15T12:00:00Z (now)\",\"note\":\"Bearer confirmation also expired\"},{\"path\":\"/Response/Assertion/@IssueInstant\",\"actual\":\"2026-01-15T12:00:00.000Z\",\"note\":\"Issued after its own Conditions window ended, which points to IdP clock or timestamp generation\"}],\"fix\":\"Have the IdP issue assertions whose Conditions and SubjectConfirmationData windows contain the current time. Sync the IdP clock via NTP, and check for cached or hard-coded timestamps. Use a short window of about 5 minutes around IssueInstant. Keep the SP clock accurate via NTP and clock skew at or below 5 minutes. Do not widen the skew or skip the time checks. Then re-capture a fresh response and re-test.\",\"alternatives\":[{\"code\":\"SAML_SIGNATURE_INVALID\",\"why_not\":\"The embedded certificate appears to match the configured IdP cert and no evidence shows a verification failure. The time window is clearly violated.\"}]}",
+    "structured_output": {
+      "root_cause_code": "SAML_TIME_WINDOW_INVALID",
+      "confidence": 0.93,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+          "actual": "2026-01-15T11:40:00.000Z",
+          "expected": "after 2026-01-15T12:00:00Z (now)",
+          "note": "Assertion expired 20 minutes before validation time"
+        },
+        {
+          "path": "/Response/Assertion/Conditions/@NotBefore",
+          "actual": "2026-01-15T11:35:00.000Z",
+          "note": "Window is 11:35-11:40, entirely before now and before the IssueInstant"
+        },
+        {
+          "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@NotOnOrAfter",
+          "actual": "2026-01-15T11:40:00.000Z",
+          "expected": "after 2026-01-15T12:00:00Z (now)",
+          "note": "Bearer confirmation also expired"
+        },
+        {
+          "path": "/Response/Assertion/@IssueInstant",
+          "actual": "2026-01-15T12:00:00.000Z",
+          "note": "Issued after its own Conditions window ended, which points to IdP clock or timestamp generation"
+        }
+      ],
+      "fix": "Have the IdP issue assertions whose Conditions and SubjectConfirmationData windows contain the current time. Sync the IdP clock via NTP, and check for cached or hard-coded timestamps. Use a short window of about 5 minutes around IssueInstant. Keep the SP clock accurate via NTP and clock skew at or below 5 minutes. Do not widen the skew or skip the time checks. Then re-capture a fresh response and re-test.",
+      "alternatives": [
+        {
+          "code": "SAML_SIGNATURE_INVALID",
+          "why_not": "The embedded certificate appears to match the configured IdP cert and no evidence shows a verification failure. The time window is clearly violated."
+        }
+      ]
+    },
+    "ttft_ms": 7028,
+    "type": "result",
+    "duration_ms": 13784,
+    "uuid": "98f8e2cb-3b77-456a-957c-718a4cc56331",
+    "ttft_stream_ms": 6080,
+    "time_to_request_ms": 138,
+    "first_content_frame_ms": 6081,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

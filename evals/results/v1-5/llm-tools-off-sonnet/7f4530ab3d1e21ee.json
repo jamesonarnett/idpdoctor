@@ -1,0 +1,250 @@
+{
+  "case_id": "saml_signature_invalid-02",
+  "case_hash": "7f4530ab3d1e21ee",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_SIGNATURE_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/Signature",
+    "fix_keys": [
+      "download",
+      "current",
+      "signing",
+      "certificate"
+    ],
+    "needs": [
+      "idp_cert_pem"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_signature_invalid-02",
+    "kind": "saml_response",
+    "dialect": "generic",
+    "mutator": "signature_tampered",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 2,
+    "hash": "7f4530ab3d1e21ee"
+  },
+  "output": {
+    "root_cause_code": "SAML_SIGNATURE_INVALID",
+    "confidence": 0.6,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature",
+        "actual": "Enveloped signature on the assertion, Reference URI #_assert_a289ac; SignatureValue redacted, cannot be verified by eye",
+        "note": "Symptom reports the signature does not verify; all other fields appear consistent"
+      },
+      {
+        "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate",
+        "actual": "Embedded certificate appears identical to the configured IdP certificate",
+        "expected": "Matches /expected/idp_cert_pem",
+        "note": "Points away from a wrong or rotated certificate toward altered content or a digest/signature mismatch"
+      },
+      {
+        "path": "/expected/idp_cert_pem",
+        "actual": "Configured IdP certificate, valid 2026-01-01 to 2126-01-01",
+        "note": "Not expired and not weak (2048-bit RSA, SHA-256)"
+      },
+      {
+        "path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm",
+        "actual": "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
+        "note": "Acceptable algorithm"
+      }
+    ],
+    "fix": "Keep signature validation strict and verify only against the configured IdP certificate, never the certificate embedded in the message. Compare the raw, unmodified POSTed XML with what the IdP signed. Make sure no proxy, pretty-printer or re-serialization step alters the assertion. Make sure the SP canonicalizes with exclusive C14N exactly as the Reference transforms specify, and recompute the digest over the unmodified assertion. If the IdP is signing with a different key, obtain the new certificate through a trusted channel such as signed metadata and update the SP configuration.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "CERT_EXPIRED_OR_WEAK",
+        "why_not": "The certificate is valid from 2026-01-01 to 2126 and uses 2048-bit RSA with SHA-256."
+      },
+      {
+        "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+        "why_not": "The assertion carries a signature and its Reference points at the assertion's own ID, which satisfies require_signed_assertion."
+      },
+      {
+        "code": "HEALTHY",
+        "why_not": "The reported symptom is a signature failure, and I cannot confirm cryptographic validity from the redacted artifact."
+      }
+    ],
+    "questions": [
+      "Does the IdP sign with the key in the configured certificate, or was it rotated?",
+      "Does any proxy or middleware re-serialize the XML before the SP verifies it?"
+    ]
+  },
+  "started": "2026-10-27T09:46:05.602728-05:00",
+  "duration_ms": 17376,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1837,
+    "cache_creation_input_tokens": 6567,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.0451612,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1837,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 6567,
+      "costUSD": 0.0451612,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 17164,
+    "stop_reason": "tool_use",
+    "session_id": "39dfa308-e144-4c1f-9fc7-9d3e244a26f9",
+    "total_cost_usd": 0.0451612,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6567,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 1837,
+      "output_tokens_details": {
+        "thinking_tokens": 292
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6567,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1837,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 6567,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 6567
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1837,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 6567,
+        "webSearchRequests": 0,
+        "costUSD": 0.0451612,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 292,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6567,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_SIGNATURE_INVALID\",\"confidence\":0.6,\"evidence\":[{\"path\":\"/Response/Assertion/Signature\",\"actual\":\"Enveloped signature on the assertion, Reference URI #_assert_a289ac; SignatureValue redacted, cannot be verified by eye\",\"note\":\"Symptom reports the signature does not verify; all other fields appear consistent\"},{\"path\":\"/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate\",\"actual\":\"Embedded certificate appears identical to the configured IdP certificate\",\"expected\":\"Matches /expected/idp_cert_pem\",\"note\":\"Points away from a wrong or rotated certificate toward altered content or a digest/signature mismatch\"},{\"path\":\"/expected/idp_cert_pem\",\"actual\":\"Configured IdP certificate, valid 2026-01-01 to 2126-01-01\",\"note\":\"Not expired and not weak (2048-bit RSA, SHA-256)\"},{\"path\":\"/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm\",\"actual\":\"http://www.w3.org/2001/04/xmldsig-more#rsa-sha256\",\"note\":\"Acceptable algorithm\"}],\"fix\":\"Keep signature validation strict and verify only against the configured IdP certificate, never the certificate embedded in the message. Compare the raw, unmodified POSTed XML with what the IdP signed. Make sure no proxy, pretty-printer or re-serialization step alters the assertion. Make sure the SP canonicalizes with exclusive C14N exactly as the Reference transforms specify, and recompute the digest over the unmodified assertion. If the IdP is signing with a different key, obtain the new certificate through a trusted channel such as signed metadata and update the SP configuration.\",\"alternatives\":[{\"code\":\"CERT_EXPIRED_OR_WEAK\",\"why_not\":\"The certificate is valid from 2026-01-01 to 2126 and uses 2048-bit RSA with SHA-256.\"},{\"code\":\"SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED\",\"why_not\":\"The assertion carries a signature and its Reference points at the assertion's own ID, which satisfies require_signed_assertion.\"},{\"code\":\"HEALTHY\",\"why_not\":\"The reported symptom is a signature failure, and I cannot confirm cryptographic validity from the redacted artifact.\"}],\"questions\":[\"Does the IdP sign with the key in the configured certificate, or was it rotated?\",\"Does any proxy or middleware re-serialize the XML before the SP verifies it?\"]}",
+    "structured_output": {
+      "root_cause_code": "SAML_SIGNATURE_INVALID",
+      "confidence": 0.6,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Signature",
+          "actual": "Enveloped signature on the assertion, Reference URI #_assert_a289ac; SignatureValue redacted, cannot be verified by eye",
+          "note": "Symptom reports the signature does not verify; all other fields appear consistent"
+        },
+        {
+          "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate",
+          "actual": "Embedded certificate appears identical to the configured IdP certificate",
+          "expected": "Matches /expected/idp_cert_pem",
+          "note": "Points away from a wrong or rotated certificate toward altered content or a digest/signature mismatch"
+        },
+        {
+          "path": "/expected/idp_cert_pem",
+          "actual": "Configured IdP certificate, valid 2026-01-01 to 2126-01-01",
+          "note": "Not expired and not weak (2048-bit RSA, SHA-256)"
+        },
+        {
+          "path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm",
+          "actual": "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
+          "note": "Acceptable algorithm"
+        }
+      ],
+      "fix": "Keep signature validation strict and verify only against the configured IdP certificate, never the certificate embedded in the message. Compare the raw, unmodified POSTed XML with what the IdP signed. Make sure no proxy, pretty-printer or re-serialization step alters the assertion. Make sure the SP canonicalizes with exclusive C14N exactly as the Reference transforms specify, and recompute the digest over the unmodified assertion. If the IdP is signing with a different key, obtain the new certificate through a trusted channel such as signed metadata and update the SP configuration.",
+      "alternatives": [
+        {
+          "code": "CERT_EXPIRED_OR_WEAK",
+          "why_not": "The certificate is valid from 2026-01-01 to 2126 and uses 2048-bit RSA with SHA-256."
+        },
+        {
+          "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+          "why_not": "The assertion carries a signature and its Reference points at the assertion's own ID, which satisfies require_signed_assertion."
+        },
+        {
+          "code": "HEALTHY",
+          "why_not": "The reported symptom is a signature failure, and I cannot confirm cryptographic validity from the redacted artifact."
+        }
+      ],
+      "questions": [
+        "Does the IdP sign with the key in the configured certificate, or was it rotated?",
+        "Does any proxy or middleware re-serialize the XML before the SP verifies it?"
+      ]
+    },
+    "ttft_ms": 7431,
+    "type": "result",
+    "duration_ms": 17376,
+    "uuid": "d25f3ecb-4098-4c79-960b-e35beff82977",
+    "ttft_stream_ms": 5321,
+    "time_to_request_ms": 209,
+    "first_content_frame_ms": 5321,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

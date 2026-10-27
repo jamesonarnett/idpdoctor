@@ -1,0 +1,11 @@
+{
+  "id": "saml_structure_invalid-03",
+  "kind": "saml_response",
+  "dialect": "okta",
+  "mutator": "structure_multi_assertion",
+  "expected_completeness": "partial",
+  "symptom_from": "vendor_strings.json",
+  "seed": 42,
+  "index": 3,
+  "hash": "c627c8e2865e6551"
+}

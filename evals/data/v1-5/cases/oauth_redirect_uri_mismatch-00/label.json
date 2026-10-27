@@ -1,0 +1,14 @@
+{
+  "code": "OAUTH_REDIRECT_URI_MISMATCH",
+  "posture_codes": [],
+  "evidence_path": "/request/redirect_uri",
+  "fix_keys": [
+    "register",
+    "exact",
+    "redirect",
+    "scheme"
+  ],
+  "needs": [
+    "registered_redirect_uris"
+  ]
+}

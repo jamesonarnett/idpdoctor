@@ -1,0 +1,262 @@
+{
+  "case_id": "healthy-jwt-07",
+  "case_hash": "33a6bbc91a7d2f31",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [],
+    "fix_keys": [
+      "no change needed",
+      "the artifact validates"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "healthy-jwt-07",
+    "kind": "jwt",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 7,
+    "hash": "33a6bbc91a7d2f31"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "path": "/claims/iss",
+        "actual": "https://login.example.com/tenant-1/v2.0",
+        "expected": "https://login.example.com/tenant-1/v2.0",
+        "note": "Issuer matches"
+      },
+      {
+        "path": "/claims/aud",
+        "actual": "client-abc123",
+        "expected": "client-abc123",
+        "note": "Audience matches client_id"
+      },
+      {
+        "path": "/claims/exp",
+        "actual": "1768482000",
+        "expected": "after 1768478400",
+        "note": "Expires 1 hour after the reference time"
+      },
+      {
+        "path": "/claims/nbf",
+        "actual": "1768478400",
+        "expected": "\u003c= 1768478400",
+        "note": "Equals the reference time, so valid"
+      },
+      {
+        "path": "/claims/nonce",
+        "actual": "n-0S6_WzA2Mj",
+        "expected": "n-0S6_WzA2Mj",
+        "note": "Nonce matches"
+      },
+      {
+        "path": "/header/alg",
+        "actual": "RS256",
+        "note": "Allowed asymmetric algorithm"
+      },
+      {
+        "path": "/header/kid",
+        "actual": "test-key-1",
+        "note": "kid is present in the supplied JWKS"
+      }
+    ],
+    "fix": "No change needed. The claims match the expected issuer, audience, nonce and time window, and the kid is in the JWKS. Keep signature verification enabled against the JWKS, restrict allowed algorithms to RS256, and keep clock skew at 5 minutes or less.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "UNKNOWN",
+        "why_not": "Every checkable claim matches the expected values, so there is no fault class to report."
+      }
+    ],
+    "questions": [
+      "Did the signature verify against the JWKS? I could not run the cryptographic check myself and judged only from the claims and header."
+    ]
+  },
+  "started": "2026-10-27T09:30:38.963503-05:00",
+  "duration_ms": 8750,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 907,
+    "cache_creation_input_tokens": 1737,
+    "cache_read_input_tokens": 3886
+  },
+  "cost_usd": 0.0164106,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 907,
+      "cacheReadInputTokens": 3886,
+      "cacheCreationInputTokens": 1737,
+      "costUSD": 0.0164106,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 7,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 8636,
+    "stop_reason": "tool_use",
+    "session_id": "ce854a70-c8a2-4f8f-bf07-948914f4c148",
+    "total_cost_usd": 0.0164106,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1737,
+      "cache_read_input_tokens": 3886,
+      "output_tokens": 907,
+      "output_tokens_details": {
+        "thinking_tokens": 183
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1737,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 907,
+          "cache_read_input_tokens": 3886,
+          "cache_creation_input_tokens": 1737,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1737
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 907,
+        "cacheReadInputTokens": 3886,
+        "cacheCreationInputTokens": 1737,
+        "webSearchRequests": 0,
+        "costUSD": 0.0164106,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 183,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1737,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.8,\"evidence\":[{\"path\":\"/claims/iss\",\"actual\":\"https://login.example.com/tenant-1/v2.0\",\"expected\":\"https://login.example.com/tenant-1/v2.0\",\"note\":\"Issuer matches\"},{\"path\":\"/claims/aud\",\"actual\":\"client-abc123\",\"expected\":\"client-abc123\",\"note\":\"Audience matches client_id\"},{\"path\":\"/claims/exp\",\"actual\":\"1768482000\",\"expected\":\"after 1768478400\",\"note\":\"Expires 1 hour after the reference time\"},{\"path\":\"/claims/nbf\",\"actual\":\"1768478400\",\"expected\":\"\u003c= 1768478400\",\"note\":\"Equals the reference time, so valid\"},{\"path\":\"/claims/nonce\",\"actual\":\"n-0S6_WzA2Mj\",\"expected\":\"n-0S6_WzA2Mj\",\"note\":\"Nonce matches\"},{\"path\":\"/header/alg\",\"actual\":\"RS256\",\"note\":\"Allowed asymmetric algorithm\"},{\"path\":\"/header/kid\",\"actual\":\"test-key-1\",\"note\":\"kid is present in the supplied JWKS\"}],\"fix\":\"No change needed. The claims match the expected issuer, audience, nonce and time window, and the kid is in the JWKS. Keep signature verification enabled against the JWKS, restrict allowed algorithms to RS256, and keep clock skew at 5 minutes or less.\",\"alternatives\":[{\"code\":\"UNKNOWN\",\"why_not\":\"Every checkable claim matches the expected values, so there is no fault class to report.\"}],\"questions\":[\"Did the signature verify against the JWKS? I could not run the cryptographic check myself and judged only from the claims and header.\"],\"posture_codes\":[]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "path": "/claims/iss",
+          "actual": "https://login.example.com/tenant-1/v2.0",
+          "expected": "https://login.example.com/tenant-1/v2.0",
+          "note": "Issuer matches"
+        },
+        {
+          "path": "/claims/aud",
+          "actual": "client-abc123",
+          "expected": "client-abc123",
+          "note": "Audience matches client_id"
+        },
+        {
+          "path": "/claims/exp",
+          "actual": "1768482000",
+          "expected": "after 1768478400",
+          "note": "Expires 1 hour after the reference time"
+        },
+        {
+          "path": "/claims/nbf",
+          "actual": "1768478400",
+          "expected": "\u003c= 1768478400",
+          "note": "Equals the reference time, so valid"
+        },
+        {
+          "path": "/claims/nonce",
+          "actual": "n-0S6_WzA2Mj",
+          "expected": "n-0S6_WzA2Mj",
+          "note": "Nonce matches"
+        },
+        {
+          "path": "/header/alg",
+          "actual": "RS256",
+          "note": "Allowed asymmetric algorithm"
+        },
+        {
+          "path": "/header/kid",
+          "actual": "test-key-1",
+          "note": "kid is present in the supplied JWKS"
+        }
+      ],
+      "fix": "No change needed. The claims match the expected issuer, audience, nonce and time window, and the kid is in the JWKS. Keep signature verification enabled against the JWKS, restrict allowed algorithms to RS256, and keep clock skew at 5 minutes or less.",
+      "alternatives": [
+        {
+          "code": "UNKNOWN",
+          "why_not": "Every checkable claim matches the expected values, so there is no fault class to report."
+        }
+      ],
+      "questions": [
+        "Did the signature verify against the JWKS? I could not run the cryptographic check myself and judged only from the claims and header."
+      ],
+      "posture_codes": []
+    },
+    "ttft_ms": 5210,
+    "type": "result",
+    "duration_ms": 8750,
+    "uuid": "8fe57657-0d95-49f7-a2e4-c6ae3ded9b8a",
+    "ttft_stream_ms": 3416,
+    "time_to_request_ms": 110,
+    "first_content_frame_ms": 3417,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "case_id": "saml_not_signed_or_wrong_element_signed-00",
+  "case_hash": "1b6a972b48e9e1c9",
+  "arm": "rules",
+  "label": {
+    "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/Signature",
+    "fix_keys": [
+      "enable",
+      "signing",
+      "element",
+      "requires"
+    ],
+    "needs": [
+      "require_signed_assertion"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_not_signed_or_wrong_element_signed-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "response_signed_only",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "1b6a972b48e9e1c9"
+  },
+  "output": {
+    "root_cause_code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+    "confidence": 1,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature",
+        "actual": "Response signed, Assertion unsigned",
+        "expected": "signed Assertion"
+      }
+    ],
+    "fix": "Enable signing of the element the SP requires (assertion, response, or both) in the IdP application's signing options; the SP's requirement is correct and should stay.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T09:29:17.721822-05:00",
+  "duration_ms": 0,
+  "tool_calls": 0,
+  "num_turns": 0,
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0
+  },
+  "cost_usd": 0,
+  "hallucinated": [],
+  "valid_citations": 1
+}

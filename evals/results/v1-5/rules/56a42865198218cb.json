@@ -1,0 +1,59 @@
+{
+  "case_id": "oauth_client_config_rejected-01",
+  "case_hash": "56a42865198218cb",
+  "arm": "rules",
+  "label": {
+    "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+    "posture_codes": [],
+    "evidence_path": "/redirect/error",
+    "fix_keys": [
+      "compare",
+      "client",
+      "registered",
+      "grant"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_client_config_rejected-01",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_invalid_scope",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 1,
+    "hash": "56a42865198218cb"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_CLIENT_CONFIG_REJECTED",
+    "confidence": 1,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_scope",
+        "note": "classified by error=invalid_scope"
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "The requested scope is invalid, unknown, or malformed."
+      }
+    ],
+    "fix": "Compare the client's registered type, grant types, scopes and credential against what the request sends; rotate an expired secret rather than reusing it.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T09:29:17.708975-05:00",
+  "duration_ms": 0,
+  "tool_calls": 0,
+  "num_turns": 0,
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0
+  },
+  "cost_usd": 0,
+  "hallucinated": [],
+  "valid_citations": 2
+}

@@ -1,0 +1,201 @@
+{
+  "case_id": "posture_expired_cert_accepted-01",
+  "case_hash": "065dcc74a9e4748d",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_EXPIRED_CERT_ACCEPTED"
+    ],
+    "evidence_path": "/Signature/KeyInfo/X509Data/X509Certificate/NotAfter",
+    "fix_keys": [
+      "rotate",
+      "signing",
+      "certificate",
+      "configure"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_expired_cert_accepted-01",
+    "kind": "saml_response",
+    "dialect": "auth0",
+    "mutator": "posture_expired_cert",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 1,
+    "hash": "065dcc74a9e4748d"
+  },
+  "output": {
+    "root_cause_code": "CERT_EXPIRED_OR_WEAK",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "path": "/Signature/KeyInfo/X509Data/X509Certificate/NotAfter",
+        "actual": "2026-01-14T12:00:00Z",
+        "expected": "\u003e 2026-01-15T12:00:00Z",
+        "note": "IdP signing certificate expired before the validation time; signature still verifies against the configured cert, so the SP is accepting an expired key"
+      }
+    ],
+    "fix": "Rotate the IdP signing certificate: generate a new one in the IdP, publish updated metadata, and install the new certificate on the SP (ideally with both configured during the overlap) before activating it. Use RSA-2048+ with SHA-256. Configure the SP to reject expired signing certificates, and add expiry monitoring or alerts for the cert.",
+    "posture_codes": [
+      "POSTURE_EXPIRED_CERT_ACCEPTED"
+    ],
+    "alternatives": [
+      {
+        "code": "HEALTHY",
+        "why_not": "All other checks pass and the signature verifies, but the cert_validity check fails. The SP is trusting an expired certificate, so this is not a clean result."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T10:01:52.95825-05:00",
+  "duration_ms": 13878,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2255,
+    "cache_creation_input_tokens": 6864,
+    "cache_read_input_tokens": 28620
+  },
+  "cost_usd": 0.052876,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2255,
+      "cacheReadInputTokens": 28620,
+      "cacheCreationInputTokens": 6864,
+      "costUSD": 0.052876,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 13739,
+    "stop_reason": "tool_use",
+    "session_id": "55d443e3-7edc-49f8-b851-1523b03e612b",
+    "total_cost_usd": 0.052876,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 6864,
+      "cache_read_input_tokens": 28620,
+      "output_tokens": 2255,
+      "output_tokens_details": {
+        "thinking_tokens": 343
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6864,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 865,
+          "cache_read_input_tokens": 16241,
+          "cache_creation_input_tokens": 3002,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 3002
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2255,
+        "cacheReadInputTokens": 28620,
+        "cacheCreationInputTokens": 6864,
+        "webSearchRequests": 0,
+        "costUSD": 0.052876,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 343,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6864,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"CERT_EXPIRED_OR_WEAK\",\"confidence\":0.8,\"evidence\":[{\"path\":\"/Signature/KeyInfo/X509Data/X509Certificate/NotAfter\",\"actual\":\"2026-01-14T12:00:00Z\",\"expected\":\"\u003e 2026-01-15T12:00:00Z\",\"note\":\"IdP signing certificate expired before the validation time; signature still verifies against the configured cert, so the SP is accepting an expired key\"}],\"fix\":\"Rotate the IdP signing certificate: generate a new one in the IdP, publish updated metadata, and install the new certificate on the SP (ideally with both configured during the overlap) before activating it. Use RSA-2048+ with SHA-256. Configure the SP to reject expired signing certificates, and add expiry monitoring or alerts for the cert.\",\"posture_codes\":[\"POSTURE_EXPIRED_CERT_ACCEPTED\"],\"alternatives\":[{\"code\":\"HEALTHY\",\"why_not\":\"All other checks pass and the signature verifies, but the cert_validity check fails. The SP is trusting an expired certificate, so this is not a clean result.\"}]}",
+    "structured_output": {
+      "root_cause_code": "CERT_EXPIRED_OR_WEAK",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "path": "/Signature/KeyInfo/X509Data/X509Certificate/NotAfter",
+          "actual": "2026-01-14T12:00:00Z",
+          "expected": "\u003e 2026-01-15T12:00:00Z",
+          "note": "IdP signing certificate expired before the validation time; signature still verifies against the configured cert, so the SP is accepting an expired key"
+        }
+      ],
+      "fix": "Rotate the IdP signing certificate: generate a new one in the IdP, publish updated metadata, and install the new certificate on the SP (ideally with both configured during the overlap) before activating it. Use RSA-2048+ with SHA-256. Configure the SP to reject expired signing certificates, and add expiry monitoring or alerts for the cert.",
+      "posture_codes": [
+        "POSTURE_EXPIRED_CERT_ACCEPTED"
+      ],
+      "alternatives": [
+        {
+          "code": "HEALTHY",
+          "why_not": "All other checks pass and the signature verifies, but the cert_validity check fails. The SP is trusting an expired certificate, so this is not a clean result."
+        }
+      ]
+    },
+    "ttft_ms": 7687,
+    "type": "result",
+    "duration_ms": 13878,
+    "uuid": "0d92bd35-b88a-43fd-83a0-6bda0886db7d",
+    "ttft_stream_ms": 1463,
+    "time_to_request_ms": 131,
+    "first_content_frame_ms": 1464,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

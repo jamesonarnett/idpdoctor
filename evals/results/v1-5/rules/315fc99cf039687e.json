@@ -1,0 +1,60 @@
+{
+  "case_id": "idp_policy_refusal-01",
+  "case_hash": "315fc99cf039687e",
+  "arm": "rules",
+  "label": {
+    "code": "IDP_POLICY_REFUSAL",
+    "posture_codes": [],
+    "evidence_path": "/redirect/error",
+    "fix_keys": [
+      "resolve",
+      "side:",
+      "assign",
+      "group"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "idp_policy_refusal-01",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_policy_refusal",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 1,
+    "hash": "315fc99cf039687e"
+  },
+  "output": {
+    "root_cause_code": "IDP_POLICY_REFUSAL",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "access_denied",
+        "note": "classified by vendor code AADSTS50105"
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "AADSTS50105: Your administrator has configured the application 'client-abc123' to block users unless they are specifically granted ('assigned') access to the application. The signed in user '[REDACTED:email:ff8d9819]' is blocked because they are not a direct member of a group with access. Trace ID: 0f3c2a1e-0000-4000-8000-000000000001 Correlation ID: 7d9e4b2c-0000-4000-8000-000000000002 Timestamp: 2026-01-15 12:00:00Z",
+        "note": "the IdP refused for a tenant policy reason; the exact cause needs the IdP admin's view"
+      }
+    ],
+    "fix": "Resolve on the IdP side: assign the user or group to the application, grant admin consent, satisfy the access policy, or target the correct tenant endpoint.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T09:29:17.706459-05:00",
+  "duration_ms": 0,
+  "tool_calls": 0,
+  "num_turns": 0,
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0
+  },
+  "cost_usd": 0,
+  "hallucinated": [],
+  "valid_citations": 2
+}

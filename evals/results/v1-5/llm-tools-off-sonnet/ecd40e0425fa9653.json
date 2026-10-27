@@ -1,0 +1,277 @@
+{
+  "case_id": "healthy-samlresponse-00",
+  "case_hash": "ecd40e0425fa9653",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [],
+    "fix_keys": [
+      "no change needed",
+      "the artifact validates"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "healthy-samlresponse-00",
+    "kind": "saml_response",
+    "dialect": "generic",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "ecd40e0425fa9653"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate",
+        "actual": "Embedded certificate matches the configured IdP certificate",
+        "note": "Trust is anchored on the configured cert, not the embedded one."
+      },
+      {
+        "path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm",
+        "actual": "rsa-sha256",
+        "note": "Strong algorithm."
+      },
+      {
+        "path": "/Response/Assertion/Signature/SignedInfo/Reference/DigestMethod/@Algorithm",
+        "actual": "sha256"
+      },
+      {
+        "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+        "actual": "https://sp.example.com/saml/metadata",
+        "expected": "https://sp.example.com/saml/metadata"
+      },
+      {
+        "path": "/Response/@Destination",
+        "actual": "https://sp.example.com/saml/acs",
+        "expected": "https://sp.example.com/saml/acs"
+      },
+      {
+        "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@InResponseTo",
+        "actual": "_req_1234567890abcdef",
+        "expected": "_req_1234567890abcdef"
+      },
+      {
+        "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+        "actual": "2026-01-15T12:02:30Z",
+        "expected": "after now 2026-01-15T12:00:00Z",
+        "note": "The window is 5 minutes. It is within policy and contains 'now'."
+      },
+      {
+        "path": "/Response/Issuer",
+        "actual": "https://idp.example.com/saml",
+        "expected": "https://idp.example.com/saml"
+      },
+      {
+        "path": "/Response/Assertion/Subject/NameID/@Format",
+        "actual": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+        "expected": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress"
+      },
+      {
+        "path": "/Response/Status/StatusCode/@Value",
+        "actual": "urn:oasis:names:tc:SAML:2.0:status:Success"
+      }
+    ],
+    "fix": "No fault found. Keep the current configuration: validate the assertion signature against the configured IdP certificate, and enforce audience, Destination, Recipient, InResponseTo and the validity window. If login still fails, the cause is likely downstream of SAML validation, such as user provisioning or session handling. Check the SP logs for the exact rejection reason.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "SAML_SIGNATURE_INVALID",
+        "why_not": "The SignatureValue is redacted, so I can't cryptographically verify it. The signed reference points to the assertion ID, and the certificate matches the configured one. Nothing suggests tampering."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:31:19.61177-05:00",
+  "duration_ms": 9249,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1335,
+    "cache_creation_input_tokens": 6532,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.0400012,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1335,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 6532,
+      "costUSD": 0.0400012,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 10,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 9135,
+    "stop_reason": "tool_use",
+    "session_id": "7a93979e-4940-40f2-95fc-f22dc57fe036",
+    "total_cost_usd": 0.0400012,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6532,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 1335,
+      "output_tokens_details": {
+        "thinking_tokens": 224
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6532,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1335,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 6532,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 6532
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1335,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 6532,
+        "webSearchRequests": 0,
+        "costUSD": 0.0400012,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 224,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6532,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.8,\"evidence\":[{\"path\":\"/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate\",\"actual\":\"Embedded certificate matches the configured IdP certificate\",\"note\":\"Trust is anchored on the configured cert, not the embedded one.\"},{\"path\":\"/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm\",\"actual\":\"rsa-sha256\",\"note\":\"Strong algorithm.\"},{\"path\":\"/Response/Assertion/Signature/SignedInfo/Reference/DigestMethod/@Algorithm\",\"actual\":\"sha256\"},{\"path\":\"/Response/Assertion/Conditions/AudienceRestriction/Audience\",\"actual\":\"https://sp.example.com/saml/metadata\",\"expected\":\"https://sp.example.com/saml/metadata\"},{\"path\":\"/Response/@Destination\",\"actual\":\"https://sp.example.com/saml/acs\",\"expected\":\"https://sp.example.com/saml/acs\"},{\"path\":\"/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@InResponseTo\",\"actual\":\"_req_1234567890abcdef\",\"expected\":\"_req_1234567890abcdef\"},{\"path\":\"/Response/Assertion/Conditions/@NotOnOrAfter\",\"actual\":\"2026-01-15T12:02:30Z\",\"expected\":\"after now 2026-01-15T12:00:00Z\",\"note\":\"The window is 5 minutes. It is within policy and contains 'now'.\"},{\"path\":\"/Response/Issuer\",\"actual\":\"https://idp.example.com/saml\",\"expected\":\"https://idp.example.com/saml\"},{\"path\":\"/Response/Assertion/Subject/NameID/@Format\",\"actual\":\"urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress\",\"expected\":\"urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress\"},{\"path\":\"/Response/Status/StatusCode/@Value\",\"actual\":\"urn:oasis:names:tc:SAML:2.0:status:Success\"}],\"fix\":\"No fault found. Keep the current configuration: validate the assertion signature against the configured IdP certificate, and enforce audience, Destination, Recipient, InResponseTo and the validity window. If login still fails, the cause is likely downstream of SAML validation, such as user provisioning or session handling. Check the SP logs for the exact rejection reason.\",\"alternatives\":[{\"code\":\"SAML_SIGNATURE_INVALID\",\"why_not\":\"The SignatureValue is redacted, so I can't cryptographically verify it. The signed reference points to the assertion ID, and the certificate matches the configured one. Nothing suggests tampering.\"}],\"questions\":[],\"posture_codes\":[]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate",
+          "actual": "Embedded certificate matches the configured IdP certificate",
+          "note": "Trust is anchored on the configured cert, not the embedded one."
+        },
+        {
+          "path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm",
+          "actual": "rsa-sha256",
+          "note": "Strong algorithm."
+        },
+        {
+          "path": "/Response/Assertion/Signature/SignedInfo/Reference/DigestMethod/@Algorithm",
+          "actual": "sha256"
+        },
+        {
+          "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+          "actual": "https://sp.example.com/saml/metadata",
+          "expected": "https://sp.example.com/saml/metadata"
+        },
+        {
+          "path": "/Response/@Destination",
+          "actual": "https://sp.example.com/saml/acs",
+          "expected": "https://sp.example.com/saml/acs"
+        },
+        {
+          "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@InResponseTo",
+          "actual": "_req_1234567890abcdef",
+          "expected": "_req_1234567890abcdef"
+        },
+        {
+          "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+          "actual": "2026-01-15T12:02:30Z",
+          "expected": "after now 2026-01-15T12:00:00Z",
+          "note": "The window is 5 minutes. It is within policy and contains 'now'."
+        },
+        {
+          "path": "/Response/Issuer",
+          "actual": "https://idp.example.com/saml",
+          "expected": "https://idp.example.com/saml"
+        },
+        {
+          "path": "/Response/Assertion/Subject/NameID/@Format",
+          "actual": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+          "expected": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress"
+        },
+        {
+          "path": "/Response/Status/StatusCode/@Value",
+          "actual": "urn:oasis:names:tc:SAML:2.0:status:Success"
+        }
+      ],
+      "fix": "No fault found. Keep the current configuration: validate the assertion signature against the configured IdP certificate, and enforce audience, Destination, Recipient, InResponseTo and the validity window. If login still fails, the cause is likely downstream of SAML validation, such as user provisioning or session handling. Check the SP logs for the exact rejection reason.",
+      "alternatives": [
+        {
+          "code": "SAML_SIGNATURE_INVALID",
+          "why_not": "The SignatureValue is redacted, so I can't cryptographically verify it. The signed reference points to the assertion ID, and the certificate matches the configured one. Nothing suggests tampering."
+        }
+      ],
+      "questions": [],
+      "posture_codes": []
+    },
+    "ttft_ms": 3694,
+    "type": "result",
+    "duration_ms": 9249,
+    "uuid": "38609f99-be91-4b86-ad0c-59322dbfc4ad",
+    "ttft_stream_ms": 1559,
+    "time_to_request_ms": 111,
+    "first_content_frame_ms": 1559,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

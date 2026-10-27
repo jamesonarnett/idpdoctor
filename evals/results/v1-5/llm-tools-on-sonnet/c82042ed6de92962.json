@@ -1,0 +1,228 @@
+{
+  "case_id": "jwt_alg_none_or_confusion-00",
+  "case_hash": "c82042ed6de92962",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_ALG_NONE_OR_CONFUSION",
+    "posture_codes": [],
+    "evidence_path": "/header/alg",
+    "fix_keys": [
+      "reject",
+      "token"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_alg_none_or_confusion-00",
+    "kind": "jwt",
+    "mutator": "jwt_alg_none",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "c82042ed6de92962"
+  },
+  "output": {
+    "root_cause_code": "JWT_ALG_NONE_OR_CONFUSION",
+    "confidence": 0.93,
+    "evidence": [
+      {
+        "path": "/header/alg",
+        "actual": "none",
+        "expected": "an asymmetric algorithm such as RS256 (the OP publishes only RSA keys)",
+        "note": "The captured header says alg=none and the token is unsigned. The developer described it as HS256. Either way the algorithm is not one the OP's RSA JWKS can verify. The class is the same."
+      },
+      {
+        "path": "/signature",
+        "actual": "unsigned token; signature check failed",
+        "expected": "RS256 signature verifying against the kid test-key-1 RSA key",
+        "note": "The kid resolves in the JWKS, but there is no valid signature to verify."
+      },
+      {
+        "path": "/keys/jwks_json",
+        "actual": "a single RSA key, kid test-key-1, alg RS256",
+        "expected": "the token's alg should match the RS256 key",
+        "note": "The JWKS has no symmetric key, so an HS256 or none token cannot be legitimately issued by this OP."
+      }
+    ],
+    "fix": "Reject this token. Pin the SP's allowed algorithms to the asymmetric ones the OP advertises, for example RS256. Take the verification algorithm from that configuration and the JWKS key, never from the token header. Never use a public key as an HMAC secret. Then check why the OP or whatever produced this token is not signing with RS256. It may be a misconfigured client or OP setting, or a forged or tampered token. Check the OP's discovery document for id_token_signing_alg_values_supported.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "JWT_KID_NOT_FOUND_IN_JWKS",
+        "why_not": "kid test-key-1 was found in the JWKS. The failure is the algorithm and the missing signature."
+      },
+      {
+        "code": "OIDC_REQUEST_BINDING_MISMATCH",
+        "why_not": "The nonce matches. The at_hash check was skipped because no access_token was supplied, and it is not the cause."
+      }
+    ],
+    "questions": [
+      "Can you confirm the raw header alg? The validator reads none, but you described the token as HS256."
+    ]
+  },
+  "started": "2026-10-27T09:52:46.23646-05:00",
+  "duration_ms": 14126,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1539,
+    "cache_creation_input_tokens": 3631,
+    "cache_read_input_tokens": 23933
+  },
+  "cost_usd": 0.0323153,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1539,
+      "cacheReadInputTokens": 23933,
+      "cacheCreationInputTokens": 3631,
+      "costUSD": 0.0323153,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 13984,
+    "stop_reason": "tool_use",
+    "session_id": "c4af6530-fcff-4a15-9a5d-e474830d5d04",
+    "total_cost_usd": 0.0323153,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3631,
+      "cache_read_input_tokens": 23933,
+      "output_tokens": 1539,
+      "output_tokens_details": {
+        "thinking_tokens": 75
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3631,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 895,
+          "cache_read_input_tokens": 12860,
+          "cache_creation_input_tokens": 1844,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1844
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1539,
+        "cacheReadInputTokens": 23933,
+        "cacheCreationInputTokens": 3631,
+        "webSearchRequests": 0,
+        "costUSD": 0.0323153,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 75,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3631,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"JWT_ALG_NONE_OR_CONFUSION\",\"confidence\":0.93,\"evidence\":[{\"path\":\"/header/alg\",\"actual\":\"none\",\"expected\":\"an asymmetric algorithm such as RS256 (the OP publishes only RSA keys)\",\"note\":\"The captured header says alg=none and the token is unsigned. The developer described it as HS256. Either way the algorithm is not one the OP's RSA JWKS can verify. The class is the same.\"},{\"path\":\"/signature\",\"actual\":\"unsigned token; signature check failed\",\"expected\":\"RS256 signature verifying against the kid test-key-1 RSA key\",\"note\":\"The kid resolves in the JWKS, but there is no valid signature to verify.\"},{\"path\":\"/keys/jwks_json\",\"actual\":\"a single RSA key, kid test-key-1, alg RS256\",\"expected\":\"the token's alg should match the RS256 key\",\"note\":\"The JWKS has no symmetric key, so an HS256 or none token cannot be legitimately issued by this OP.\"}],\"fix\":\"Reject this token. Pin the SP's allowed algorithms to the asymmetric ones the OP advertises, for example RS256. Take the verification algorithm from that configuration and the JWKS key, never from the token header. Never use a public key as an HMAC secret. Then check why the OP or whatever produced this token is not signing with RS256. It may be a misconfigured client or OP setting, or a forged or tampered token. Check the OP's discovery document for id_token_signing_alg_values_supported.\",\"alternatives\":[{\"code\":\"JWT_KID_NOT_FOUND_IN_JWKS\",\"why_not\":\"kid test-key-1 was found in the JWKS. The failure is the algorithm and the missing signature.\"},{\"code\":\"OIDC_REQUEST_BINDING_MISMATCH\",\"why_not\":\"The nonce matches. The at_hash check was skipped because no access_token was supplied, and it is not the cause.\"}],\"questions\":[\"Can you confirm the raw header alg? The validator reads none, but you described the token as HS256.\"]}",
+    "structured_output": {
+      "root_cause_code": "JWT_ALG_NONE_OR_CONFUSION",
+      "confidence": 0.93,
+      "evidence": [
+        {
+          "path": "/header/alg",
+          "actual": "none",
+          "expected": "an asymmetric algorithm such as RS256 (the OP publishes only RSA keys)",
+          "note": "The captured header says alg=none and the token is unsigned. The developer described it as HS256. Either way the algorithm is not one the OP's RSA JWKS can verify. The class is the same."
+        },
+        {
+          "path": "/signature",
+          "actual": "unsigned token; signature check failed",
+          "expected": "RS256 signature verifying against the kid test-key-1 RSA key",
+          "note": "The kid resolves in the JWKS, but there is no valid signature to verify."
+        },
+        {
+          "path": "/keys/jwks_json",
+          "actual": "a single RSA key, kid test-key-1, alg RS256",
+          "expected": "the token's alg should match the RS256 key",
+          "note": "The JWKS has no symmetric key, so an HS256 or none token cannot be legitimately issued by this OP."
+        }
+      ],
+      "fix": "Reject this token. Pin the SP's allowed algorithms to the asymmetric ones the OP advertises, for example RS256. Take the verification algorithm from that configuration and the JWKS key, never from the token header. Never use a public key as an HMAC secret. Then check why the OP or whatever produced this token is not signing with RS256. It may be a misconfigured client or OP setting, or a forged or tampered token. Check the OP's discovery document for id_token_signing_alg_values_supported.",
+      "alternatives": [
+        {
+          "code": "JWT_KID_NOT_FOUND_IN_JWKS",
+          "why_not": "kid test-key-1 was found in the JWKS. The failure is the algorithm and the missing signature."
+        },
+        {
+          "code": "OIDC_REQUEST_BINDING_MISMATCH",
+          "why_not": "The nonce matches. The at_hash check was skipped because no access_token was supplied, and it is not the cause."
+        }
+      ],
+      "questions": [
+        "Can you confirm the raw header alg? The validator reads none, but you described the token as HS256."
+      ]
+    },
+    "ttft_ms": 5473,
+    "type": "result",
+    "duration_ms": 14126,
+    "uuid": "7a653363-4fb6-446b-a271-3bed38057a51",
+    "ttft_stream_ms": 2699,
+    "time_to_request_ms": 126,
+    "first_content_frame_ms": 2699,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

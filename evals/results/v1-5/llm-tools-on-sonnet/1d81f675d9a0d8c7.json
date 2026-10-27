@@ -1,0 +1,182 @@
+{
+  "case_id": "oidc_discovery_doc_invalid-02",
+  "case_hash": "1d81f675d9a0d8c7",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OIDC_DISCOVERY_DOC_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/discovery/subject_types_supported",
+    "fix_keys": [
+      "point",
+      "canonical"
+    ]
+  },
+  "kind": "oidc_discovery",
+  "meta": {
+    "id": "oidc_discovery_doc_invalid-02",
+    "kind": "oidc_discovery",
+    "mutator": "discovery_missing_subject_types",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 2,
+    "hash": "1d81f675d9a0d8c7"
+  },
+  "output": {
+    "root_cause_code": "OIDC_DISCOVERY_DOC_INVALID",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/discovery/subject_types_supported",
+        "actual": "missing",
+        "expected": "present",
+        "note": "subject_types_supported is REQUIRED by OIDC Discovery 3"
+      }
+    ],
+    "fix": "Confirm you are fetching the OP's canonical /.well-known/openid-configuration for the correct tenant. If the OP's document really omits subject_types_supported, ask the OP to publish it (usually [\"public\"]). Otherwise configure the endpoints explicitly in the SP instead of guessing. Keep the issuer exact-match check, https-only endpoints and RS256 validation on.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T09:58:44.187657-05:00",
+  "duration_ms": 5786,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 531,
+    "cache_creation_input_tokens": 2649,
+    "cache_read_input_tokens": 23884
+  },
+  "cost_usd": 0.0183024,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 531,
+      "cacheReadInputTokens": 23884,
+      "cacheCreationInputTokens": 2649,
+      "costUSD": 0.0183024,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 5691,
+    "stop_reason": "tool_use",
+    "session_id": "102b2f70-0867-41ef-8fb0-18407353d7bb",
+    "total_cost_usd": 0.0183024,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 2649,
+      "cache_read_input_tokens": 23884,
+      "output_tokens": 531,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 2649,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 408,
+          "cache_read_input_tokens": 12659,
+          "cache_creation_input_tokens": 1215,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1215
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 531,
+        "cacheReadInputTokens": 23884,
+        "cacheCreationInputTokens": 2649,
+        "webSearchRequests": 0,
+        "costUSD": 0.0183024,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 2649,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OIDC_DISCOVERY_DOC_INVALID\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/discovery/subject_types_supported\",\"actual\":\"missing\",\"expected\":\"present\",\"note\":\"subject_types_supported is REQUIRED by OIDC Discovery 3\"}],\"fix\":\"Confirm you are fetching the OP's canonical /.well-known/openid-configuration for the correct tenant. If the OP's document really omits subject_types_supported, ask the OP to publish it (usually [\\\"public\\\"]). Otherwise configure the endpoints explicitly in the SP instead of guessing. Keep the issuer exact-match check, https-only endpoints and RS256 validation on.\",\"alternatives\":[],\"questions\":[],\"posture_codes\":[]}",
+    "structured_output": {
+      "root_cause_code": "OIDC_DISCOVERY_DOC_INVALID",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/discovery/subject_types_supported",
+          "actual": "missing",
+          "expected": "present",
+          "note": "subject_types_supported is REQUIRED by OIDC Discovery 3"
+        }
+      ],
+      "fix": "Confirm you are fetching the OP's canonical /.well-known/openid-configuration for the correct tenant. If the OP's document really omits subject_types_supported, ask the OP to publish it (usually [\"public\"]). Otherwise configure the endpoints explicitly in the SP instead of guessing. Keep the issuer exact-match check, https-only endpoints and RS256 validation on.",
+      "alternatives": [],
+      "questions": [],
+      "posture_codes": []
+    },
+    "ttft_ms": 2387,
+    "type": "result",
+    "duration_ms": 5786,
+    "uuid": "019ef751-4de8-4ba4-b20a-66d10207eba8",
+    "ttft_stream_ms": 1863,
+    "time_to_request_ms": 84,
+    "first_content_frame_ms": 1864,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

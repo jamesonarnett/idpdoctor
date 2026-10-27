@@ -1,0 +1,226 @@
+{
+  "case_id": "oauth_client_config_rejected-01",
+  "case_hash": "56a42865198218cb",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+    "posture_codes": [],
+    "evidence_path": "/redirect/error",
+    "fix_keys": [
+      "compare",
+      "client",
+      "registered",
+      "grant"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_client_config_rejected-01",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_invalid_scope",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 1,
+    "hash": "56a42865198218cb"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_CLIENT_CONFIG_REJECTED",
+    "confidence": 0.7,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_scope",
+        "note": "The authorization server rejected the request at the authorization step, before any code was issued or secret was used."
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "The requested scope is invalid, unknown, or malformed."
+      },
+      {
+        "path": "/request/scopes",
+        "actual": "openid, profile, email, admin.write",
+        "note": "admin.write is a non-standard scope that is likely not defined or consented for this client or resource."
+      }
+    ],
+    "fix": "The redirect shows invalid_scope, not a secret failure. Remove admin.write from the authorization request, or register it as an exposed API scope, grant it to the client app, and request it in the form the server expects (for example api://\u003cresource\u003e/admin.write). Separately, this is a public client that uses PKCE, so don't send a client secret at the token endpoint. The AADSTS7000215 error probably comes from a different request, or from the app being registered as confidential. Check the app registration type and keep PKCE S256. Don't weaken any validation to get past either error.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "IDP_POLICY_REFUSAL",
+        "why_not": "The error text points to a scope the client can't request, which is a client or registration setting. It doesn't indicate a policy decision made outside the artifact."
+      },
+      {
+        "code": "OAUTH_INVALID_GRANT_CODE",
+        "why_not": "No code was issued (has_code is false), so no grant was rejected."
+      }
+    ],
+    "questions": [
+      "Which request produced AADSTS7000215? It doesn't match this redirect, which carries invalid_scope.",
+      "Is the Entra app registered as a public client (mobile/desktop or SPA) or as a confidential web client?",
+      "Is admin.write defined as an API scope on the target resource, and has it been granted to this client?"
+    ]
+  },
+  "started": "2026-10-27T09:34:55.52422-05:00",
+  "duration_ms": 7223,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 756,
+    "cache_creation_input_tokens": 1419,
+    "cache_read_input_tokens": 3872
+  },
+  "cost_usd": 0.013627199999999999,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 756,
+      "cacheReadInputTokens": 3872,
+      "cacheCreationInputTokens": 1419,
+      "costUSD": 0.013627199999999999,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 7088,
+    "stop_reason": "tool_use",
+    "session_id": "f271e043-383d-4464-9a7c-6e3647501c59",
+    "total_cost_usd": 0.013627199999999999,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1419,
+      "cache_read_input_tokens": 3872,
+      "output_tokens": 756,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1419,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 756,
+          "cache_read_input_tokens": 3872,
+          "cache_creation_input_tokens": 1419,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1419
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 756,
+        "cacheReadInputTokens": 3872,
+        "cacheCreationInputTokens": 1419,
+        "webSearchRequests": 0,
+        "costUSD": 0.013627199999999999,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1419,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_CLIENT_CONFIG_REJECTED\",\"confidence\":0.7,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"invalid_scope\",\"note\":\"The authorization server rejected the request at the authorization step, before any code was issued or secret was used.\"},{\"path\":\"/redirect/error_description\",\"actual\":\"The requested scope is invalid, unknown, or malformed.\"},{\"path\":\"/request/scopes\",\"actual\":\"openid, profile, email, admin.write\",\"note\":\"admin.write is a non-standard scope that is likely not defined or consented for this client or resource.\"}],\"fix\":\"The redirect shows invalid_scope, not a secret failure. Remove admin.write from the authorization request, or register it as an exposed API scope, grant it to the client app, and request it in the form the server expects (for example api://\u003cresource\u003e/admin.write). Separately, this is a public client that uses PKCE, so don't send a client secret at the token endpoint. The AADSTS7000215 error probably comes from a different request, or from the app being registered as confidential. Check the app registration type and keep PKCE S256. Don't weaken any validation to get past either error.\",\"alternatives\":[{\"code\":\"IDP_POLICY_REFUSAL\",\"why_not\":\"The error text points to a scope the client can't request, which is a client or registration setting. It doesn't indicate a policy decision made outside the artifact.\"},{\"code\":\"OAUTH_INVALID_GRANT_CODE\",\"why_not\":\"No code was issued (has_code is false), so no grant was rejected.\"}],\"questions\":[\"Which request produced AADSTS7000215? It doesn't match this redirect, which carries invalid_scope.\",\"Is the Entra app registered as a public client (mobile/desktop or SPA) or as a confidential web client?\",\"Is admin.write defined as an API scope on the target resource, and has it been granted to this client?\"]}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_CLIENT_CONFIG_REJECTED",
+      "confidence": 0.7,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "invalid_scope",
+          "note": "The authorization server rejected the request at the authorization step, before any code was issued or secret was used."
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "The requested scope is invalid, unknown, or malformed."
+        },
+        {
+          "path": "/request/scopes",
+          "actual": "openid, profile, email, admin.write",
+          "note": "admin.write is a non-standard scope that is likely not defined or consented for this client or resource."
+        }
+      ],
+      "fix": "The redirect shows invalid_scope, not a secret failure. Remove admin.write from the authorization request, or register it as an exposed API scope, grant it to the client app, and request it in the form the server expects (for example api://\u003cresource\u003e/admin.write). Separately, this is a public client that uses PKCE, so don't send a client secret at the token endpoint. The AADSTS7000215 error probably comes from a different request, or from the app being registered as confidential. Check the app registration type and keep PKCE S256. Don't weaken any validation to get past either error.",
+      "alternatives": [
+        {
+          "code": "IDP_POLICY_REFUSAL",
+          "why_not": "The error text points to a scope the client can't request, which is a client or registration setting. It doesn't indicate a policy decision made outside the artifact."
+        },
+        {
+          "code": "OAUTH_INVALID_GRANT_CODE",
+          "why_not": "No code was issued (has_code is false), so no grant was rejected."
+        }
+      ],
+      "questions": [
+        "Which request produced AADSTS7000215? It doesn't match this redirect, which carries invalid_scope.",
+        "Is the Entra app registered as a public client (mobile/desktop or SPA) or as a confidential web client?",
+        "Is admin.write defined as an API scope on the target resource, and has it been granted to this client?"
+      ]
+    },
+    "ttft_ms": 7191,
+    "type": "result",
+    "duration_ms": 7223,
+    "uuid": "42b85bff-307a-4d9f-9068-9c62f0792aa2",
+    "ttft_stream_ms": 2058,
+    "time_to_request_ms": 132,
+    "first_content_frame_ms": 2059,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "id": "oidc_discovery_doc_invalid-04",
+  "kind": "oidc_discovery",
+  "mutator": "discovery_offhost_endpoint",
+  "expected_completeness": "full",
+  "symptom_from": "vendor_strings.json",
+  "seed": 42,
+  "index": 4,
+  "hash": "bbe140f70154d108"
+}

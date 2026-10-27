@@ -1,0 +1,236 @@
+{
+  "case_id": "jwt_alg_none_or_confusion-03",
+  "case_hash": "36081a3a3dfce210",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_ALG_NONE_OR_CONFUSION",
+    "posture_codes": [],
+    "evidence_path": "/header/alg",
+    "fix_keys": [
+      "reject",
+      "token"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_alg_none_or_confusion-03",
+    "kind": "jwt",
+    "mutator": "jwt_alg_none",
+    "expected_completeness": "partial",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 3,
+    "hash": "36081a3a3dfce210"
+  },
+  "output": {
+    "root_cause_code": "JWT_ALG_NONE_OR_CONFUSION",
+    "confidence": 0.93,
+    "evidence": [
+      {
+        "path": "/header/alg",
+        "actual": "none",
+        "expected": "RS256 (the algorithm the OP's JWKS advertises)",
+        "note": "The captured token header says alg=none, so it is unsigned. The reported HS256 is not what the header shows. Either way the algorithm is not allowed for this OP, which publishes only RSA keys."
+      },
+      {
+        "path": "/keys/jwks_json",
+        "actual": "Single RSA key, kid test-key-1, alg RS256, use sig",
+        "expected": "Token signed with RS256 by this key",
+        "note": "An HS256 or none token cannot be verified with an RSA public key. Treating the RSA public key as an HMAC secret is the classic key-confusion attack."
+      },
+      {
+        "path": "/header/kid",
+        "actual": "test-key-1",
+        "note": "The kid matches the JWKS key, so key lookup is not the problem. The algorithm is."
+      },
+      {
+        "path": "/signature",
+        "actual": "No signature is present or verifiable for alg=none",
+        "note": "The token carries no usable signature."
+      }
+    ],
+    "fix": "Configure the SP with a strict allow-list of signature algorithms taken from the OP's JWKS and discovery metadata (here RS256). Reject any token whose header alg is none or HS*, and never use the RSA public key as an HMAC secret. Select the verification key by kid and require the key's kty to match the algorithm. If the OP is really issuing HS256 or unsigned id_tokens, fix the OP or client registration so id_tokens are signed with RS256 (id_token_signed_response_alg=RS256). Do not disable signature validation or loosen the algorithm allow-list to get the token through.",
+    "posture_codes": [
+      "POSTURE_WEAK_ALGORITHM"
+    ],
+    "alternatives": [
+      {
+        "code": "JWT_KID_NOT_FOUND_IN_JWKS",
+        "why_not": "The kid test-key-1 is present in the JWKS. The failure is the algorithm."
+      },
+      {
+        "code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+        "why_not": "exp is 1768482000 (2026-01-15T13:00:00Z) and iat and nbf are 1768478400 (12:00:00Z). With now=2026-01-15T12:00:00Z the token is inside its window."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:32:59.036075-05:00",
+  "duration_ms": 6921,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 909,
+    "cache_creation_input_tokens": 1740,
+    "cache_read_input_tokens": 3886
+  },
+  "cost_usd": 0.016442599999999998,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 909,
+      "cacheReadInputTokens": 3886,
+      "cacheCreationInputTokens": 1740,
+      "costUSD": 0.016442599999999998,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 6773,
+    "stop_reason": "tool_use",
+    "session_id": "41e2ac48-e966-4466-b85a-6f04a14b0ada",
+    "total_cost_usd": 0.016442599999999998,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1740,
+      "cache_read_input_tokens": 3886,
+      "output_tokens": 909,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1740,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 909,
+          "cache_read_input_tokens": 3886,
+          "cache_creation_input_tokens": 1740,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1740
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 909,
+        "cacheReadInputTokens": 3886,
+        "cacheCreationInputTokens": 1740,
+        "webSearchRequests": 0,
+        "costUSD": 0.016442599999999998,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1740,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"JWT_ALG_NONE_OR_CONFUSION\",\"confidence\":0.93,\"evidence\":[{\"path\":\"/header/alg\",\"actual\":\"none\",\"expected\":\"RS256 (the algorithm the OP's JWKS advertises)\",\"note\":\"The captured token header says alg=none, so it is unsigned. The reported HS256 is not what the header shows. Either way the algorithm is not allowed for this OP, which publishes only RSA keys.\"},{\"path\":\"/keys/jwks_json\",\"actual\":\"Single RSA key, kid test-key-1, alg RS256, use sig\",\"expected\":\"Token signed with RS256 by this key\",\"note\":\"An HS256 or none token cannot be verified with an RSA public key. Treating the RSA public key as an HMAC secret is the classic key-confusion attack.\"},{\"path\":\"/header/kid\",\"actual\":\"test-key-1\",\"note\":\"The kid matches the JWKS key, so key lookup is not the problem. The algorithm is.\"},{\"path\":\"/signature\",\"actual\":\"No signature is present or verifiable for alg=none\",\"note\":\"The token carries no usable signature.\"}],\"fix\":\"Configure the SP with a strict allow-list of signature algorithms taken from the OP's JWKS and discovery metadata (here RS256). Reject any token whose header alg is none or HS*, and never use the RSA public key as an HMAC secret. Select the verification key by kid and require the key's kty to match the algorithm. If the OP is really issuing HS256 or unsigned id_tokens, fix the OP or client registration so id_tokens are signed with RS256 (id_token_signed_response_alg=RS256). Do not disable signature validation or loosen the algorithm allow-list to get the token through.\",\"alternatives\":[{\"code\":\"JWT_KID_NOT_FOUND_IN_JWKS\",\"why_not\":\"The kid test-key-1 is present in the JWKS. The failure is the algorithm.\"},{\"code\":\"JWT_EXPIRED_OR_NOT_YET_VALID\",\"why_not\":\"exp is 1768482000 (2026-01-15T13:00:00Z) and iat and nbf are 1768478400 (12:00:00Z). With now=2026-01-15T12:00:00Z the token is inside its window.\"}],\"posture_codes\":[\"POSTURE_WEAK_ALGORITHM\"]}",
+    "structured_output": {
+      "root_cause_code": "JWT_ALG_NONE_OR_CONFUSION",
+      "confidence": 0.93,
+      "evidence": [
+        {
+          "path": "/header/alg",
+          "actual": "none",
+          "expected": "RS256 (the algorithm the OP's JWKS advertises)",
+          "note": "The captured token header says alg=none, so it is unsigned. The reported HS256 is not what the header shows. Either way the algorithm is not allowed for this OP, which publishes only RSA keys."
+        },
+        {
+          "path": "/keys/jwks_json",
+          "actual": "Single RSA key, kid test-key-1, alg RS256, use sig",
+          "expected": "Token signed with RS256 by this key",
+          "note": "An HS256 or none token cannot be verified with an RSA public key. Treating the RSA public key as an HMAC secret is the classic key-confusion attack."
+        },
+        {
+          "path": "/header/kid",
+          "actual": "test-key-1",
+          "note": "The kid matches the JWKS key, so key lookup is not the problem. The algorithm is."
+        },
+        {
+          "path": "/signature",
+          "actual": "No signature is present or verifiable for alg=none",
+          "note": "The token carries no usable signature."
+        }
+      ],
+      "fix": "Configure the SP with a strict allow-list of signature algorithms taken from the OP's JWKS and discovery metadata (here RS256). Reject any token whose header alg is none or HS*, and never use the RSA public key as an HMAC secret. Select the verification key by kid and require the key's kty to match the algorithm. If the OP is really issuing HS256 or unsigned id_tokens, fix the OP or client registration so id_tokens are signed with RS256 (id_token_signed_response_alg=RS256). Do not disable signature validation or loosen the algorithm allow-list to get the token through.",
+      "alternatives": [
+        {
+          "code": "JWT_KID_NOT_FOUND_IN_JWKS",
+          "why_not": "The kid test-key-1 is present in the JWKS. The failure is the algorithm."
+        },
+        {
+          "code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+          "why_not": "exp is 1768482000 (2026-01-15T13:00:00Z) and iat and nbf are 1768478400 (12:00:00Z). With now=2026-01-15T12:00:00Z the token is inside its window."
+        }
+      ],
+      "posture_codes": [
+        "POSTURE_WEAK_ALGORITHM"
+      ]
+    },
+    "ttft_ms": 6894,
+    "type": "result",
+    "duration_ms": 6921,
+    "uuid": "d6e373be-6502-4da0-8008-95902fb46c8c",
+    "ttft_stream_ms": 1247,
+    "time_to_request_ms": 145,
+    "first_content_frame_ms": 1247,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

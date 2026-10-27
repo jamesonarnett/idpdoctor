@@ -1,0 +1,217 @@
+{
+  "case_id": "jwt_alg_none_or_confusion-04",
+  "case_hash": "98407770fa75ad4a",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_ALG_NONE_OR_CONFUSION",
+    "posture_codes": [],
+    "evidence_path": "/header/jku",
+    "fix_keys": [
+      "reject",
+      "token"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_alg_none_or_confusion-04",
+    "kind": "jwt",
+    "mutator": "jwt_jku_header",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 4,
+    "hash": "98407770fa75ad4a"
+  },
+  "output": {
+    "root_cause_code": "JWT_ALG_NONE_OR_CONFUSION",
+    "confidence": 0.75,
+    "evidence": [
+      {
+        "path": "/header/jku",
+        "actual": "present",
+        "note": "The token header names its own key-set URL. An SP must ignore it and use only the OP's configured JWKS."
+      },
+      {
+        "path": "/header/alg",
+        "actual": "RS256",
+        "expected": "asymmetric alg from the OP's JWKS",
+        "note": "The validator read RS256 here and the signature verified against the pinned RSA key. This conflicts with the reported HS256 symptom."
+      }
+    ],
+    "fix": "Pin the allowed algorithms to the asymmetric ones the OP publishes (for example RS256). Never take the algorithm or key source from the token. Ignore the jku, jwk and x5u headers and verify only against the JWKS configured for the OP's issuer. Reject any HS* token when the configured keys are RSA public keys, so the public key can never be used as an HMAC secret. Keep signature, issuer, audience, expiry and nonce validation on.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "JWT_KID_NOT_FOUND_IN_JWKS",
+        "why_not": "The kid test-key-1 was found in the supplied JWKS and the signature verified."
+      },
+      {
+        "code": "HEALTHY",
+        "why_not": "Signature, iss, aud, exp, nbf, iat and nonce all pass, but the jku header lets the token nominate its own key, which is an unsafe key-source signal."
+      }
+    ],
+    "questions": [
+      "Does the captured token header really say alg=HS256? The validator read RS256 and the signature verified against the RSA JWKS. Please confirm you stashed the token that produced the HS256 error.",
+      "Please supply the access_token if you want the at_hash check run. It was skipped."
+    ]
+  },
+  "started": "2026-10-27T09:53:41.273849-05:00",
+  "duration_ms": 16497,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1481,
+    "cache_creation_input_tokens": 3671,
+    "cache_read_input_tokens": 23956
+  },
+  "cost_usd": 0.0318976,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1481,
+      "cacheReadInputTokens": 23956,
+      "cacheCreationInputTokens": 3671,
+      "costUSD": 0.0318976,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 2,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 16363,
+    "stop_reason": "tool_use",
+    "session_id": "c4a0c453-ce17-4999-a0e1-ca01bf5af97b",
+    "total_cost_usd": 0.0318976,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3671,
+      "cache_read_input_tokens": 23956,
+      "output_tokens": 1481,
+      "output_tokens_details": {
+        "thinking_tokens": 102
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3671,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 836,
+          "cache_read_input_tokens": 12876,
+          "cache_creation_input_tokens": 1875,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1875
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1481,
+        "cacheReadInputTokens": 23956,
+        "cacheCreationInputTokens": 3671,
+        "webSearchRequests": 0,
+        "costUSD": 0.0318976,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 102,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3671,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"JWT_ALG_NONE_OR_CONFUSION\",\"confidence\":0.75,\"evidence\":[{\"path\":\"/header/jku\",\"actual\":\"present\",\"note\":\"The token header names its own key-set URL. An SP must ignore it and use only the OP's configured JWKS.\"},{\"path\":\"/header/alg\",\"actual\":\"RS256\",\"expected\":\"asymmetric alg from the OP's JWKS\",\"note\":\"The validator read RS256 here and the signature verified against the pinned RSA key. This conflicts with the reported HS256 symptom.\"}],\"fix\":\"Pin the allowed algorithms to the asymmetric ones the OP publishes (for example RS256). Never take the algorithm or key source from the token. Ignore the jku, jwk and x5u headers and verify only against the JWKS configured for the OP's issuer. Reject any HS* token when the configured keys are RSA public keys, so the public key can never be used as an HMAC secret. Keep signature, issuer, audience, expiry and nonce validation on.\",\"alternatives\":[{\"code\":\"JWT_KID_NOT_FOUND_IN_JWKS\",\"why_not\":\"The kid test-key-1 was found in the supplied JWKS and the signature verified.\"},{\"code\":\"HEALTHY\",\"why_not\":\"Signature, iss, aud, exp, nbf, iat and nonce all pass, but the jku header lets the token nominate its own key, which is an unsafe key-source signal.\"}],\"questions\":[\"Does the captured token header really say alg=HS256? The validator read RS256 and the signature verified against the RSA JWKS. Please confirm you stashed the token that produced the HS256 error.\",\"Please supply the access_token if you want the at_hash check run. It was skipped.\"],\"posture_codes\":[]}",
+    "structured_output": {
+      "root_cause_code": "JWT_ALG_NONE_OR_CONFUSION",
+      "confidence": 0.75,
+      "evidence": [
+        {
+          "path": "/header/jku",
+          "actual": "present",
+          "note": "The token header names its own key-set URL. An SP must ignore it and use only the OP's configured JWKS."
+        },
+        {
+          "path": "/header/alg",
+          "actual": "RS256",
+          "expected": "asymmetric alg from the OP's JWKS",
+          "note": "The validator read RS256 here and the signature verified against the pinned RSA key. This conflicts with the reported HS256 symptom."
+        }
+      ],
+      "fix": "Pin the allowed algorithms to the asymmetric ones the OP publishes (for example RS256). Never take the algorithm or key source from the token. Ignore the jku, jwk and x5u headers and verify only against the JWKS configured for the OP's issuer. Reject any HS* token when the configured keys are RSA public keys, so the public key can never be used as an HMAC secret. Keep signature, issuer, audience, expiry and nonce validation on.",
+      "alternatives": [
+        {
+          "code": "JWT_KID_NOT_FOUND_IN_JWKS",
+          "why_not": "The kid test-key-1 was found in the supplied JWKS and the signature verified."
+        },
+        {
+          "code": "HEALTHY",
+          "why_not": "Signature, iss, aud, exp, nbf, iat and nonce all pass, but the jku header lets the token nominate its own key, which is an unsafe key-source signal."
+        }
+      ],
+      "questions": [
+        "Does the captured token header really say alg=HS256? The validator read RS256 and the signature verified against the RSA JWKS. Please confirm you stashed the token that produced the HS256 error.",
+        "Please supply the access_token if you want the at_hash check run. It was skipped."
+      ],
+      "posture_codes": []
+    },
+    "ttft_ms": 9268,
+    "type": "result",
+    "duration_ms": 16497,
+    "uuid": "9aecaaa3-84be-45cc-a0fe-efb61212be99",
+    "ttft_stream_ms": 6556,
+    "time_to_request_ms": 118,
+    "first_content_frame_ms": 6557,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

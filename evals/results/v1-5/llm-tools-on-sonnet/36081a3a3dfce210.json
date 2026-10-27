@@ -1,0 +1,217 @@
+{
+  "case_id": "jwt_alg_none_or_confusion-03",
+  "case_hash": "36081a3a3dfce210",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_ALG_NONE_OR_CONFUSION",
+    "posture_codes": [],
+    "evidence_path": "/header/alg",
+    "fix_keys": [
+      "reject",
+      "token"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_alg_none_or_confusion-03",
+    "kind": "jwt",
+    "mutator": "jwt_alg_none",
+    "expected_completeness": "partial",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 3,
+    "hash": "36081a3a3dfce210"
+  },
+  "output": {
+    "root_cause_code": "JWT_ALG_NONE_OR_CONFUSION",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/header/alg",
+        "actual": "none",
+        "expected": "an asymmetric algorithm such as RS256",
+        "note": "The captured token's header says alg=none, so it is unsigned. The developer described it as HS256. Either way the algorithm is not one the OP publishes (RSA keys only)."
+      },
+      {
+        "path": "/signature",
+        "actual": "unsigned token",
+        "expected": "a signature that verifies against the OP's RSA key",
+        "note": "The signature check failed because there is no signature."
+      }
+    ],
+    "fix": "Reject this token. Pin the SP's allowed algorithms to the asymmetric ones the OP publishes (RS256 here), and never take the algorithm from the token header. Never accept alg=none. Never verify an HS256 token using the RSA public key as an HMAC secret. Find out why the OP, or whatever sits between it and the SP, is issuing or forwarding a token with a different algorithm. Check the client's id_token_signed_response_alg setting at the OP.",
+    "posture_codes": [
+      "POSTURE_WEAK_ALGORITHM"
+    ],
+    "alternatives": [
+      {
+        "code": "JWT_KID_NOT_FOUND_IN_JWKS",
+        "why_not": "The kid test-key-1 was found in the JWKS, so key lookup is not the problem."
+      }
+    ],
+    "questions": [
+      "The captured header shows alg=none, not HS256. Can you confirm which token was captured?",
+      "nonce (so the nonce binding can be checked)",
+      "access_token (so at_hash can be checked)"
+    ]
+  },
+  "started": "2026-10-27T09:53:23.112852-05:00",
+  "duration_ms": 17700,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1351,
+    "cache_creation_input_tokens": 3608,
+    "cache_read_input_tokens": 23912
+  },
+  "cost_usd": 0.0303412,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1351,
+      "cacheReadInputTokens": 23912,
+      "cacheCreationInputTokens": 3608,
+      "costUSD": 0.0303412,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 2,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 17573,
+    "stop_reason": "tool_use",
+    "session_id": "c0fc7ffa-3320-422d-b3d1-9ce7d02d7bbc",
+    "total_cost_usd": 0.0303412,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3608,
+      "cache_read_input_tokens": 23912,
+      "output_tokens": 1351,
+      "output_tokens_details": {
+        "thinking_tokens": 54
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3608,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 726,
+          "cache_read_input_tokens": 12839,
+          "cache_creation_input_tokens": 1842,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1842
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1351,
+        "cacheReadInputTokens": 23912,
+        "cacheCreationInputTokens": 3608,
+        "webSearchRequests": 0,
+        "costUSD": 0.0303412,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 54,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3608,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"JWT_ALG_NONE_OR_CONFUSION\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/header/alg\",\"actual\":\"none\",\"expected\":\"an asymmetric algorithm such as RS256\",\"note\":\"The captured token's header says alg=none, so it is unsigned. The developer described it as HS256. Either way the algorithm is not one the OP publishes (RSA keys only).\"},{\"path\":\"/signature\",\"actual\":\"unsigned token\",\"expected\":\"a signature that verifies against the OP's RSA key\",\"note\":\"The signature check failed because there is no signature.\"}],\"fix\":\"Reject this token. Pin the SP's allowed algorithms to the asymmetric ones the OP publishes (RS256 here), and never take the algorithm from the token header. Never accept alg=none. Never verify an HS256 token using the RSA public key as an HMAC secret. Find out why the OP, or whatever sits between it and the SP, is issuing or forwarding a token with a different algorithm. Check the client's id_token_signed_response_alg setting at the OP.\",\"alternatives\":[{\"code\":\"JWT_KID_NOT_FOUND_IN_JWKS\",\"why_not\":\"The kid test-key-1 was found in the JWKS, so key lookup is not the problem.\"}],\"questions\":[\"The captured header shows alg=none, not HS256. Can you confirm which token was captured?\",\"nonce (so the nonce binding can be checked)\",\"access_token (so at_hash can be checked)\"],\"posture_codes\":[\"POSTURE_WEAK_ALGORITHM\"]}",
+    "structured_output": {
+      "root_cause_code": "JWT_ALG_NONE_OR_CONFUSION",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/header/alg",
+          "actual": "none",
+          "expected": "an asymmetric algorithm such as RS256",
+          "note": "The captured token's header says alg=none, so it is unsigned. The developer described it as HS256. Either way the algorithm is not one the OP publishes (RSA keys only)."
+        },
+        {
+          "path": "/signature",
+          "actual": "unsigned token",
+          "expected": "a signature that verifies against the OP's RSA key",
+          "note": "The signature check failed because there is no signature."
+        }
+      ],
+      "fix": "Reject this token. Pin the SP's allowed algorithms to the asymmetric ones the OP publishes (RS256 here), and never take the algorithm from the token header. Never accept alg=none. Never verify an HS256 token using the RSA public key as an HMAC secret. Find out why the OP, or whatever sits between it and the SP, is issuing or forwarding a token with a different algorithm. Check the client's id_token_signed_response_alg setting at the OP.",
+      "alternatives": [
+        {
+          "code": "JWT_KID_NOT_FOUND_IN_JWKS",
+          "why_not": "The kid test-key-1 was found in the JWKS, so key lookup is not the problem."
+        }
+      ],
+      "questions": [
+        "The captured header shows alg=none, not HS256. Can you confirm which token was captured?",
+        "nonce (so the nonce binding can be checked)",
+        "access_token (so at_hash can be checked)"
+      ],
+      "posture_codes": [
+        "POSTURE_WEAK_ALGORITHM"
+      ]
+    },
+    "ttft_ms": 11261,
+    "type": "result",
+    "duration_ms": 17700,
+    "uuid": "19403ff6-42e2-4096-bfc1-716e4fa10a68",
+    "ttft_stream_ms": 8591,
+    "time_to_request_ms": 109,
+    "first_content_frame_ms": 8592,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

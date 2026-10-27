@@ -1,0 +1,59 @@
+{
+  "case_id": "saml_structure_invalid-03",
+  "case_hash": "c627c8e2865e6551",
+  "arm": "rules",
+  "label": {
+    "code": "SAML_STRUCTURE_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion",
+    "fix_keys": [
+      "treat",
+      "response",
+      "hostile",
+      "unless"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_structure_invalid-03",
+    "kind": "saml_response",
+    "dialect": "okta",
+    "mutator": "structure_multi_assertion",
+    "expected_completeness": "partial",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 3,
+    "hash": "c627c8e2865e6551"
+  },
+  "output": {
+    "root_cause_code": "SAML_STRUCTURE_INVALID",
+    "confidence": 1,
+    "evidence": [
+      {
+        "path": "/Response/Assertion",
+        "actual": "2 assertions",
+        "expected": "1",
+        "note": "multiple assertions; an SP must consume only the signed one (CVE-2022-41912 class)"
+      }
+    ],
+    "fix": "Treat the response as hostile unless the IdP is known to emit this shape: consume only the element whose signature verified, and ask the IdP to emit a single assertion with the Signature as a direct child of the signed element.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": [
+      "request_id"
+    ]
+  },
+  "started": "2026-10-27T09:29:17.725871-05:00",
+  "duration_ms": 0,
+  "tool_calls": 0,
+  "num_turns": 0,
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0
+  },
+  "cost_usd": 0,
+  "hallucinated": [],
+  "valid_citations": 1
+}

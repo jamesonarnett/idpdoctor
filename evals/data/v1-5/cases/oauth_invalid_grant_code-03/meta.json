@@ -1,0 +1,10 @@
+{
+  "id": "oauth_invalid_grant_code-03",
+  "kind": "oauth_redirect",
+  "mutator": "oauth_invalid_grant_reused",
+  "expected_completeness": "partial",
+  "symptom_from": "vendor_strings.json",
+  "seed": 42,
+  "index": 3,
+  "hash": "8298b5a2b039498e"
+}

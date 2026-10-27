@@ -1,0 +1,223 @@
+{
+  "case_id": "saml_required_attribute_missing-00",
+  "case_hash": "72fb56c29bbbd662",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_REQUIRED_ATTRIBUTE_MISSING",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/AttributeStatement/Attribute[@Name='email']",
+    "fix_keys": [
+      "missing",
+      "attribute",
+      "claim",
+      "application"
+    ],
+    "needs": [
+      "required_attributes"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_required_attribute_missing-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "attribute_missing",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "72fb56c29bbbd662"
+  },
+  "output": {
+    "root_cause_code": "SAML_REQUIRED_ATTRIBUTE_MISSING",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/AttributeStatement",
+        "actual": "Contains only the firstName and groups attributes; no email attribute is present",
+        "expected": "Attributes email and firstName both present",
+        "note": "The AttributeStatement has no email attribute."
+      },
+      {
+        "path": "/Response/Assertion/AttributeStatement/Attribute[@Name='firstName']",
+        "actual": "Present with a redacted non-empty value",
+        "expected": "firstName present",
+        "note": "firstName arrives correctly."
+      },
+      {
+        "path": "/Response/Assertion/AttributeStatement/Attribute[@Name='groups']",
+        "actual": "Present with two redacted values",
+        "expected": "Not required",
+        "note": "groups is sent, but the SP does not require it."
+      }
+    ],
+    "fix": "Configure the IdP's SAML application to release an attribute named exactly \"email\" (case-sensitive, matching the SP's expected Name). Map it to the user's mail field in the attribute mapping or claims rules. Keep the assertion signed. Then capture a new response and confirm that the email attribute has a non-empty value. The NameID is in email format, but the SP should not use it in place of a missing email attribute unless that is a deliberate configuration choice.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH",
+        "why_not": "The NameID is present and uses the expected emailAddress format. The only gap is the missing email attribute."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:45:08.24066-05:00",
+  "duration_ms": 5683,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 678,
+    "cache_creation_input_tokens": 6374,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.0327992,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 678,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 6374,
+      "costUSD": 0.0327992,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 5535,
+    "stop_reason": "tool_use",
+    "session_id": "64700dc1-8e7f-4722-bb15-0c8168442eba",
+    "total_cost_usd": 0.0327992,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6374,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 678,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6374,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 678,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 6374,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 6374
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 678,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 6374,
+        "webSearchRequests": 0,
+        "costUSD": 0.0327992,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6374,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_REQUIRED_ATTRIBUTE_MISSING\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/Response/Assertion/AttributeStatement\",\"actual\":\"Contains only the firstName and groups attributes; no email attribute is present\",\"expected\":\"Attributes email and firstName both present\",\"note\":\"The AttributeStatement has no email attribute.\"},{\"path\":\"/Response/Assertion/AttributeStatement/Attribute[@Name='firstName']\",\"actual\":\"Present with a redacted non-empty value\",\"expected\":\"firstName present\",\"note\":\"firstName arrives correctly.\"},{\"path\":\"/Response/Assertion/AttributeStatement/Attribute[@Name='groups']\",\"actual\":\"Present with two redacted values\",\"expected\":\"Not required\",\"note\":\"groups is sent, but the SP does not require it.\"}],\"fix\":\"Configure the IdP's SAML application to release an attribute named exactly \\\"email\\\" (case-sensitive, matching the SP's expected Name). Map it to the user's mail field in the attribute mapping or claims rules. Keep the assertion signed. Then capture a new response and confirm that the email attribute has a non-empty value. The NameID is in email format, but the SP should not use it in place of a missing email attribute unless that is a deliberate configuration choice.\",\"alternatives\":[{\"code\":\"SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH\",\"why_not\":\"The NameID is present and uses the expected emailAddress format. The only gap is the missing email attribute.\"}],\"questions\":[],\"posture_codes\":[]}",
+    "structured_output": {
+      "root_cause_code": "SAML_REQUIRED_ATTRIBUTE_MISSING",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/AttributeStatement",
+          "actual": "Contains only the firstName and groups attributes; no email attribute is present",
+          "expected": "Attributes email and firstName both present",
+          "note": "The AttributeStatement has no email attribute."
+        },
+        {
+          "path": "/Response/Assertion/AttributeStatement/Attribute[@Name='firstName']",
+          "actual": "Present with a redacted non-empty value",
+          "expected": "firstName present",
+          "note": "firstName arrives correctly."
+        },
+        {
+          "path": "/Response/Assertion/AttributeStatement/Attribute[@Name='groups']",
+          "actual": "Present with two redacted values",
+          "expected": "Not required",
+          "note": "groups is sent, but the SP does not require it."
+        }
+      ],
+      "fix": "Configure the IdP's SAML application to release an attribute named exactly \"email\" (case-sensitive, matching the SP's expected Name). Map it to the user's mail field in the attribute mapping or claims rules. Keep the assertion signed. Then capture a new response and confirm that the email attribute has a non-empty value. The NameID is in email format, but the SP should not use it in place of a missing email attribute unless that is a deliberate configuration choice.",
+      "alternatives": [
+        {
+          "code": "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH",
+          "why_not": "The NameID is present and uses the expected emailAddress format. The only gap is the missing email attribute."
+        }
+      ],
+      "questions": [],
+      "posture_codes": []
+    },
+    "ttft_ms": 5656,
+    "type": "result",
+    "duration_ms": 5683,
+    "uuid": "3142d3fb-8c46-4cb3-831b-11548789a8ab",
+    "ttft_stream_ms": 1663,
+    "time_to_request_ms": 145,
+    "first_content_frame_ms": 1663,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

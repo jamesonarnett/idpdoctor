@@ -1,0 +1,204 @@
+{
+  "case_id": "jwt_aud_or_azp_mismatch-03",
+  "case_hash": "2f8ad7d57c952c8c",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_AUD_OR_AZP_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/claims/azp",
+    "fix_keys": [
+      "request",
+      "token",
+      "client",
+      "correct"
+    ],
+    "needs": [
+      "client_id"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_aud_or_azp_mismatch-03",
+    "kind": "jwt",
+    "mutator": "jwt_multi_aud_no_azp",
+    "expected_completeness": "partial",
+    "seed": 42,
+    "index": 3,
+    "hash": "2f8ad7d57c952c8c"
+  },
+  "output": {
+    "root_cause_code": "JWT_AUD_OR_AZP_MISMATCH",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/claims/azp",
+        "actual": "absent",
+        "expected": "client-abc123",
+        "note": "aud contains multiple values, so OIDC Core 3.1.3.7 requires azp, and azp must equal this client_id"
+      },
+      {
+        "path": "/claims/aud",
+        "actual": "multiple audiences, includes client-abc123",
+        "expected": "client-abc123",
+        "note": "aud check passed, but the multi-valued aud means azp is required"
+      }
+    ],
+    "fix": "Request the token for this client only: use the correct client_id, and set the audience or resource parameter so aud holds only this client. If the OP must issue a multi-audience token, configure it to emit azp equal to client-abc123. On the SP side, keep validating aud against the client's own ID and require azp to match when aud has more than one value. Do not skip the azp check.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": [
+      "nonce (the nonce sent in the authorization request, to unskip the nonce binding check)",
+      "access_token (the access token returned with the id_token, to unskip the at_hash check)"
+    ]
+  },
+  "started": "2026-10-27T09:54:19.470696-05:00",
+  "duration_ms": 10849,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1134,
+    "cache_creation_input_tokens": 3582,
+    "cache_read_input_tokens": 23918
+  },
+  "cost_usd": 0.0280678,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1134,
+      "cacheReadInputTokens": 23918,
+      "cacheCreationInputTokens": 3582,
+      "costUSD": 0.0280678,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 2,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 10727,
+    "stop_reason": "tool_use",
+    "session_id": "2590c14e-3d22-4d02-8a41-57f9cc841ee4",
+    "total_cost_usd": 0.0280678,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3582,
+      "cache_read_input_tokens": 23918,
+      "output_tokens": 1134,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3582,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 505,
+          "cache_read_input_tokens": 12837,
+          "cache_creation_input_tokens": 1826,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1826
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1134,
+        "cacheReadInputTokens": 23918,
+        "cacheCreationInputTokens": 3582,
+        "webSearchRequests": 0,
+        "costUSD": 0.0280678,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3582,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"JWT_AUD_OR_AZP_MISMATCH\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/claims/azp\",\"actual\":\"absent\",\"expected\":\"client-abc123\",\"note\":\"aud contains multiple values, so OIDC Core 3.1.3.7 requires azp, and azp must equal this client_id\"},{\"path\":\"/claims/aud\",\"actual\":\"multiple audiences, includes client-abc123\",\"expected\":\"client-abc123\",\"note\":\"aud check passed, but the multi-valued aud means azp is required\"}],\"fix\":\"Request the token for this client only: use the correct client_id, and set the audience or resource parameter so aud holds only this client. If the OP must issue a multi-audience token, configure it to emit azp equal to client-abc123. On the SP side, keep validating aud against the client's own ID and require azp to match when aud has more than one value. Do not skip the azp check.\",\"questions\":[\"nonce (the nonce sent in the authorization request, to unskip the nonce binding check)\",\"access_token (the access token returned with the id_token, to unskip the at_hash check)\"],\"alternatives\":[]}",
+    "structured_output": {
+      "root_cause_code": "JWT_AUD_OR_AZP_MISMATCH",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/claims/azp",
+          "actual": "absent",
+          "expected": "client-abc123",
+          "note": "aud contains multiple values, so OIDC Core 3.1.3.7 requires azp, and azp must equal this client_id"
+        },
+        {
+          "path": "/claims/aud",
+          "actual": "multiple audiences, includes client-abc123",
+          "expected": "client-abc123",
+          "note": "aud check passed, but the multi-valued aud means azp is required"
+        }
+      ],
+      "fix": "Request the token for this client only: use the correct client_id, and set the audience or resource parameter so aud holds only this client. If the OP must issue a multi-audience token, configure it to emit azp equal to client-abc123. On the SP side, keep validating aud against the client's own ID and require azp to match when aud has more than one value. Do not skip the azp check.",
+      "questions": [
+        "nonce (the nonce sent in the authorization request, to unskip the nonce binding check)",
+        "access_token (the access token returned with the id_token, to unskip the at_hash check)"
+      ],
+      "alternatives": []
+    },
+    "ttft_ms": 4445,
+    "type": "result",
+    "duration_ms": 10849,
+    "uuid": "33076960-3b2b-448d-939b-1c738391ed90",
+    "ttft_stream_ms": 1840,
+    "time_to_request_ms": 106,
+    "first_content_frame_ms": 1840,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,199 @@
+{
+  "case_id": "posture_parser_differential_exposure-01",
+  "case_hash": "914585528d28779d",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_PARSER_DIFFERENTIAL_EXPOSURE"
+    ],
+    "evidence_path": "/Response/Assertion/Subject/NameID",
+    "fix_keys": [
+      "reject",
+      "doctype",
+      "entity",
+      "declarations"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_parser_differential_exposure-01",
+    "kind": "saml_response",
+    "dialect": "auth0",
+    "mutator": "posture_comment_in_nameid",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 1,
+    "hash": "914585528d28779d"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.93,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Subject/NameID",
+        "actual": "NameID contains an XML comment; parsers may read the value differently",
+        "note": "Pentest finding confirmed. All validation checks pass (signature verified against the configured cert, audience, recipient, time window, InResponseTo)."
+      }
+    ],
+    "fix": "The login is valid, but the SP is exposed to the parser-differential class of attacks (comment truncation inside NameID). Use the same XML parser and the same DOM for signature verification and for extracting NameID and attribute values. Reject DOCTYPE and entity declarations before parsing. Reject, or strip before any processing, assertions with comments inside NameID and AttributeValue. Take the NameID from the text content of the signed element only. Update the SAML library to a version that handles comments safely. Keep signature validation and the pinned IdP certificate as they are.",
+    "posture_codes": [
+      "POSTURE_PARSER_DIFFERENTIAL_EXPOSURE"
+    ],
+    "alternatives": [
+      {
+        "code": "SAML_STRUCTURE_INVALID",
+        "why_not": "The structure check only warned. The comment inside NameID is a posture risk, and no signature-wrapping pattern was found. The signature verifies."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T10:02:19.997164-05:00",
+  "duration_ms": 12956,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2018,
+    "cache_creation_input_tokens": 6453,
+    "cache_read_input_tokens": 28639
+  },
+  "cost_usd": 0.0488639,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2018,
+      "cacheReadInputTokens": 28639,
+      "cacheCreationInputTokens": 6453,
+      "costUSD": 0.0488639,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 12846,
+    "stop_reason": "tool_use",
+    "session_id": "56609e5d-9422-41ba-8296-41c41b73b17a",
+    "total_cost_usd": 0.0488639,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 6453,
+      "cache_read_input_tokens": 28639,
+      "output_tokens": 2018,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6453,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 564,
+          "cache_read_input_tokens": 16260,
+          "cache_creation_input_tokens": 2572,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2572
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2018,
+        "cacheReadInputTokens": 28639,
+        "cacheCreationInputTokens": 6453,
+        "webSearchRequests": 0,
+        "costUSD": 0.0488639,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6453,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.93,\"evidence\":[{\"path\":\"/Response/Assertion/Subject/NameID\",\"actual\":\"NameID contains an XML comment; parsers may read the value differently\",\"note\":\"Pentest finding confirmed. All validation checks pass (signature verified against the configured cert, audience, recipient, time window, InResponseTo).\"}],\"fix\":\"The login is valid, but the SP is exposed to the parser-differential class of attacks (comment truncation inside NameID). Use the same XML parser and the same DOM for signature verification and for extracting NameID and attribute values. Reject DOCTYPE and entity declarations before parsing. Reject, or strip before any processing, assertions with comments inside NameID and AttributeValue. Take the NameID from the text content of the signed element only. Update the SAML library to a version that handles comments safely. Keep signature validation and the pinned IdP certificate as they are.\",\"posture_codes\":[\"POSTURE_PARSER_DIFFERENTIAL_EXPOSURE\"],\"alternatives\":[{\"code\":\"SAML_STRUCTURE_INVALID\",\"why_not\":\"The structure check only warned. The comment inside NameID is a posture risk, and no signature-wrapping pattern was found. The signature verifies.\"}]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.93,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Subject/NameID",
+          "actual": "NameID contains an XML comment; parsers may read the value differently",
+          "note": "Pentest finding confirmed. All validation checks pass (signature verified against the configured cert, audience, recipient, time window, InResponseTo)."
+        }
+      ],
+      "fix": "The login is valid, but the SP is exposed to the parser-differential class of attacks (comment truncation inside NameID). Use the same XML parser and the same DOM for signature verification and for extracting NameID and attribute values. Reject DOCTYPE and entity declarations before parsing. Reject, or strip before any processing, assertions with comments inside NameID and AttributeValue. Take the NameID from the text content of the signed element only. Update the SAML library to a version that handles comments safely. Keep signature validation and the pinned IdP certificate as they are.",
+      "posture_codes": [
+        "POSTURE_PARSER_DIFFERENTIAL_EXPOSURE"
+      ],
+      "alternatives": [
+        {
+          "code": "SAML_STRUCTURE_INVALID",
+          "why_not": "The structure check only warned. The comment inside NameID is a posture risk, and no signature-wrapping pattern was found. The signature verifies."
+        }
+      ]
+    },
+    "ttft_ms": 8140,
+    "type": "result",
+    "duration_ms": 12956,
+    "uuid": "eda3d41f-b8f4-4b6a-b01c-fbc31d01ef02",
+    "ttft_stream_ms": 1590,
+    "time_to_request_ms": 101,
+    "first_content_frame_ms": 1590,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

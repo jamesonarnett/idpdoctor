@@ -1,0 +1,14 @@
+{
+  "code": "SAML_REQUIRED_ATTRIBUTE_MISSING",
+  "posture_codes": [],
+  "evidence_path": "/Response/Assertion/AttributeStatement/Attribute[@Name='email']",
+  "fix_keys": [
+    "missing",
+    "attribute",
+    "claim",
+    "application"
+  ],
+  "needs": [
+    "required_attributes"
+  ]
+}

@@ -1,0 +1,1 @@
+Entra AADSTS75005: the request is not a valid SAML 2.0 protocol message (from the IdP side).

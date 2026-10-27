@@ -1,0 +1,209 @@
+{
+  "case_id": "oidc_issuer_mismatch-00",
+  "case_hash": "1865df4192556b20",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OIDC_ISSUER_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/claims/iss",
+    "fix_keys": [
+      "configure",
+      "issuer",
+      "exact",
+      "string"
+    ],
+    "needs": [
+      "issuer"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "oidc_issuer_mismatch-00",
+    "kind": "jwt",
+    "mutator": "jwt_iss_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "1865df4192556b20"
+  },
+  "output": {
+    "root_cause_code": "OIDC_ISSUER_MISMATCH",
+    "confidence": 0.97,
+    "evidence": [
+      {
+        "path": "/claims/iss",
+        "actual": "https://login.example.com/tenant-1/",
+        "expected": "https://login.example.com/tenant-1/v2.0",
+        "note": "The signature, kid, aud, exp and nonce checks all pass. Only iss differs: the token's iss has no /v2.0 suffix and ends in a trailing slash."
+      }
+    ],
+    "fix": "Set the SP's issuer to the exact iss string the OP publishes in its discovery document. Compare it character for character, including scheme, host, tenant path and trailing slash. Then make sure the token comes from the endpoint version that matches that issuer. The token's iss looks like the v1 form (`.../tenant-1/`), and the configured issuer is the v2.0 form (`.../tenant-1/v2.0`). Either point the authorize and token requests at the v2.0 endpoints, or configure the v1 issuer. Don't loosen or skip the issuer check. go-oidc's `InsecureIssuerURLContext` skips the issuer match, so leave it off.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "JWT_KID_NOT_FOUND_IN_JWKS",
+        "why_not": "kid test-key-1 is in the JWKS and the signature verifies."
+      },
+      {
+        "code": "JWT_AUD_OR_AZP_MISMATCH",
+        "why_not": "aud contains client-abc123, and no azp claim is present."
+      }
+    ],
+    "questions": [
+      "Does the issuer in the OP's discovery document end in /v2.0 or in a trailing slash? Please paste it so the configured value can be confirmed. at_hash was not checked because no access_token was supplied."
+    ]
+  },
+  "started": "2026-10-27T09:59:10.728896-05:00",
+  "duration_ms": 13593,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1346,
+    "cache_creation_input_tokens": 3694,
+    "cache_read_input_tokens": 23933
+  },
+  "cost_usd": 0.0306373,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1346,
+      "cacheReadInputTokens": 23933,
+      "cacheCreationInputTokens": 3694,
+      "costUSD": 0.0306373,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 13492,
+    "stop_reason": "tool_use",
+    "session_id": "fbdb8d41-98ea-4a9f-8ebe-39dc4d60fc2f",
+    "total_cost_usd": 0.0306373,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3694,
+      "cache_read_input_tokens": 23933,
+      "output_tokens": 1346,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3694,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 699,
+          "cache_read_input_tokens": 12860,
+          "cache_creation_input_tokens": 1907,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1907
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1346,
+        "cacheReadInputTokens": 23933,
+        "cacheCreationInputTokens": 3694,
+        "webSearchRequests": 0,
+        "costUSD": 0.0306373,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3694,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OIDC_ISSUER_MISMATCH\",\"confidence\":0.97,\"evidence\":[{\"path\":\"/claims/iss\",\"actual\":\"https://login.example.com/tenant-1/\",\"expected\":\"https://login.example.com/tenant-1/v2.0\",\"note\":\"The signature, kid, aud, exp and nonce checks all pass. Only iss differs: the token's iss has no /v2.0 suffix and ends in a trailing slash.\"}],\"fix\":\"Set the SP's issuer to the exact iss string the OP publishes in its discovery document. Compare it character for character, including scheme, host, tenant path and trailing slash. Then make sure the token comes from the endpoint version that matches that issuer. The token's iss looks like the v1 form (`.../tenant-1/`), and the configured issuer is the v2.0 form (`.../tenant-1/v2.0`). Either point the authorize and token requests at the v2.0 endpoints, or configure the v1 issuer. Don't loosen or skip the issuer check. go-oidc's `InsecureIssuerURLContext` skips the issuer match, so leave it off.\",\"alternatives\":[{\"code\":\"JWT_KID_NOT_FOUND_IN_JWKS\",\"why_not\":\"kid test-key-1 is in the JWKS and the signature verifies.\"},{\"code\":\"JWT_AUD_OR_AZP_MISMATCH\",\"why_not\":\"aud contains client-abc123, and no azp claim is present.\"}],\"questions\":[\"Does the issuer in the OP's discovery document end in /v2.0 or in a trailing slash? Please paste it so the configured value can be confirmed. at_hash was not checked because no access_token was supplied.\"]}",
+    "structured_output": {
+      "root_cause_code": "OIDC_ISSUER_MISMATCH",
+      "confidence": 0.97,
+      "evidence": [
+        {
+          "path": "/claims/iss",
+          "actual": "https://login.example.com/tenant-1/",
+          "expected": "https://login.example.com/tenant-1/v2.0",
+          "note": "The signature, kid, aud, exp and nonce checks all pass. Only iss differs: the token's iss has no /v2.0 suffix and ends in a trailing slash."
+        }
+      ],
+      "fix": "Set the SP's issuer to the exact iss string the OP publishes in its discovery document. Compare it character for character, including scheme, host, tenant path and trailing slash. Then make sure the token comes from the endpoint version that matches that issuer. The token's iss looks like the v1 form (`.../tenant-1/`), and the configured issuer is the v2.0 form (`.../tenant-1/v2.0`). Either point the authorize and token requests at the v2.0 endpoints, or configure the v1 issuer. Don't loosen or skip the issuer check. go-oidc's `InsecureIssuerURLContext` skips the issuer match, so leave it off.",
+      "alternatives": [
+        {
+          "code": "JWT_KID_NOT_FOUND_IN_JWKS",
+          "why_not": "kid test-key-1 is in the JWKS and the signature verifies."
+        },
+        {
+          "code": "JWT_AUD_OR_AZP_MISMATCH",
+          "why_not": "aud contains client-abc123, and no azp claim is present."
+        }
+      ],
+      "questions": [
+        "Does the issuer in the OP's discovery document end in /v2.0 or in a trailing slash? Please paste it so the configured value can be confirmed. at_hash was not checked because no access_token was supplied."
+      ]
+    },
+    "ttft_ms": 4678,
+    "type": "result",
+    "duration_ms": 13593,
+    "uuid": "7b5c617f-778e-45d2-ab4d-8bd559ac3679",
+    "ttft_stream_ms": 1871,
+    "time_to_request_ms": 90,
+    "first_content_frame_ms": 1872,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

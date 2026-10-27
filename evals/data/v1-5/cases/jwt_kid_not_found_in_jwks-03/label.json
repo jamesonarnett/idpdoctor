@@ -1,0 +1,10 @@
+{
+  "code": "JWT_KID_NOT_FOUND_IN_JWKS",
+  "posture_codes": [],
+  "evidence_path": "/header/kid",
+  "fix_keys": [
+    "refresh",
+    "jwks_uri",
+    "rotate"
+  ]
+}

@@ -1,0 +1,192 @@
+{
+  "case_id": "saml_destination_or_recipient_mismatch-03",
+  "case_hash": "97d69e3da86f58ee",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_DESTINATION_OR_RECIPIENT_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@Recipient",
+    "fix_keys": [
+      "application",
+      "reply",
+      "assertion",
+      "consumer"
+    ],
+    "needs": [
+      "acs_url"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_destination_or_recipient_mismatch-03",
+    "kind": "saml_response",
+    "dialect": "okta",
+    "mutator": "recipient_mismatch",
+    "expected_completeness": "partial",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 3,
+    "hash": "97d69e3da86f58ee"
+  },
+  "output": {
+    "root_cause_code": "SAML_DESTINATION_OR_RECIPIENT_MISMATCH",
+    "confidence": 0.93,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@Recipient",
+        "actual": "http://sp.example.com/saml/acs",
+        "expected": "https://sp.example.com/saml/acs",
+        "note": "Recipient differs from the ACS URL only by scheme (http vs https). Response Destination, signature, audience, issuer, time window, NameID and attributes all pass."
+      }
+    ],
+    "fix": "In the IdP application, set the ACS / Reply / Recipient URL to exactly the SP's assertion consumer URL, https://sp.example.com/saml/acs. Scheme, host, port and path must all match. Remove any leftover staging or http values. Then re-issue the assertion. Keep signature validation and the other checks enabled.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": [
+      "request_id: the AuthnRequest ID is needed to check InResponseTo. That check was skipped."
+    ]
+  },
+  "started": "2026-10-27T10:06:23.032314-05:00",
+  "duration_ms": 11237,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1925,
+    "cache_creation_input_tokens": 6944,
+    "cache_read_input_tokens": 28683
+  },
+  "cost_usd": 0.0499023,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1925,
+      "cacheReadInputTokens": 28683,
+      "cacheCreationInputTokens": 6944,
+      "costUSD": 0.0499023,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 11115,
+    "stop_reason": "tool_use",
+    "session_id": "3ea50af3-63a7-43ac-b1a6-6e4482377e5a",
+    "total_cost_usd": 0.0499023,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 6944,
+      "cache_read_input_tokens": 28683,
+      "output_tokens": 1925,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6944,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 484,
+          "cache_read_input_tokens": 16304,
+          "cache_creation_input_tokens": 3019,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 3019
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1925,
+        "cacheReadInputTokens": 28683,
+        "cacheCreationInputTokens": 6944,
+        "webSearchRequests": 0,
+        "costUSD": 0.0499023,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6944,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_DESTINATION_OR_RECIPIENT_MISMATCH\",\"confidence\":0.93,\"evidence\":[{\"path\":\"/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@Recipient\",\"actual\":\"http://sp.example.com/saml/acs\",\"expected\":\"https://sp.example.com/saml/acs\",\"note\":\"Recipient differs from the ACS URL only by scheme (http vs https). Response Destination, signature, audience, issuer, time window, NameID and attributes all pass.\"}],\"fix\":\"In the IdP application, set the ACS / Reply / Recipient URL to exactly the SP's assertion consumer URL, https://sp.example.com/saml/acs. Scheme, host, port and path must all match. Remove any leftover staging or http values. Then re-issue the assertion. Keep signature validation and the other checks enabled.\",\"questions\":[\"request_id: the AuthnRequest ID is needed to check InResponseTo. That check was skipped.\"],\"alternatives\":[]}",
+    "structured_output": {
+      "root_cause_code": "SAML_DESTINATION_OR_RECIPIENT_MISMATCH",
+      "confidence": 0.93,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@Recipient",
+          "actual": "http://sp.example.com/saml/acs",
+          "expected": "https://sp.example.com/saml/acs",
+          "note": "Recipient differs from the ACS URL only by scheme (http vs https). Response Destination, signature, audience, issuer, time window, NameID and attributes all pass."
+        }
+      ],
+      "fix": "In the IdP application, set the ACS / Reply / Recipient URL to exactly the SP's assertion consumer URL, https://sp.example.com/saml/acs. Scheme, host, port and path must all match. Remove any leftover staging or http values. Then re-issue the assertion. Keep signature validation and the other checks enabled.",
+      "questions": [
+        "request_id: the AuthnRequest ID is needed to check InResponseTo. That check was skipped."
+      ],
+      "alternatives": []
+    },
+    "ttft_ms": 7655,
+    "type": "result",
+    "duration_ms": 11237,
+    "uuid": "82b86d1b-4388-455b-845d-360c3955f0f1",
+    "ttft_stream_ms": 1035,
+    "time_to_request_ms": 105,
+    "first_content_frame_ms": 1035,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,224 @@
+{
+  "case_id": "jwt_kid_not_found_in_jwks-01",
+  "case_hash": "fa13db85eb01c4d3",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_KID_NOT_FOUND_IN_JWKS",
+    "posture_codes": [],
+    "evidence_path": "/header/kid",
+    "fix_keys": [
+      "refresh",
+      "jwks_uri",
+      "rotate"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_kid_not_found_in_jwks-01",
+    "kind": "jwt",
+    "mutator": "jwt_kid_unknown",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 1,
+    "hash": "fa13db85eb01c4d3"
+  },
+  "output": {
+    "root_cause_code": "JWT_KID_NOT_FOUND_IN_JWKS",
+    "confidence": 0.93,
+    "evidence": [
+      {
+        "path": "/header/kid",
+        "actual": "rotated-key-9",
+        "expected": "one of: test-key-1",
+        "note": "The token's kid is not in the supplied JWKS. The signing keys were probably rotated, or the JWKS comes from a different tenant."
+      },
+      {
+        "path": "/keys/jwks_json",
+        "actual": "JWKS contains only kid test-key-1",
+        "note": "The signature could not be verified because no matching key exists."
+      }
+    ],
+    "fix": "Fetch the current JWKS from the OP's jwks_uri, which is listed in its discovery document. Make sure it comes from the same tenant and issuer that minted the token (https://login.example.com/tenant-1/v2.0). Then re-verify the signature against the key whose kid is rotated-key-9. Keep the algorithm allow-list in place. Don't skip signature verification or trust a key embedded in the token. In production, cache the JWKS and refetch it once when an unknown kid appears, with rate limiting.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+        "why_not": "The exp, nbf and iat checks all passed at the supplied time (2026-01-15T12:00:00Z)."
+      },
+      {
+        "code": "OIDC_ISSUER_MISMATCH",
+        "why_not": "The iss claim matches the expected issuer."
+      },
+      {
+        "code": "JWT_AUD_OR_AZP_MISMATCH",
+        "why_not": "The aud claim contains client-abc123, and azp is absent with a single audience."
+      }
+    ],
+    "questions": [
+      "Can you supply the OP's current JWKS from its jwks_uri? The signature check was skipped because no key matched, so the signature is still unverified.",
+      "Can you supply the access_token? The at_hash check was skipped without it."
+    ]
+  },
+  "started": "2026-10-27T09:55:20.274558-05:00",
+  "duration_ms": 12389,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1395,
+    "cache_creation_input_tokens": 3686,
+    "cache_read_input_tokens": 23910
+  },
+  "cost_usd": 0.031093,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1395,
+      "cacheReadInputTokens": 23910,
+      "cacheCreationInputTokens": 3686,
+      "costUSD": 0.031093,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 2,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 12269,
+    "stop_reason": "tool_use",
+    "session_id": "d853d3f2-29a4-422c-b4fe-3a258168b548",
+    "total_cost_usd": 0.031093,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3686,
+      "cache_read_input_tokens": 23910,
+      "output_tokens": 1395,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3686,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 750,
+          "cache_read_input_tokens": 12837,
+          "cache_creation_input_tokens": 1922,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1922
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1395,
+        "cacheReadInputTokens": 23910,
+        "cacheCreationInputTokens": 3686,
+        "webSearchRequests": 0,
+        "costUSD": 0.031093,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3686,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"JWT_KID_NOT_FOUND_IN_JWKS\",\"confidence\":0.93,\"evidence\":[{\"path\":\"/header/kid\",\"actual\":\"rotated-key-9\",\"expected\":\"one of: test-key-1\",\"note\":\"The token's kid is not in the supplied JWKS. The signing keys were probably rotated, or the JWKS comes from a different tenant.\"},{\"path\":\"/keys/jwks_json\",\"actual\":\"JWKS contains only kid test-key-1\",\"note\":\"The signature could not be verified because no matching key exists.\"}],\"fix\":\"Fetch the current JWKS from the OP's jwks_uri, which is listed in its discovery document. Make sure it comes from the same tenant and issuer that minted the token (https://login.example.com/tenant-1/v2.0). Then re-verify the signature against the key whose kid is rotated-key-9. Keep the algorithm allow-list in place. Don't skip signature verification or trust a key embedded in the token. In production, cache the JWKS and refetch it once when an unknown kid appears, with rate limiting.\",\"alternatives\":[{\"code\":\"JWT_EXPIRED_OR_NOT_YET_VALID\",\"why_not\":\"The exp, nbf and iat checks all passed at the supplied time (2026-01-15T12:00:00Z).\"},{\"code\":\"OIDC_ISSUER_MISMATCH\",\"why_not\":\"The iss claim matches the expected issuer.\"},{\"code\":\"JWT_AUD_OR_AZP_MISMATCH\",\"why_not\":\"The aud claim contains client-abc123, and azp is absent with a single audience.\"}],\"questions\":[\"Can you supply the OP's current JWKS from its jwks_uri? The signature check was skipped because no key matched, so the signature is still unverified.\",\"Can you supply the access_token? The at_hash check was skipped without it.\"]}",
+    "structured_output": {
+      "root_cause_code": "JWT_KID_NOT_FOUND_IN_JWKS",
+      "confidence": 0.93,
+      "evidence": [
+        {
+          "path": "/header/kid",
+          "actual": "rotated-key-9",
+          "expected": "one of: test-key-1",
+          "note": "The token's kid is not in the supplied JWKS. The signing keys were probably rotated, or the JWKS comes from a different tenant."
+        },
+        {
+          "path": "/keys/jwks_json",
+          "actual": "JWKS contains only kid test-key-1",
+          "note": "The signature could not be verified because no matching key exists."
+        }
+      ],
+      "fix": "Fetch the current JWKS from the OP's jwks_uri, which is listed in its discovery document. Make sure it comes from the same tenant and issuer that minted the token (https://login.example.com/tenant-1/v2.0). Then re-verify the signature against the key whose kid is rotated-key-9. Keep the algorithm allow-list in place. Don't skip signature verification or trust a key embedded in the token. In production, cache the JWKS and refetch it once when an unknown kid appears, with rate limiting.",
+      "alternatives": [
+        {
+          "code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+          "why_not": "The exp, nbf and iat checks all passed at the supplied time (2026-01-15T12:00:00Z)."
+        },
+        {
+          "code": "OIDC_ISSUER_MISMATCH",
+          "why_not": "The iss claim matches the expected issuer."
+        },
+        {
+          "code": "JWT_AUD_OR_AZP_MISMATCH",
+          "why_not": "The aud claim contains client-abc123, and azp is absent with a single audience."
+        }
+      ],
+      "questions": [
+        "Can you supply the OP's current JWKS from its jwks_uri? The signature check was skipped because no key matched, so the signature is still unverified.",
+        "Can you supply the access_token? The at_hash check was skipped without it."
+      ]
+    },
+    "ttft_ms": 4993,
+    "type": "result",
+    "duration_ms": 12389,
+    "uuid": "7603d9e5-96d1-440a-9244-49b7af3f79d3",
+    "ttft_stream_ms": 2175,
+    "time_to_request_ms": 106,
+    "first_content_frame_ms": 2175,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

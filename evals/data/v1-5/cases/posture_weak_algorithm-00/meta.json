@@ -1,0 +1,11 @@
+{
+  "id": "posture_weak_algorithm-00",
+  "kind": "saml_response",
+  "dialect": "entra",
+  "mutator": "posture_sha1",
+  "expected_completeness": "full",
+  "symptom_from": "vendor_strings.json",
+  "seed": 42,
+  "index": 0,
+  "hash": "4c91f78f7cb3eeef"
+}

@@ -1,0 +1,11 @@
+{
+  "id": "saml_issuer_mismatch-03",
+  "kind": "saml_response",
+  "dialect": "okta",
+  "mutator": "issuer_mismatch",
+  "expected_completeness": "partial",
+  "symptom_from": "vendor_strings.json",
+  "seed": 42,
+  "index": 3,
+  "hash": "d0a6c7bc279cdbe8"
+}

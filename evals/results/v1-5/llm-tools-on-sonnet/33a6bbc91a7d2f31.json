@@ -1,0 +1,220 @@
+{
+  "case_id": "healthy-jwt-07",
+  "case_hash": "33a6bbc91a7d2f31",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [],
+    "fix_keys": [
+      "no change needed",
+      "the artifact validates"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "healthy-jwt-07",
+    "kind": "jwt",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 7,
+    "hash": "33a6bbc91a7d2f31"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/header/alg",
+        "actual": "RS256",
+        "note": "alg allowed"
+      },
+      {
+        "path": "/signature",
+        "actual": "verified with jwks_json (RSA 2048)"
+      },
+      {
+        "path": "/claims/iss",
+        "actual": "matches issuer"
+      },
+      {
+        "path": "/claims/aud",
+        "actual": "contains client_id"
+      },
+      {
+        "path": "/claims/nonce",
+        "actual": "matches"
+      },
+      {
+        "path": "/claims/exp",
+        "actual": "expires in 1h0m0s at the replay time"
+      }
+    ],
+    "fix": "No fix needed. The token validates under the expected values, evaluated at the replay time 2026-01-15T12:00:00Z. In production, validate against the current time. To also check at_hash, supply the access token returned with the id_token.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": [
+      "access_token (optional, to run the at_hash check)"
+    ]
+  },
+  "started": "2026-10-27T09:49:56.833816-05:00",
+  "duration_ms": 21746,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1046,
+    "cache_creation_input_tokens": 2909,
+    "cache_read_input_tokens": 23905
+  },
+  "cost_usd": 0.0244945,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1046,
+      "cacheReadInputTokens": 23905,
+      "cacheCreationInputTokens": 2909,
+      "costUSD": 0.0244945,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 6,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 21594,
+    "stop_reason": "tool_use",
+    "session_id": "c34693b9-00e6-48bf-b0ec-dbf8b872d237",
+    "total_cost_usd": 0.0244945,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 2909,
+      "cache_read_input_tokens": 23905,
+      "output_tokens": 1046,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 2909,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 403,
+          "cache_read_input_tokens": 12832,
+          "cache_creation_input_tokens": 1150,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1150
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1046,
+        "cacheReadInputTokens": 23905,
+        "cacheCreationInputTokens": 2909,
+        "webSearchRequests": 0,
+        "costUSD": 0.0244945,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 2909,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/header/alg\",\"actual\":\"RS256\",\"note\":\"alg allowed\"},{\"path\":\"/signature\",\"actual\":\"verified with jwks_json (RSA 2048)\"},{\"path\":\"/claims/iss\",\"actual\":\"matches issuer\"},{\"path\":\"/claims/aud\",\"actual\":\"contains client_id\"},{\"path\":\"/claims/nonce\",\"actual\":\"matches\"},{\"path\":\"/claims/exp\",\"actual\":\"expires in 1h0m0s at the replay time\"}],\"fix\":\"No fix needed. The token validates under the expected values, evaluated at the replay time 2026-01-15T12:00:00Z. In production, validate against the current time. To also check at_hash, supply the access token returned with the id_token.\",\"questions\":[\"access_token (optional, to run the at_hash check)\"]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/header/alg",
+          "actual": "RS256",
+          "note": "alg allowed"
+        },
+        {
+          "path": "/signature",
+          "actual": "verified with jwks_json (RSA 2048)"
+        },
+        {
+          "path": "/claims/iss",
+          "actual": "matches issuer"
+        },
+        {
+          "path": "/claims/aud",
+          "actual": "contains client_id"
+        },
+        {
+          "path": "/claims/nonce",
+          "actual": "matches"
+        },
+        {
+          "path": "/claims/exp",
+          "actual": "expires in 1h0m0s at the replay time"
+        }
+      ],
+      "fix": "No fix needed. The token validates under the expected values, evaluated at the replay time 2026-01-15T12:00:00Z. In production, validate against the current time. To also check at_hash, supply the access token returned with the id_token.",
+      "questions": [
+        "access_token (optional, to run the at_hash check)"
+      ]
+    },
+    "ttft_ms": 16222,
+    "type": "result",
+    "duration_ms": 21746,
+    "uuid": "a851a15e-0f3f-4178-a478-f01f0663d599",
+    "ttft_stream_ms": 13494,
+    "time_to_request_ms": 138,
+    "first_content_frame_ms": 13494,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

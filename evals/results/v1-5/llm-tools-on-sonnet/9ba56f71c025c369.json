@@ -1,0 +1,230 @@
+{
+  "case_id": "idp_policy_refusal-00",
+  "case_hash": "9ba56f71c025c369",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "IDP_POLICY_REFUSAL",
+    "posture_codes": [],
+    "evidence_path": "/redirect/error",
+    "fix_keys": [
+      "resolve",
+      "side:",
+      "assign",
+      "group"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "idp_policy_refusal-00",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_consent_required",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "9ba56f71c025c369"
+  },
+  "output": {
+    "root_cause_code": "IDP_POLICY_REFUSAL",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "consent_required",
+        "note": "IdP refused authorization because consent has not been granted"
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "The user or administrator has not consented to use the application.",
+        "note": "Tenant/consent policy refusal, not a request defect"
+      },
+      {
+        "path": "/request/redirect_uri",
+        "actual": "https://app.example.com/callback",
+        "expected": "registered URI",
+        "note": "Exact match with registered URI, so not a redirect mismatch"
+      },
+      {
+        "path": "/request/code_challenge_method",
+        "actual": "S256",
+        "note": "PKCE verifies and public client uses S256; the request side is healthy"
+      }
+    ],
+    "fix": "Resolve this on the IdP side. In the Google Workspace admin console, enable the app for the user's organizational unit or group. Also allow or trust the OAuth client, and have the user or an admin grant consent. If the user is in a different tenant or domain, target the correct one. Keep PKCE S256 and the exact redirect URI as they are. Don't weaken any validation.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+        "why_not": "Redirect URI, PKCE and grant type checks all pass. The refusal is a consent or access policy matter, not a client registration defect."
+      }
+    ],
+    "questions": [
+      "Is the user in a Google Workspace domain whose admin restricts third-party app access?",
+      "Has an admin configured the OAuth client as trusted or allowed for this user's organizational unit?"
+    ]
+  },
+  "started": "2026-10-27T09:52:01.698951-05:00",
+  "duration_ms": 11857,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1012,
+    "cache_creation_input_tokens": 14125,
+    "cache_read_input_tokens": 12564
+  },
+  "cost_usd": 0.0678844,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1012,
+      "cacheReadInputTokens": 12564,
+      "cacheCreationInputTokens": 14125,
+      "costUSD": 0.0678844,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 11756,
+    "stop_reason": "tool_use",
+    "session_id": "9f242bf8-e779-4d47-9000-6b705a821d7d",
+    "total_cost_usd": 0.0678844,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 14125,
+      "cache_read_input_tokens": 12564,
+      "output_tokens": 1012,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 14125,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 660,
+          "cache_read_input_tokens": 12564,
+          "cache_creation_input_tokens": 1561,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1561
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1012,
+        "cacheReadInputTokens": 12564,
+        "cacheCreationInputTokens": 14125,
+        "webSearchRequests": 0,
+        "costUSD": 0.0678844,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 14125,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"IDP_POLICY_REFUSAL\",\"confidence\":0.8,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"consent_required\",\"note\":\"IdP refused authorization because consent has not been granted\"},{\"path\":\"/redirect/error_description\",\"actual\":\"The user or administrator has not consented to use the application.\",\"note\":\"Tenant/consent policy refusal, not a request defect\"},{\"path\":\"/request/redirect_uri\",\"actual\":\"https://app.example.com/callback\",\"expected\":\"registered URI\",\"note\":\"Exact match with registered URI, so not a redirect mismatch\"},{\"path\":\"/request/code_challenge_method\",\"actual\":\"S256\",\"note\":\"PKCE verifies and public client uses S256; the request side is healthy\"}],\"fix\":\"Resolve this on the IdP side. In the Google Workspace admin console, enable the app for the user's organizational unit or group. Also allow or trust the OAuth client, and have the user or an admin grant consent. If the user is in a different tenant or domain, target the correct one. Keep PKCE S256 and the exact redirect URI as they are. Don't weaken any validation.\",\"alternatives\":[{\"code\":\"OAUTH_CLIENT_CONFIG_REJECTED\",\"why_not\":\"Redirect URI, PKCE and grant type checks all pass. The refusal is a consent or access policy matter, not a client registration defect.\"}],\"questions\":[\"Is the user in a Google Workspace domain whose admin restricts third-party app access?\",\"Has an admin configured the OAuth client as trusted or allowed for this user's organizational unit?\"]}",
+    "structured_output": {
+      "root_cause_code": "IDP_POLICY_REFUSAL",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "consent_required",
+          "note": "IdP refused authorization because consent has not been granted"
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "The user or administrator has not consented to use the application.",
+          "note": "Tenant/consent policy refusal, not a request defect"
+        },
+        {
+          "path": "/request/redirect_uri",
+          "actual": "https://app.example.com/callback",
+          "expected": "registered URI",
+          "note": "Exact match with registered URI, so not a redirect mismatch"
+        },
+        {
+          "path": "/request/code_challenge_method",
+          "actual": "S256",
+          "note": "PKCE verifies and public client uses S256; the request side is healthy"
+        }
+      ],
+      "fix": "Resolve this on the IdP side. In the Google Workspace admin console, enable the app for the user's organizational unit or group. Also allow or trust the OAuth client, and have the user or an admin grant consent. If the user is in a different tenant or domain, target the correct one. Keep PKCE S256 and the exact redirect URI as they are. Don't weaken any validation.",
+      "alternatives": [
+        {
+          "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+          "why_not": "Redirect URI, PKCE and grant type checks all pass. The refusal is a consent or access policy matter, not a client registration defect."
+        }
+      ],
+      "questions": [
+        "Is the user in a Google Workspace domain whose admin restricts third-party app access?",
+        "Has an admin configured the OAuth client as trusted or allowed for this user's organizational unit?"
+      ]
+    },
+    "ttft_ms": 3916,
+    "type": "result",
+    "duration_ms": 11857,
+    "uuid": "533e0e7f-423c-4645-966b-8c254f8966dd",
+    "ttft_stream_ms": 2402,
+    "time_to_request_ms": 85,
+    "first_content_frame_ms": 2402,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

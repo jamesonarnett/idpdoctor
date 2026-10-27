@@ -1,0 +1,183 @@
+{
+  "case_id": "saml_nameid_missing_or_format_mismatch-01",
+  "case_hash": "7372e907cdea2136",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/Subject/NameID",
+    "fix_keys": [
+      "stable",
+      "identifier",
+      "nameid",
+      "application"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_nameid_missing_or_format_mismatch-01",
+    "kind": "saml_response",
+    "dialect": "auth0",
+    "mutator": "nameid_missing",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 1,
+    "hash": "7372e907cdea2136"
+  },
+  "output": {
+    "root_cause_code": "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Subject/NameID",
+        "actual": "NameID element absent from Subject",
+        "expected": "a stable user identifier in emailAddress format",
+        "note": "All other checks pass: status, issuer, destination, InResponseTo, assertion signature, audience, recipient, time window and required attributes."
+      }
+    ],
+    "fix": "In the Entra enterprise application's SAML single sign-on settings, edit the \"Unique User Identifier (Name ID)\" claim. Map it to a stable source attribute, such as user.mail or the UPN, that always has a value. Set the Name identifier format to Email address (urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress) so it matches what the SP expects. Confirm the source attribute is populated for the test user. Then capture a new response and check that the Subject carries a NameID with that Format. Keep signature validation on.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T10:09:01.809954-05:00",
+  "duration_ms": 11714,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1899,
+    "cache_creation_input_tokens": 6758,
+    "cache_read_input_tokens": 28657
+  },
+  "cost_usd": 0.0488957,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1899,
+      "cacheReadInputTokens": 28657,
+      "cacheCreationInputTokens": 6758,
+      "costUSD": 0.0488957,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 11605,
+    "stop_reason": "tool_use",
+    "session_id": "c9ce0831-ff6c-42e0-831f-520ece7d2cd2",
+    "total_cost_usd": 0.0488957,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 6758,
+      "cache_read_input_tokens": 28657,
+      "output_tokens": 1899,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6758,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 441,
+          "cache_read_input_tokens": 16278,
+          "cache_creation_input_tokens": 2859,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2859
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1899,
+        "cacheReadInputTokens": 28657,
+        "cacheCreationInputTokens": 6758,
+        "webSearchRequests": 0,
+        "costUSD": 0.0488957,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6758,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/Response/Assertion/Subject/NameID\",\"expected\":\"a stable user identifier in emailAddress format\",\"actual\":\"NameID element absent from Subject\",\"note\":\"All other checks pass: status, issuer, destination, InResponseTo, assertion signature, audience, recipient, time window and required attributes.\"}],\"fix\":\"In the Entra enterprise application's SAML single sign-on settings, edit the \\\"Unique User Identifier (Name ID)\\\" claim. Map it to a stable source attribute, such as user.mail or the UPN, that always has a value. Set the Name identifier format to Email address (urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress) so it matches what the SP expects. Confirm the source attribute is populated for the test user. Then capture a new response and check that the Subject carries a NameID with that Format. Keep signature validation on.\"}",
+    "structured_output": {
+      "root_cause_code": "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Subject/NameID",
+          "expected": "a stable user identifier in emailAddress format",
+          "actual": "NameID element absent from Subject",
+          "note": "All other checks pass: status, issuer, destination, InResponseTo, assertion signature, audience, recipient, time window and required attributes."
+        }
+      ],
+      "fix": "In the Entra enterprise application's SAML single sign-on settings, edit the \"Unique User Identifier (Name ID)\" claim. Map it to a stable source attribute, such as user.mail or the UPN, that always has a value. Set the Name identifier format to Email address (urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress) so it matches what the SP expects. Confirm the source attribute is populated for the test user. Then capture a new response and check that the Subject carries a NameID with that Format. Keep signature validation on."
+    },
+    "ttft_ms": 7768,
+    "type": "result",
+    "duration_ms": 11714,
+    "uuid": "f54df6df-0af5-4116-a24e-1cb68d8a280e",
+    "ttft_stream_ms": 1354,
+    "time_to_request_ms": 96,
+    "first_content_frame_ms": 1354,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

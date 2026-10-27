@@ -1,0 +1,212 @@
+{
+  "case_id": "saml_not_signed_or_wrong_element_signed-04",
+  "case_hash": "b56318868bb00bdd",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/Signature",
+    "fix_keys": [
+      "enable",
+      "signing",
+      "element",
+      "requires"
+    ],
+    "needs": [
+      "require_signed_assertion"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_not_signed_or_wrong_element_signed-04",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "response_signed_only",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 4,
+    "hash": "b56318868bb00bdd"
+  },
+  "output": {
+    "root_cause_code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+    "confidence": 0.85,
+    "evidence": [
+      {
+        "path": "/Response/Assertion",
+        "actual": "Assertion ID _assert_a289ac has no ds:Signature child",
+        "expected": "Signed assertion (require_signed_assertion=true)",
+        "note": "Assertion is unsigned"
+      },
+      {
+        "path": "/Response/Signature/SignedInfo/Reference/DigestMethod/@Algorithm",
+        "actual": "Reference URI is #_resp_r289ac, which is the Response ID, not the Assertion ID. The digest method is sha256.",
+        "note": "The signature covers only the Response element"
+      }
+    ],
+    "fix": "Configure the IdP to sign the Assertion. Signing both the Assertion and the Response is also fine. Keep signature validation enabled on the SP and verify against the configured IdP certificate, not the certificate embedded in the message. Only trust assertion content that sits inside a verified signed Reference. Don't accept unsigned assertions.",
+    "posture_codes": [
+      "POSTURE_UNSIGNED_ASSERTION_ACCEPTED"
+    ],
+    "alternatives": [
+      {
+        "code": "SAML_SIGNATURE_INVALID",
+        "why_not": "The Response signature may verify. The problem is that the signature doesn't cover the Assertion. I can't confirm the signature bytes either way."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:45:01.365749-05:00",
+  "duration_ms": 6370,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 786,
+    "cache_creation_input_tokens": 6422,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.034071199999999996,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 786,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 6422,
+      "costUSD": 0.034071199999999996,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 2,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 6243,
+    "stop_reason": "tool_use",
+    "session_id": "d9bfcdff-9422-4875-809c-d85312044005",
+    "total_cost_usd": 0.034071199999999996,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6422,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 786,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6422,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 786,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 6422,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 6422
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 786,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 6422,
+        "webSearchRequests": 0,
+        "costUSD": 0.034071199999999996,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6422,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED\",\"confidence\":0.85,\"evidence\":[{\"path\":\"/Response/Assertion\",\"actual\":\"Assertion ID _assert_a289ac has no ds:Signature child\",\"expected\":\"Signed assertion (require_signed_assertion=true)\",\"note\":\"Assertion is unsigned\"},{\"path\":\"/Response/Signature/SignedInfo/Reference/DigestMethod/@Algorithm\",\"actual\":\"Reference URI is #_resp_r289ac, which is the Response ID, not the Assertion ID. The digest method is sha256.\",\"note\":\"The signature covers only the Response element\"}],\"fix\":\"Configure the IdP to sign the Assertion. Signing both the Assertion and the Response is also fine. Keep signature validation enabled on the SP and verify against the configured IdP certificate, not the certificate embedded in the message. Only trust assertion content that sits inside a verified signed Reference. Don't accept unsigned assertions.\",\"alternatives\":[{\"code\":\"SAML_SIGNATURE_INVALID\",\"why_not\":\"The Response signature may verify. The problem is that the signature doesn't cover the Assertion. I can't confirm the signature bytes either way.\"}],\"posture_codes\":[\"POSTURE_UNSIGNED_ASSERTION_ACCEPTED\"]}",
+    "structured_output": {
+      "root_cause_code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+      "confidence": 0.85,
+      "evidence": [
+        {
+          "path": "/Response/Assertion",
+          "actual": "Assertion ID _assert_a289ac has no ds:Signature child",
+          "expected": "Signed assertion (require_signed_assertion=true)",
+          "note": "Assertion is unsigned"
+        },
+        {
+          "path": "/Response/Signature/SignedInfo/Reference/DigestMethod/@Algorithm",
+          "actual": "Reference URI is #_resp_r289ac, which is the Response ID, not the Assertion ID. The digest method is sha256.",
+          "note": "The signature covers only the Response element"
+        }
+      ],
+      "fix": "Configure the IdP to sign the Assertion. Signing both the Assertion and the Response is also fine. Keep signature validation enabled on the SP and verify against the configured IdP certificate, not the certificate embedded in the message. Only trust assertion content that sits inside a verified signed Reference. Don't accept unsigned assertions.",
+      "alternatives": [
+        {
+          "code": "SAML_SIGNATURE_INVALID",
+          "why_not": "The Response signature may verify. The problem is that the signature doesn't cover the Assertion. I can't confirm the signature bytes either way."
+        }
+      ],
+      "posture_codes": [
+        "POSTURE_UNSIGNED_ASSERTION_ACCEPTED"
+      ]
+    },
+    "ttft_ms": 3307,
+    "type": "result",
+    "duration_ms": 6370,
+    "uuid": "fcc8e15f-ac9d-49b4-974a-6508d502ae1b",
+    "ttft_stream_ms": 1676,
+    "time_to_request_ms": 124,
+    "first_content_frame_ms": 1676,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

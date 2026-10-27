@@ -1,0 +1,14 @@
+{
+  "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+  "posture_codes": [],
+  "evidence_path": "/request/code_verifier",
+  "fix_keys": [
+    "generate",
+    "verifier",
+    "store",
+    "session"
+  ],
+  "needs": [
+    "code_verifier"
+  ]
+}

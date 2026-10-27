@@ -1,0 +1,14 @@
+{
+  "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+  "posture_codes": [],
+  "evidence_path": "/Response/Assertion/Signature",
+  "fix_keys": [
+    "enable",
+    "signing",
+    "element",
+    "requires"
+  ],
+  "needs": [
+    "require_signed_assertion"
+  ]
+}

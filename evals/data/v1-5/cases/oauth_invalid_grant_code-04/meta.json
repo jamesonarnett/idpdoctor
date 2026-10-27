@@ -1,0 +1,9 @@
+{
+  "id": "oauth_invalid_grant_code-04",
+  "kind": "oauth_redirect",
+  "mutator": "oauth_invalid_grant_expired",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 4,
+  "hash": "5b07c023b0df63d8"
+}

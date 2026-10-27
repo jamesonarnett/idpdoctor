@@ -1,0 +1,8 @@
+{
+  "arm": "rules",
+  "model": "sonnet",
+  "dataset": "evals/data/v1-5",
+  "started": "2026-10-27T09:29:17.702184-05:00",
+  "idpdoctor_version": "dev",
+  "concurrency": 1
+}

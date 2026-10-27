@@ -1,0 +1,207 @@
+{
+  "case_id": "jwt_expired_or_not_yet_valid-01",
+  "case_hash": "73038f4fd7736937",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+    "posture_codes": [],
+    "evidence_path": "/claims/nbf",
+    "fix_keys": [
+      "refresh",
+      "token",
+      "re-run",
+      "login"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_expired_or_not_yet_valid-01",
+    "kind": "jwt",
+    "mutator": "jwt_not_yet_valid",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 1,
+    "hash": "73038f4fd7736937"
+  },
+  "output": {
+    "root_cause_code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+    "confidence": 0.85,
+    "evidence": [
+      {
+        "path": "/claims/nbf",
+        "actual": "1768479000 (2026-01-15T12:10:00Z)",
+        "expected": "\u003c= now (2026-01-15T12:00:00Z) plus at most 300s skew",
+        "note": "nbf is 600s after the validation time, beyond the 5 minute maximum skew, so the token is not yet valid."
+      },
+      {
+        "path": "/claims/iat",
+        "actual": "1768478400 (2026-01-15T12:00:00Z)",
+        "note": "iat equals now, so nbf was set 10 minutes after issuance. This is an unusual offset."
+      },
+      {
+        "path": "/claims/exp",
+        "actual": "1768482000 (2026-01-15T13:00:00Z)",
+        "note": "exp is still in the future, so expiry is not the problem."
+      }
+    ],
+    "fix": "The token's nbf is 10 minutes after the validation time. First, check clock sync (NTP) on the OP and the SP, and make sure the OP isn't setting nbf ahead of iat. If the OP deliberately delays nbf, have it issue nbf \u003c= iat. Keep the SP's clock skew tolerance at 5 minutes or less. Don't widen the skew and don't skip the nbf check. Request a fresh token once the clocks agree.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": [
+      "Does the signature verify against the JWKS? The artifact shows no signature, so I could not confirm it."
+    ]
+  },
+  "started": "2026-10-27T09:34:00.094233-05:00",
+  "duration_ms": 7402,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 846,
+    "cache_creation_input_tokens": 1745,
+    "cache_read_input_tokens": 3886
+  },
+  "cost_usd": 0.0158326,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 846,
+      "cacheReadInputTokens": 3886,
+      "cacheCreationInputTokens": 1745,
+      "costUSD": 0.0158326,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 7248,
+    "stop_reason": "tool_use",
+    "session_id": "58907fe7-c9be-4401-9b21-ac73e11196be",
+    "total_cost_usd": 0.0158326,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1745,
+      "cache_read_input_tokens": 3886,
+      "output_tokens": 846,
+      "output_tokens_details": {
+        "thinking_tokens": 220
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1745,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 846,
+          "cache_read_input_tokens": 3886,
+          "cache_creation_input_tokens": 1745,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1745
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 846,
+        "cacheReadInputTokens": 3886,
+        "cacheCreationInputTokens": 1745,
+        "webSearchRequests": 0,
+        "costUSD": 0.0158326,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 220,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1745,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"JWT_EXPIRED_OR_NOT_YET_VALID\",\"confidence\":0.85,\"evidence\":[{\"path\":\"/claims/nbf\",\"actual\":\"1768479000 (2026-01-15T12:10:00Z)\",\"expected\":\"\u003c= now (2026-01-15T12:00:00Z) plus at most 300s skew\",\"note\":\"nbf is 600s after the validation time, beyond the 5 minute maximum skew, so the token is not yet valid.\"},{\"path\":\"/claims/iat\",\"actual\":\"1768478400 (2026-01-15T12:00:00Z)\",\"note\":\"iat equals now, so nbf was set 10 minutes after issuance. This is an unusual offset.\"},{\"path\":\"/claims/exp\",\"actual\":\"1768482000 (2026-01-15T13:00:00Z)\",\"note\":\"exp is still in the future, so expiry is not the problem.\"}],\"fix\":\"The token's nbf is 10 minutes after the validation time. First, check clock sync (NTP) on the OP and the SP, and make sure the OP isn't setting nbf ahead of iat. If the OP deliberately delays nbf, have it issue nbf \u003c= iat. Keep the SP's clock skew tolerance at 5 minutes or less. Don't widen the skew and don't skip the nbf check. Request a fresh token once the clocks agree.\",\"alternatives\":[],\"questions\":[\"Does the signature verify against the JWKS? The artifact shows no signature, so I could not confirm it.\"]}",
+    "structured_output": {
+      "root_cause_code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+      "confidence": 0.85,
+      "evidence": [
+        {
+          "path": "/claims/nbf",
+          "actual": "1768479000 (2026-01-15T12:10:00Z)",
+          "expected": "\u003c= now (2026-01-15T12:00:00Z) plus at most 300s skew",
+          "note": "nbf is 600s after the validation time, beyond the 5 minute maximum skew, so the token is not yet valid."
+        },
+        {
+          "path": "/claims/iat",
+          "actual": "1768478400 (2026-01-15T12:00:00Z)",
+          "note": "iat equals now, so nbf was set 10 minutes after issuance. This is an unusual offset."
+        },
+        {
+          "path": "/claims/exp",
+          "actual": "1768482000 (2026-01-15T13:00:00Z)",
+          "note": "exp is still in the future, so expiry is not the problem."
+        }
+      ],
+      "fix": "The token's nbf is 10 minutes after the validation time. First, check clock sync (NTP) on the OP and the SP, and make sure the OP isn't setting nbf ahead of iat. If the OP deliberately delays nbf, have it issue nbf \u003c= iat. Keep the SP's clock skew tolerance at 5 minutes or less. Don't widen the skew and don't skip the nbf check. Request a fresh token once the clocks agree.",
+      "alternatives": [],
+      "questions": [
+        "Does the signature verify against the JWKS? The artifact shows no signature, so I could not confirm it."
+      ]
+    },
+    "ttft_ms": 3792,
+    "type": "result",
+    "duration_ms": 7402,
+    "uuid": "594882a7-b9c0-420b-aa9f-d12928ba8f93",
+    "ttft_stream_ms": 1750,
+    "time_to_request_ms": 150,
+    "first_content_frame_ms": 1750,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

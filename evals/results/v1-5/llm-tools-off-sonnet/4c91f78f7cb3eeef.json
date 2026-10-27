@@ -1,0 +1,250 @@
+{
+  "case_id": "posture_weak_algorithm-00",
+  "case_hash": "4c91f78f7cb3eeef",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_WEAK_ALGORITHM"
+    ],
+    "evidence_path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm",
+    "fix_keys": [
+      "application",
+      "rsa-sha256",
+      "2048-bit",
+      "larger"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_weak_algorithm-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "posture_sha1",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "4c91f78f7cb3eeef"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm",
+        "actual": "http://www.w3.org/2000/09/xmldsig#rsa-sha1",
+        "expected": "rsa-sha256 or stronger",
+        "note": "Assertion signature uses RSA-SHA1"
+      },
+      {
+        "path": "/Response/Assertion/Signature/SignedInfo/Reference/DigestMethod/@Algorithm",
+        "actual": "http://www.w3.org/2000/09/xmldsig#sha1",
+        "expected": "sha256 or stronger",
+        "note": "Reference digest uses SHA-1"
+      },
+      {
+        "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+        "actual": "https://sp.example.com/saml/metadata",
+        "expected": "https://sp.example.com/saml/metadata",
+        "note": "Audience matches the SP entity ID"
+      },
+      {
+        "path": "/Response/@Destination",
+        "actual": "https://sp.example.com/saml/acs",
+        "expected": "https://sp.example.com/saml/acs",
+        "note": "Destination matches the ACS URL"
+      }
+    ],
+    "fix": "Configure the IdP to sign assertions with RSA-SHA256 (or stronger) and use a SHA-256 digest. Then update the SP to reject SHA-1 signature and digest algorithms. Keep validating against the pinned IdP certificate, not the one embedded in the message, and keep requiring the signed assertion. The compliance finding is valid, but it is an algorithm-hardening issue and not a failure in this flow.",
+    "posture_codes": [
+      "POSTURE_WEAK_ALGORITHM"
+    ],
+    "alternatives": [
+      {
+        "code": "SAML_SIGNATURE_INVALID",
+        "why_not": "Nothing in the artifact shows a signature failure. The embedded certificate matches the configured IdP certificate, but I could not run the cryptographic verification."
+      },
+      {
+        "code": "CERT_EXPIRED_OR_WEAK",
+        "why_not": "The certificate is valid from 2026-01-01 to 2126, and it is RSA-2048 with a SHA-256 signature. Only the XML signature and digest algorithms are weak."
+      }
+    ],
+    "questions": [
+      "Did the SP's signature verification pass against the configured IdP certificate? I could not run it."
+    ]
+  },
+  "started": "2026-10-27T09:40:53.977991-05:00",
+  "duration_ms": 13370,
+  "tool_calls": 0,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2067,
+    "cache_creation_input_tokens": 7616,
+    "cache_read_input_tokens": 16791
+  },
+  "cost_usd": 0.0528211,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2067,
+      "cacheReadInputTokens": 16791,
+      "cacheCreationInputTokens": 7616,
+      "costUSD": 0.0528211,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 13241,
+    "stop_reason": "tool_use",
+    "session_id": "b52e57b9-7b01-4aee-9a89-98c851307d8a",
+    "total_cost_usd": 0.0528211,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 7616,
+      "cache_read_input_tokens": 16791,
+      "output_tokens": 2067,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 7616,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 947,
+          "cache_read_input_tokens": 11599,
+          "cache_creation_input_tokens": 1209,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1209
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2067,
+        "cacheReadInputTokens": 16791,
+        "cacheCreationInputTokens": 7616,
+        "webSearchRequests": 0,
+        "costUSD": 0.0528211,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 7616,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.8,\"posture_codes\":[\"POSTURE_WEAK_ALGORITHM\"],\"evidence\":[{\"path\":\"/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm\",\"actual\":\"http://www.w3.org/2000/09/xmldsig#rsa-sha1\",\"expected\":\"rsa-sha256 or stronger\",\"note\":\"Assertion signature uses RSA-SHA1\"},{\"path\":\"/Response/Assertion/Signature/SignedInfo/Reference/DigestMethod/@Algorithm\",\"actual\":\"http://www.w3.org/2000/09/xmldsig#sha1\",\"expected\":\"sha256 or stronger\",\"note\":\"Reference digest uses SHA-1\"},{\"path\":\"/Response/Assertion/Conditions/AudienceRestriction/Audience\",\"actual\":\"https://sp.example.com/saml/metadata\",\"expected\":\"https://sp.example.com/saml/metadata\",\"note\":\"Audience matches the SP entity ID\"},{\"path\":\"/Response/@Destination\",\"actual\":\"https://sp.example.com/saml/acs\",\"expected\":\"https://sp.example.com/saml/acs\",\"note\":\"Destination matches the ACS URL\"}],\"fix\":\"Configure the IdP to sign assertions with RSA-SHA256 (or stronger) and use a SHA-256 digest. Then update the SP to reject SHA-1 signature and digest algorithms. Keep validating against the pinned IdP certificate, not the one embedded in the message, and keep requiring the signed assertion. The compliance finding is valid, but it is an algorithm-hardening issue and not a failure in this flow.\",\"alternatives\":[{\"code\":\"SAML_SIGNATURE_INVALID\",\"why_not\":\"Nothing in the artifact shows a signature failure. The embedded certificate matches the configured IdP certificate, but I could not run the cryptographic verification.\"},{\"code\":\"CERT_EXPIRED_OR_WEAK\",\"why_not\":\"The certificate is valid from 2026-01-01 to 2126, and it is RSA-2048 with a SHA-256 signature. Only the XML signature and digest algorithms are weak.\"}],\"questions\":[\"Did the SP's signature verification pass against the configured IdP certificate? I could not run it.\"]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.8,
+      "posture_codes": [
+        "POSTURE_WEAK_ALGORITHM"
+      ],
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm",
+          "actual": "http://www.w3.org/2000/09/xmldsig#rsa-sha1",
+          "expected": "rsa-sha256 or stronger",
+          "note": "Assertion signature uses RSA-SHA1"
+        },
+        {
+          "path": "/Response/Assertion/Signature/SignedInfo/Reference/DigestMethod/@Algorithm",
+          "actual": "http://www.w3.org/2000/09/xmldsig#sha1",
+          "expected": "sha256 or stronger",
+          "note": "Reference digest uses SHA-1"
+        },
+        {
+          "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+          "actual": "https://sp.example.com/saml/metadata",
+          "expected": "https://sp.example.com/saml/metadata",
+          "note": "Audience matches the SP entity ID"
+        },
+        {
+          "path": "/Response/@Destination",
+          "actual": "https://sp.example.com/saml/acs",
+          "expected": "https://sp.example.com/saml/acs",
+          "note": "Destination matches the ACS URL"
+        }
+      ],
+      "fix": "Configure the IdP to sign assertions with RSA-SHA256 (or stronger) and use a SHA-256 digest. Then update the SP to reject SHA-1 signature and digest algorithms. Keep validating against the pinned IdP certificate, not the one embedded in the message, and keep requiring the signed assertion. The compliance finding is valid, but it is an algorithm-hardening issue and not a failure in this flow.",
+      "alternatives": [
+        {
+          "code": "SAML_SIGNATURE_INVALID",
+          "why_not": "Nothing in the artifact shows a signature failure. The embedded certificate matches the configured IdP certificate, but I could not run the cryptographic verification."
+        },
+        {
+          "code": "CERT_EXPIRED_OR_WEAK",
+          "why_not": "The certificate is valid from 2026-01-01 to 2126, and it is RSA-2048 with a SHA-256 signature. Only the XML signature and digest algorithms are weak."
+        }
+      ],
+      "questions": [
+        "Did the SP's signature verification pass against the configured IdP certificate? I could not run it."
+      ]
+    },
+    "ttft_ms": 2302,
+    "type": "result",
+    "duration_ms": 13370,
+    "uuid": "381fe506-a01b-4ed4-85c8-9ffc45458753",
+    "ttft_stream_ms": 968,
+    "time_to_request_ms": 112,
+    "first_content_frame_ms": 969,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,1 @@
+IDX10205: Issuer validation failed; we moved from sts.windows.net to login.microsoftonline.com/v2.0.

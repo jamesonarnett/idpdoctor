@@ -1,0 +1,11 @@
+{
+  "id": "posture_validity_window_too_long-01",
+  "kind": "saml_response",
+  "dialect": "auth0",
+  "mutator": "posture_long_window",
+  "expected_completeness": "full",
+  "symptom_from": "vendor_strings.json",
+  "seed": 42,
+  "index": 1,
+  "hash": "5f82d0332e83181e"
+}

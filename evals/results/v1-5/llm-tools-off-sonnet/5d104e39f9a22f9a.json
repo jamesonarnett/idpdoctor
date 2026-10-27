@@ -1,0 +1,231 @@
+{
+  "case_id": "oidc_request_binding_mismatch-01",
+  "case_hash": "5d104e39f9a22f9a",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "OIDC_REQUEST_BINDING_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/claims/nonce",
+    "fix_keys": [
+      "generate",
+      "fresh",
+      "nonce",
+      "authorization"
+    ],
+    "needs": [
+      "nonce"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "oidc_request_binding_mismatch-01",
+    "kind": "jwt",
+    "mutator": "jwt_nonce_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 1,
+    "hash": "5d104e39f9a22f9a"
+  },
+  "output": {
+    "root_cause_code": "OIDC_REQUEST_BINDING_MISMATCH",
+    "confidence": 0.93,
+    "evidence": [
+      {
+        "path": "/claims/nonce",
+        "actual": "n-stale-from-older-request",
+        "expected": "n-0S6_WzA2Mj",
+        "note": "Nonce in the ID token belongs to an earlier authorization request, not the current one."
+      },
+      {
+        "path": "/claims/iat",
+        "actual": "1768478400",
+        "note": "Token was issued at the evaluation time and is otherwise within its window (exp is 1 hour later), so expiry is not the cause."
+      },
+      {
+        "path": "/claims/iss",
+        "actual": "https://login.example.com/tenant-1/v2.0",
+        "expected": "https://login.example.com/tenant-1/v2.0",
+        "note": "Issuer matches."
+      },
+      {
+        "path": "/claims/aud",
+        "actual": "client-abc123",
+        "expected": "client-abc123",
+        "note": "Audience matches."
+      }
+    ],
+    "fix": "Generate a fresh, single-use nonce (and state) for every authorization request. Store it server-side or in a session-bound cookie, and compare it to the ID token's nonce on callback. A login page left open overnight is likely reusing a cached auth URL or a nonce from an older tab. Regenerate the authorization request when the page is stale or reloaded, or when the user submits. Give the stored nonce a short TTL and send the user back through a new login if it has expired. Keep the nonce check, signature validation and clock skew of 5 minutes or less.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+        "why_not": "iat/nbf equal the reference time and exp is one hour later, so the token is within its validity window."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:37:59.477669-05:00",
+  "duration_ms": 9480,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 914,
+    "cache_creation_input_tokens": 1766,
+    "cache_read_input_tokens": 3886
+  },
+  "cost_usd": 0.0165966,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 914,
+      "cacheReadInputTokens": 3886,
+      "cacheCreationInputTokens": 1766,
+      "costUSD": 0.0165966,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 9318,
+    "stop_reason": "tool_use",
+    "session_id": "bdf02284-7387-46a3-96ab-edc43050d693",
+    "total_cost_usd": 0.0165966,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1766,
+      "cache_read_input_tokens": 3886,
+      "output_tokens": 914,
+      "output_tokens_details": {
+        "thinking_tokens": 220
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1766,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 914,
+          "cache_read_input_tokens": 3886,
+          "cache_creation_input_tokens": 1766,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1766
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 914,
+        "cacheReadInputTokens": 3886,
+        "cacheCreationInputTokens": 1766,
+        "webSearchRequests": 0,
+        "costUSD": 0.0165966,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 220,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1766,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OIDC_REQUEST_BINDING_MISMATCH\",\"confidence\":0.93,\"evidence\":[{\"path\":\"/claims/nonce\",\"actual\":\"n-stale-from-older-request\",\"expected\":\"n-0S6_WzA2Mj\",\"note\":\"Nonce in the ID token belongs to an earlier authorization request, not the current one.\"},{\"path\":\"/claims/iat\",\"actual\":\"1768478400\",\"note\":\"Token was issued at the evaluation time and is otherwise within its window (exp is 1 hour later), so expiry is not the cause.\"},{\"path\":\"/claims/iss\",\"actual\":\"https://login.example.com/tenant-1/v2.0\",\"expected\":\"https://login.example.com/tenant-1/v2.0\",\"note\":\"Issuer matches.\"},{\"path\":\"/claims/aud\",\"actual\":\"client-abc123\",\"expected\":\"client-abc123\",\"note\":\"Audience matches.\"}],\"fix\":\"Generate a fresh, single-use nonce (and state) for every authorization request. Store it server-side or in a session-bound cookie, and compare it to the ID token's nonce on callback. A login page left open overnight is likely reusing a cached auth URL or a nonce from an older tab. Regenerate the authorization request when the page is stale or reloaded, or when the user submits. Give the stored nonce a short TTL and send the user back through a new login if it has expired. Keep the nonce check, signature validation and clock skew of 5 minutes or less.\",\"alternatives\":[{\"code\":\"JWT_EXPIRED_OR_NOT_YET_VALID\",\"why_not\":\"iat/nbf equal the reference time and exp is one hour later, so the token is within its validity window.\"}],\"questions\":[]}",
+    "structured_output": {
+      "root_cause_code": "OIDC_REQUEST_BINDING_MISMATCH",
+      "confidence": 0.93,
+      "evidence": [
+        {
+          "path": "/claims/nonce",
+          "actual": "n-stale-from-older-request",
+          "expected": "n-0S6_WzA2Mj",
+          "note": "Nonce in the ID token belongs to an earlier authorization request, not the current one."
+        },
+        {
+          "path": "/claims/iat",
+          "actual": "1768478400",
+          "note": "Token was issued at the evaluation time and is otherwise within its window (exp is 1 hour later), so expiry is not the cause."
+        },
+        {
+          "path": "/claims/iss",
+          "actual": "https://login.example.com/tenant-1/v2.0",
+          "expected": "https://login.example.com/tenant-1/v2.0",
+          "note": "Issuer matches."
+        },
+        {
+          "path": "/claims/aud",
+          "actual": "client-abc123",
+          "expected": "client-abc123",
+          "note": "Audience matches."
+        }
+      ],
+      "fix": "Generate a fresh, single-use nonce (and state) for every authorization request. Store it server-side or in a session-bound cookie, and compare it to the ID token's nonce on callback. A login page left open overnight is likely reusing a cached auth URL or a nonce from an older tab. Regenerate the authorization request when the page is stale or reloaded, or when the user submits. Give the stored nonce a short TTL and send the user back through a new login if it has expired. Keep the nonce check, signature validation and clock skew of 5 minutes or less.",
+      "alternatives": [
+        {
+          "code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+          "why_not": "iat/nbf equal the reference time and exp is one hour later, so the token is within its validity window."
+        }
+      ],
+      "questions": []
+    },
+    "ttft_ms": 5612,
+    "type": "result",
+    "duration_ms": 9480,
+    "uuid": "eb8b3d8b-ba51-452d-85b3-a87ccb0cea36",
+    "ttft_stream_ms": 3469,
+    "time_to_request_ms": 160,
+    "first_content_frame_ms": 3469,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

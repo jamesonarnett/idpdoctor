@@ -1,0 +1,11 @@
+{
+  "id": "saml_signature_invalid-01",
+  "kind": "saml_response",
+  "dialect": "auth0",
+  "mutator": "wrong_cert",
+  "expected_completeness": "full",
+  "symptom_from": "vendor_strings.json",
+  "seed": 42,
+  "index": 1,
+  "hash": "bb3f8f291e5a91e8"
+}

@@ -1,0 +1,9 @@
+{
+  "id": "healthy-samlresponse-01",
+  "kind": "saml_response",
+  "dialect": "okta",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 1,
+  "hash": "200d9b48267e7e5c"
+}

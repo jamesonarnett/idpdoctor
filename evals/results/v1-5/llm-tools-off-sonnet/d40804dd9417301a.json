@@ -1,0 +1,265 @@
+{
+  "case_id": "cert_expired_or_weak-02",
+  "case_hash": "d40804dd9417301a",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "CERT_EXPIRED_OR_WEAK",
+    "posture_codes": [],
+    "evidence_path": "/Signature/KeyInfo/X509Data/X509Certificate/PublicKey",
+    "fix_keys": [
+      "rotate",
+      "signing",
+      "certificate",
+      "generate"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "cert_expired_or_weak-02",
+    "kind": "saml_response",
+    "dialect": "generic",
+    "mutator": "cert_weak_key",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 2,
+    "hash": "d40804dd9417301a"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.7,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate/PublicKey",
+        "actual": "RSA 1024-bit public key",
+        "expected": "RSA 2048-bit or larger",
+        "note": "Weak key size is a posture warning. The cert is the same one configured as trusted, so it isn't a validation fault."
+      },
+      {
+        "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+        "actual": "https://sp.example.com/saml/metadata",
+        "expected": "https://sp.example.com/saml/metadata"
+      },
+      {
+        "path": "/Response/@Destination",
+        "actual": "https://sp.example.com/saml/acs",
+        "expected": "https://sp.example.com/saml/acs"
+      },
+      {
+        "path": "/Response/Assertion/Issuer",
+        "actual": "https://idp.example.com/saml",
+        "expected": "https://idp.example.com/saml"
+      },
+      {
+        "path": "/Response/@InResponseTo",
+        "actual": "_req_1234567890abcdef",
+        "expected": "_req_1234567890abcdef"
+      },
+      {
+        "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+        "actual": "2026-01-15T12:02:30Z",
+        "expected": "after now (2026-01-15T12:00:00Z)",
+        "note": "The window is 5 minutes, which is within policy."
+      },
+      {
+        "path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm",
+        "actual": "rsa-sha256",
+        "expected": "SHA-256 or stronger"
+      }
+    ],
+    "fix": "The checks I could do by reading the artifact all pass. The assertion is signed, as required. Audience, Destination, Recipient, Issuer, InResponseTo, NameID format, required attributes (email, firstName) and the time window all match the expected values. I can't verify the signature value itself without running a validator. The IdP signing key is only 1024-bit RSA. Ask the IdP to re-issue its signing certificate with RSA 2048-bit or larger, or ECDSA P-256, and keep SHA-256 or stronger. Keep validating against the pinned IdP certificate in the SP config, never the certificate embedded in the message. If logins still fail, send the symptom and the SP's error log.",
+    "posture_codes": [
+      "POSTURE_WEAK_ALGORITHM"
+    ],
+    "alternatives": [
+      {
+        "code": "CERT_EXPIRED_OR_WEAK",
+        "why_not": "The certificate is inside its validity period (2026 to 2126) and parses fine. The 1024-bit key is a weak-algorithm posture warning, and nothing shows it causing a failure."
+      }
+    ],
+    "questions": [
+      "What error does the SP actually report, if any? No symptom was given."
+    ]
+  },
+  "started": "2026-10-27T09:29:49.613281-05:00",
+  "duration_ms": 10907,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1533,
+    "cache_creation_input_tokens": 5915,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.0395132,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1533,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 5915,
+      "costUSD": 0.0395132,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 7,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 10779,
+    "stop_reason": "tool_use",
+    "session_id": "78e72a76-07f5-4884-a851-323bb48c7f5c",
+    "total_cost_usd": 0.0395132,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 5915,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 1533,
+      "output_tokens_details": {
+        "thinking_tokens": 466
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 5915,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1533,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 5915,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 5915
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1533,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 5915,
+        "webSearchRequests": 0,
+        "costUSD": 0.0395132,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 466,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 5915,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.7,\"evidence\":[{\"path\":\"/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate/PublicKey\",\"actual\":\"RSA 1024-bit public key\",\"expected\":\"RSA 2048-bit or larger\",\"note\":\"Weak key size is a posture warning. The cert is the same one configured as trusted, so it isn't a validation fault.\"},{\"path\":\"/Response/Assertion/Conditions/AudienceRestriction/Audience\",\"actual\":\"https://sp.example.com/saml/metadata\",\"expected\":\"https://sp.example.com/saml/metadata\"},{\"path\":\"/Response/@Destination\",\"actual\":\"https://sp.example.com/saml/acs\",\"expected\":\"https://sp.example.com/saml/acs\"},{\"path\":\"/Response/Assertion/Issuer\",\"actual\":\"https://idp.example.com/saml\",\"expected\":\"https://idp.example.com/saml\"},{\"path\":\"/Response/@InResponseTo\",\"actual\":\"_req_1234567890abcdef\",\"expected\":\"_req_1234567890abcdef\"},{\"path\":\"/Response/Assertion/Conditions/@NotOnOrAfter\",\"actual\":\"2026-01-15T12:02:30Z\",\"expected\":\"after now (2026-01-15T12:00:00Z)\",\"note\":\"The window is 5 minutes, which is within policy.\"},{\"path\":\"/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm\",\"actual\":\"rsa-sha256\",\"expected\":\"SHA-256 or stronger\"}],\"fix\":\"The checks I could do by reading the artifact all pass. The assertion is signed, as required. Audience, Destination, Recipient, Issuer, InResponseTo, NameID format, required attributes (email, firstName) and the time window all match the expected values. I can't verify the signature value itself without running a validator. The IdP signing key is only 1024-bit RSA. Ask the IdP to re-issue its signing certificate with RSA 2048-bit or larger, or ECDSA P-256, and keep SHA-256 or stronger. Keep validating against the pinned IdP certificate in the SP config, never the certificate embedded in the message. If logins still fail, send the symptom and the SP's error log.\",\"posture_codes\":[\"POSTURE_WEAK_ALGORITHM\"],\"alternatives\":[{\"code\":\"CERT_EXPIRED_OR_WEAK\",\"why_not\":\"The certificate is inside its validity period (2026 to 2126) and parses fine. The 1024-bit key is a weak-algorithm posture warning, and nothing shows it causing a failure.\"}],\"questions\":[\"What error does the SP actually report, if any? No symptom was given.\"]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.7,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate/PublicKey",
+          "actual": "RSA 1024-bit public key",
+          "expected": "RSA 2048-bit or larger",
+          "note": "Weak key size is a posture warning. The cert is the same one configured as trusted, so it isn't a validation fault."
+        },
+        {
+          "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+          "actual": "https://sp.example.com/saml/metadata",
+          "expected": "https://sp.example.com/saml/metadata"
+        },
+        {
+          "path": "/Response/@Destination",
+          "actual": "https://sp.example.com/saml/acs",
+          "expected": "https://sp.example.com/saml/acs"
+        },
+        {
+          "path": "/Response/Assertion/Issuer",
+          "actual": "https://idp.example.com/saml",
+          "expected": "https://idp.example.com/saml"
+        },
+        {
+          "path": "/Response/@InResponseTo",
+          "actual": "_req_1234567890abcdef",
+          "expected": "_req_1234567890abcdef"
+        },
+        {
+          "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+          "actual": "2026-01-15T12:02:30Z",
+          "expected": "after now (2026-01-15T12:00:00Z)",
+          "note": "The window is 5 minutes, which is within policy."
+        },
+        {
+          "path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm",
+          "actual": "rsa-sha256",
+          "expected": "SHA-256 or stronger"
+        }
+      ],
+      "fix": "The checks I could do by reading the artifact all pass. The assertion is signed, as required. Audience, Destination, Recipient, Issuer, InResponseTo, NameID format, required attributes (email, firstName) and the time window all match the expected values. I can't verify the signature value itself without running a validator. The IdP signing key is only 1024-bit RSA. Ask the IdP to re-issue its signing certificate with RSA 2048-bit or larger, or ECDSA P-256, and keep SHA-256 or stronger. Keep validating against the pinned IdP certificate in the SP config, never the certificate embedded in the message. If logins still fail, send the symptom and the SP's error log.",
+      "posture_codes": [
+        "POSTURE_WEAK_ALGORITHM"
+      ],
+      "alternatives": [
+        {
+          "code": "CERT_EXPIRED_OR_WEAK",
+          "why_not": "The certificate is inside its validity period (2026 to 2126) and parses fine. The 1024-bit key is a weak-algorithm posture warning, and nothing shows it causing a failure."
+        }
+      ],
+      "questions": [
+        "What error does the SP actually report, if any? No symptom was given."
+      ]
+    },
+    "ttft_ms": 5645,
+    "type": "result",
+    "duration_ms": 10907,
+    "uuid": "a32958b0-72c8-4fa8-8e6e-3dd102b86bfb",
+    "ttft_stream_ms": 1558,
+    "time_to_request_ms": 125,
+    "first_content_frame_ms": 1558,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

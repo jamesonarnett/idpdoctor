@@ -1,0 +1,271 @@
+{
+  "case_id": "posture_parser_differential_exposure-01",
+  "case_hash": "914585528d28779d",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_PARSER_DIFFERENTIAL_EXPOSURE"
+    ],
+    "evidence_path": "/Response/Assertion/Subject/NameID",
+    "fix_keys": [
+      "reject",
+      "doctype",
+      "entity",
+      "declarations"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_parser_differential_exposure-01",
+    "kind": "saml_response",
+    "dialect": "auth0",
+    "mutator": "posture_comment_in_nameid",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 1,
+    "hash": "914585528d28779d"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.6,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm",
+        "actual": "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
+        "note": "Assertion is signed with a strong algorithm, as require_signed_assertion demands."
+      },
+      {
+        "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+        "actual": "https://sp.example.com/saml/metadata",
+        "expected": "https://sp.example.com/saml/metadata"
+      },
+      {
+        "path": "/Response/@Destination",
+        "actual": "https://sp.example.com/saml/acs",
+        "expected": "https://sp.example.com/saml/acs"
+      },
+      {
+        "path": "/Response/@InResponseTo",
+        "actual": "_req_1234567890abcdef",
+        "expected": "_req_1234567890abcdef"
+      },
+      {
+        "path": "/Response/Assertion/Issuer",
+        "actual": "https://idp.example.com/saml",
+        "expected": "https://idp.example.com/saml"
+      },
+      {
+        "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+        "actual": "2026-01-15T12:02:30.000Z",
+        "note": "Window is 5 minutes and contains now (2026-01-15T12:00:00Z)."
+      },
+      {
+        "path": "/Response/Assertion/Subject/NameID/@Format",
+        "actual": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+        "expected": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+        "note": "The NameID content is redacted, so any comments inside it can't be seen here."
+      }
+    ],
+    "fix": "Every field I can check matches the expected values, so I found no fault. I couldn't verify the signature myself, because the signature value is redacted. Confirm that your SP verifies the signature against the pinned IdP certificate and not the embedded KeyInfo. To address the pentest finding, make the SP read the NameID with a parser that treats comments consistently. The usual way is to concatenate all text nodes of the NameID, or to reject any NameID that contains child nodes or comments. Run the same check after signature verification, on the exact element that was verified. Also ask the IdP not to emit comments in NameID values. Don't relax any signature or validity checks.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "SAML_STRUCTURE_INVALID",
+        "why_not": "The visible structure is sound, with one signed assertion, a matching reference URI and no duplicated elements. Comments inside the NameID can't be seen because of redaction."
+      },
+      {
+        "code": "SAML_SIGNATURE_INVALID",
+        "why_not": "The symptom says login works. The signature value is redacted, so there is no evidence of a signature failure."
+      }
+    ],
+    "questions": [
+      "Can you share the unredacted raw NameID XML, or confirm whether it contains \u003c!-- --\u003e comments? The redaction hides this, so I can't confirm the pentest claim.",
+      "Which XML library does the SP use to extract the NameID text? Does it take only the first text node or all of them?"
+    ]
+  },
+  "started": "2026-10-27T09:39:39.153634-05:00",
+  "duration_ms": 13557,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1528,
+    "cache_creation_input_tokens": 6557,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.042031200000000005,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1528,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 6557,
+      "costUSD": 0.042031200000000005,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 7,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 13401,
+    "stop_reason": "tool_use",
+    "session_id": "2c939726-afe8-488c-8223-03cfc6e56b76",
+    "total_cost_usd": 0.042031200000000005,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6557,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 1528,
+      "output_tokens_details": {
+        "thinking_tokens": 363
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6557,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1528,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 6557,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 6557
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1528,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 6557,
+        "webSearchRequests": 0,
+        "costUSD": 0.042031200000000005,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 363,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6557,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.6,\"evidence\":[{\"path\":\"/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm\",\"actual\":\"http://www.w3.org/2001/04/xmldsig-more#rsa-sha256\",\"note\":\"Assertion is signed with a strong algorithm, as require_signed_assertion demands.\"},{\"path\":\"/Response/Assertion/Conditions/AudienceRestriction/Audience\",\"actual\":\"https://sp.example.com/saml/metadata\",\"expected\":\"https://sp.example.com/saml/metadata\"},{\"path\":\"/Response/@Destination\",\"actual\":\"https://sp.example.com/saml/acs\",\"expected\":\"https://sp.example.com/saml/acs\"},{\"path\":\"/Response/@InResponseTo\",\"actual\":\"_req_1234567890abcdef\",\"expected\":\"_req_1234567890abcdef\"},{\"path\":\"/Response/Assertion/Issuer\",\"actual\":\"https://idp.example.com/saml\",\"expected\":\"https://idp.example.com/saml\"},{\"path\":\"/Response/Assertion/Conditions/@NotOnOrAfter\",\"actual\":\"2026-01-15T12:02:30.000Z\",\"note\":\"Window is 5 minutes and contains now (2026-01-15T12:00:00Z).\"},{\"path\":\"/Response/Assertion/Subject/NameID/@Format\",\"actual\":\"urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress\",\"expected\":\"urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress\",\"note\":\"The NameID content is redacted, so any comments inside it can't be seen here.\"}],\"fix\":\"Every field I can check matches the expected values, so I found no fault. I couldn't verify the signature myself, because the signature value is redacted. Confirm that your SP verifies the signature against the pinned IdP certificate and not the embedded KeyInfo. To address the pentest finding, make the SP read the NameID with a parser that treats comments consistently. The usual way is to concatenate all text nodes of the NameID, or to reject any NameID that contains child nodes or comments. Run the same check after signature verification, on the exact element that was verified. Also ask the IdP not to emit comments in NameID values. Don't relax any signature or validity checks.\",\"questions\":[\"Can you share the unredacted raw NameID XML, or confirm whether it contains \u003c!-- --\u003e comments? The redaction hides this, so I can't confirm the pentest claim.\",\"Which XML library does the SP use to extract the NameID text? Does it take only the first text node or all of them?\"],\"alternatives\":[{\"code\":\"SAML_STRUCTURE_INVALID\",\"why_not\":\"The visible structure is sound, with one signed assertion, a matching reference URI and no duplicated elements. Comments inside the NameID can't be seen because of redaction.\"},{\"code\":\"SAML_SIGNATURE_INVALID\",\"why_not\":\"The symptom says login works. The signature value is redacted, so there is no evidence of a signature failure.\"}]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.6,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Signature/SignedInfo/SignatureMethod/@Algorithm",
+          "actual": "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
+          "note": "Assertion is signed with a strong algorithm, as require_signed_assertion demands."
+        },
+        {
+          "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+          "actual": "https://sp.example.com/saml/metadata",
+          "expected": "https://sp.example.com/saml/metadata"
+        },
+        {
+          "path": "/Response/@Destination",
+          "actual": "https://sp.example.com/saml/acs",
+          "expected": "https://sp.example.com/saml/acs"
+        },
+        {
+          "path": "/Response/@InResponseTo",
+          "actual": "_req_1234567890abcdef",
+          "expected": "_req_1234567890abcdef"
+        },
+        {
+          "path": "/Response/Assertion/Issuer",
+          "actual": "https://idp.example.com/saml",
+          "expected": "https://idp.example.com/saml"
+        },
+        {
+          "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+          "actual": "2026-01-15T12:02:30.000Z",
+          "note": "Window is 5 minutes and contains now (2026-01-15T12:00:00Z)."
+        },
+        {
+          "path": "/Response/Assertion/Subject/NameID/@Format",
+          "actual": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+          "expected": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+          "note": "The NameID content is redacted, so any comments inside it can't be seen here."
+        }
+      ],
+      "fix": "Every field I can check matches the expected values, so I found no fault. I couldn't verify the signature myself, because the signature value is redacted. Confirm that your SP verifies the signature against the pinned IdP certificate and not the embedded KeyInfo. To address the pentest finding, make the SP read the NameID with a parser that treats comments consistently. The usual way is to concatenate all text nodes of the NameID, or to reject any NameID that contains child nodes or comments. Run the same check after signature verification, on the exact element that was verified. Also ask the IdP not to emit comments in NameID values. Don't relax any signature or validity checks.",
+      "questions": [
+        "Can you share the unredacted raw NameID XML, or confirm whether it contains \u003c!-- --\u003e comments? The redaction hides this, so I can't confirm the pentest claim.",
+        "Which XML library does the SP use to extract the NameID text? Does it take only the first text node or all of them?"
+      ],
+      "alternatives": [
+        {
+          "code": "SAML_STRUCTURE_INVALID",
+          "why_not": "The visible structure is sound, with one signed assertion, a matching reference URI and no duplicated elements. Comments inside the NameID can't be seen because of redaction."
+        },
+        {
+          "code": "SAML_SIGNATURE_INVALID",
+          "why_not": "The symptom says login works. The signature value is redacted, so there is no evidence of a signature failure."
+        }
+      ]
+    },
+    "ttft_ms": 7060,
+    "type": "result",
+    "duration_ms": 13557,
+    "uuid": "97b49952-fd27-4eb0-8f80-2795ce328742",
+    "ttft_stream_ms": 3482,
+    "time_to_request_ms": 152,
+    "first_content_frame_ms": 3482,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

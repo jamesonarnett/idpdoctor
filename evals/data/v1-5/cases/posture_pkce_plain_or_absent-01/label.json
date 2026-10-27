@@ -1,0 +1,16 @@
+{
+  "code": "HEALTHY",
+  "posture_codes": [
+    "POSTURE_PKCE_PLAIN_OR_ABSENT"
+  ],
+  "evidence_path": "/request/code_challenge_method",
+  "fix_keys": [
+    "every",
+    "public",
+    "client",
+    "confidential"
+  ],
+  "needs": [
+    "client_type"
+  ]
+}

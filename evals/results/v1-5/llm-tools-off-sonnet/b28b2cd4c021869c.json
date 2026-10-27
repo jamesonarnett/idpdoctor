@@ -1,0 +1,262 @@
+{
+  "case_id": "jwt_alg_none_or_confusion-02",
+  "case_hash": "b28b2cd4c021869c",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_ALG_NONE_OR_CONFUSION",
+    "posture_codes": [],
+    "evidence_path": "/header/jku",
+    "fix_keys": [
+      "reject",
+      "token"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_alg_none_or_confusion-02",
+    "kind": "jwt",
+    "mutator": "jwt_jku_header",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 2,
+    "hash": "b28b2cd4c021869c"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.55,
+    "evidence": [
+      {
+        "path": "/header/alg",
+        "actual": "RS256",
+        "expected": "an allowed asymmetric algorithm, not none",
+        "note": "The captured token does not use alg none. The scan symptom is not supported by this artifact."
+      },
+      {
+        "path": "/header/kid",
+        "actual": "test-key-1",
+        "expected": "a kid present in the configured JWKS",
+        "note": "This kid matches the key in the supplied jwks_json."
+      },
+      {
+        "path": "/header/jku",
+        "actual": "https://attacker.example/jwks.json",
+        "expected": "absent, or ignored by the SP",
+        "note": "The header points to an attacker-controlled key URL. The SP must never fetch keys from it. Only the configured JWKS may be used."
+      },
+      {
+        "path": "/claims/iss",
+        "actual": "https://login.example.com/tenant-1/v2.0",
+        "expected": "https://login.example.com/tenant-1/v2.0"
+      },
+      {
+        "path": "/claims/aud",
+        "actual": "client-abc123",
+        "expected": "client-abc123"
+      },
+      {
+        "path": "/claims/nonce",
+        "actual": "n-0S6_WzA2Mj",
+        "expected": "n-0S6_WzA2Mj"
+      },
+      {
+        "path": "/claims/exp",
+        "actual": "1768482000 (2026-01-15T13:00:00Z)",
+        "expected": "later than now (2026-01-15T12:00:00Z)"
+      }
+    ],
+    "fix": "1. Keep the SP's algorithm allowlist to asymmetric algorithms such as RS256 or ES256. Reject alg none and any HS* algorithm for keys that came from a JWKS. Choose the algorithm from SP configuration, not from the token header.\n2. Ignore the jku, jwk and x5u header parameters. Verify only against the OP's configured JWKS, selecting the key by kid.\n3. Retest the scanner's alg none token against the SP and confirm it is rejected. If it is accepted, fix the algorithm allowlist. The captured artifact does not show that failure.\n4. Confirm the signature verifies against the configured JWKS in your library. No signature value was available here, so I could not check it.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "JWT_ALG_NONE_OR_CONFUSION",
+        "why_not": "The captured header has alg RS256, not none. The finding would only hold if the scanner sent a different token."
+      }
+    ],
+    "questions": [
+      "Can you share the exact token the scanner sent with alg none? The artifact captured here uses RS256.",
+      "Does your JWT library fetch keys from the jku header, or does it use only the configured JWKS?"
+    ]
+  },
+  "started": "2026-10-27T09:32:48.615156-05:00",
+  "duration_ms": 9967,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1322,
+    "cache_creation_input_tokens": 1789,
+    "cache_read_input_tokens": 3893
+  },
+  "cost_usd": 0.0207693,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1322,
+      "cacheReadInputTokens": 3893,
+      "cacheCreationInputTokens": 1789,
+      "costUSD": 0.0207693,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 7,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 9843,
+    "stop_reason": "tool_use",
+    "session_id": "24569301-6600-4d66-9d5c-d7600a18cfcf",
+    "total_cost_usd": 0.0207693,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1789,
+      "cache_read_input_tokens": 3893,
+      "output_tokens": 1322,
+      "output_tokens_details": {
+        "thinking_tokens": 350
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1789,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1322,
+          "cache_read_input_tokens": 3893,
+          "cache_creation_input_tokens": 1789,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1789
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1322,
+        "cacheReadInputTokens": 3893,
+        "cacheCreationInputTokens": 1789,
+        "webSearchRequests": 0,
+        "costUSD": 0.0207693,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 350,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1789,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.55,\"evidence\":[{\"path\":\"/header/alg\",\"actual\":\"RS256\",\"expected\":\"an allowed asymmetric algorithm, not none\",\"note\":\"The captured token does not use alg none. The scan symptom is not supported by this artifact.\"},{\"path\":\"/header/kid\",\"actual\":\"test-key-1\",\"expected\":\"a kid present in the configured JWKS\",\"note\":\"This kid matches the key in the supplied jwks_json.\"},{\"path\":\"/header/jku\",\"actual\":\"https://attacker.example/jwks.json\",\"expected\":\"absent, or ignored by the SP\",\"note\":\"The header points to an attacker-controlled key URL. The SP must never fetch keys from it. Only the configured JWKS may be used.\"},{\"path\":\"/claims/iss\",\"actual\":\"https://login.example.com/tenant-1/v2.0\",\"expected\":\"https://login.example.com/tenant-1/v2.0\"},{\"path\":\"/claims/aud\",\"actual\":\"client-abc123\",\"expected\":\"client-abc123\"},{\"path\":\"/claims/nonce\",\"actual\":\"n-0S6_WzA2Mj\",\"expected\":\"n-0S6_WzA2Mj\"},{\"path\":\"/claims/exp\",\"actual\":\"1768482000 (2026-01-15T13:00:00Z)\",\"expected\":\"later than now (2026-01-15T12:00:00Z)\"}],\"fix\":\"1. Keep the SP's algorithm allowlist to asymmetric algorithms such as RS256 or ES256. Reject alg none and any HS* algorithm for keys that came from a JWKS. Choose the algorithm from SP configuration, not from the token header.\\n2. Ignore the jku, jwk and x5u header parameters. Verify only against the OP's configured JWKS, selecting the key by kid.\\n3. Retest the scanner's alg none token against the SP and confirm it is rejected. If it is accepted, fix the algorithm allowlist. The captured artifact does not show that failure.\\n4. Confirm the signature verifies against the configured JWKS in your library. No signature value was available here, so I could not check it.\",\"alternatives\":[{\"code\":\"JWT_ALG_NONE_OR_CONFUSION\",\"why_not\":\"The captured header has alg RS256, not none. The finding would only hold if the scanner sent a different token.\"}],\"questions\":[\"Can you share the exact token the scanner sent with alg none? The artifact captured here uses RS256.\",\"Does your JWT library fetch keys from the jku header, or does it use only the configured JWKS?\"]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.55,
+      "evidence": [
+        {
+          "path": "/header/alg",
+          "actual": "RS256",
+          "expected": "an allowed asymmetric algorithm, not none",
+          "note": "The captured token does not use alg none. The scan symptom is not supported by this artifact."
+        },
+        {
+          "path": "/header/kid",
+          "actual": "test-key-1",
+          "expected": "a kid present in the configured JWKS",
+          "note": "This kid matches the key in the supplied jwks_json."
+        },
+        {
+          "path": "/header/jku",
+          "actual": "https://attacker.example/jwks.json",
+          "expected": "absent, or ignored by the SP",
+          "note": "The header points to an attacker-controlled key URL. The SP must never fetch keys from it. Only the configured JWKS may be used."
+        },
+        {
+          "path": "/claims/iss",
+          "actual": "https://login.example.com/tenant-1/v2.0",
+          "expected": "https://login.example.com/tenant-1/v2.0"
+        },
+        {
+          "path": "/claims/aud",
+          "actual": "client-abc123",
+          "expected": "client-abc123"
+        },
+        {
+          "path": "/claims/nonce",
+          "actual": "n-0S6_WzA2Mj",
+          "expected": "n-0S6_WzA2Mj"
+        },
+        {
+          "path": "/claims/exp",
+          "actual": "1768482000 (2026-01-15T13:00:00Z)",
+          "expected": "later than now (2026-01-15T12:00:00Z)"
+        }
+      ],
+      "fix": "1. Keep the SP's algorithm allowlist to asymmetric algorithms such as RS256 or ES256. Reject alg none and any HS* algorithm for keys that came from a JWKS. Choose the algorithm from SP configuration, not from the token header.\n2. Ignore the jku, jwk and x5u header parameters. Verify only against the OP's configured JWKS, selecting the key by kid.\n3. Retest the scanner's alg none token against the SP and confirm it is rejected. If it is accepted, fix the algorithm allowlist. The captured artifact does not show that failure.\n4. Confirm the signature verifies against the configured JWKS in your library. No signature value was available here, so I could not check it.",
+      "alternatives": [
+        {
+          "code": "JWT_ALG_NONE_OR_CONFUSION",
+          "why_not": "The captured header has alg RS256, not none. The finding would only hold if the scanner sent a different token."
+        }
+      ],
+      "questions": [
+        "Can you share the exact token the scanner sent with alg none? The artifact captured here uses RS256.",
+        "Does your JWT library fetch keys from the jku header, or does it use only the configured JWKS?"
+      ]
+    },
+    "ttft_ms": 4432,
+    "type": "result",
+    "duration_ms": 9967,
+    "uuid": "a44d8a23-762e-4ed9-b190-4530ec4324aa",
+    "ttft_stream_ms": 1592,
+    "time_to_request_ms": 120,
+    "first_content_frame_ms": 1592,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

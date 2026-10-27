@@ -1,0 +1,1 @@
+GitLab: Email can't be blank on first SSO login.

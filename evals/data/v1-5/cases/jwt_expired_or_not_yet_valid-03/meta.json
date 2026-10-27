@@ -1,0 +1,10 @@
+{
+  "id": "jwt_expired_or_not_yet_valid-03",
+  "kind": "jwt",
+  "mutator": "jwt_not_yet_valid",
+  "expected_completeness": "partial",
+  "symptom_from": "vendor_strings.json",
+  "seed": 42,
+  "index": 3,
+  "hash": "83a0773610f952bb"
+}

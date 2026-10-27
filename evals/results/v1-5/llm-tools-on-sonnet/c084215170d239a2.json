@@ -1,0 +1,205 @@
+{
+  "case_id": "posture_decrypt_before_verify-01",
+  "case_hash": "c084215170d239a2",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [
+      "POSTURE_DECRYPT_BEFORE_VERIFY"
+    ],
+    "evidence_path": "/Response/Assertion",
+    "fix_keys": [
+      "response",
+      "assertion",
+      "encrypting",
+      "verify"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "posture_decrypt_before_verify-01",
+    "kind": "saml_response",
+    "dialect": "auth0",
+    "mutator": "posture_encrypted_unsigned",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 1,
+    "hash": "c084215170d239a2"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.6,
+    "evidence": [
+      {
+        "path": "/Response/Assertion",
+        "actual": "EncryptedAssertion inside an unsigned Response",
+        "expected": "signed Response or signed-then-encrypted Assertion",
+        "note": "Status, issuer, destination and InResponseTo pass. The assertion is encrypted and this tool can't decrypt it, so the audience, recipient, time window, NameID and attribute checks were skipped."
+      }
+    ],
+    "fix": "Have the IdP sign the Response, or sign the Assertion before encrypting it. The SP can then verify a signature against the pinned IdP certificate before it decrypts. Don't trust any certificate embedded in the message. Then re-run validation on the decrypted assertion to cover the audience, recipient, time window, NameID and attribute checks.",
+    "posture_codes": [
+      "POSTURE_DECRYPT_BEFORE_VERIFY"
+    ],
+    "alternatives": [
+      {
+        "code": "SAML_ENCRYPTED_ASSERTION_UNDECRYPTABLE",
+        "why_not": "The artifact gives no sign that the SP's decryption failed. The validator simply doesn't support decryption, so it can't tell either way."
+      }
+    ],
+    "questions": [
+      "Can you provide the decrypted assertion? The audience, recipient, time window, NameID and required-attribute checks (email, firstName) were skipped because the assertion is encrypted."
+    ]
+  },
+  "started": "2026-10-27T10:00:58.609796-05:00",
+  "duration_ms": 12167,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2016,
+    "cache_creation_input_tokens": 6186,
+    "cache_read_input_tokens": 28325
+  },
+  "cost_usd": 0.047744499999999995,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2016,
+      "cacheReadInputTokens": 28325,
+      "cacheCreationInputTokens": 6186,
+      "costUSD": 0.047744499999999995,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 12060,
+    "stop_reason": "tool_use",
+    "session_id": "26691cff-9835-408c-b890-e796c1276989",
+    "total_cost_usd": 0.047744499999999995,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 6186,
+      "cache_read_input_tokens": 28325,
+      "output_tokens": 2016,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6186,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 615,
+          "cache_read_input_tokens": 16039,
+          "cache_creation_input_tokens": 2433,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2433
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2016,
+        "cacheReadInputTokens": 28325,
+        "cacheCreationInputTokens": 6186,
+        "webSearchRequests": 0,
+        "costUSD": 0.047744499999999995,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6186,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.6,\"evidence\":[{\"path\":\"/Response/Assertion\",\"actual\":\"EncryptedAssertion inside an unsigned Response\",\"expected\":\"signed Response or signed-then-encrypted Assertion\",\"note\":\"Status, issuer, destination and InResponseTo pass. The assertion is encrypted and this tool can't decrypt it, so the audience, recipient, time window, NameID and attribute checks were skipped.\"}],\"fix\":\"Have the IdP sign the Response, or sign the Assertion before encrypting it. The SP can then verify a signature against the pinned IdP certificate before it decrypts. Don't trust any certificate embedded in the message. Then re-run validation on the decrypted assertion to cover the audience, recipient, time window, NameID and attribute checks.\",\"posture_codes\":[\"POSTURE_DECRYPT_BEFORE_VERIFY\"],\"questions\":[\"Can you provide the decrypted assertion? The audience, recipient, time window, NameID and required-attribute checks (email, firstName) were skipped because the assertion is encrypted.\"],\"alternatives\":[{\"code\":\"SAML_ENCRYPTED_ASSERTION_UNDECRYPTABLE\",\"why_not\":\"The artifact gives no sign that the SP's decryption failed. The validator simply doesn't support decryption, so it can't tell either way.\"}]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.6,
+      "evidence": [
+        {
+          "path": "/Response/Assertion",
+          "actual": "EncryptedAssertion inside an unsigned Response",
+          "expected": "signed Response or signed-then-encrypted Assertion",
+          "note": "Status, issuer, destination and InResponseTo pass. The assertion is encrypted and this tool can't decrypt it, so the audience, recipient, time window, NameID and attribute checks were skipped."
+        }
+      ],
+      "fix": "Have the IdP sign the Response, or sign the Assertion before encrypting it. The SP can then verify a signature against the pinned IdP certificate before it decrypts. Don't trust any certificate embedded in the message. Then re-run validation on the decrypted assertion to cover the audience, recipient, time window, NameID and attribute checks.",
+      "posture_codes": [
+        "POSTURE_DECRYPT_BEFORE_VERIFY"
+      ],
+      "questions": [
+        "Can you provide the decrypted assertion? The audience, recipient, time window, NameID and required-attribute checks (email, firstName) were skipped because the assertion is encrypted."
+      ],
+      "alternatives": [
+        {
+          "code": "SAML_ENCRYPTED_ASSERTION_UNDECRYPTABLE",
+          "why_not": "The artifact gives no sign that the SP's decryption failed. The validator simply doesn't support decryption, so it can't tell either way."
+        }
+      ]
+    },
+    "ttft_ms": 7876,
+    "type": "result",
+    "duration_ms": 12167,
+    "uuid": "675ba9e3-a1de-480b-ad38-78f3aeebb052",
+    "ttft_stream_ms": 1463,
+    "time_to_request_ms": 97,
+    "first_content_frame_ms": 1463,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

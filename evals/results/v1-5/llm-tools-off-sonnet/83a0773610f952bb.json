@@ -1,0 +1,226 @@
+{
+  "case_id": "jwt_expired_or_not_yet_valid-03",
+  "case_hash": "83a0773610f952bb",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+    "posture_codes": [],
+    "evidence_path": "/claims/nbf",
+    "fix_keys": [
+      "refresh",
+      "token",
+      "re-run",
+      "login"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_expired_or_not_yet_valid-03",
+    "kind": "jwt",
+    "mutator": "jwt_not_yet_valid",
+    "expected_completeness": "partial",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 3,
+    "hash": "83a0773610f952bb"
+  },
+  "output": {
+    "root_cause_code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+    "confidence": 0.93,
+    "evidence": [
+      {
+        "path": "/claims/nbf",
+        "actual": "1768479000 (2026-01-15T12:10:00Z)",
+        "expected": "nbf \u003c= now (+ at most 300s skew)",
+        "note": "nbf is 600s after the evaluation time, beyond the 5-minute skew limit."
+      },
+      {
+        "path": "/claims/iat",
+        "actual": "1768478400 (2026-01-15T12:00:00Z)",
+        "expected": "nbf not later than iat",
+        "note": "The token was issued at 'now' but nbf is 10 minutes later, so the OP is setting nbf ahead of issuance."
+      },
+      {
+        "path": "/claims/exp",
+        "actual": "1768482000 (2026-01-15T13:00:00Z)",
+        "expected": "exp \u003e now",
+        "note": "Not expired, so the failure is only the not-before check."
+      }
+    ],
+    "fix": "Fix the new OP's token configuration so nbf is set to the issue time (nbf \u003c= iat) rather than 10 minutes ahead. Check for a not-before offset or clock drift on the OP's signing hosts, and sync those hosts' clocks with NTP. On the SP side, keep clock skew tolerance at 5 minutes or less. Don't raise it to cover the 10-minute offset, and don't skip the nbf check. Until the OP is fixed, clients can retry once the nbf time has passed.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "JWT_ALG_NONE_OR_CONFUSION",
+        "why_not": "The header uses RS256 with a kid that is present in the JWKS, so there is no algorithm problem."
+      },
+      {
+        "code": "OIDC_ISSUER_MISMATCH",
+        "why_not": "iss matches the configured issuer exactly."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:34:15.461486-05:00",
+  "duration_ms": 10483,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 962,
+    "cache_creation_input_tokens": 1750,
+    "cache_read_input_tokens": 3886
+  },
+  "cost_usd": 0.0170126,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 962,
+      "cacheReadInputTokens": 3886,
+      "cacheCreationInputTokens": 1750,
+      "costUSD": 0.0170126,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 10329,
+    "stop_reason": "tool_use",
+    "session_id": "be721a27-2ffe-4312-a07e-b54ca2ddc4de",
+    "total_cost_usd": 0.0170126,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1750,
+      "cache_read_input_tokens": 3886,
+      "output_tokens": 962,
+      "output_tokens_details": {
+        "thinking_tokens": 228
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1750,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 962,
+          "cache_read_input_tokens": 3886,
+          "cache_creation_input_tokens": 1750,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1750
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 962,
+        "cacheReadInputTokens": 3886,
+        "cacheCreationInputTokens": 1750,
+        "webSearchRequests": 0,
+        "costUSD": 0.0170126,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 228,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1750,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"JWT_EXPIRED_OR_NOT_YET_VALID\",\"confidence\":0.93,\"evidence\":[{\"path\":\"/claims/nbf\",\"actual\":\"1768479000 (2026-01-15T12:10:00Z)\",\"expected\":\"nbf \u003c= now (+ at most 300s skew)\",\"note\":\"nbf is 600s after the evaluation time, beyond the 5-minute skew limit.\"},{\"path\":\"/claims/iat\",\"actual\":\"1768478400 (2026-01-15T12:00:00Z)\",\"expected\":\"nbf not later than iat\",\"note\":\"The token was issued at 'now' but nbf is 10 minutes later, so the OP is setting nbf ahead of issuance.\"},{\"path\":\"/claims/exp\",\"actual\":\"1768482000 (2026-01-15T13:00:00Z)\",\"expected\":\"exp \u003e now\",\"note\":\"Not expired, so the failure is only the not-before check.\"}],\"fix\":\"Fix the new OP's token configuration so nbf is set to the issue time (nbf \u003c= iat) rather than 10 minutes ahead. Check for a not-before offset or clock drift on the OP's signing hosts, and sync those hosts' clocks with NTP. On the SP side, keep clock skew tolerance at 5 minutes or less. Don't raise it to cover the 10-minute offset, and don't skip the nbf check. Until the OP is fixed, clients can retry once the nbf time has passed.\",\"alternatives\":[{\"code\":\"JWT_ALG_NONE_OR_CONFUSION\",\"why_not\":\"The header uses RS256 with a kid that is present in the JWKS, so there is no algorithm problem.\"},{\"code\":\"OIDC_ISSUER_MISMATCH\",\"why_not\":\"iss matches the configured issuer exactly.\"}],\"posture_codes\":[]}",
+    "structured_output": {
+      "root_cause_code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+      "confidence": 0.93,
+      "evidence": [
+        {
+          "path": "/claims/nbf",
+          "actual": "1768479000 (2026-01-15T12:10:00Z)",
+          "expected": "nbf \u003c= now (+ at most 300s skew)",
+          "note": "nbf is 600s after the evaluation time, beyond the 5-minute skew limit."
+        },
+        {
+          "path": "/claims/iat",
+          "actual": "1768478400 (2026-01-15T12:00:00Z)",
+          "expected": "nbf not later than iat",
+          "note": "The token was issued at 'now' but nbf is 10 minutes later, so the OP is setting nbf ahead of issuance."
+        },
+        {
+          "path": "/claims/exp",
+          "actual": "1768482000 (2026-01-15T13:00:00Z)",
+          "expected": "exp \u003e now",
+          "note": "Not expired, so the failure is only the not-before check."
+        }
+      ],
+      "fix": "Fix the new OP's token configuration so nbf is set to the issue time (nbf \u003c= iat) rather than 10 minutes ahead. Check for a not-before offset or clock drift on the OP's signing hosts, and sync those hosts' clocks with NTP. On the SP side, keep clock skew tolerance at 5 minutes or less. Don't raise it to cover the 10-minute offset, and don't skip the nbf check. Until the OP is fixed, clients can retry once the nbf time has passed.",
+      "alternatives": [
+        {
+          "code": "JWT_ALG_NONE_OR_CONFUSION",
+          "why_not": "The header uses RS256 with a kid that is present in the JWKS, so there is no algorithm problem."
+        },
+        {
+          "code": "OIDC_ISSUER_MISMATCH",
+          "why_not": "iss matches the configured issuer exactly."
+        }
+      ],
+      "posture_codes": []
+    },
+    "ttft_ms": 6558,
+    "type": "result",
+    "duration_ms": 10483,
+    "uuid": "b6e7ce40-9e86-41d4-8224-f2b7cea96be5",
+    "ttft_stream_ms": 4400,
+    "time_to_request_ms": 151,
+    "first_content_frame_ms": 4401,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

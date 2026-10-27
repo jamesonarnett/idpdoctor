@@ -1,0 +1,1 @@
+Token exchange fails with invalid_grant only when the SPA is served from the CDN.

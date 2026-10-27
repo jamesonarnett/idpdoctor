@@ -1,0 +1,9 @@
+{
+  "code": "JWT_ALG_NONE_OR_CONFUSION",
+  "posture_codes": [],
+  "evidence_path": "/header/alg",
+  "fix_keys": [
+    "reject",
+    "token"
+  ]
+}

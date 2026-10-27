@@ -1,0 +1,220 @@
+{
+  "case_id": "jwt_alg_none_or_confusion-02",
+  "case_hash": "b28b2cd4c021869c",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_ALG_NONE_OR_CONFUSION",
+    "posture_codes": [],
+    "evidence_path": "/header/jku",
+    "fix_keys": [
+      "reject",
+      "token"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_alg_none_or_confusion-02",
+    "kind": "jwt",
+    "mutator": "jwt_jku_header",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 2,
+    "hash": "b28b2cd4c021869c"
+  },
+  "output": {
+    "root_cause_code": "JWT_ALG_NONE_OR_CONFUSION",
+    "confidence": 0.6,
+    "evidence": [
+      {
+        "path": "/header/jku",
+        "actual": "present",
+        "expected": "absent; the SP should ignore it and use only the OP's configured JWKS",
+        "note": "The token names its own key source. This is the only failing check."
+      },
+      {
+        "path": "/header/alg",
+        "actual": "RS256",
+        "expected": "RS256 (allowed)",
+        "note": "This captured token is not alg none. The alg check passed."
+      },
+      {
+        "path": "/signature",
+        "actual": "verified with the configured jwks_json (RSA 2048)",
+        "note": "The signature verifies against the pinned key. The iss, aud, exp, nbf, iat and nonce checks all pass."
+      }
+    ],
+    "fix": "Pin the allowed algorithms to the asymmetric ones the OP publishes (e.g. RS256 or ES256). Reject alg none and any alg the token nominates that isn't on that list. Ignore the jku, jwk and x5u headers. Take keys only from the OP's JWKS, which you configure or get from the discovery document. Look at the SP's JWT library settings and make sure unsecured JWTs are disabled. Then replay a token with alg none and confirm it is rejected. This capture only shows a jku header on a correctly signed RS256 token, so it doesn't prove the scanner's alg none finding.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "HEALTHY",
+        "why_not": "The token's signature, claims and nonce all validate, but the jku header makes the validator fail it. An SP that honours jku would trust a key source the attacker controls."
+      }
+    ],
+    "questions": [
+      "Which token did the security scan send? The captured token has alg RS256, so the alg none token may be a different artifact.",
+      "Does the SP's JWT library follow the jku header or accept alg none? Please share its configuration."
+    ]
+  },
+  "started": "2026-10-27T09:53:10.416263-05:00",
+  "duration_ms": 12143,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1483,
+    "cache_creation_input_tokens": 3663,
+    "cache_read_input_tokens": 23952
+  },
+  "cost_usd": 0.0318852,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1483,
+      "cacheReadInputTokens": 23952,
+      "cacheCreationInputTokens": 3663,
+      "costUSD": 0.0318852,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 12016,
+    "stop_reason": "tool_use",
+    "session_id": "2f7cdcce-0db7-458d-90c8-372efc8176b0",
+    "total_cost_usd": 0.0318852,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3663,
+      "cache_read_input_tokens": 23952,
+      "output_tokens": 1483,
+      "output_tokens_details": {
+        "thinking_tokens": 109
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3663,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 838,
+          "cache_read_input_tokens": 12872,
+          "cache_creation_input_tokens": 1871,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1871
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1483,
+        "cacheReadInputTokens": 23952,
+        "cacheCreationInputTokens": 3663,
+        "webSearchRequests": 0,
+        "costUSD": 0.0318852,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 109,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3663,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"JWT_ALG_NONE_OR_CONFUSION\",\"confidence\":0.6,\"evidence\":[{\"path\":\"/header/jku\",\"actual\":\"present\",\"expected\":\"absent; the SP should ignore it and use only the OP's configured JWKS\",\"note\":\"The token names its own key source. This is the only failing check.\"},{\"path\":\"/header/alg\",\"actual\":\"RS256\",\"expected\":\"RS256 (allowed)\",\"note\":\"This captured token is not alg none. The alg check passed.\"},{\"path\":\"/signature\",\"actual\":\"verified with the configured jwks_json (RSA 2048)\",\"note\":\"The signature verifies against the pinned key. The iss, aud, exp, nbf, iat and nonce checks all pass.\"}],\"fix\":\"Pin the allowed algorithms to the asymmetric ones the OP publishes (e.g. RS256 or ES256). Reject alg none and any alg the token nominates that isn't on that list. Ignore the jku, jwk and x5u headers. Take keys only from the OP's JWKS, which you configure or get from the discovery document. Look at the SP's JWT library settings and make sure unsecured JWTs are disabled. Then replay a token with alg none and confirm it is rejected. This capture only shows a jku header on a correctly signed RS256 token, so it doesn't prove the scanner's alg none finding.\",\"alternatives\":[{\"code\":\"HEALTHY\",\"why_not\":\"The token's signature, claims and nonce all validate, but the jku header makes the validator fail it. An SP that honours jku would trust a key source the attacker controls.\"}],\"questions\":[\"Which token did the security scan send? The captured token has alg RS256, so the alg none token may be a different artifact.\",\"Does the SP's JWT library follow the jku header or accept alg none? Please share its configuration.\"]}",
+    "structured_output": {
+      "root_cause_code": "JWT_ALG_NONE_OR_CONFUSION",
+      "confidence": 0.6,
+      "evidence": [
+        {
+          "path": "/header/jku",
+          "actual": "present",
+          "expected": "absent; the SP should ignore it and use only the OP's configured JWKS",
+          "note": "The token names its own key source. This is the only failing check."
+        },
+        {
+          "path": "/header/alg",
+          "actual": "RS256",
+          "expected": "RS256 (allowed)",
+          "note": "This captured token is not alg none. The alg check passed."
+        },
+        {
+          "path": "/signature",
+          "actual": "verified with the configured jwks_json (RSA 2048)",
+          "note": "The signature verifies against the pinned key. The iss, aud, exp, nbf, iat and nonce checks all pass."
+        }
+      ],
+      "fix": "Pin the allowed algorithms to the asymmetric ones the OP publishes (e.g. RS256 or ES256). Reject alg none and any alg the token nominates that isn't on that list. Ignore the jku, jwk and x5u headers. Take keys only from the OP's JWKS, which you configure or get from the discovery document. Look at the SP's JWT library settings and make sure unsecured JWTs are disabled. Then replay a token with alg none and confirm it is rejected. This capture only shows a jku header on a correctly signed RS256 token, so it doesn't prove the scanner's alg none finding.",
+      "alternatives": [
+        {
+          "code": "HEALTHY",
+          "why_not": "The token's signature, claims and nonce all validate, but the jku header makes the validator fail it. An SP that honours jku would trust a key source the attacker controls."
+        }
+      ],
+      "questions": [
+        "Which token did the security scan send? The captured token has alg RS256, so the alg none token may be a different artifact.",
+        "Does the SP's JWT library follow the jku header or accept alg none? Please share its configuration."
+      ]
+    },
+    "ttft_ms": 5028,
+    "type": "result",
+    "duration_ms": 12143,
+    "uuid": "5f24ad3e-7b1a-4d29-a841-b984a11cb69b",
+    "ttft_stream_ms": 2284,
+    "time_to_request_ms": 111,
+    "first_content_frame_ms": 2284,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

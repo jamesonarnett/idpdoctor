@@ -1,0 +1,10 @@
+{
+  "id": "posture_weak_algorithm-01",
+  "kind": "saml_response",
+  "dialect": "auth0",
+  "mutator": "posture_sha1",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 1,
+  "hash": "6f6555d6b8f1e9f4"
+}

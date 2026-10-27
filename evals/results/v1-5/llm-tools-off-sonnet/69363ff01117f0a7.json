@@ -1,0 +1,222 @@
+{
+  "case_id": "oauth_redirect_uri_mismatch-01",
+  "case_hash": "69363ff01117f0a7",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_REDIRECT_URI_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/request/redirect_uri",
+    "fix_keys": [
+      "register",
+      "exact",
+      "redirect",
+      "scheme"
+    ],
+    "needs": [
+      "registered_redirect_uris"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_redirect_uri_mismatch-01",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_redirect_uri_mismatch_auth0",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 1,
+    "hash": "69363ff01117f0a7"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_REDIRECT_URI_MISMATCH",
+    "confidence": 0.96,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_request"
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "Callback URL mismatch. http://app.example.com/callback is not in the list of allowed callback URLs"
+      },
+      {
+        "path": "/request/redirect_uri",
+        "actual": "http://app.example.com/callback",
+        "expected": "https://app.example.com/callback",
+        "note": "Request uses http scheme; registered URI uses https."
+      },
+      {
+        "path": "/request/registered_redirect_uris",
+        "actual": "[\"https://app.example.com/callback\"]",
+        "note": "Only the https URI is registered; exact match is required."
+      }
+    ],
+    "fix": "Make the app send redirect_uri exactly as registered: https://app.example.com/callback. Change the scheme from http to https in the authorization request or app config. Don't register the http URI as a workaround, because that allows an insecure callback. Check that the registered URI matches exactly, including scheme, host, path and trailing slash.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+        "why_not": "The error text names the callback URL list specifically, so this is a redirect URI mismatch and not a broader client configuration problem."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:36:16.310583-05:00",
+  "duration_ms": 4355,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 551,
+    "cache_creation_input_tokens": 1429,
+    "cache_read_input_tokens": 3872
+  },
+  "cost_usd": 0.011617199999999998,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 551,
+      "cacheReadInputTokens": 3872,
+      "cacheCreationInputTokens": 1429,
+      "costUSD": 0.011617199999999998,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 4181,
+    "stop_reason": "tool_use",
+    "session_id": "7dc5ce15-b940-4168-95f9-1d6d4dd64e55",
+    "total_cost_usd": 0.011617199999999998,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1429,
+      "cache_read_input_tokens": 3872,
+      "output_tokens": 551,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1429,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 551,
+          "cache_read_input_tokens": 3872,
+          "cache_creation_input_tokens": 1429,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1429
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 551,
+        "cacheReadInputTokens": 3872,
+        "cacheCreationInputTokens": 1429,
+        "webSearchRequests": 0,
+        "costUSD": 0.011617199999999998,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1429,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_REDIRECT_URI_MISMATCH\",\"confidence\":0.96,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"invalid_request\"},{\"path\":\"/redirect/error_description\",\"actual\":\"Callback URL mismatch. http://app.example.com/callback is not in the list of allowed callback URLs\"},{\"path\":\"/request/redirect_uri\",\"actual\":\"http://app.example.com/callback\",\"expected\":\"https://app.example.com/callback\",\"note\":\"Request uses http scheme; registered URI uses https.\"},{\"path\":\"/request/registered_redirect_uris\",\"actual\":\"[\\\"https://app.example.com/callback\\\"]\",\"note\":\"Only the https URI is registered; exact match is required.\"}],\"fix\":\"Make the app send redirect_uri exactly as registered: https://app.example.com/callback. Change the scheme from http to https in the authorization request or app config. Don't register the http URI as a workaround, because that allows an insecure callback. Check that the registered URI matches exactly, including scheme, host, path and trailing slash.\",\"alternatives\":[{\"code\":\"OAUTH_CLIENT_CONFIG_REJECTED\",\"why_not\":\"The error text names the callback URL list specifically, so this is a redirect URI mismatch and not a broader client configuration problem.\"}]}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_REDIRECT_URI_MISMATCH",
+      "confidence": 0.96,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "invalid_request"
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "Callback URL mismatch. http://app.example.com/callback is not in the list of allowed callback URLs"
+        },
+        {
+          "path": "/request/redirect_uri",
+          "actual": "http://app.example.com/callback",
+          "expected": "https://app.example.com/callback",
+          "note": "Request uses http scheme; registered URI uses https."
+        },
+        {
+          "path": "/request/registered_redirect_uris",
+          "actual": "[\"https://app.example.com/callback\"]",
+          "note": "Only the https URI is registered; exact match is required."
+        }
+      ],
+      "fix": "Make the app send redirect_uri exactly as registered: https://app.example.com/callback. Change the scheme from http to https in the authorization request or app config. Don't register the http URI as a workaround, because that allows an insecure callback. Check that the registered URI matches exactly, including scheme, host, path and trailing slash.",
+      "alternatives": [
+        {
+          "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+          "why_not": "The error text names the callback URL list specifically, so this is a redirect URI mismatch and not a broader client configuration problem."
+        }
+      ]
+    },
+    "ttft_ms": 4326,
+    "type": "result",
+    "duration_ms": 4355,
+    "uuid": "837e0f13-f1e0-4ff3-b832-ebd908e9b8ec",
+    "ttft_stream_ms": 1520,
+    "time_to_request_ms": 171,
+    "first_content_frame_ms": 1521,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

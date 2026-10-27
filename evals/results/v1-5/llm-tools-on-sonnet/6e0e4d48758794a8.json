@@ -1,0 +1,208 @@
+{
+  "case_id": "saml_status_not_success-00",
+  "case_hash": "6e0e4d48758794a8",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_STATUS_NOT_SUCCESS",
+    "posture_codes": [],
+    "evidence_path": "/Response/Status/StatusCode/@Value",
+    "fix_keys": [
+      "statuscode",
+      "sub-code",
+      "statusmessage:",
+      "responder"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_status_not_success-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "status_responder",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "6e0e4d48758794a8"
+  },
+  "output": {
+    "root_cause_code": "SAML_STATUS_NOT_SUCCESS",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/Response/Status/StatusCode/@Value",
+        "actual": "urn:oasis:names:tc:SAML:2.0:status:Responder",
+        "expected": "urn:oasis:names:tc:SAML:2.0:status:Success"
+      },
+      {
+        "path": "/Response/Status/StatusCode/StatusCode/@Value",
+        "actual": "urn:oasis:names:tc:SAML:2.0:status:RequestDenied"
+      },
+      {
+        "path": "/Response/Status/StatusMessage",
+        "actual": "The user is not assigned to this application."
+      }
+    ],
+    "fix": "The IdP denied the request (Responder / RequestDenied) and sent no assertion. Assign the user, or a group they belong to, to this SP application at the IdP, then retry the login. The Issuer, Destination and InResponseTo checks all passed, so the SP configuration is not the problem. Keep signature validation enabled. Once the IdP returns Success with a signed assertion, re-run the validation to check the audience, NameID and attribute (email, firstName) requirements.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "IDP_POLICY_REFUSAL",
+        "why_not": "The refusal is a user-assignment policy at the IdP. But the artifact carries a concrete non-Success status, so the deterministic status class fits better."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T10:12:40.688786-05:00",
+  "duration_ms": 26653,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2105,
+    "cache_creation_input_tokens": 6997,
+    "cache_read_input_tokens": 28353
+  },
+  "cost_usd": 0.051881300000000005,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2105,
+      "cacheReadInputTokens": 28353,
+      "cacheCreationInputTokens": 6997,
+      "costUSD": 0.051881300000000005,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 26535,
+    "stop_reason": "tool_use",
+    "session_id": "f62ec777-4f61-46f0-8cfa-2cdfbb9b6ad1",
+    "total_cost_usd": 0.051881300000000005,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 6997,
+      "cache_read_input_tokens": 28353,
+      "output_tokens": 2105,
+      "output_tokens_details": {
+        "thinking_tokens": 89
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6997,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 692,
+          "cache_read_input_tokens": 16067,
+          "cache_creation_input_tokens": 3216,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 3216
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2105,
+        "cacheReadInputTokens": 28353,
+        "cacheCreationInputTokens": 6997,
+        "webSearchRequests": 0,
+        "costUSD": 0.051881300000000005,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 89,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6997,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_STATUS_NOT_SUCCESS\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/Response/Status/StatusCode/@Value\",\"actual\":\"urn:oasis:names:tc:SAML:2.0:status:Responder\",\"expected\":\"urn:oasis:names:tc:SAML:2.0:status:Success\"},{\"path\":\"/Response/Status/StatusCode/StatusCode/@Value\",\"actual\":\"urn:oasis:names:tc:SAML:2.0:status:RequestDenied\"},{\"path\":\"/Response/Status/StatusMessage\",\"actual\":\"The user is not assigned to this application.\"}],\"fix\":\"The IdP denied the request (Responder / RequestDenied) and sent no assertion. Assign the user, or a group they belong to, to this SP application at the IdP, then retry the login. The Issuer, Destination and InResponseTo checks all passed, so the SP configuration is not the problem. Keep signature validation enabled. Once the IdP returns Success with a signed assertion, re-run the validation to check the audience, NameID and attribute (email, firstName) requirements.\",\"alternatives\":[{\"code\":\"IDP_POLICY_REFUSAL\",\"why_not\":\"The refusal is a user-assignment policy at the IdP. But the artifact carries a concrete non-Success status, so the deterministic status class fits better.\"}],\"posture_codes\":[]}",
+    "structured_output": {
+      "root_cause_code": "SAML_STATUS_NOT_SUCCESS",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/Response/Status/StatusCode/@Value",
+          "actual": "urn:oasis:names:tc:SAML:2.0:status:Responder",
+          "expected": "urn:oasis:names:tc:SAML:2.0:status:Success"
+        },
+        {
+          "path": "/Response/Status/StatusCode/StatusCode/@Value",
+          "actual": "urn:oasis:names:tc:SAML:2.0:status:RequestDenied"
+        },
+        {
+          "path": "/Response/Status/StatusMessage",
+          "actual": "The user is not assigned to this application."
+        }
+      ],
+      "fix": "The IdP denied the request (Responder / RequestDenied) and sent no assertion. Assign the user, or a group they belong to, to this SP application at the IdP, then retry the login. The Issuer, Destination and InResponseTo checks all passed, so the SP configuration is not the problem. Keep signature validation enabled. Once the IdP returns Success with a signed assertion, re-run the validation to check the audience, NameID and attribute (email, firstName) requirements.",
+      "alternatives": [
+        {
+          "code": "IDP_POLICY_REFUSAL",
+          "why_not": "The refusal is a user-assignment policy at the IdP. But the artifact carries a concrete non-Success status, so the deterministic status class fits better."
+        }
+      ],
+      "posture_codes": []
+    },
+    "ttft_ms": 8165,
+    "type": "result",
+    "duration_ms": 26653,
+    "uuid": "8d42d9d4-6e26-4bec-b81f-f4827340e682",
+    "ttft_stream_ms": 1752,
+    "time_to_request_ms": 107,
+    "first_content_frame_ms": 1752,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

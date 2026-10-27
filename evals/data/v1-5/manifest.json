@@ -1,0 +1,8 @@
+{
+  "cases": 146,
+  "controls": 10,
+  "per_class": 5,
+  "per_posture": 2,
+  "seed": 42,
+  "templates": "evals/symptom_templates"
+}

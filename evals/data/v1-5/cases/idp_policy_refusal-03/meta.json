@@ -1,0 +1,10 @@
+{
+  "id": "idp_policy_refusal-03",
+  "kind": "oauth_redirect",
+  "mutator": "oauth_policy_refusal",
+  "expected_completeness": "partial",
+  "symptom_from": "vendor_strings.json",
+  "seed": 42,
+  "index": 3,
+  "hash": "315fc99cf039687e"
+}

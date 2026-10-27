@@ -1,0 +1,222 @@
+{
+  "case_id": "oauth_pkce_verifier_mismatch-04",
+  "case_hash": "3d91dde486631bf7",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/request/code_verifier",
+    "fix_keys": [
+      "generate",
+      "verifier",
+      "store",
+      "session"
+    ],
+    "needs": [
+      "code_verifier"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_pkce_verifier_mismatch-04",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_pkce_plain_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 4,
+    "hash": "3d91dde486631bf7"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+    "confidence": 0.97,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_grant",
+        "note": "Classified by vendor code AADSTS501481 as a PKCE verifier mismatch"
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "AADSTS501481: The Code_Verifier does not match the code_challenge supplied in the authorization request."
+      },
+      {
+        "path": "/request/code_verifier",
+        "actual": "[REDACTED:code_verifier:623deb68]",
+        "expected": "[REDACTED:code_challenge:ddbc472d]",
+        "note": "With the plain method the verifier must equal the challenge byte for byte. It does not."
+      },
+      {
+        "path": "/request/code_challenge_method",
+        "actual": "plain",
+        "expected": "S256",
+        "note": "The public client is using plain PKCE, which is also a posture weakness."
+      }
+    ],
+    "fix": "Generate the code_verifier once per authorization flow and store it with the session. Don't regenerate it between the authorization request and the token request. Derive the code_challenge from that verifier with S256 (BASE64URL(SHA256(verifier))) and send code_challenge_method=S256. At the token endpoint, send the same stored verifier unchanged. Check that parallel logins or retries aren't overwriting the stored verifier.",
+    "posture_codes": [
+      "POSTURE_PKCE_PLAIN_OR_ABSENT"
+    ],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T09:57:33.095449-05:00",
+  "duration_ms": 9279,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 996,
+    "cache_creation_input_tokens": 4256,
+    "cache_read_input_tokens": 23598
+  },
+  "cost_usd": 0.0293518,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 996,
+      "cacheReadInputTokens": 23598,
+      "cacheCreationInputTokens": 4256,
+      "costUSD": 0.0293518,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 9054,
+    "stop_reason": "tool_use",
+    "session_id": "a38c0c91-f37f-498f-a76d-b894682ad7ad",
+    "total_cost_usd": 0.0293518,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 4256,
+      "cache_read_input_tokens": 23598,
+      "output_tokens": 996,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 4256,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 645,
+          "cache_read_input_tokens": 12547,
+          "cache_creation_input_tokens": 2760,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2760
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 996,
+        "cacheReadInputTokens": 23598,
+        "cacheCreationInputTokens": 4256,
+        "webSearchRequests": 0,
+        "costUSD": 0.0293518,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 4256,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_PKCE_VERIFIER_MISMATCH\",\"confidence\":0.97,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"invalid_grant\",\"note\":\"Classified by vendor code AADSTS501481 as a PKCE verifier mismatch\"},{\"path\":\"/redirect/error_description\",\"actual\":\"AADSTS501481: The Code_Verifier does not match the code_challenge supplied in the authorization request.\"},{\"path\":\"/request/code_verifier\",\"actual\":\"[REDACTED:code_verifier:623deb68]\",\"expected\":\"[REDACTED:code_challenge:ddbc472d]\",\"note\":\"With the plain method the verifier must equal the challenge byte for byte. It does not.\"},{\"path\":\"/request/code_challenge_method\",\"actual\":\"plain\",\"expected\":\"S256\",\"note\":\"The public client is using plain PKCE, which is also a posture weakness.\"}],\"fix\":\"Generate the code_verifier once per authorization flow and store it with the session. Don't regenerate it between the authorization request and the token request. Derive the code_challenge from that verifier with S256 (BASE64URL(SHA256(verifier))) and send code_challenge_method=S256. At the token endpoint, send the same stored verifier unchanged. Check that parallel logins or retries aren't overwriting the stored verifier.\",\"posture_codes\":[\"POSTURE_PKCE_PLAIN_OR_ABSENT\"],\"alternatives\":[],\"questions\":[]}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+      "confidence": 0.97,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "invalid_grant",
+          "note": "Classified by vendor code AADSTS501481 as a PKCE verifier mismatch"
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "AADSTS501481: The Code_Verifier does not match the code_challenge supplied in the authorization request."
+        },
+        {
+          "path": "/request/code_verifier",
+          "actual": "[REDACTED:code_verifier:623deb68]",
+          "expected": "[REDACTED:code_challenge:ddbc472d]",
+          "note": "With the plain method the verifier must equal the challenge byte for byte. It does not."
+        },
+        {
+          "path": "/request/code_challenge_method",
+          "actual": "plain",
+          "expected": "S256",
+          "note": "The public client is using plain PKCE, which is also a posture weakness."
+        }
+      ],
+      "fix": "Generate the code_verifier once per authorization flow and store it with the session. Don't regenerate it between the authorization request and the token request. Derive the code_challenge from that verifier with S256 (BASE64URL(SHA256(verifier))) and send code_challenge_method=S256. At the token endpoint, send the same stored verifier unchanged. Check that parallel logins or retries aren't overwriting the stored verifier.",
+      "posture_codes": [
+        "POSTURE_PKCE_PLAIN_OR_ABSENT"
+      ],
+      "alternatives": [],
+      "questions": []
+    },
+    "ttft_ms": 4315,
+    "type": "result",
+    "duration_ms": 9279,
+    "uuid": "b01653e1-17a9-4249-b41d-a50997c18576",
+    "ttft_stream_ms": 2773,
+    "time_to_request_ms": 216,
+    "first_content_frame_ms": 2773,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

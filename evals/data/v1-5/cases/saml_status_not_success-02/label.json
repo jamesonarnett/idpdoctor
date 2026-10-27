@@ -1,0 +1,11 @@
+{
+  "code": "SAML_STATUS_NOT_SUCCESS",
+  "posture_codes": [],
+  "evidence_path": "/Response/Status/StatusCode/@Value",
+  "fix_keys": [
+    "statuscode",
+    "sub-code",
+    "statusmessage:",
+    "responder"
+  ]
+}

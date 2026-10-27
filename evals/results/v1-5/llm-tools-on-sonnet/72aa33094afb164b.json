@@ -1,0 +1,232 @@
+{
+  "case_id": "oauth_pkce_verifier_mismatch-01",
+  "case_hash": "72aa33094afb164b",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/request/code_verifier",
+    "fix_keys": [
+      "generate",
+      "verifier",
+      "store",
+      "session"
+    ],
+    "needs": [
+      "code_verifier"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_pkce_verifier_mismatch-01",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_pkce_verifier_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 1,
+    "hash": "72aa33094afb164b"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+    "confidence": 0.97,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_grant",
+        "note": "Classified as a PKCE verifier failure from the error description."
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "Failed to verify code verifier"
+      },
+      {
+        "path": "/request/code_verifier",
+        "actual": "[REDACTED:code_challenge:91019c0e]",
+        "expected": "[REDACTED:code_challenge:0a89b57f]",
+        "note": "BASE64URL(SHA256(code_verifier)) does not equal the code_challenge sent in the authorization request."
+      },
+      {
+        "path": "/request/code_challenge_method",
+        "actual": "S256",
+        "note": "S256 is correct for a public client. The problem is that the verifier and challenge do not belong together."
+      }
+    ],
+    "fix": "Generate the code_verifier once per authorization flow and store it with the session or state. Derive the code_challenge from that stored value with S256 (BASE64URL(SHA256(verifier)), no padding). Send the same stored verifier, unchanged, to the token endpoint. Check that concurrent or retried logins don't overwrite the stored verifier. Also check that the verifier isn't regenerated on the callback, and that it isn't altered by trimming, re-encoding or truncation. Keep S256 and keep the exact redirect_uri.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OAUTH_INVALID_GRANT_CODE",
+        "why_not": "The error is invalid_grant, but the description names the code verifier and the S256 recomputation fails locally. The code itself isn't shown to be expired or reused."
+      },
+      {
+        "code": "OAUTH_REDIRECT_URI_MISMATCH",
+        "why_not": "redirect_uri exactly matches a registered URI."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:57:13.087091-05:00",
+  "duration_ms": 7406,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1034,
+    "cache_creation_input_tokens": 3584,
+    "cache_read_input_tokens": 23610
+  },
+  "cost_usd": 0.027045000000000003,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1034,
+      "cacheReadInputTokens": 23610,
+      "cacheCreationInputTokens": 3584,
+      "costUSD": 0.027045000000000003,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 7285,
+    "stop_reason": "tool_use",
+    "session_id": "99c731ff-873c-4f91-a22b-5b289b68f033",
+    "total_cost_usd": 0.027045000000000003,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3584,
+      "cache_read_input_tokens": 23610,
+      "output_tokens": 1034,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3584,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 719,
+          "cache_read_input_tokens": 12559,
+          "cache_creation_input_tokens": 2076,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2076
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1034,
+        "cacheReadInputTokens": 23610,
+        "cacheCreationInputTokens": 3584,
+        "webSearchRequests": 0,
+        "costUSD": 0.027045000000000003,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3584,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_PKCE_VERIFIER_MISMATCH\",\"confidence\":0.97,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"invalid_grant\",\"note\":\"Classified as a PKCE verifier failure from the error description.\"},{\"path\":\"/redirect/error_description\",\"actual\":\"Failed to verify code verifier\"},{\"path\":\"/request/code_verifier\",\"actual\":\"[REDACTED:code_challenge:91019c0e]\",\"expected\":\"[REDACTED:code_challenge:0a89b57f]\",\"note\":\"BASE64URL(SHA256(code_verifier)) does not equal the code_challenge sent in the authorization request.\"},{\"path\":\"/request/code_challenge_method\",\"actual\":\"S256\",\"note\":\"S256 is correct for a public client. The problem is that the verifier and challenge do not belong together.\"}],\"fix\":\"Generate the code_verifier once per authorization flow and store it with the session or state. Derive the code_challenge from that stored value with S256 (BASE64URL(SHA256(verifier)), no padding). Send the same stored verifier, unchanged, to the token endpoint. Check that concurrent or retried logins don't overwrite the stored verifier. Also check that the verifier isn't regenerated on the callback, and that it isn't altered by trimming, re-encoding or truncation. Keep S256 and keep the exact redirect_uri.\",\"alternatives\":[{\"code\":\"OAUTH_INVALID_GRANT_CODE\",\"why_not\":\"The error is invalid_grant, but the description names the code verifier and the S256 recomputation fails locally. The code itself isn't shown to be expired or reused.\"},{\"code\":\"OAUTH_REDIRECT_URI_MISMATCH\",\"why_not\":\"redirect_uri exactly matches a registered URI.\"}]}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+      "confidence": 0.97,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "invalid_grant",
+          "note": "Classified as a PKCE verifier failure from the error description."
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "Failed to verify code verifier"
+        },
+        {
+          "path": "/request/code_verifier",
+          "actual": "[REDACTED:code_challenge:91019c0e]",
+          "expected": "[REDACTED:code_challenge:0a89b57f]",
+          "note": "BASE64URL(SHA256(code_verifier)) does not equal the code_challenge sent in the authorization request."
+        },
+        {
+          "path": "/request/code_challenge_method",
+          "actual": "S256",
+          "note": "S256 is correct for a public client. The problem is that the verifier and challenge do not belong together."
+        }
+      ],
+      "fix": "Generate the code_verifier once per authorization flow and store it with the session or state. Derive the code_challenge from that stored value with S256 (BASE64URL(SHA256(verifier)), no padding). Send the same stored verifier, unchanged, to the token endpoint. Check that concurrent or retried logins don't overwrite the stored verifier. Also check that the verifier isn't regenerated on the callback, and that it isn't altered by trimming, re-encoding or truncation. Keep S256 and keep the exact redirect_uri.",
+      "alternatives": [
+        {
+          "code": "OAUTH_INVALID_GRANT_CODE",
+          "why_not": "The error is invalid_grant, but the description names the code verifier and the S256 recomputation fails locally. The code itself isn't shown to be expired or reused."
+        },
+        {
+          "code": "OAUTH_REDIRECT_URI_MISMATCH",
+          "why_not": "redirect_uri exactly matches a registered URI."
+        }
+      ]
+    },
+    "ttft_ms": 2296,
+    "type": "result",
+    "duration_ms": 7406,
+    "uuid": "4f4ee667-1806-4000-929a-0e18840aee8c",
+    "ttft_stream_ms": 1018,
+    "time_to_request_ms": 110,
+    "first_content_frame_ms": 1018,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

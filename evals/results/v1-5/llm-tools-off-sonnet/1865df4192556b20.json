@@ -1,0 +1,188 @@
+{
+  "case_id": "oidc_issuer_mismatch-00",
+  "case_hash": "1865df4192556b20",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "OIDC_ISSUER_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/claims/iss",
+    "fix_keys": [
+      "configure",
+      "issuer",
+      "exact",
+      "string"
+    ],
+    "needs": [
+      "issuer"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "oidc_issuer_mismatch-00",
+    "kind": "jwt",
+    "mutator": "jwt_iss_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "1865df4192556b20"
+  },
+  "output": {
+    "root_cause_code": "OIDC_ISSUER_MISMATCH",
+    "confidence": 0.96,
+    "evidence": [
+      {
+        "path": "/claims/iss",
+        "actual": "https://login.example.com/tenant-1/",
+        "expected": "https://login.example.com/tenant-1/v2.0",
+        "note": "Token iss lacks the /v2.0 suffix; go-oidc requires exact string match with the configured issuer."
+      }
+    ],
+    "fix": "Make the configured issuer and the token's iss agree exactly. Fetch the issuer value from the OP's discovery document (/.well-known/openid-configuration) and use it verbatim as the issuer in the SP/go-oidc provider config. Check that the app is registered for the endpoint version (v1 vs v2.0) that matches the issuer you expect, because the two versions issue different iss values. Do not loosen issuer checking, skip it, or strip suffixes before comparing.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T09:37:23.582497-05:00",
+  "duration_ms": 3902,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 466,
+    "cache_creation_input_tokens": 1757,
+    "cache_read_input_tokens": 3886
+  },
+  "cost_usd": 0.0120806,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 466,
+      "cacheReadInputTokens": 3886,
+      "cacheCreationInputTokens": 1757,
+      "costUSD": 0.0120806,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 3753,
+    "stop_reason": "tool_use",
+    "session_id": "a11ac71e-5a5e-448a-bca5-662096a08029",
+    "total_cost_usd": 0.0120806,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1757,
+      "cache_read_input_tokens": 3886,
+      "output_tokens": 466,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1757,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 466,
+          "cache_read_input_tokens": 3886,
+          "cache_creation_input_tokens": 1757,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1757
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 466,
+        "cacheReadInputTokens": 3886,
+        "cacheCreationInputTokens": 1757,
+        "webSearchRequests": 0,
+        "costUSD": 0.0120806,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1757,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OIDC_ISSUER_MISMATCH\",\"confidence\":0.96,\"evidence\":[{\"path\":\"/claims/iss\",\"actual\":\"https://login.example.com/tenant-1/\",\"expected\":\"https://login.example.com/tenant-1/v2.0\",\"note\":\"Token iss lacks the /v2.0 suffix; go-oidc requires exact string match with the configured issuer.\"}],\"fix\":\"Make the configured issuer and the token's iss agree exactly. Fetch the issuer value from the OP's discovery document (/.well-known/openid-configuration) and use it verbatim as the issuer in the SP/go-oidc provider config. Check that the app is registered for the endpoint version (v1 vs v2.0) that matches the issuer you expect, because the two versions issue different iss values. Do not loosen issuer checking, skip it, or strip suffixes before comparing.\",\"alternatives\":[],\"questions\":[],\"posture_codes\":[]}",
+    "structured_output": {
+      "root_cause_code": "OIDC_ISSUER_MISMATCH",
+      "confidence": 0.96,
+      "evidence": [
+        {
+          "path": "/claims/iss",
+          "actual": "https://login.example.com/tenant-1/",
+          "expected": "https://login.example.com/tenant-1/v2.0",
+          "note": "Token iss lacks the /v2.0 suffix; go-oidc requires exact string match with the configured issuer."
+        }
+      ],
+      "fix": "Make the configured issuer and the token's iss agree exactly. Fetch the issuer value from the OP's discovery document (/.well-known/openid-configuration) and use it verbatim as the issuer in the SP/go-oidc provider config. Check that the app is registered for the endpoint version (v1 vs v2.0) that matches the issuer you expect, because the two versions issue different iss values. Do not loosen issuer checking, skip it, or strip suffixes before comparing.",
+      "alternatives": [],
+      "questions": [],
+      "posture_codes": []
+    },
+    "ttft_ms": 3868,
+    "type": "result",
+    "duration_ms": 3902,
+    "uuid": "30c946d1-c5e7-4b62-8ee6-0ec3b05ca7b7",
+    "ttft_stream_ms": 1080,
+    "time_to_request_ms": 147,
+    "first_content_frame_ms": 1081,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,230 @@
+{
+  "case_id": "jwt_kid_not_found_in_jwks-03",
+  "case_hash": "4a7fc8dbbad77d4b",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_KID_NOT_FOUND_IN_JWKS",
+    "posture_codes": [],
+    "evidence_path": "/header/kid",
+    "fix_keys": [
+      "refresh",
+      "jwks_uri",
+      "rotate"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_kid_not_found_in_jwks-03",
+    "kind": "jwt",
+    "mutator": "jwt_kid_unknown",
+    "expected_completeness": "partial",
+    "seed": 42,
+    "index": 3,
+    "hash": "4a7fc8dbbad77d4b"
+  },
+  "output": {
+    "root_cause_code": "JWT_KID_NOT_FOUND_IN_JWKS",
+    "confidence": 0.93,
+    "evidence": [
+      {
+        "path": "/header/kid",
+        "actual": "rotated-key-9",
+        "expected": "test-key-1",
+        "note": "Token kid is not present in the supplied JWKS, so the signature cannot be verified."
+      },
+      {
+        "path": "/keys/jwks_json",
+        "actual": "contains a single RSA key with kid test-key-1",
+        "expected": "a key with kid rotated-key-9",
+        "note": "The JWKS looks stale relative to the OP's key rotation."
+      },
+      {
+        "path": "/claims/iss",
+        "actual": "https://login.example.com/tenant-1/v2.0",
+        "expected": "https://login.example.com/tenant-1/v2.0",
+        "note": "Issuer matches, so this is not the cause."
+      },
+      {
+        "path": "/claims/exp",
+        "actual": "1768482000",
+        "note": "Expires 2026-01-15T13:00:00Z, which is after the reference time of 12:00Z, so this is not the cause."
+      }
+    ],
+    "fix": "Re-fetch the OP's current JWKS from its jwks_uri (found in the discovery document) and configure the SP to refresh the JWKS automatically. Do this when it sees an unknown kid, and rate-limit the refresh. Then verify the signature with the key whose kid is rotated-key-9. Keep signature validation on, keep RS256 pinned, and do not fall back to an embedded or unverified key.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+        "why_not": "At the reference time of 2026-01-15T12:00:00Z, iat, nbf and exp (13:00Z) all fall inside the validity window."
+      }
+    ],
+    "questions": [
+      "Does the OP's live jwks_uri publish a key with kid rotated-key-9?"
+    ]
+  },
+  "started": "2026-10-27T09:34:40.271791-05:00",
+  "duration_ms": 7673,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 731,
+    "cache_creation_input_tokens": 1720,
+    "cache_read_input_tokens": 3886
+  },
+  "cost_usd": 0.0145826,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 731,
+      "cacheReadInputTokens": 3886,
+      "cacheCreationInputTokens": 1720,
+      "costUSD": 0.0145826,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 7539,
+    "stop_reason": "tool_use",
+    "session_id": "38b0d8c4-f7da-40c4-bae6-5d41085ebd2a",
+    "total_cost_usd": 0.0145826,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1720,
+      "cache_read_input_tokens": 3886,
+      "output_tokens": 731,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1720,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 731,
+          "cache_read_input_tokens": 3886,
+          "cache_creation_input_tokens": 1720,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1720
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 731,
+        "cacheReadInputTokens": 3886,
+        "cacheCreationInputTokens": 1720,
+        "webSearchRequests": 0,
+        "costUSD": 0.0145826,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1720,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"JWT_KID_NOT_FOUND_IN_JWKS\",\"confidence\":0.93,\"evidence\":[{\"path\":\"/header/kid\",\"actual\":\"rotated-key-9\",\"expected\":\"test-key-1\",\"note\":\"Token kid is not present in the supplied JWKS, so the signature cannot be verified.\"},{\"path\":\"/keys/jwks_json\",\"actual\":\"contains a single RSA key with kid test-key-1\",\"expected\":\"a key with kid rotated-key-9\",\"note\":\"The JWKS looks stale relative to the OP's key rotation.\"},{\"path\":\"/claims/iss\",\"actual\":\"https://login.example.com/tenant-1/v2.0\",\"expected\":\"https://login.example.com/tenant-1/v2.0\",\"note\":\"Issuer matches, so this is not the cause.\"},{\"path\":\"/claims/exp\",\"actual\":\"1768482000\",\"note\":\"Expires 2026-01-15T13:00:00Z, which is after the reference time of 12:00Z, so this is not the cause.\"}],\"fix\":\"Re-fetch the OP's current JWKS from its jwks_uri (found in the discovery document) and configure the SP to refresh the JWKS automatically. Do this when it sees an unknown kid, and rate-limit the refresh. Then verify the signature with the key whose kid is rotated-key-9. Keep signature validation on, keep RS256 pinned, and do not fall back to an embedded or unverified key.\",\"alternatives\":[{\"code\":\"JWT_EXPIRED_OR_NOT_YET_VALID\",\"why_not\":\"At the reference time of 2026-01-15T12:00:00Z, iat, nbf and exp (13:00Z) all fall inside the validity window.\"}],\"questions\":[\"Does the OP's live jwks_uri publish a key with kid rotated-key-9?\"]}",
+    "structured_output": {
+      "root_cause_code": "JWT_KID_NOT_FOUND_IN_JWKS",
+      "confidence": 0.93,
+      "evidence": [
+        {
+          "path": "/header/kid",
+          "actual": "rotated-key-9",
+          "expected": "test-key-1",
+          "note": "Token kid is not present in the supplied JWKS, so the signature cannot be verified."
+        },
+        {
+          "path": "/keys/jwks_json",
+          "actual": "contains a single RSA key with kid test-key-1",
+          "expected": "a key with kid rotated-key-9",
+          "note": "The JWKS looks stale relative to the OP's key rotation."
+        },
+        {
+          "path": "/claims/iss",
+          "actual": "https://login.example.com/tenant-1/v2.0",
+          "expected": "https://login.example.com/tenant-1/v2.0",
+          "note": "Issuer matches, so this is not the cause."
+        },
+        {
+          "path": "/claims/exp",
+          "actual": "1768482000",
+          "note": "Expires 2026-01-15T13:00:00Z, which is after the reference time of 12:00Z, so this is not the cause."
+        }
+      ],
+      "fix": "Re-fetch the OP's current JWKS from its jwks_uri (found in the discovery document) and configure the SP to refresh the JWKS automatically. Do this when it sees an unknown kid, and rate-limit the refresh. Then verify the signature with the key whose kid is rotated-key-9. Keep signature validation on, keep RS256 pinned, and do not fall back to an embedded or unverified key.",
+      "alternatives": [
+        {
+          "code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+          "why_not": "At the reference time of 2026-01-15T12:00:00Z, iat, nbf and exp (13:00Z) all fall inside the validity window."
+        }
+      ],
+      "questions": [
+        "Does the OP's live jwks_uri publish a key with kid rotated-key-9?"
+      ]
+    },
+    "ttft_ms": 7645,
+    "type": "result",
+    "duration_ms": 7673,
+    "uuid": "49888cff-cd7e-4327-bcc8-a7814f40a9de",
+    "ttft_stream_ms": 3263,
+    "time_to_request_ms": 131,
+    "first_content_frame_ms": 3263,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

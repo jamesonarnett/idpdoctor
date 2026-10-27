@@ -1,0 +1,188 @@
+{
+  "case_id": "saml_inresponseto_mismatch_or_unsolicited-01",
+  "case_hash": "33fad9ac092bf209",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED",
+    "posture_codes": [],
+    "evidence_path": "/Response/@InResponseTo",
+    "fix_keys": [
+      "ensure",
+      "keeps",
+      "authnrequest",
+      "across"
+    ],
+    "needs": [
+      "request_id"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_inresponseto_mismatch_or_unsolicited-01",
+    "kind": "saml_response",
+    "dialect": "auth0",
+    "mutator": "unsolicited",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 1,
+    "hash": "33fad9ac092bf209"
+  },
+  "output": {
+    "root_cause_code": "SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/Response/@InResponseTo",
+        "actual": "absent",
+        "expected": "_req_1234567890abcdef",
+        "note": "Response has no InResponseTo, so it is an IdP-initiated (unsolicited) response. This matches WorkOS idp_initiated_sso_disabled when users click the portal tile."
+      }
+    ],
+    "fix": "The response is otherwise valid: status, issuer, destination, signature, audience, recipient, time window, NameID and attributes all pass. The only problem is that it is unsolicited. Choose one of two options. (1) Have users start login from the SP, so the AuthnRequest ID is kept in the session and echoed in InResponseTo. For the IdP tile, set the tile's target to the SP's SSO login URL, or use a SP-initiated/bookmark app link. (2) If tile-based login is required, explicitly enable IdP-initiated SSO on the SP or connection. In WorkOS this is a connection setting. Keep all validation in place: signed assertion, audience and recipient checks, and the short validity window. Where possible, also enforce replay protection on assertion IDs.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T10:06:47.542757-05:00",
+  "duration_ms": 11925,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2027,
+    "cache_creation_input_tokens": 6971,
+    "cache_read_input_tokens": 28664
+  },
+  "cost_usd": 0.0510284,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2027,
+      "cacheReadInputTokens": 28664,
+      "cacheCreationInputTokens": 6971,
+      "costUSD": 0.0510284,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 11848,
+    "stop_reason": "tool_use",
+    "session_id": "9bc0e009-197d-4a8a-8df6-d3f5cb0104f4",
+    "total_cost_usd": 0.0510284,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 6971,
+      "cache_read_input_tokens": 28664,
+      "output_tokens": 2027,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6971,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 561,
+          "cache_read_input_tokens": 16285,
+          "cache_creation_input_tokens": 3065,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 3065
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2027,
+        "cacheReadInputTokens": 28664,
+        "cacheCreationInputTokens": 6971,
+        "webSearchRequests": 0,
+        "costUSD": 0.0510284,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6971,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/Response/@InResponseTo\",\"expected\":\"_req_1234567890abcdef\",\"actual\":\"absent\",\"note\":\"Response has no InResponseTo, so it is an IdP-initiated (unsolicited) response. This matches WorkOS idp_initiated_sso_disabled when users click the portal tile.\"}],\"fix\":\"The response is otherwise valid: status, issuer, destination, signature, audience, recipient, time window, NameID and attributes all pass. The only problem is that it is unsolicited. Choose one of two options. (1) Have users start login from the SP, so the AuthnRequest ID is kept in the session and echoed in InResponseTo. For the IdP tile, set the tile's target to the SP's SSO login URL, or use a SP-initiated/bookmark app link. (2) If tile-based login is required, explicitly enable IdP-initiated SSO on the SP or connection. In WorkOS this is a connection setting. Keep all validation in place: signed assertion, audience and recipient checks, and the short validity window. Where possible, also enforce replay protection on assertion IDs.\",\"alternatives\":[],\"questions\":[]}",
+    "structured_output": {
+      "root_cause_code": "SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/Response/@InResponseTo",
+          "expected": "_req_1234567890abcdef",
+          "actual": "absent",
+          "note": "Response has no InResponseTo, so it is an IdP-initiated (unsolicited) response. This matches WorkOS idp_initiated_sso_disabled when users click the portal tile."
+        }
+      ],
+      "fix": "The response is otherwise valid: status, issuer, destination, signature, audience, recipient, time window, NameID and attributes all pass. The only problem is that it is unsolicited. Choose one of two options. (1) Have users start login from the SP, so the AuthnRequest ID is kept in the session and echoed in InResponseTo. For the IdP tile, set the tile's target to the SP's SSO login URL, or use a SP-initiated/bookmark app link. (2) If tile-based login is required, explicitly enable IdP-initiated SSO on the SP or connection. In WorkOS this is a connection setting. Keep all validation in place: signed assertion, audience and recipient checks, and the short validity window. Where possible, also enforce replay protection on assertion IDs.",
+      "alternatives": [],
+      "questions": []
+    },
+    "ttft_ms": 7682,
+    "type": "result",
+    "duration_ms": 11925,
+    "uuid": "1c0de4a5-be2c-42c4-a779-8f313460258e",
+    "ttft_stream_ms": 996,
+    "time_to_request_ms": 60,
+    "first_content_frame_ms": 996,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

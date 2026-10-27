@@ -1,0 +1,9 @@
+{
+  "code": "OIDC_DISCOVERY_DOC_INVALID",
+  "posture_codes": [],
+  "evidence_path": "/discovery/id_token_signing_alg_values_supported",
+  "fix_keys": [
+    "point",
+    "canonical"
+  ]
+}

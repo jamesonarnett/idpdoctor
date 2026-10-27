@@ -1,0 +1,222 @@
+{
+  "case_id": "oauth_invalid_grant_code-00",
+  "case_hash": "ea2056afc18d8204",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_INVALID_GRANT_CODE",
+    "posture_codes": [],
+    "evidence_path": "/redirect/error",
+    "fix_keys": [
+      "exchange",
+      "within",
+      "minutes",
+      "issuance"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_invalid_grant_code-00",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_invalid_grant_expired",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "ea2056afc18d8204"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_INVALID_GRANT_CODE",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_grant",
+        "note": "Classified as an invalid authorization code. The vendor code in the artifact is AADSTS70008, not AADSTS54005."
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "AADSTS70008: The provided authorization code or refresh token has expired due to inactivity.",
+        "note": "The captured error is about expiry. The reported AADSTS54005 (already redeemed) is a related failure in the same class."
+      }
+    ],
+    "fix": "Exchange each authorization code exactly once, and within a few minutes of issuing it. Use the same redirect_uri and client_id as in the authorization request. Guard against double submission. Examples are React StrictMode effects firing twice, retries on the callback route, and a page refresh that replays the callback URL. Remove the code from the URL after you read it. If an exchange fails, start a new authorization request instead of replaying the old code. Keep PKCE S256 as it is.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+        "why_not": "The code_verifier matches the S256 code_challenge."
+      },
+      {
+        "code": "OAUTH_REDIRECT_URI_MISMATCH",
+        "why_not": "The redirect_uri exactly matches a registered URI."
+      },
+      {
+        "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+        "why_not": "The public client setup passes with grant_type authorization_code and S256."
+      }
+    ],
+    "questions": [
+      "The artifact shows AADSTS70008 (expired), but you reported AADSTS54005 (already redeemed). Is the captured redirect from the same attempt as the error you saw? Both point to the same fix."
+    ]
+  },
+  "started": "2026-10-27T09:56:23.934191-05:00",
+  "duration_ms": 7543,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1085,
+    "cache_creation_input_tokens": 3431,
+    "cache_read_input_tokens": 23602
+  },
+  "cost_usd": 0.0269422,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1085,
+      "cacheReadInputTokens": 23602,
+      "cacheCreationInputTokens": 3431,
+      "costUSD": 0.0269422,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 2,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 7267,
+    "stop_reason": "tool_use",
+    "session_id": "09e766fa-07f5-44d4-ad85-0195af872dcd",
+    "total_cost_usd": 0.0269422,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3431,
+      "cache_read_input_tokens": 23602,
+      "output_tokens": 1085,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3431,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 730,
+          "cache_read_input_tokens": 12551,
+          "cache_creation_input_tokens": 1931,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1931
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1085,
+        "cacheReadInputTokens": 23602,
+        "cacheCreationInputTokens": 3431,
+        "webSearchRequests": 0,
+        "costUSD": 0.0269422,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3431,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_INVALID_GRANT_CODE\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"invalid_grant\",\"note\":\"Classified as an invalid authorization code. The vendor code in the artifact is AADSTS70008, not AADSTS54005.\"},{\"path\":\"/redirect/error_description\",\"actual\":\"AADSTS70008: The provided authorization code or refresh token has expired due to inactivity.\",\"note\":\"The captured error is about expiry. The reported AADSTS54005 (already redeemed) is a related failure in the same class.\"}],\"fix\":\"Exchange each authorization code exactly once, and within a few minutes of issuing it. Use the same redirect_uri and client_id as in the authorization request. Guard against double submission. Examples are React StrictMode effects firing twice, retries on the callback route, and a page refresh that replays the callback URL. Remove the code from the URL after you read it. If an exchange fails, start a new authorization request instead of replaying the old code. Keep PKCE S256 as it is.\",\"alternatives\":[{\"code\":\"OAUTH_PKCE_VERIFIER_MISMATCH\",\"why_not\":\"The code_verifier matches the S256 code_challenge.\"},{\"code\":\"OAUTH_REDIRECT_URI_MISMATCH\",\"why_not\":\"The redirect_uri exactly matches a registered URI.\"},{\"code\":\"OAUTH_CLIENT_CONFIG_REJECTED\",\"why_not\":\"The public client setup passes with grant_type authorization_code and S256.\"}],\"questions\":[\"The artifact shows AADSTS70008 (expired), but you reported AADSTS54005 (already redeemed). Is the captured redirect from the same attempt as the error you saw? Both point to the same fix.\"]}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_INVALID_GRANT_CODE",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "invalid_grant",
+          "note": "Classified as an invalid authorization code. The vendor code in the artifact is AADSTS70008, not AADSTS54005."
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "AADSTS70008: The provided authorization code or refresh token has expired due to inactivity.",
+          "note": "The captured error is about expiry. The reported AADSTS54005 (already redeemed) is a related failure in the same class."
+        }
+      ],
+      "fix": "Exchange each authorization code exactly once, and within a few minutes of issuing it. Use the same redirect_uri and client_id as in the authorization request. Guard against double submission. Examples are React StrictMode effects firing twice, retries on the callback route, and a page refresh that replays the callback URL. Remove the code from the URL after you read it. If an exchange fails, start a new authorization request instead of replaying the old code. Keep PKCE S256 as it is.",
+      "alternatives": [
+        {
+          "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+          "why_not": "The code_verifier matches the S256 code_challenge."
+        },
+        {
+          "code": "OAUTH_REDIRECT_URI_MISMATCH",
+          "why_not": "The redirect_uri exactly matches a registered URI."
+        },
+        {
+          "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+          "why_not": "The public client setup passes with grant_type authorization_code and S256."
+        }
+      ],
+      "questions": [
+        "The artifact shows AADSTS70008 (expired), but you reported AADSTS54005 (already redeemed). Is the captured redirect from the same attempt as the error you saw? Both point to the same fix."
+      ]
+    },
+    "ttft_ms": 2551,
+    "type": "result",
+    "duration_ms": 7543,
+    "uuid": "d89f3a92-2cf3-4cb4-afef-c1508e23d855",
+    "ttft_stream_ms": 1093,
+    "time_to_request_ms": 267,
+    "first_content_frame_ms": 1093,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

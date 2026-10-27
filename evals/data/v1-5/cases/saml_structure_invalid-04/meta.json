@@ -1,0 +1,10 @@
+{
+  "id": "saml_structure_invalid-04",
+  "kind": "saml_response",
+  "dialect": "entra",
+  "mutator": "structure_multi_assertion",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 4,
+  "hash": "2e8f281fdc9edd17"
+}

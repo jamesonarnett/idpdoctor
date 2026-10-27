@@ -1,0 +1,11 @@
+{
+  "id": "cert_expired_or_weak-01",
+  "kind": "saml_response",
+  "dialect": "auth0",
+  "mutator": "cert_weak_key",
+  "expected_completeness": "full",
+  "symptom_from": "vendor_strings.json",
+  "seed": 42,
+  "index": 1,
+  "hash": "ebb3d774144abe3c"
+}

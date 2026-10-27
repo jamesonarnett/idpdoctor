@@ -1,0 +1,14 @@
+{
+  "code": "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH",
+  "posture_codes": [],
+  "evidence_path": "/Response/Assertion/Subject/NameID/@Format",
+  "fix_keys": [
+    "stable",
+    "identifier",
+    "nameid",
+    "application"
+  ],
+  "needs": [
+    "name_id_format"
+  ]
+}

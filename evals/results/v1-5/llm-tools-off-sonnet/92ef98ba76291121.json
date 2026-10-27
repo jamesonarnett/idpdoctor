@@ -1,0 +1,258 @@
+{
+  "case_id": "oauth_pkce_verifier_mismatch-02",
+  "case_hash": "92ef98ba76291121",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/request/code_verifier",
+    "fix_keys": [
+      "generate",
+      "verifier",
+      "store",
+      "session"
+    ],
+    "needs": [
+      "code_verifier"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_pkce_verifier_mismatch-02",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_pkce_plain_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 2,
+    "hash": "92ef98ba76291121"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_grant"
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "AADSTS501481: The Code_Verifier does not match the code_challenge supplied in the authorization request."
+      },
+      {
+        "path": "/request/code_challenge_method",
+        "actual": "plain",
+        "expected": "S256",
+        "note": "Public client using plain PKCE"
+      },
+      {
+        "path": "/request/code_verifier",
+        "actual": "[REDACTED]",
+        "note": "Verifier differs from the configured code_challenge; with plain, the challenge must equal the verifier"
+      },
+      {
+        "path": "/request/code_challenge",
+        "actual": "[REDACTED]",
+        "note": "Does not equal the code_verifier value"
+      },
+      {
+        "path": "/request/client_type",
+        "actual": "public"
+      }
+    ],
+    "fix": "Make the SPA send the same code_verifier it generated for the authorization request. The CDN is likely serving a different build, or the verifier is stored per-origin or per-tab and is lost or regenerated. Persist the verifier (for example in sessionStorage on the same origin) between the redirect and the token exchange, and make sure the CDN doesn't cache or serve a mix of old and new bundles. Switch to code_challenge_method=S256, with challenge = BASE64URL(SHA256(verifier)). Entra supports S256, and plain is weak.",
+    "posture_codes": [
+      "POSTURE_PKCE_PLAIN_OR_ABSENT"
+    ],
+    "alternatives": [
+      {
+        "code": "OAUTH_INVALID_GRANT_CODE",
+        "why_not": "The error text specifically cites a code_verifier/code_challenge mismatch, not an expired or reused code."
+      },
+      {
+        "code": "OAUTH_REDIRECT_URI_MISMATCH",
+        "why_not": "The redirect_uri matches the registered URI, and the error is not an AADSTS redirect error."
+      }
+    ],
+    "questions": [
+      "What origin and redirect_uri does the CDN-served SPA actually send, and does it reuse the same code_verifier between the authorize redirect and the token call?"
+    ]
+  },
+  "started": "2026-10-27T09:35:51.778252-05:00",
+  "duration_ms": 8168,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1056,
+    "cache_creation_input_tokens": 1462,
+    "cache_read_input_tokens": 3864
+  },
+  "cost_usd": 0.0167984,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1056,
+      "cacheReadInputTokens": 3864,
+      "cacheCreationInputTokens": 1462,
+      "costUSD": 0.0167984,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 6,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 8025,
+    "stop_reason": "tool_use",
+    "session_id": "4a2c28b7-f2d5-4274-8e5f-63f7da9dce56",
+    "total_cost_usd": 0.0167984,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1462,
+      "cache_read_input_tokens": 3864,
+      "output_tokens": 1056,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1462,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1056,
+          "cache_read_input_tokens": 3864,
+          "cache_creation_input_tokens": 1462,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1462
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1056,
+        "cacheReadInputTokens": 3864,
+        "cacheCreationInputTokens": 1462,
+        "webSearchRequests": 0,
+        "costUSD": 0.0167984,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1462,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_PKCE_VERIFIER_MISMATCH\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"invalid_grant\"},{\"path\":\"/redirect/error_description\",\"actual\":\"AADSTS501481: The Code_Verifier does not match the code_challenge supplied in the authorization request.\"},{\"path\":\"/request/code_challenge_method\",\"actual\":\"plain\",\"expected\":\"S256\",\"note\":\"Public client using plain PKCE\"},{\"path\":\"/request/code_verifier\",\"actual\":\"[REDACTED]\",\"note\":\"Verifier differs from the configured code_challenge; with plain, the challenge must equal the verifier\"},{\"path\":\"/request/code_challenge\",\"actual\":\"[REDACTED]\",\"note\":\"Does not equal the code_verifier value\"},{\"path\":\"/request/client_type\",\"actual\":\"public\"}],\"fix\":\"Make the SPA send the same code_verifier it generated for the authorization request. The CDN is likely serving a different build, or the verifier is stored per-origin or per-tab and is lost or regenerated. Persist the verifier (for example in sessionStorage on the same origin) between the redirect and the token exchange, and make sure the CDN doesn't cache or serve a mix of old and new bundles. Switch to code_challenge_method=S256, with challenge = BASE64URL(SHA256(verifier)). Entra supports S256, and plain is weak.\",\"posture_codes\":[\"POSTURE_PKCE_PLAIN_OR_ABSENT\"],\"alternatives\":[{\"code\":\"OAUTH_INVALID_GRANT_CODE\",\"why_not\":\"The error text specifically cites a code_verifier/code_challenge mismatch, not an expired or reused code.\"},{\"code\":\"OAUTH_REDIRECT_URI_MISMATCH\",\"why_not\":\"The redirect_uri matches the registered URI, and the error is not an AADSTS redirect error.\"}],\"questions\":[\"What origin and redirect_uri does the CDN-served SPA actually send, and does it reuse the same code_verifier between the authorize redirect and the token call?\"]}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "invalid_grant"
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "AADSTS501481: The Code_Verifier does not match the code_challenge supplied in the authorization request."
+        },
+        {
+          "path": "/request/code_challenge_method",
+          "actual": "plain",
+          "expected": "S256",
+          "note": "Public client using plain PKCE"
+        },
+        {
+          "path": "/request/code_verifier",
+          "actual": "[REDACTED]",
+          "note": "Verifier differs from the configured code_challenge; with plain, the challenge must equal the verifier"
+        },
+        {
+          "path": "/request/code_challenge",
+          "actual": "[REDACTED]",
+          "note": "Does not equal the code_verifier value"
+        },
+        {
+          "path": "/request/client_type",
+          "actual": "public"
+        }
+      ],
+      "fix": "Make the SPA send the same code_verifier it generated for the authorization request. The CDN is likely serving a different build, or the verifier is stored per-origin or per-tab and is lost or regenerated. Persist the verifier (for example in sessionStorage on the same origin) between the redirect and the token exchange, and make sure the CDN doesn't cache or serve a mix of old and new bundles. Switch to code_challenge_method=S256, with challenge = BASE64URL(SHA256(verifier)). Entra supports S256, and plain is weak.",
+      "posture_codes": [
+        "POSTURE_PKCE_PLAIN_OR_ABSENT"
+      ],
+      "alternatives": [
+        {
+          "code": "OAUTH_INVALID_GRANT_CODE",
+          "why_not": "The error text specifically cites a code_verifier/code_challenge mismatch, not an expired or reused code."
+        },
+        {
+          "code": "OAUTH_REDIRECT_URI_MISMATCH",
+          "why_not": "The redirect_uri matches the registered URI, and the error is not an AADSTS redirect error."
+        }
+      ],
+      "questions": [
+        "What origin and redirect_uri does the CDN-served SPA actually send, and does it reuse the same code_verifier between the authorize redirect and the token call?"
+      ]
+    },
+    "ttft_ms": 8142,
+    "type": "result",
+    "duration_ms": 8168,
+    "uuid": "b029af3f-f381-40d8-b0ba-a556514990ce",
+    "ttft_stream_ms": 2092,
+    "time_to_request_ms": 140,
+    "first_content_frame_ms": 2092,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

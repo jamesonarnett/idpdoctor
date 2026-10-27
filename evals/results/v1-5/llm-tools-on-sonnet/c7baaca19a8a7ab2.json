@@ -1,0 +1,190 @@
+{
+  "case_id": "oidc_issuer_mismatch-04",
+  "case_hash": "c7baaca19a8a7ab2",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OIDC_ISSUER_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/claims/iss",
+    "fix_keys": [
+      "configure",
+      "issuer",
+      "exact",
+      "string"
+    ],
+    "needs": [
+      "issuer"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "oidc_issuer_mismatch-04",
+    "kind": "jwt",
+    "mutator": "jwt_iss_mismatch",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 4,
+    "hash": "c7baaca19a8a7ab2"
+  },
+  "output": {
+    "root_cause_code": "OIDC_ISSUER_MISMATCH",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/claims/iss",
+        "actual": "https://login.example.com/tenant-1/",
+        "expected": "https://login.example.com/tenant-1/v2.0",
+        "note": "The token's iss is the v1-style tenant URL. The SP is configured with the v2.0 issuer. The signature, kid, aud, nonce and time checks all pass."
+      }
+    ],
+    "fix": "Set the SP's issuer to the exact iss string the OP publishes in its discovery document, matching scheme, host, tenant path and trailing slash. Make sure tokens are requested from the same endpoint version. The configured value has /v2.0, but this token was issued under https://login.example.com/tenant-1/. That usually means the authorize/token endpoints are v1 while the issuer is configured for v2.0. Either switch to the v2.0 endpoints or configure the matching issuer. Keep strict issuer comparison on, and don't loosen it.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": [
+      "access_token (optional, to run the at_hash check, which was skipped)"
+    ]
+  },
+  "started": "2026-10-27T09:59:46.803155-05:00",
+  "duration_ms": 8658,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1151,
+    "cache_creation_input_tokens": 3676,
+    "cache_read_input_tokens": 23915
+  },
+  "cost_usd": 0.0286135,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1151,
+      "cacheReadInputTokens": 23915,
+      "cacheCreationInputTokens": 3676,
+      "costUSD": 0.0286135,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 8552,
+    "stop_reason": "tool_use",
+    "session_id": "53b0bd2d-e9cd-42ff-a3fd-302158773400",
+    "total_cost_usd": 0.0286135,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3676,
+      "cache_read_input_tokens": 23915,
+      "output_tokens": 1151,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3676,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 504,
+          "cache_read_input_tokens": 12842,
+          "cache_creation_input_tokens": 1907,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1907
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1151,
+        "cacheReadInputTokens": 23915,
+        "cacheCreationInputTokens": 3676,
+        "webSearchRequests": 0,
+        "costUSD": 0.0286135,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3676,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OIDC_ISSUER_MISMATCH\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/claims/iss\",\"actual\":\"https://login.example.com/tenant-1/\",\"expected\":\"https://login.example.com/tenant-1/v2.0\",\"note\":\"The token's iss is the v1-style tenant URL. The SP is configured with the v2.0 issuer. The signature, kid, aud, nonce and time checks all pass.\"}],\"fix\":\"Set the SP's issuer to the exact iss string the OP publishes in its discovery document, matching scheme, host, tenant path and trailing slash. Make sure tokens are requested from the same endpoint version. The configured value has /v2.0, but this token was issued under https://login.example.com/tenant-1/. That usually means the authorize/token endpoints are v1 while the issuer is configured for v2.0. Either switch to the v2.0 endpoints or configure the matching issuer. Keep strict issuer comparison on, and don't loosen it.\",\"alternatives\":[],\"questions\":[\"access_token (optional, to run the at_hash check, which was skipped)\"]}",
+    "structured_output": {
+      "root_cause_code": "OIDC_ISSUER_MISMATCH",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/claims/iss",
+          "actual": "https://login.example.com/tenant-1/",
+          "expected": "https://login.example.com/tenant-1/v2.0",
+          "note": "The token's iss is the v1-style tenant URL. The SP is configured with the v2.0 issuer. The signature, kid, aud, nonce and time checks all pass."
+        }
+      ],
+      "fix": "Set the SP's issuer to the exact iss string the OP publishes in its discovery document, matching scheme, host, tenant path and trailing slash. Make sure tokens are requested from the same endpoint version. The configured value has /v2.0, but this token was issued under https://login.example.com/tenant-1/. That usually means the authorize/token endpoints are v1 while the issuer is configured for v2.0. Either switch to the v2.0 endpoints or configure the matching issuer. Keep strict issuer comparison on, and don't loosen it.",
+      "alternatives": [],
+      "questions": [
+        "access_token (optional, to run the at_hash check, which was skipped)"
+      ]
+    },
+    "ttft_ms": 4274,
+    "type": "result",
+    "duration_ms": 8658,
+    "uuid": "adb10058-811e-44a4-9fd6-849b5d64ecd9",
+    "ttft_stream_ms": 1487,
+    "time_to_request_ms": 96,
+    "first_content_frame_ms": 1488,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

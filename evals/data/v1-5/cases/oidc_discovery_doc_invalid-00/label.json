@@ -1,0 +1,9 @@
+{
+  "code": "OIDC_DISCOVERY_DOC_INVALID",
+  "posture_codes": [],
+  "evidence_path": "/discovery/token_endpoint",
+  "fix_keys": [
+    "point",
+    "canonical"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "oidc_discovery_doc_invalid-03",
+  "kind": "oidc_discovery",
+  "mutator": "discovery_no_rs256",
+  "expected_completeness": "partial",
+  "symptom_from": "vendor_strings.json",
+  "seed": 42,
+  "index": 3,
+  "hash": "0965e380477a7079"
+}

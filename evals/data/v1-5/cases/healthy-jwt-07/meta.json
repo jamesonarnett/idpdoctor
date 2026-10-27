@@ -1,0 +1,8 @@
+{
+  "id": "healthy-jwt-07",
+  "kind": "jwt",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 7,
+  "hash": "33a6bbc91a7d2f31"
+}

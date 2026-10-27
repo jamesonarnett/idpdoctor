@@ -1,0 +1,11 @@
+{
+  "id": "saml_destination_or_recipient_mismatch-00",
+  "kind": "saml_response",
+  "dialect": "entra",
+  "mutator": "destination_mismatch",
+  "expected_completeness": "full",
+  "symptom_from": "vendor_strings.json",
+  "seed": 42,
+  "index": 0,
+  "hash": "0ba09ca183043aee"
+}

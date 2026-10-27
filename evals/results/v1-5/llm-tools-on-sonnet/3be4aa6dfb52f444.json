@@ -1,0 +1,193 @@
+{
+  "case_id": "healthy-samlresponse-06",
+  "case_hash": "3be4aa6dfb52f444",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [],
+    "fix_keys": [
+      "no change needed",
+      "the artifact validates"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "healthy-samlresponse-06",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 6,
+    "hash": "3be4aa6dfb52f444"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature",
+        "actual": "Assertion is signed, and the signature verifies against the configured IdP certificate"
+      },
+      {
+        "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+        "actual": "matches sp_entity_id"
+      },
+      {
+        "path": "/Response/Assertion/Conditions",
+        "actual": "valid at the replay time 2026-01-15T12:00:00Z"
+      }
+    ],
+    "fix": "No fix is needed. All 14 checks passed: status, issuer, destination, InResponseTo, signature, certificate validity, audience, recipient, time window, NameID, required attributes and structure. The time window was checked at the replay time 2026-01-15T12:00:00Z, not today's date. If this response fails in production, check that the SP clock is in sync and that live requests use the same expected values.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T09:51:48.21517-05:00",
+  "duration_ms": 12884,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1887,
+    "cache_creation_input_tokens": 5910,
+    "cache_read_input_tokens": 28618
+  },
+  "cost_usd": 0.045379800000000005,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1887,
+      "cacheReadInputTokens": 28618,
+      "cacheCreationInputTokens": 5910,
+      "costUSD": 0.045379800000000005,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 12762,
+    "stop_reason": "tool_use",
+    "session_id": "c3e109ed-58d1-4848-9e70-0865d2bfa00c",
+    "total_cost_usd": 0.045379800000000005,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 5910,
+      "cache_read_input_tokens": 28618,
+      "output_tokens": 1887,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 5910,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 474,
+          "cache_read_input_tokens": 16239,
+          "cache_creation_input_tokens": 2050,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2050
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1887,
+        "cacheReadInputTokens": 28618,
+        "cacheCreationInputTokens": 5910,
+        "webSearchRequests": 0,
+        "costUSD": 0.045379800000000005,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 5910,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/Response/Assertion/Signature\",\"actual\":\"Assertion is signed, and the signature verifies against the configured IdP certificate\"},{\"path\":\"/Response/Assertion/Conditions/AudienceRestriction/Audience\",\"actual\":\"matches sp_entity_id\"},{\"path\":\"/Response/Assertion/Conditions\",\"actual\":\"valid at the replay time 2026-01-15T12:00:00Z\"}],\"fix\":\"No fix is needed. All 14 checks passed: status, issuer, destination, InResponseTo, signature, certificate validity, audience, recipient, time window, NameID, required attributes and structure. The time window was checked at the replay time 2026-01-15T12:00:00Z, not today's date. If this response fails in production, check that the SP clock is in sync and that live requests use the same expected values.\",\"alternatives\":[],\"posture_codes\":[],\"questions\":[]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Signature",
+          "actual": "Assertion is signed, and the signature verifies against the configured IdP certificate"
+        },
+        {
+          "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+          "actual": "matches sp_entity_id"
+        },
+        {
+          "path": "/Response/Assertion/Conditions",
+          "actual": "valid at the replay time 2026-01-15T12:00:00Z"
+        }
+      ],
+      "fix": "No fix is needed. All 14 checks passed: status, issuer, destination, InResponseTo, signature, certificate validity, audience, recipient, time window, NameID, required attributes and structure. The time window was checked at the replay time 2026-01-15T12:00:00Z, not today's date. If this response fails in production, check that the SP clock is in sync and that live requests use the same expected values.",
+      "alternatives": [],
+      "posture_codes": [],
+      "questions": []
+    },
+    "ttft_ms": 7998,
+    "type": "result",
+    "duration_ms": 12884,
+    "uuid": "e9678f79-780d-49b6-bdef-d2981e251265",
+    "ttft_stream_ms": 1653,
+    "time_to_request_ms": 106,
+    "first_content_frame_ms": 1653,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

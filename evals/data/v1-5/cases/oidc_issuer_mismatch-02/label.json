@@ -1,0 +1,14 @@
+{
+  "code": "OIDC_ISSUER_MISMATCH",
+  "posture_codes": [],
+  "evidence_path": "/claims/iss",
+  "fix_keys": [
+    "configure",
+    "issuer",
+    "exact",
+    "string"
+  ],
+  "needs": [
+    "issuer"
+  ]
+}

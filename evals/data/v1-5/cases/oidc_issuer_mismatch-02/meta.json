@@ -1,0 +1,10 @@
+{
+  "id": "oidc_issuer_mismatch-02",
+  "kind": "jwt",
+  "mutator": "jwt_iss_mismatch",
+  "expected_completeness": "full",
+  "symptom_from": "vendor_strings.json",
+  "seed": 42,
+  "index": 2,
+  "hash": "60ce9d8feaad53b6"
+}

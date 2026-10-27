@@ -1,0 +1,204 @@
+{
+  "case_id": "jwt_kid_not_found_in_jwks-00",
+  "case_hash": "a308aea7b459c167",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_KID_NOT_FOUND_IN_JWKS",
+    "posture_codes": [],
+    "evidence_path": "/header/kid",
+    "fix_keys": [
+      "refresh",
+      "jwks_uri",
+      "rotate"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_kid_not_found_in_jwks-00",
+    "kind": "jwt",
+    "mutator": "jwt_kid_unknown",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "a308aea7b459c167"
+  },
+  "output": {
+    "root_cause_code": "JWT_KID_NOT_FOUND_IN_JWKS",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/header/kid",
+        "actual": "rotated-key-9",
+        "expected": "a kid present in the JWKS (test-key-1)",
+        "note": "Token's signing kid is not in the cached JWKS."
+      },
+      {
+        "path": "/keys/jwks_json",
+        "actual": "contains only kid test-key-1",
+        "expected": "contains rotated-key-9",
+        "note": "Cached JWKS is stale after key rollover."
+      }
+    ],
+    "fix": "Refetch the JWKS from the OP's jwks_uri (from its discovery document) and confirm it contains the token's kid, then verify the signature normally. Make the cache refresh when an unknown kid is seen, rate-limited with a cooldown to avoid abuse. Also honor Cache-Control headers on the JWKS. Keep signature validation and the algorithm allowlist enforced. Do not fall back to unverified tokens or to keys embedded in the token.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "JWT_ALG_NONE_OR_CONFUSION",
+        "why_not": "alg is RS256, which matches the RSA key in the JWKS; the problem is only the missing kid."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:34:26.395529-05:00",
+  "duration_ms": 7670,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 522,
+    "cache_creation_input_tokens": 1770,
+    "cache_read_input_tokens": 3886
+  },
+  "cost_usd": 0.0126926,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 522,
+      "cacheReadInputTokens": 3886,
+      "cacheCreationInputTokens": 1770,
+      "costUSD": 0.0126926,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 2,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 7524,
+    "stop_reason": "tool_use",
+    "session_id": "8b3b0793-ea49-447b-9514-62726983f564",
+    "total_cost_usd": 0.0126926,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1770,
+      "cache_read_input_tokens": 3886,
+      "output_tokens": 522,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1770,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 522,
+          "cache_read_input_tokens": 3886,
+          "cache_creation_input_tokens": 1770,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1770
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 522,
+        "cacheReadInputTokens": 3886,
+        "cacheCreationInputTokens": 1770,
+        "webSearchRequests": 0,
+        "costUSD": 0.0126926,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1770,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"JWT_KID_NOT_FOUND_IN_JWKS\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/header/kid\",\"actual\":\"rotated-key-9\",\"expected\":\"a kid present in the JWKS (test-key-1)\",\"note\":\"Token's signing kid is not in the cached JWKS.\"},{\"path\":\"/keys/jwks_json\",\"actual\":\"contains only kid test-key-1\",\"expected\":\"contains rotated-key-9\",\"note\":\"Cached JWKS is stale after key rollover.\"}],\"fix\":\"Refetch the JWKS from the OP's jwks_uri (from its discovery document) and confirm it contains the token's kid, then verify the signature normally. Make the cache refresh when an unknown kid is seen, rate-limited with a cooldown to avoid abuse. Also honor Cache-Control headers on the JWKS. Keep signature validation and the algorithm allowlist enforced. Do not fall back to unverified tokens or to keys embedded in the token.\",\"alternatives\":[{\"code\":\"JWT_ALG_NONE_OR_CONFUSION\",\"why_not\":\"alg is RS256, which matches the RSA key in the JWKS; the problem is only the missing kid.\"}]}",
+    "structured_output": {
+      "root_cause_code": "JWT_KID_NOT_FOUND_IN_JWKS",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/header/kid",
+          "actual": "rotated-key-9",
+          "expected": "a kid present in the JWKS (test-key-1)",
+          "note": "Token's signing kid is not in the cached JWKS."
+        },
+        {
+          "path": "/keys/jwks_json",
+          "actual": "contains only kid test-key-1",
+          "expected": "contains rotated-key-9",
+          "note": "Cached JWKS is stale after key rollover."
+        }
+      ],
+      "fix": "Refetch the JWKS from the OP's jwks_uri (from its discovery document) and confirm it contains the token's kid, then verify the signature normally. Make the cache refresh when an unknown kid is seen, rate-limited with a cooldown to avoid abuse. Also honor Cache-Control headers on the JWKS. Keep signature validation and the algorithm allowlist enforced. Do not fall back to unverified tokens or to keys embedded in the token.",
+      "alternatives": [
+        {
+          "code": "JWT_ALG_NONE_OR_CONFUSION",
+          "why_not": "alg is RS256, which matches the RSA key in the JWKS; the problem is only the missing kid."
+        }
+      ]
+    },
+    "ttft_ms": 7642,
+    "type": "result",
+    "duration_ms": 7670,
+    "uuid": "ac00516e-fea3-4820-8c5b-e033c4ab96f8",
+    "ttft_stream_ms": 4426,
+    "time_to_request_ms": 143,
+    "first_content_frame_ms": 4427,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

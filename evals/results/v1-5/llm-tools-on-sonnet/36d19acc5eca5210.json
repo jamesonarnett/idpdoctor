@@ -1,0 +1,201 @@
+{
+  "case_id": "saml_structure_invalid-00",
+  "case_hash": "36d19acc5eca5210",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_STRUCTURE_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion",
+    "fix_keys": [
+      "treat",
+      "response",
+      "hostile",
+      "unless"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_structure_invalid-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "structure_multi_assertion",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "36d19acc5eca5210"
+  },
+  "output": {
+    "root_cause_code": "SAML_STRUCTURE_INVALID",
+    "confidence": 0.85,
+    "evidence": [
+      {
+        "path": "/Response/Assertion",
+        "actual": "2 assertions",
+        "expected": "1",
+        "note": "Multiple assertions in one Response, which is a signature-wrapping pattern. All other checks pass: status, issuer, destination, InResponseTo, signature, audience, recipient, time window, NameID and attributes."
+      }
+    ],
+    "fix": "Treat this response as untrusted. Make the SP accept exactly one Assertion and use only the element whose signature verified against the configured IdP certificate. Reject any response with extra or unsigned assertions. Ask the IdP to emit a single signed Assertion. Separately, the Entra AADSTS75003 error is raised by Entra when the AuthnRequest uses a binding it doesn't support. Check that the SP's AuthnRequest and metadata use HTTP-Redirect or HTTP-POST as Entra expects, and that the ACS binding is a supported one. Do not relax signature or structure validation to work around either issue.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "UNKNOWN",
+        "why_not": "The validator found a concrete structural fault, so a class is supported by the evidence."
+      }
+    ],
+    "questions": [
+      "Does the IdP legitimately emit two assertions? If not, where did the second assertion come from?",
+      "What binding does the SP's AuthnRequest use, and which binding does the ACS endpoint advertise in the SP metadata registered with Entra? AADSTS75003 points at a binding problem on the request side."
+    ]
+  },
+  "started": "2026-10-27T10:14:00.801773-05:00",
+  "duration_ms": 13610,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2094,
+    "cache_creation_input_tokens": 6825,
+    "cache_read_input_tokens": 28643
+  },
+  "cost_usd": 0.0511123,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2094,
+      "cacheReadInputTokens": 28643,
+      "cacheCreationInputTokens": 6825,
+      "costUSD": 0.0511123,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 13507,
+    "stop_reason": "tool_use",
+    "session_id": "54eb3ac1-ce6f-4cbf-ab3c-fac2777a5cbf",
+    "total_cost_usd": 0.0511123,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 6825,
+      "cache_read_input_tokens": 28643,
+      "output_tokens": 2094,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6825,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 641,
+          "cache_read_input_tokens": 16264,
+          "cache_creation_input_tokens": 2940,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2940
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2094,
+        "cacheReadInputTokens": 28643,
+        "cacheCreationInputTokens": 6825,
+        "webSearchRequests": 0,
+        "costUSD": 0.0511123,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6825,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_STRUCTURE_INVALID\",\"confidence\":0.85,\"evidence\":[{\"path\":\"/Response/Assertion\",\"actual\":\"2 assertions\",\"expected\":\"1\",\"note\":\"Multiple assertions in one Response, which is a signature-wrapping pattern. All other checks pass: status, issuer, destination, InResponseTo, signature, audience, recipient, time window, NameID and attributes.\"}],\"fix\":\"Treat this response as untrusted. Make the SP accept exactly one Assertion and use only the element whose signature verified against the configured IdP certificate. Reject any response with extra or unsigned assertions. Ask the IdP to emit a single signed Assertion. Separately, the Entra AADSTS75003 error is raised by Entra when the AuthnRequest uses a binding it doesn't support. Check that the SP's AuthnRequest and metadata use HTTP-Redirect or HTTP-POST as Entra expects, and that the ACS binding is a supported one. Do not relax signature or structure validation to work around either issue.\",\"alternatives\":[{\"code\":\"UNKNOWN\",\"why_not\":\"The validator found a concrete structural fault, so a class is supported by the evidence.\"}],\"questions\":[\"Does the IdP legitimately emit two assertions? If not, where did the second assertion come from?\",\"What binding does the SP's AuthnRequest use, and which binding does the ACS endpoint advertise in the SP metadata registered with Entra? AADSTS75003 points at a binding problem on the request side.\"]}",
+    "structured_output": {
+      "root_cause_code": "SAML_STRUCTURE_INVALID",
+      "confidence": 0.85,
+      "evidence": [
+        {
+          "path": "/Response/Assertion",
+          "actual": "2 assertions",
+          "expected": "1",
+          "note": "Multiple assertions in one Response, which is a signature-wrapping pattern. All other checks pass: status, issuer, destination, InResponseTo, signature, audience, recipient, time window, NameID and attributes."
+        }
+      ],
+      "fix": "Treat this response as untrusted. Make the SP accept exactly one Assertion and use only the element whose signature verified against the configured IdP certificate. Reject any response with extra or unsigned assertions. Ask the IdP to emit a single signed Assertion. Separately, the Entra AADSTS75003 error is raised by Entra when the AuthnRequest uses a binding it doesn't support. Check that the SP's AuthnRequest and metadata use HTTP-Redirect or HTTP-POST as Entra expects, and that the ACS binding is a supported one. Do not relax signature or structure validation to work around either issue.",
+      "alternatives": [
+        {
+          "code": "UNKNOWN",
+          "why_not": "The validator found a concrete structural fault, so a class is supported by the evidence."
+        }
+      ],
+      "questions": [
+        "Does the IdP legitimately emit two assertions? If not, where did the second assertion come from?",
+        "What binding does the SP's AuthnRequest use, and which binding does the ACS endpoint advertise in the SP metadata registered with Entra? AADSTS75003 points at a binding problem on the request side."
+      ]
+    },
+    "ttft_ms": 8066,
+    "type": "result",
+    "duration_ms": 13610,
+    "uuid": "61d4f2f5-4f46-4257-8afd-c0a57e48187d",
+    "ttft_stream_ms": 1308,
+    "time_to_request_ms": 91,
+    "first_content_frame_ms": 1308,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

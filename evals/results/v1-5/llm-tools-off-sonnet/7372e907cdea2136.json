@@ -1,0 +1,204 @@
+{
+  "case_id": "saml_nameid_missing_or_format_mismatch-01",
+  "case_hash": "7372e907cdea2136",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/Subject/NameID",
+    "fix_keys": [
+      "stable",
+      "identifier",
+      "nameid",
+      "application"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_nameid_missing_or_format_mismatch-01",
+    "kind": "saml_response",
+    "dialect": "auth0",
+    "mutator": "nameid_missing",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 1,
+    "hash": "7372e907cdea2136"
+  },
+  "output": {
+    "root_cause_code": "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Subject/NameID",
+        "actual": "absent: Subject contains only SubjectConfirmation",
+        "expected": "NameID present with format urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+        "note": "The NameID element is missing from the assertion. This fits the claim change the admin made and the AADSTS75016 error."
+      },
+      {
+        "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData",
+        "actual": "Recipient, InResponseTo and NotOnOrAfter are present and consistent",
+        "note": "The rest of the Subject is valid, so the fault is isolated to the NameID."
+      }
+    ],
+    "fix": "In Entra, open the app's SAML single sign-on settings and go to Attributes \u0026 Claims. Edit the \"Unique User Identifier (Name ID)\" claim. Set its source attribute to one that always has a value, such as user.mail. Set the Name identifier format to Email address (urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress). Keep the SP's expected NameID format the same. Don't weaken any validation on the SP side. Then re-capture a response and confirm that the signed assertion has a Subject/NameID with that format.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "SAML_REQUIRED_ATTRIBUTE_MISSING",
+        "why_not": "The email and firstName attributes are both present. Only the NameID is missing."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:43:49.315133-05:00",
+  "duration_ms": 7087,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 803,
+    "cache_creation_input_tokens": 6507,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.0345812,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 803,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 6507,
+      "costUSD": 0.0345812,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 2,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 6954,
+    "stop_reason": "tool_use",
+    "session_id": "9c7501a0-e6ab-4a02-b3ba-40dca73cdde4",
+    "total_cost_usd": 0.0345812,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6507,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 803,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6507,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 803,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 6507,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 6507
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 803,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 6507,
+        "webSearchRequests": 0,
+        "costUSD": 0.0345812,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6507,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/Response/Assertion/Subject/NameID\",\"actual\":\"absent: Subject contains only SubjectConfirmation\",\"expected\":\"NameID present with format urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress\",\"note\":\"The NameID element is missing from the assertion. This fits the claim change the admin made and the AADSTS75016 error.\"},{\"path\":\"/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData\",\"actual\":\"Recipient, InResponseTo and NotOnOrAfter are present and consistent\",\"note\":\"The rest of the Subject is valid, so the fault is isolated to the NameID.\"}],\"fix\":\"In Entra, open the app's SAML single sign-on settings and go to Attributes \u0026 Claims. Edit the \\\"Unique User Identifier (Name ID)\\\" claim. Set its source attribute to one that always has a value, such as user.mail. Set the Name identifier format to Email address (urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress). Keep the SP's expected NameID format the same. Don't weaken any validation on the SP side. Then re-capture a response and confirm that the signed assertion has a Subject/NameID with that format.\",\"alternatives\":[{\"code\":\"SAML_REQUIRED_ATTRIBUTE_MISSING\",\"why_not\":\"The email and firstName attributes are both present. Only the NameID is missing.\"}]}",
+    "structured_output": {
+      "root_cause_code": "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Subject/NameID",
+          "actual": "absent: Subject contains only SubjectConfirmation",
+          "expected": "NameID present with format urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+          "note": "The NameID element is missing from the assertion. This fits the claim change the admin made and the AADSTS75016 error."
+        },
+        {
+          "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData",
+          "actual": "Recipient, InResponseTo and NotOnOrAfter are present and consistent",
+          "note": "The rest of the Subject is valid, so the fault is isolated to the NameID."
+        }
+      ],
+      "fix": "In Entra, open the app's SAML single sign-on settings and go to Attributes \u0026 Claims. Edit the \"Unique User Identifier (Name ID)\" claim. Set its source attribute to one that always has a value, such as user.mail. Set the Name identifier format to Email address (urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress). Keep the SP's expected NameID format the same. Don't weaken any validation on the SP side. Then re-capture a response and confirm that the signed assertion has a Subject/NameID with that format.",
+      "alternatives": [
+        {
+          "code": "SAML_REQUIRED_ATTRIBUTE_MISSING",
+          "why_not": "The email and firstName attributes are both present. Only the NameID is missing."
+        }
+      ]
+    },
+    "ttft_ms": 3263,
+    "type": "result",
+    "duration_ms": 7087,
+    "uuid": "54981142-ed13-4ce9-81a6-03e70c4bf566",
+    "ttft_stream_ms": 1645,
+    "time_to_request_ms": 130,
+    "first_content_frame_ms": 1645,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

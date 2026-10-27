@@ -1,0 +1,219 @@
+{
+  "case_id": "saml_not_signed_or_wrong_element_signed-02",
+  "case_hash": "7cee774f5cdf515c",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/Signature",
+    "fix_keys": [
+      "enable",
+      "signing",
+      "element",
+      "requires"
+    ],
+    "needs": [
+      "require_signed_assertion"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_not_signed_or_wrong_element_signed-02",
+    "kind": "saml_response",
+    "dialect": "generic",
+    "mutator": "response_signed_only",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 2,
+    "hash": "7cee774f5cdf515c"
+  },
+  "output": {
+    "root_cause_code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature",
+        "actual": "absent: the Assertion element has no ds:Signature child",
+        "expected": "Signature present on the Assertion (require_signed_assertion=true)",
+        "note": "Only the Response is signed. The Response signature's Reference URI is #_resp_r289ac, and the Assertion ID is _assert_a289ac."
+      },
+      {
+        "path": "/Response/Assertion/@ID",
+        "actual": "_assert_a289ac",
+        "expected": "ID referenced by a signature Reference",
+        "note": "No signature Reference points at this ID."
+      },
+      {
+        "path": "/Response/Signature/SignedInfo/Reference/DigestMethod/@Algorithm",
+        "actual": "http://www.w3.org/2001/04/xmlenc#sha256",
+        "note": "The Response signature uses a strong digest. The problem is which element is signed, not the algorithm."
+      }
+    ],
+    "fix": "In the Entra enterprise app's SAML signing settings, set the signing option to 'Sign SAML assertion' or 'Sign SAML response and assertion'. Keep RSA-SHA256 or stronger. The SP should keep requiring a verified signature on the Assertion, checked against the configured IdP certificate. Don't relax that requirement and don't trust the embedded KeyInfo certificate. The response-level signature can stay in place, but it doesn't replace an assertion signature when the SP requires one.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "SAML_SIGNATURE_INVALID",
+        "why_not": "The Response signature isn't shown to be failing. The Assertion has no signature at all, and that is what the SP policy rejects."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:44:42.844891-05:00",
+  "duration_ms": 7107,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 703,
+    "cache_creation_input_tokens": 6566,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.0338172,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 703,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 6566,
+      "costUSD": 0.0338172,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 6993,
+    "stop_reason": "tool_use",
+    "session_id": "80a11d7d-08b7-4f00-8e39-99f066b3b66a",
+    "total_cost_usd": 0.0338172,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6566,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 703,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6566,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 703,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 6566,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 6566
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 703,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 6566,
+        "webSearchRequests": 0,
+        "costUSD": 0.0338172,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6566,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/Response/Assertion/Signature\",\"actual\":\"absent: the Assertion element has no ds:Signature child\",\"expected\":\"Signature present on the Assertion (require_signed_assertion=true)\",\"note\":\"Only the Response is signed. The Response signature's Reference URI is #_resp_r289ac, and the Assertion ID is _assert_a289ac.\"},{\"path\":\"/Response/Assertion/@ID\",\"actual\":\"_assert_a289ac\",\"expected\":\"ID referenced by a signature Reference\",\"note\":\"No signature Reference points at this ID.\"},{\"path\":\"/Response/Signature/SignedInfo/Reference/DigestMethod/@Algorithm\",\"actual\":\"http://www.w3.org/2001/04/xmlenc#sha256\",\"note\":\"The Response signature uses a strong digest. The problem is which element is signed, not the algorithm.\"}],\"fix\":\"In the Entra enterprise app's SAML signing settings, set the signing option to 'Sign SAML assertion' or 'Sign SAML response and assertion'. Keep RSA-SHA256 or stronger. The SP should keep requiring a verified signature on the Assertion, checked against the configured IdP certificate. Don't relax that requirement and don't trust the embedded KeyInfo certificate. The response-level signature can stay in place, but it doesn't replace an assertion signature when the SP requires one.\",\"alternatives\":[{\"code\":\"SAML_SIGNATURE_INVALID\",\"why_not\":\"The Response signature isn't shown to be failing. The Assertion has no signature at all, and that is what the SP policy rejects.\"}]}",
+    "structured_output": {
+      "root_cause_code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Signature",
+          "actual": "absent: the Assertion element has no ds:Signature child",
+          "expected": "Signature present on the Assertion (require_signed_assertion=true)",
+          "note": "Only the Response is signed. The Response signature's Reference URI is #_resp_r289ac, and the Assertion ID is _assert_a289ac."
+        },
+        {
+          "path": "/Response/Assertion/@ID",
+          "actual": "_assert_a289ac",
+          "expected": "ID referenced by a signature Reference",
+          "note": "No signature Reference points at this ID."
+        },
+        {
+          "path": "/Response/Signature/SignedInfo/Reference/DigestMethod/@Algorithm",
+          "actual": "http://www.w3.org/2001/04/xmlenc#sha256",
+          "note": "The Response signature uses a strong digest. The problem is which element is signed, not the algorithm."
+        }
+      ],
+      "fix": "In the Entra enterprise app's SAML signing settings, set the signing option to 'Sign SAML assertion' or 'Sign SAML response and assertion'. Keep RSA-SHA256 or stronger. The SP should keep requiring a verified signature on the Assertion, checked against the configured IdP certificate. Don't relax that requirement and don't trust the embedded KeyInfo certificate. The response-level signature can stay in place, but it doesn't replace an assertion signature when the SP requires one.",
+      "alternatives": [
+        {
+          "code": "SAML_SIGNATURE_INVALID",
+          "why_not": "The Response signature isn't shown to be failing. The Assertion has no signature at all, and that is what the SP policy rejects."
+        }
+      ]
+    },
+    "ttft_ms": 7077,
+    "type": "result",
+    "duration_ms": 7107,
+    "uuid": "825f09dd-9f94-4100-a10d-edaa581a375b",
+    "ttft_stream_ms": 2890,
+    "time_to_request_ms": 111,
+    "first_content_frame_ms": 2891,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

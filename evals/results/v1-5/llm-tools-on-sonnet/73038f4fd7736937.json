@@ -1,0 +1,187 @@
+{
+  "case_id": "jwt_expired_or_not_yet_valid-01",
+  "case_hash": "73038f4fd7736937",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+    "posture_codes": [],
+    "evidence_path": "/claims/nbf",
+    "fix_keys": [
+      "refresh",
+      "token",
+      "re-run",
+      "login"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_expired_or_not_yet_valid-01",
+    "kind": "jwt",
+    "mutator": "jwt_not_yet_valid",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 1,
+    "hash": "73038f4fd7736937"
+  },
+  "output": {
+    "root_cause_code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/claims/nbf",
+        "actual": "2026-01-15T12:10:00Z",
+        "expected": "\u003c= 2026-01-15T12:00:00Z + skew 3m0s",
+        "note": "nbf is 10 minutes after the validation time, which is beyond the 3 minute skew. The issuer clock looks ahead of the SP, or the validation time is wrong."
+      }
+    ],
+    "fix": "Re-run the login to get a fresh token and sync both the OP and SP clocks with NTP. Keep the leeway at 3 minutes (never above 5). If you replayed an old capture, confirm the `now` value you validated against.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": [
+      "access_token (optional): needed to run the at_hash check, which was skipped."
+    ]
+  },
+  "started": "2026-10-27T09:54:42.550698-05:00",
+  "duration_ms": 6970,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1063,
+    "cache_creation_input_tokens": 3853,
+    "cache_read_input_tokens": 23916
+  },
+  "cost_usd": 0.0284416,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1063,
+      "cacheReadInputTokens": 23916,
+      "cacheCreationInputTokens": 3853,
+      "costUSD": 0.0284416,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 6872,
+    "stop_reason": "tool_use",
+    "session_id": "61759bf5-62f7-4799-8ec5-93c3e895ec56",
+    "total_cost_usd": 0.0284416,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3853,
+      "cache_read_input_tokens": 23916,
+      "output_tokens": 1063,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3853,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 417,
+          "cache_read_input_tokens": 12843,
+          "cache_creation_input_tokens": 2083,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2083
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1063,
+        "cacheReadInputTokens": 23916,
+        "cacheCreationInputTokens": 3853,
+        "webSearchRequests": 0,
+        "costUSD": 0.0284416,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3853,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"JWT_EXPIRED_OR_NOT_YET_VALID\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/claims/nbf\",\"actual\":\"2026-01-15T12:10:00Z\",\"expected\":\"\u003c= 2026-01-15T12:00:00Z + skew 3m0s\",\"note\":\"nbf is 10 minutes after the validation time, which is beyond the 3 minute skew. The issuer clock looks ahead of the SP, or the validation time is wrong.\"}],\"fix\":\"Re-run the login to get a fresh token and sync both the OP and SP clocks with NTP. Keep the leeway at 3 minutes (never above 5). If you replayed an old capture, confirm the `now` value you validated against.\",\"alternatives\":[],\"questions\":[\"access_token (optional): needed to run the at_hash check, which was skipped.\"]}",
+    "structured_output": {
+      "root_cause_code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/claims/nbf",
+          "actual": "2026-01-15T12:10:00Z",
+          "expected": "\u003c= 2026-01-15T12:00:00Z + skew 3m0s",
+          "note": "nbf is 10 minutes after the validation time, which is beyond the 3 minute skew. The issuer clock looks ahead of the SP, or the validation time is wrong."
+        }
+      ],
+      "fix": "Re-run the login to get a fresh token and sync both the OP and SP clocks with NTP. Keep the leeway at 3 minutes (never above 5). If you replayed an old capture, confirm the `now` value you validated against.",
+      "alternatives": [],
+      "questions": [
+        "access_token (optional): needed to run the at_hash check, which was skipped."
+      ]
+    },
+    "ttft_ms": 3771,
+    "type": "result",
+    "duration_ms": 6970,
+    "uuid": "d95c3924-aa57-4346-8e02-1321e4fc3427",
+    "ttft_stream_ms": 1086,
+    "time_to_request_ms": 81,
+    "first_content_frame_ms": 1086,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "id": "oauth_redirect_uri_mismatch-02",
+  "kind": "oauth_redirect",
+  "mutator": "oauth_redirect_uri_mismatch",
+  "expected_completeness": "full",
+  "symptom_from": "vendor_strings.json",
+  "seed": 42,
+  "index": 2,
+  "hash": "a5b8cc6c4a36fa02"
+}

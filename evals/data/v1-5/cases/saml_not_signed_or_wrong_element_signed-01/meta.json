@@ -1,0 +1,10 @@
+{
+  "id": "saml_not_signed_or_wrong_element_signed-01",
+  "kind": "saml_response",
+  "dialect": "auth0",
+  "mutator": "unsigned",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 1,
+  "hash": "bb854254fcc0686d"
+}

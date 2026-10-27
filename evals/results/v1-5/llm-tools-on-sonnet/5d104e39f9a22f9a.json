@@ -1,0 +1,203 @@
+{
+  "case_id": "oidc_request_binding_mismatch-01",
+  "case_hash": "5d104e39f9a22f9a",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OIDC_REQUEST_BINDING_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/claims/nonce",
+    "fix_keys": [
+      "generate",
+      "fresh",
+      "nonce",
+      "authorization"
+    ],
+    "needs": [
+      "nonce"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "oidc_request_binding_mismatch-01",
+    "kind": "jwt",
+    "mutator": "jwt_nonce_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 1,
+    "hash": "5d104e39f9a22f9a"
+  },
+  "output": {
+    "root_cause_code": "OIDC_REQUEST_BINDING_MISMATCH",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/claims/nonce",
+        "actual": "[REDACTED:nonce:af7f7b35]",
+        "expected": "[REDACTED:nonce:0823a09b]",
+        "note": "The id_token nonce does not match the nonce the SP stored for this request. The signature, iss, aud, exp, nbf and iat checks all pass."
+      }
+    ],
+    "fix": "Generate a fresh nonce for each authorization request. Store it per login attempt, for example in a cookie or session entry keyed by the state value. Compare it to the id_token nonce claim on callback. A login page left open overnight likely holds a nonce or session that was rotated, expired or overwritten, for example by another tab. Make the stored nonce outlive the page's lifetime, or have the page start a new authorization request when the user clicks sign-in instead of reusing a pre-rendered one. Don't skip the nonce check or relax the other validations. Once you pass access_token, also check at_hash.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+        "why_not": "exp, nbf and iat all pass at the supplied time, so the token is within its validity window."
+      }
+    ],
+    "questions": [
+      "Can you supply access_token so the at_hash check can run?",
+      "Does the login page render the authorization URL, with its nonce, ahead of time, and where is the nonce stored (cookie or server session) and for how long?"
+    ]
+  },
+  "started": "2026-10-27T10:00:05.309093-05:00",
+  "duration_ms": 9557,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1273,
+    "cache_creation_input_tokens": 3668,
+    "cache_read_input_tokens": 23937
+  },
+  "cost_usd": 0.029803700000000002,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1273,
+      "cacheReadInputTokens": 23937,
+      "cacheCreationInputTokens": 3668,
+      "costUSD": 0.029803700000000002,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 9451,
+    "stop_reason": "tool_use",
+    "session_id": "a6f3348e-13af-47ea-863b-a38f7a6ea32d",
+    "total_cost_usd": 0.029803700000000002,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3668,
+      "cache_read_input_tokens": 23937,
+      "output_tokens": 1273,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3668,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 629,
+          "cache_read_input_tokens": 12864,
+          "cache_creation_input_tokens": 1877,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1877
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1273,
+        "cacheReadInputTokens": 23937,
+        "cacheCreationInputTokens": 3668,
+        "webSearchRequests": 0,
+        "costUSD": 0.029803700000000002,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3668,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OIDC_REQUEST_BINDING_MISMATCH\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/claims/nonce\",\"actual\":\"[REDACTED:nonce:af7f7b35]\",\"expected\":\"[REDACTED:nonce:0823a09b]\",\"note\":\"The id_token nonce does not match the nonce the SP stored for this request. The signature, iss, aud, exp, nbf and iat checks all pass.\"}],\"fix\":\"Generate a fresh nonce for each authorization request. Store it per login attempt, for example in a cookie or session entry keyed by the state value. Compare it to the id_token nonce claim on callback. A login page left open overnight likely holds a nonce or session that was rotated, expired or overwritten, for example by another tab. Make the stored nonce outlive the page's lifetime, or have the page start a new authorization request when the user clicks sign-in instead of reusing a pre-rendered one. Don't skip the nonce check or relax the other validations. Once you pass access_token, also check at_hash.\",\"alternatives\":[{\"code\":\"JWT_EXPIRED_OR_NOT_YET_VALID\",\"why_not\":\"exp, nbf and iat all pass at the supplied time, so the token is within its validity window.\"}],\"questions\":[\"Can you supply access_token so the at_hash check can run?\",\"Does the login page render the authorization URL, with its nonce, ahead of time, and where is the nonce stored (cookie or server session) and for how long?\"]}",
+    "structured_output": {
+      "root_cause_code": "OIDC_REQUEST_BINDING_MISMATCH",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/claims/nonce",
+          "actual": "[REDACTED:nonce:af7f7b35]",
+          "expected": "[REDACTED:nonce:0823a09b]",
+          "note": "The id_token nonce does not match the nonce the SP stored for this request. The signature, iss, aud, exp, nbf and iat checks all pass."
+        }
+      ],
+      "fix": "Generate a fresh nonce for each authorization request. Store it per login attempt, for example in a cookie or session entry keyed by the state value. Compare it to the id_token nonce claim on callback. A login page left open overnight likely holds a nonce or session that was rotated, expired or overwritten, for example by another tab. Make the stored nonce outlive the page's lifetime, or have the page start a new authorization request when the user clicks sign-in instead of reusing a pre-rendered one. Don't skip the nonce check or relax the other validations. Once you pass access_token, also check at_hash.",
+      "alternatives": [
+        {
+          "code": "JWT_EXPIRED_OR_NOT_YET_VALID",
+          "why_not": "exp, nbf and iat all pass at the supplied time, so the token is within its validity window."
+        }
+      ],
+      "questions": [
+        "Can you supply access_token so the at_hash check can run?",
+        "Does the login page render the authorization URL, with its nonce, ahead of time, and where is the nonce stored (cookie or server session) and for how long?"
+      ]
+    },
+    "ttft_ms": 4279,
+    "type": "result",
+    "duration_ms": 9557,
+    "uuid": "0c22e9a8-8077-4814-b9fd-b2150333861a",
+    "ttft_stream_ms": 1465,
+    "time_to_request_ms": 95,
+    "first_content_frame_ms": 1465,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

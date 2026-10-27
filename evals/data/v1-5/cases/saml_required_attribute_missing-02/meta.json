@@ -1,0 +1,10 @@
+{
+  "id": "saml_required_attribute_missing-02",
+  "kind": "saml_response",
+  "dialect": "generic",
+  "mutator": "attribute_missing",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 2,
+  "hash": "8234ce2489d157fe"
+}

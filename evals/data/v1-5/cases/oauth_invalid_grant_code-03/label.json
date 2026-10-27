@@ -1,0 +1,11 @@
+{
+  "code": "OAUTH_INVALID_GRANT_CODE",
+  "posture_codes": [],
+  "evidence_path": "/redirect/error",
+  "fix_keys": [
+    "exchange",
+    "within",
+    "minutes",
+    "issuance"
+  ]
+}

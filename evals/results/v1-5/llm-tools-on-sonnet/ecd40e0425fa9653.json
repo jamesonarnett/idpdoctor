@@ -1,0 +1,196 @@
+{
+  "case_id": "healthy-samlresponse-00",
+  "case_hash": "ecd40e0425fa9653",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [],
+    "fix_keys": [
+      "no change needed",
+      "the artifact validates"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "healthy-samlresponse-00",
+    "kind": "saml_response",
+    "dialect": "generic",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 0,
+    "hash": "ecd40e0425fa9653"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature",
+        "actual": "Assertion signed; verified against the configured idp_cert_pem",
+        "expected": "signed assertion verifying against the IdP cert"
+      },
+      {
+        "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+        "actual": "matches sp_entity_id",
+        "expected": "https://sp.example.com/saml/metadata"
+      },
+      {
+        "path": "/Response/@Destination",
+        "actual": "matches acs_url",
+        "expected": "https://sp.example.com/saml/acs"
+      }
+    ],
+    "fix": "No fix needed. All 14 checks passed with no findings: status, issuer, destination, InResponseTo, signature, audience, recipient, time window, NameID and attributes. The time window was evaluated at the supplied replay time of 2026-01-15T12:00:00Z. In production, validate against the real current time, and keep signature verification pinned to the configured IdP certificate.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T09:51:02.62012-05:00",
+  "duration_ms": 10695,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1843,
+    "cache_creation_input_tokens": 5909,
+    "cache_read_input_tokens": 28619
+  },
+  "cost_usd": 0.0449359,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1843,
+      "cacheReadInputTokens": 28619,
+      "cacheCreationInputTokens": 5909,
+      "costUSD": 0.0449359,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 10514,
+    "stop_reason": "tool_use",
+    "session_id": "bc7384c5-7615-4413-a3f0-dc272cbb08aa",
+    "total_cost_usd": 0.0449359,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 5909,
+      "cache_read_input_tokens": 28619,
+      "output_tokens": 1843,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 5909,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 429,
+          "cache_read_input_tokens": 16240,
+          "cache_creation_input_tokens": 2048,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2048
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1843,
+        "cacheReadInputTokens": 28619,
+        "cacheCreationInputTokens": 5909,
+        "webSearchRequests": 0,
+        "costUSD": 0.0449359,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 5909,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/Response/Assertion/Signature\",\"actual\":\"Assertion signed; verified against the configured idp_cert_pem\",\"expected\":\"signed assertion verifying against the IdP cert\"},{\"path\":\"/Response/Assertion/Conditions/AudienceRestriction/Audience\",\"actual\":\"matches sp_entity_id\",\"expected\":\"https://sp.example.com/saml/metadata\"},{\"path\":\"/Response/@Destination\",\"actual\":\"matches acs_url\",\"expected\":\"https://sp.example.com/saml/acs\"}],\"fix\":\"No fix needed. All 14 checks passed with no findings: status, issuer, destination, InResponseTo, signature, audience, recipient, time window, NameID and attributes. The time window was evaluated at the supplied replay time of 2026-01-15T12:00:00Z. In production, validate against the real current time, and keep signature verification pinned to the configured IdP certificate.\"}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Signature",
+          "actual": "Assertion signed; verified against the configured idp_cert_pem",
+          "expected": "signed assertion verifying against the IdP cert"
+        },
+        {
+          "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+          "actual": "matches sp_entity_id",
+          "expected": "https://sp.example.com/saml/metadata"
+        },
+        {
+          "path": "/Response/@Destination",
+          "actual": "matches acs_url",
+          "expected": "https://sp.example.com/saml/acs"
+        }
+      ],
+      "fix": "No fix needed. All 14 checks passed with no findings: status, issuer, destination, InResponseTo, signature, audience, recipient, time window, NameID and attributes. The time window was evaluated at the supplied replay time of 2026-01-15T12:00:00Z. In production, validate against the real current time, and keep signature verification pinned to the configured IdP certificate."
+    },
+    "ttft_ms": 7507,
+    "type": "result",
+    "duration_ms": 10695,
+    "uuid": "fff6c275-f7e7-4a4a-b579-8d148de4e89a",
+    "ttft_stream_ms": 1019,
+    "time_to_request_ms": 165,
+    "first_content_frame_ms": 1019,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

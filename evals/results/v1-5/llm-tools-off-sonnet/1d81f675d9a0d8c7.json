@@ -1,0 +1,227 @@
+{
+  "case_id": "oidc_discovery_doc_invalid-02",
+  "case_hash": "1d81f675d9a0d8c7",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "OIDC_DISCOVERY_DOC_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/discovery/subject_types_supported",
+    "fix_keys": [
+      "point",
+      "canonical"
+    ]
+  },
+  "kind": "oidc_discovery",
+  "meta": {
+    "id": "oidc_discovery_doc_invalid-02",
+    "kind": "oidc_discovery",
+    "mutator": "discovery_missing_subject_types",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 2,
+    "hash": "1d81f675d9a0d8c7"
+  },
+  "output": {
+    "root_cause_code": "OIDC_DISCOVERY_DOC_INVALID",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "path": "/discovery/subject_types_supported",
+        "actual": "[] (empty array)",
+        "expected": "non-empty list containing at least one of public or pairwise",
+        "note": "subject_types_supported is REQUIRED by OIDC Discovery 1.0 and must not be empty."
+      },
+      {
+        "path": "/discovery/issuer",
+        "actual": "https://login.example.com/tenant-1/v2.0",
+        "expected": "https://login.example.com/tenant-1/v2.0",
+        "note": "Issuer matches the configured value, so this is not an issuer mismatch."
+      },
+      {
+        "path": "/discovery/code_challenge_methods_supported",
+        "actual": "[\"S256\",\"plain\"]",
+        "note": "The OP advertises plain PKCE. This is a posture concern. The SP must always use S256."
+      },
+      {
+        "path": "/discovery/userinfo_endpoint",
+        "actual": "https://login.example.com/oidc/userinfo",
+        "note": "This endpoint's path does not include the tenant-1 prefix that the other endpoints use. It is worth confirming but is not necessarily invalid."
+      }
+    ],
+    "fix": "Have the OP publish a non-empty subject_types_supported (for example [\"public\"]) in its discovery document. Then re-fetch the document over HTTPS and confirm that the issuer still matches exactly. In the SP client, always send PKCE with S256 and never use plain. Check that the userinfo_endpoint without the tenant path is intended. Don't hardcode around the invalid document by skipping validation.",
+    "posture_codes": [
+      "POSTURE_PKCE_PLAIN_OR_ABSENT"
+    ],
+    "alternatives": [
+      {
+        "code": "HEALTHY",
+        "why_not": "The required subject_types_supported field is empty, which violates the OIDC Discovery spec. The plain PKCE method is only a posture warning."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:36:56.82574-05:00",
+  "duration_ms": 5876,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 763,
+    "cache_creation_input_tokens": 1829,
+    "cache_read_input_tokens": 4038
+  },
+  "cost_usd": 0.015353799999999999,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 763,
+      "cacheReadInputTokens": 4038,
+      "cacheCreationInputTokens": 1829,
+      "costUSD": 0.015353799999999999,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 5730,
+    "stop_reason": "tool_use",
+    "session_id": "3b0483c5-5eb7-4737-8e15-62fea0e8cdd7",
+    "total_cost_usd": 0.015353799999999999,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1829,
+      "cache_read_input_tokens": 4038,
+      "output_tokens": 763,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1829,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 763,
+          "cache_read_input_tokens": 4038,
+          "cache_creation_input_tokens": 1829,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1829
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 763,
+        "cacheReadInputTokens": 4038,
+        "cacheCreationInputTokens": 1829,
+        "webSearchRequests": 0,
+        "costUSD": 0.015353799999999999,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1829,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OIDC_DISCOVERY_DOC_INVALID\",\"confidence\":0.8,\"evidence\":[{\"path\":\"/discovery/subject_types_supported\",\"actual\":\"[] (empty array)\",\"expected\":\"non-empty list containing at least one of public or pairwise\",\"note\":\"subject_types_supported is REQUIRED by OIDC Discovery 1.0 and must not be empty.\"},{\"path\":\"/discovery/issuer\",\"actual\":\"https://login.example.com/tenant-1/v2.0\",\"expected\":\"https://login.example.com/tenant-1/v2.0\",\"note\":\"Issuer matches the configured value, so this is not an issuer mismatch.\"},{\"path\":\"/discovery/code_challenge_methods_supported\",\"actual\":\"[\\\"S256\\\",\\\"plain\\\"]\",\"note\":\"The OP advertises plain PKCE. This is a posture concern. The SP must always use S256.\"},{\"path\":\"/discovery/userinfo_endpoint\",\"actual\":\"https://login.example.com/oidc/userinfo\",\"note\":\"This endpoint's path does not include the tenant-1 prefix that the other endpoints use. It is worth confirming but is not necessarily invalid.\"}],\"fix\":\"Have the OP publish a non-empty subject_types_supported (for example [\\\"public\\\"]) in its discovery document. Then re-fetch the document over HTTPS and confirm that the issuer still matches exactly. In the SP client, always send PKCE with S256 and never use plain. Check that the userinfo_endpoint without the tenant path is intended. Don't hardcode around the invalid document by skipping validation.\",\"alternatives\":[{\"code\":\"HEALTHY\",\"why_not\":\"The required subject_types_supported field is empty, which violates the OIDC Discovery spec. The plain PKCE method is only a posture warning.\"}],\"posture_codes\":[\"POSTURE_PKCE_PLAIN_OR_ABSENT\"]}",
+    "structured_output": {
+      "root_cause_code": "OIDC_DISCOVERY_DOC_INVALID",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "path": "/discovery/subject_types_supported",
+          "actual": "[] (empty array)",
+          "expected": "non-empty list containing at least one of public or pairwise",
+          "note": "subject_types_supported is REQUIRED by OIDC Discovery 1.0 and must not be empty."
+        },
+        {
+          "path": "/discovery/issuer",
+          "actual": "https://login.example.com/tenant-1/v2.0",
+          "expected": "https://login.example.com/tenant-1/v2.0",
+          "note": "Issuer matches the configured value, so this is not an issuer mismatch."
+        },
+        {
+          "path": "/discovery/code_challenge_methods_supported",
+          "actual": "[\"S256\",\"plain\"]",
+          "note": "The OP advertises plain PKCE. This is a posture concern. The SP must always use S256."
+        },
+        {
+          "path": "/discovery/userinfo_endpoint",
+          "actual": "https://login.example.com/oidc/userinfo",
+          "note": "This endpoint's path does not include the tenant-1 prefix that the other endpoints use. It is worth confirming but is not necessarily invalid."
+        }
+      ],
+      "fix": "Have the OP publish a non-empty subject_types_supported (for example [\"public\"]) in its discovery document. Then re-fetch the document over HTTPS and confirm that the issuer still matches exactly. In the SP client, always send PKCE with S256 and never use plain. Check that the userinfo_endpoint without the tenant path is intended. Don't hardcode around the invalid document by skipping validation.",
+      "alternatives": [
+        {
+          "code": "HEALTHY",
+          "why_not": "The required subject_types_supported field is empty, which violates the OIDC Discovery spec. The plain PKCE method is only a posture warning."
+        }
+      ],
+      "posture_codes": [
+        "POSTURE_PKCE_PLAIN_OR_ABSENT"
+      ]
+    },
+    "ttft_ms": 5847,
+    "type": "result",
+    "duration_ms": 5876,
+    "uuid": "e8410aef-ed86-472a-a21d-7be8cbcede35",
+    "ttft_stream_ms": 1349,
+    "time_to_request_ms": 143,
+    "first_content_frame_ms": 1350,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

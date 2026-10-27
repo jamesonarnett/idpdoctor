@@ -1,0 +1,189 @@
+{
+  "case_id": "saml_structure_invalid-03",
+  "case_hash": "c627c8e2865e6551",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_STRUCTURE_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion",
+    "fix_keys": [
+      "treat",
+      "response",
+      "hostile",
+      "unless"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_structure_invalid-03",
+    "kind": "saml_response",
+    "dialect": "okta",
+    "mutator": "structure_multi_assertion",
+    "expected_completeness": "partial",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 3,
+    "hash": "c627c8e2865e6551"
+  },
+  "output": {
+    "root_cause_code": "SAML_STRUCTURE_INVALID",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/Response/Assertion",
+        "actual": "2 assertions",
+        "expected": "1",
+        "note": "Response contains two Assertion elements. This matches the signature-wrapping pattern, where an unsigned assertion is placed next to the signed one. The SP library was right to reject it."
+      }
+    ],
+    "fix": "Keep rejecting responses that contain more than one Assertion. Do not relax the library check. Ask the IdP to emit exactly one Assertion with the Signature as a direct child of it. If you must handle this response shape, consume only the element whose signature verified against the configured IdP certificate, and bind the signature Reference to that element's ID. Treat the captured response as potentially hostile until you confirm where the second assertion came from.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": [
+      "request_id (the AuthnRequest ID) so the InResponseTo check can run"
+    ]
+  },
+  "started": "2026-10-27T10:14:43.513738-05:00",
+  "duration_ms": 12893,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1883,
+    "cache_creation_input_tokens": 6832,
+    "cache_read_input_tokens": 28627
+  },
+  "cost_usd": 0.049028699999999995,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1883,
+      "cacheReadInputTokens": 28627,
+      "cacheCreationInputTokens": 6832,
+      "costUSD": 0.049028699999999995,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 12776,
+    "stop_reason": "tool_use",
+    "session_id": "8bb93ce5-d378-496b-b498-5c3dbe90689a",
+    "total_cost_usd": 0.049028699999999995,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 6832,
+      "cache_read_input_tokens": 28627,
+      "output_tokens": 1883,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6832,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 443,
+          "cache_read_input_tokens": 16248,
+          "cache_creation_input_tokens": 2963,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2963
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1883,
+        "cacheReadInputTokens": 28627,
+        "cacheCreationInputTokens": 6832,
+        "webSearchRequests": 0,
+        "costUSD": 0.049028699999999995,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6832,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_STRUCTURE_INVALID\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/Response/Assertion\",\"actual\":\"2 assertions\",\"expected\":\"1\",\"note\":\"Response contains two Assertion elements. This matches the signature-wrapping pattern, where an unsigned assertion is placed next to the signed one. The SP library was right to reject it.\"}],\"fix\":\"Keep rejecting responses that contain more than one Assertion. Do not relax the library check. Ask the IdP to emit exactly one Assertion with the Signature as a direct child of it. If you must handle this response shape, consume only the element whose signature verified against the configured IdP certificate, and bind the signature Reference to that element's ID. Treat the captured response as potentially hostile until you confirm where the second assertion came from.\",\"questions\":[\"request_id (the AuthnRequest ID) so the InResponseTo check can run\"],\"alternatives\":[]}",
+    "structured_output": {
+      "root_cause_code": "SAML_STRUCTURE_INVALID",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/Response/Assertion",
+          "actual": "2 assertions",
+          "expected": "1",
+          "note": "Response contains two Assertion elements. This matches the signature-wrapping pattern, where an unsigned assertion is placed next to the signed one. The SP library was right to reject it."
+        }
+      ],
+      "fix": "Keep rejecting responses that contain more than one Assertion. Do not relax the library check. Ask the IdP to emit exactly one Assertion with the Signature as a direct child of it. If you must handle this response shape, consume only the element whose signature verified against the configured IdP certificate, and bind the signature Reference to that element's ID. Treat the captured response as potentially hostile until you confirm where the second assertion came from.",
+      "questions": [
+        "request_id (the AuthnRequest ID) so the InResponseTo check can run"
+      ],
+      "alternatives": []
+    },
+    "ttft_ms": 8479,
+    "type": "result",
+    "duration_ms": 12893,
+    "uuid": "e54f6328-fe16-45eb-9b6b-23ac1279d25d",
+    "ttft_stream_ms": 1926,
+    "time_to_request_ms": 106,
+    "first_content_frame_ms": 1926,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

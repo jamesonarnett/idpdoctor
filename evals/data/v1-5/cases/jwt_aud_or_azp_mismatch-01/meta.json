@@ -1,0 +1,9 @@
+{
+  "id": "jwt_aud_or_azp_mismatch-01",
+  "kind": "jwt",
+  "mutator": "jwt_multi_aud_no_azp",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 1,
+  "hash": "ff8e608c281d0511"
+}

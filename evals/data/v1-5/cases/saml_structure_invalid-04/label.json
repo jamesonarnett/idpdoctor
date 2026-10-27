@@ -1,0 +1,11 @@
+{
+  "code": "SAML_STRUCTURE_INVALID",
+  "posture_codes": [],
+  "evidence_path": "/Response/Assertion",
+  "fix_keys": [
+    "treat",
+    "response",
+    "hostile",
+    "unless"
+  ]
+}

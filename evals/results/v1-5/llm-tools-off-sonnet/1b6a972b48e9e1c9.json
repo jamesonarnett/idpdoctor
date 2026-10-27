@@ -1,0 +1,209 @@
+{
+  "case_id": "saml_not_signed_or_wrong_element_signed-00",
+  "case_hash": "1b6a972b48e9e1c9",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/Signature",
+    "fix_keys": [
+      "enable",
+      "signing",
+      "element",
+      "requires"
+    ],
+    "needs": [
+      "require_signed_assertion"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_not_signed_or_wrong_element_signed-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "response_signed_only",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "1b6a972b48e9e1c9"
+  },
+  "output": {
+    "root_cause_code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+    "confidence": 0.93,
+    "evidence": [
+      {
+        "path": "/Response/Assertion",
+        "actual": "Assertion element has no ds:Signature child; only the Response is signed",
+        "expected": "Assertion signed (require_signed_assertion=true)",
+        "note": "The Response signature references #_resp_r289ac, not the assertion ID _assert_a289ac."
+      },
+      {
+        "path": "/Response/Assertion/@ID",
+        "actual": "_assert_a289ac",
+        "expected": "Referenced by a signature Reference URI",
+        "note": "No signature Reference points to this ID."
+      }
+    ],
+    "fix": "Configure the Entra app's SAML signing option to 'Sign SAML assertion' or 'Sign SAML response and assertion'. Entra has this under SAML Certificates \u003e Signing Option. Keep require_signed_assertion enabled on the SP. Do not relax the requirement or accept a response-only signature. Keep validating against the configured IdP certificate, not the embedded KeyInfo.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "SAML_SIGNATURE_INVALID",
+        "why_not": "Nothing indicates the response signature fails verification. The embedded certificate matches the configured one, and the problem is that the assertion has no signature."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:44:22.46827-05:00",
+  "duration_ms": 7564,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 552,
+    "cache_creation_input_tokens": 6432,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.0317712,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 552,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 6432,
+      "costUSD": 0.0317712,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 2,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 7433,
+    "stop_reason": "tool_use",
+    "session_id": "762ea360-89da-476e-8302-7c32921e17ea",
+    "total_cost_usd": 0.0317712,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6432,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 552,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6432,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 552,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 6432,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 6432
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 552,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 6432,
+        "webSearchRequests": 0,
+        "costUSD": 0.0317712,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6432,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED\",\"confidence\":0.93,\"evidence\":[{\"path\":\"/Response/Assertion\",\"actual\":\"Assertion element has no ds:Signature child; only the Response is signed\",\"expected\":\"Assertion signed (require_signed_assertion=true)\",\"note\":\"The Response signature references #_resp_r289ac, not the assertion ID _assert_a289ac.\"},{\"path\":\"/Response/Assertion/@ID\",\"actual\":\"_assert_a289ac\",\"expected\":\"Referenced by a signature Reference URI\",\"note\":\"No signature Reference points to this ID.\"}],\"fix\":\"Configure the Entra app's SAML signing option to 'Sign SAML assertion' or 'Sign SAML response and assertion'. Entra has this under SAML Certificates \u003e Signing Option. Keep require_signed_assertion enabled on the SP. Do not relax the requirement or accept a response-only signature. Keep validating against the configured IdP certificate, not the embedded KeyInfo.\",\"alternatives\":[{\"code\":\"SAML_SIGNATURE_INVALID\",\"why_not\":\"Nothing indicates the response signature fails verification. The embedded certificate matches the configured one, and the problem is that the assertion has no signature.\"}]}",
+    "structured_output": {
+      "root_cause_code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+      "confidence": 0.93,
+      "evidence": [
+        {
+          "path": "/Response/Assertion",
+          "actual": "Assertion element has no ds:Signature child; only the Response is signed",
+          "expected": "Assertion signed (require_signed_assertion=true)",
+          "note": "The Response signature references #_resp_r289ac, not the assertion ID _assert_a289ac."
+        },
+        {
+          "path": "/Response/Assertion/@ID",
+          "actual": "_assert_a289ac",
+          "expected": "Referenced by a signature Reference URI",
+          "note": "No signature Reference points to this ID."
+        }
+      ],
+      "fix": "Configure the Entra app's SAML signing option to 'Sign SAML assertion' or 'Sign SAML response and assertion'. Entra has this under SAML Certificates \u003e Signing Option. Keep require_signed_assertion enabled on the SP. Do not relax the requirement or accept a response-only signature. Keep validating against the configured IdP certificate, not the embedded KeyInfo.",
+      "alternatives": [
+        {
+          "code": "SAML_SIGNATURE_INVALID",
+          "why_not": "Nothing indicates the response signature fails verification. The embedded certificate matches the configured one, and the problem is that the assertion has no signature."
+        }
+      ]
+    },
+    "ttft_ms": 7537,
+    "type": "result",
+    "duration_ms": 7564,
+    "uuid": "2c4b3a69-7b51-4e83-aad6-088e7ddfde3a",
+    "ttft_stream_ms": 4531,
+    "time_to_request_ms": 127,
+    "first_content_frame_ms": 4531,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

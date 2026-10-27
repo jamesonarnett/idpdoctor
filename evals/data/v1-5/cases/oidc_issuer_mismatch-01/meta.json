@@ -1,0 +1,9 @@
+{
+  "id": "oidc_issuer_mismatch-01",
+  "kind": "oidc_discovery",
+  "mutator": "discovery_issuer_mismatch",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 1,
+  "hash": "addb545da33273a1"
+}

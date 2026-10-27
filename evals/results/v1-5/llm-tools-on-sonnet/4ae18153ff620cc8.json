@@ -1,0 +1,198 @@
+{
+  "case_id": "saml_issuer_mismatch-02",
+  "case_hash": "4ae18153ff620cc8",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_ISSUER_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/Response/Issuer",
+    "fix_keys": [
+      "entityid",
+      "metadata",
+      "verbatim",
+      "issuer"
+    ],
+    "needs": [
+      "idp_entity_id"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_issuer_mismatch-02",
+    "kind": "saml_response",
+    "dialect": "generic",
+    "mutator": "issuer_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 2,
+    "hash": "4ae18153ff620cc8"
+  },
+  "output": {
+    "root_cause_code": "SAML_ISSUER_MISMATCH",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/Response/Issuer",
+        "actual": "https://idp.example.com/saml/",
+        "expected": "https://idp.example.com/saml",
+        "note": "Differs only by a trailing slash. Every other check passed: status, signature, audience, destination, recipient, InResponseTo, time window, NameID and attributes."
+      }
+    ],
+    "fix": "Make the SP's configured IdP entityID exactly match the Issuer the IdP sends. Copy it character for character from the IdP metadata, including any trailing slash. Alternatively, correct the entityID on the IdP side so it matches what the SP trusts. Keep signature validation, audience checks and the pinned IdP certificate enabled. Don't loosen the issuer comparison to ignore the slash. The 'app_not_configured_for_user' message from Google is probably a generic rejection. It most likely points to this entityID/Issuer mismatch between the Google SAML app config and the SP, not to a user assignment problem.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "IDP_POLICY_REFUSAL",
+        "why_not": "The IdP returned a Success status with a validly signed assertion for this user. The artifact shows no refusal, and the validators found a concrete Issuer mismatch."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T10:08:10.016716-05:00",
+  "duration_ms": 12095,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2027,
+    "cache_creation_input_tokens": 6693,
+    "cache_read_input_tokens": 28642
+  },
+  "cost_usd": 0.0499142,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2027,
+      "cacheReadInputTokens": 28642,
+      "cacheCreationInputTokens": 6693,
+      "costUSD": 0.0499142,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 11978,
+    "stop_reason": "tool_use",
+    "session_id": "5d5cf646-fcd7-44f9-af75-01417e9a834d",
+    "total_cost_usd": 0.0499142,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 6693,
+      "cache_read_input_tokens": 28642,
+      "output_tokens": 2027,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6693,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 574,
+          "cache_read_input_tokens": 16263,
+          "cache_creation_input_tokens": 2809,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2809
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2027,
+        "cacheReadInputTokens": 28642,
+        "cacheCreationInputTokens": 6693,
+        "webSearchRequests": 0,
+        "costUSD": 0.0499142,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6693,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_ISSUER_MISMATCH\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/Response/Issuer\",\"actual\":\"https://idp.example.com/saml/\",\"expected\":\"https://idp.example.com/saml\",\"note\":\"Differs only by a trailing slash. Every other check passed: status, signature, audience, destination, recipient, InResponseTo, time window, NameID and attributes.\"}],\"fix\":\"Make the SP's configured IdP entityID exactly match the Issuer the IdP sends. Copy it character for character from the IdP metadata, including any trailing slash. Alternatively, correct the entityID on the IdP side so it matches what the SP trusts. Keep signature validation, audience checks and the pinned IdP certificate enabled. Don't loosen the issuer comparison to ignore the slash. The 'app_not_configured_for_user' message from Google is probably a generic rejection. It most likely points to this entityID/Issuer mismatch between the Google SAML app config and the SP, not to a user assignment problem.\",\"alternatives\":[{\"code\":\"IDP_POLICY_REFUSAL\",\"why_not\":\"The IdP returned a Success status with a validly signed assertion for this user. The artifact shows no refusal, and the validators found a concrete Issuer mismatch.\"}],\"questions\":[]}",
+    "structured_output": {
+      "root_cause_code": "SAML_ISSUER_MISMATCH",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/Response/Issuer",
+          "actual": "https://idp.example.com/saml/",
+          "expected": "https://idp.example.com/saml",
+          "note": "Differs only by a trailing slash. Every other check passed: status, signature, audience, destination, recipient, InResponseTo, time window, NameID and attributes."
+        }
+      ],
+      "fix": "Make the SP's configured IdP entityID exactly match the Issuer the IdP sends. Copy it character for character from the IdP metadata, including any trailing slash. Alternatively, correct the entityID on the IdP side so it matches what the SP trusts. Keep signature validation, audience checks and the pinned IdP certificate enabled. Don't loosen the issuer comparison to ignore the slash. The 'app_not_configured_for_user' message from Google is probably a generic rejection. It most likely points to this entityID/Issuer mismatch between the Google SAML app config and the SP, not to a user assignment problem.",
+      "alternatives": [
+        {
+          "code": "IDP_POLICY_REFUSAL",
+          "why_not": "The IdP returned a Success status with a validly signed assertion for this user. The artifact shows no refusal, and the validators found a concrete Issuer mismatch."
+        }
+      ],
+      "questions": []
+    },
+    "ttft_ms": 7683,
+    "type": "result",
+    "duration_ms": 12095,
+    "uuid": "c81c3b5c-5c36-45d2-b8d6-dddbaaaa766b",
+    "ttft_stream_ms": 1039,
+    "time_to_request_ms": 98,
+    "first_content_frame_ms": 1039,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

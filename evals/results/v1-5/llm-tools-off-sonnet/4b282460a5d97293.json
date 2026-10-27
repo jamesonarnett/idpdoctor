@@ -1,0 +1,231 @@
+{
+  "case_id": "saml_time_window_invalid-04",
+  "case_hash": "4b282460a5d97293",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_TIME_WINDOW_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+    "fix_keys": [
+      "synchronise",
+      "clocks",
+      "sides",
+      "clock"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_time_window_invalid-04",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "expired",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 4,
+    "hash": "4b282460a5d97293"
+  },
+  "output": {
+    "root_cause_code": "SAML_TIME_WINDOW_INVALID",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+        "actual": "2026-01-15T11:40:00.000Z",
+        "expected": "after now (2026-01-15T12:00:00Z)",
+        "note": "Window ended 20 minutes before the evaluation time."
+      },
+      {
+        "path": "/Response/Assertion/Conditions/@NotBefore",
+        "actual": "2026-01-15T11:35:00.000Z",
+        "note": "The window is only 5 minutes wide and sits well before the response IssueInstant."
+      },
+      {
+        "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@NotOnOrAfter",
+        "actual": "2026-01-15T11:40:00.000Z",
+        "expected": "after now (2026-01-15T12:00:00Z)",
+        "note": "Bearer confirmation has also expired."
+      },
+      {
+        "path": "/Response/@IssueInstant",
+        "actual": "2026-01-15T12:00:00.000Z",
+        "note": "The response was issued at 12:00, after the assertion window closed. This points to an IdP-side clock or window-computation error, not a late SP."
+      }
+    ],
+    "fix": "The assertion's validity window (11:35–11:40Z) closed 20 minutes before the response IssueInstant (12:00Z). Because it only affects one office network, the likely cause is skewed clocks or an unsynchronized path. Check that the IdP's clock is NTP-synced. Also check whether anything on that network, such as a proxy, captive portal or cached or replayed POST, is delaying or replaying the response. Make the IdP compute NotBefore and NotOnOrAfter from its current time, for example NotBefore of now minus at most 5 minutes and a lifetime of about 5 minutes. On the SP, keep clock skew tolerance at 5 minutes or less and sync the SP clock via NTP. Do not widen skew tolerance or skip the time checks.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "SAML_SIGNATURE_INVALID",
+        "why_not": "The artifact gives no evidence of a signature failure. The signature is on the assertion and the embedded certificate matches the configured one."
+      }
+    ],
+    "questions": [
+      "Is the IdP clock NTP-synced, and do the affected users share a proxy or network device that could delay or replay the POST?"
+    ]
+  },
+  "started": "2026-10-27T09:48:30.556193-05:00",
+  "duration_ms": 9207,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 925,
+    "cache_creation_input_tokens": 6461,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.0356172,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 925,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 6461,
+      "costUSD": 0.0356172,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 9114,
+    "stop_reason": "tool_use",
+    "session_id": "ddacd6e8-31b9-4edb-a4db-aca9ea043c6b",
+    "total_cost_usd": 0.0356172,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6461,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 925,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6461,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 925,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 6461,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 6461
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 925,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 6461,
+        "webSearchRequests": 0,
+        "costUSD": 0.0356172,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6461,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_TIME_WINDOW_INVALID\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/Response/Assertion/Conditions/@NotOnOrAfter\",\"actual\":\"2026-01-15T11:40:00.000Z\",\"expected\":\"after now (2026-01-15T12:00:00Z)\",\"note\":\"Window ended 20 minutes before the evaluation time.\"},{\"path\":\"/Response/Assertion/Conditions/@NotBefore\",\"actual\":\"2026-01-15T11:35:00.000Z\",\"note\":\"The window is only 5 minutes wide and sits well before the response IssueInstant.\"},{\"path\":\"/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@NotOnOrAfter\",\"actual\":\"2026-01-15T11:40:00.000Z\",\"expected\":\"after now (2026-01-15T12:00:00Z)\",\"note\":\"Bearer confirmation has also expired.\"},{\"path\":\"/Response/@IssueInstant\",\"actual\":\"2026-01-15T12:00:00.000Z\",\"note\":\"The response was issued at 12:00, after the assertion window closed. This points to an IdP-side clock or window-computation error, not a late SP.\"}],\"fix\":\"The assertion's validity window (11:35–11:40Z) closed 20 minutes before the response IssueInstant (12:00Z). Because it only affects one office network, the likely cause is skewed clocks or an unsynchronized path. Check that the IdP's clock is NTP-synced. Also check whether anything on that network, such as a proxy, captive portal or cached or replayed POST, is delaying or replaying the response. Make the IdP compute NotBefore and NotOnOrAfter from its current time, for example NotBefore of now minus at most 5 minutes and a lifetime of about 5 minutes. On the SP, keep clock skew tolerance at 5 minutes or less and sync the SP clock via NTP. Do not widen skew tolerance or skip the time checks.\",\"alternatives\":[{\"code\":\"SAML_SIGNATURE_INVALID\",\"why_not\":\"The artifact gives no evidence of a signature failure. The signature is on the assertion and the embedded certificate matches the configured one.\"}],\"questions\":[\"Is the IdP clock NTP-synced, and do the affected users share a proxy or network device that could delay or replay the POST?\"]}",
+    "structured_output": {
+      "root_cause_code": "SAML_TIME_WINDOW_INVALID",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+          "actual": "2026-01-15T11:40:00.000Z",
+          "expected": "after now (2026-01-15T12:00:00Z)",
+          "note": "Window ended 20 minutes before the evaluation time."
+        },
+        {
+          "path": "/Response/Assertion/Conditions/@NotBefore",
+          "actual": "2026-01-15T11:35:00.000Z",
+          "note": "The window is only 5 minutes wide and sits well before the response IssueInstant."
+        },
+        {
+          "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@NotOnOrAfter",
+          "actual": "2026-01-15T11:40:00.000Z",
+          "expected": "after now (2026-01-15T12:00:00Z)",
+          "note": "Bearer confirmation has also expired."
+        },
+        {
+          "path": "/Response/@IssueInstant",
+          "actual": "2026-01-15T12:00:00.000Z",
+          "note": "The response was issued at 12:00, after the assertion window closed. This points to an IdP-side clock or window-computation error, not a late SP."
+        }
+      ],
+      "fix": "The assertion's validity window (11:35–11:40Z) closed 20 minutes before the response IssueInstant (12:00Z). Because it only affects one office network, the likely cause is skewed clocks or an unsynchronized path. Check that the IdP's clock is NTP-synced. Also check whether anything on that network, such as a proxy, captive portal or cached or replayed POST, is delaying or replaying the response. Make the IdP compute NotBefore and NotOnOrAfter from its current time, for example NotBefore of now minus at most 5 minutes and a lifetime of about 5 minutes. On the SP, keep clock skew tolerance at 5 minutes or less and sync the SP clock via NTP. Do not widen skew tolerance or skip the time checks.",
+      "alternatives": [
+        {
+          "code": "SAML_SIGNATURE_INVALID",
+          "why_not": "The artifact gives no evidence of a signature failure. The signature is on the assertion and the embedded certificate matches the configured one."
+        }
+      ],
+      "questions": [
+        "Is the IdP clock NTP-synced, and do the affected users share a proxy or network device that could delay or replay the POST?"
+      ]
+    },
+    "ttft_ms": 9178,
+    "type": "result",
+    "duration_ms": 9207,
+    "uuid": "f774d15a-799d-4c1c-9187-85f125451e90",
+    "ttft_stream_ms": 3651,
+    "time_to_request_ms": 90,
+    "first_content_frame_ms": 3651,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

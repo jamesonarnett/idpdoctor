@@ -1,0 +1,209 @@
+{
+  "case_id": "saml_issuer_mismatch-02",
+  "case_hash": "4ae18153ff620cc8",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_ISSUER_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/Response/Issuer",
+    "fix_keys": [
+      "entityid",
+      "metadata",
+      "verbatim",
+      "issuer"
+    ],
+    "needs": [
+      "idp_entity_id"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_issuer_mismatch-02",
+    "kind": "saml_response",
+    "dialect": "generic",
+    "mutator": "issuer_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 2,
+    "hash": "4ae18153ff620cc8"
+  },
+  "output": {
+    "root_cause_code": "SAML_ISSUER_MISMATCH",
+    "confidence": 0.85,
+    "evidence": [
+      {
+        "path": "/Response/Issuer",
+        "actual": "https://idp.example.com/saml/",
+        "expected": "https://idp.example.com/saml",
+        "note": "Trailing slash makes the exact-match issuer comparison fail"
+      },
+      {
+        "path": "/Response/Assertion/Issuer",
+        "actual": "https://idp.example.com/saml/",
+        "expected": "https://idp.example.com/saml",
+        "note": "Assertion issuer has the same trailing slash"
+      }
+    ],
+    "fix": "Make the SP's configured IdP entity ID exactly match the Issuer the IdP sends. Copy the entityID from the IdP's metadata, or have the IdP admin change it to the form the SP expects. Keep the exact-match comparison, keep signature validation on, and keep trusting only the configured IdP certificate. The 'app_not_configured_for_user' text is probably a generic error from the IdP or SP. Once the Issuer matches, re-test. If it still fails, check the IdP's app configuration.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "IDP_POLICY_REFUSAL",
+        "why_not": "The IdP returned Success with a signed assertion, so the artifact shows no refusal. The user-assignment error comes from outside it."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:43:19.536225-05:00",
+  "duration_ms": 13811,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1089,
+    "cache_creation_input_tokens": 6566,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.037677199999999994,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1089,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 6566,
+      "costUSD": 0.037677199999999994,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 2,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 13675,
+    "stop_reason": "tool_use",
+    "session_id": "686283b5-d66a-44c4-9c1b-85effb43402b",
+    "total_cost_usd": 0.037677199999999994,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6566,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 1089,
+      "output_tokens_details": {
+        "thinking_tokens": 167
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6566,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1089,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 6566,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 6566
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1089,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 6566,
+        "webSearchRequests": 0,
+        "costUSD": 0.037677199999999994,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 167,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6566,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_ISSUER_MISMATCH\",\"confidence\":0.85,\"evidence\":[{\"path\":\"/Response/Issuer\",\"actual\":\"https://idp.example.com/saml/\",\"expected\":\"https://idp.example.com/saml\",\"note\":\"Trailing slash makes the exact-match issuer comparison fail\"},{\"path\":\"/Response/Assertion/Issuer\",\"actual\":\"https://idp.example.com/saml/\",\"expected\":\"https://idp.example.com/saml\",\"note\":\"Assertion issuer has the same trailing slash\"}],\"fix\":\"Make the SP's configured IdP entity ID exactly match the Issuer the IdP sends. Copy the entityID from the IdP's metadata, or have the IdP admin change it to the form the SP expects. Keep the exact-match comparison, keep signature validation on, and keep trusting only the configured IdP certificate. The 'app_not_configured_for_user' text is probably a generic error from the IdP or SP. Once the Issuer matches, re-test. If it still fails, check the IdP's app configuration.\",\"alternatives\":[{\"code\":\"IDP_POLICY_REFUSAL\",\"why_not\":\"The IdP returned Success with a signed assertion, so the artifact shows no refusal. The user-assignment error comes from outside it.\"}]}",
+    "structured_output": {
+      "root_cause_code": "SAML_ISSUER_MISMATCH",
+      "confidence": 0.85,
+      "evidence": [
+        {
+          "path": "/Response/Issuer",
+          "actual": "https://idp.example.com/saml/",
+          "expected": "https://idp.example.com/saml",
+          "note": "Trailing slash makes the exact-match issuer comparison fail"
+        },
+        {
+          "path": "/Response/Assertion/Issuer",
+          "actual": "https://idp.example.com/saml/",
+          "expected": "https://idp.example.com/saml",
+          "note": "Assertion issuer has the same trailing slash"
+        }
+      ],
+      "fix": "Make the SP's configured IdP entity ID exactly match the Issuer the IdP sends. Copy the entityID from the IdP's metadata, or have the IdP admin change it to the form the SP expects. Keep the exact-match comparison, keep signature validation on, and keep trusting only the configured IdP certificate. The 'app_not_configured_for_user' text is probably a generic error from the IdP or SP. Once the Issuer matches, re-test. If it still fails, check the IdP's app configuration.",
+      "alternatives": [
+        {
+          "code": "IDP_POLICY_REFUSAL",
+          "why_not": "The IdP returned Success with a signed assertion, so the artifact shows no refusal. The user-assignment error comes from outside it."
+        }
+      ]
+    },
+    "ttft_ms": 8250,
+    "type": "result",
+    "duration_ms": 13811,
+    "uuid": "0a1fb602-331f-49e5-9046-d22666478f0d",
+    "ttft_stream_ms": 6735,
+    "time_to_request_ms": 133,
+    "first_content_frame_ms": 6735,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

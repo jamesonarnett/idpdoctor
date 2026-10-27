@@ -1,0 +1,10 @@
+{
+  "id": "saml_nameid_missing_or_format_mismatch-02",
+  "kind": "saml_response",
+  "dialect": "generic",
+  "mutator": "nameid_format_mismatch",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 2,
+  "hash": "e25c169a6dcc9202"
+}

@@ -1,0 +1,208 @@
+{
+  "case_id": "jwt_alg_none_or_confusion-00",
+  "case_hash": "c82042ed6de92962",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_ALG_NONE_OR_CONFUSION",
+    "posture_codes": [],
+    "evidence_path": "/header/alg",
+    "fix_keys": [
+      "reject",
+      "token"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_alg_none_or_confusion-00",
+    "kind": "jwt",
+    "mutator": "jwt_alg_none",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "c82042ed6de92962"
+  },
+  "output": {
+    "root_cause_code": "JWT_ALG_NONE_OR_CONFUSION",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/header/alg",
+        "actual": "none",
+        "expected": "RS256 (the only algorithm advertised by the OP's JWKS key)",
+        "note": "The token header declares alg=none, so it is unsigned. The symptom mentions HS256, but the captured header says none. Either way the algorithm does not match the RSA key published by the OP."
+      },
+      {
+        "path": "/keys/jwks_json",
+        "actual": "Single RSA key, kid=test-key-1, alg=RS256",
+        "expected": "Token alg matches the JWKS key alg",
+        "note": "The OP publishes only RSA keys, so HS256 or none is not an acceptable algorithm for this token."
+      },
+      {
+        "path": "/header/kid",
+        "actual": "test-key-1",
+        "note": "The kid exists in the JWKS, so this is not a key lookup failure."
+      }
+    ],
+    "fix": "Pin the allowed algorithms to the ones the OP publishes (RS256 here) and select the verification key from the JWKS by kid. Reject any token whose alg is none or HS*, and never use an RSA public key as an HMAC secret. Make sure the OP or the client library issues id_tokens signed with RS256. Then re-capture a token and verify its signature against the JWKS.",
+    "posture_codes": [
+      "POSTURE_WEAK_ALGORITHM"
+    ],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T09:32:33.142197-05:00",
+  "duration_ms": 5483,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 599,
+    "cache_creation_input_tokens": 1762,
+    "cache_read_input_tokens": 3886
+  },
+  "cost_usd": 0.013430600000000001,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 599,
+      "cacheReadInputTokens": 3886,
+      "cacheCreationInputTokens": 1762,
+      "costUSD": 0.013430600000000001,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 5256,
+    "stop_reason": "tool_use",
+    "session_id": "07952e5a-1fc7-4bcf-9049-201c12a7eecf",
+    "total_cost_usd": 0.013430600000000001,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1762,
+      "cache_read_input_tokens": 3886,
+      "output_tokens": 599,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1762,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 599,
+          "cache_read_input_tokens": 3886,
+          "cache_creation_input_tokens": 1762,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1762
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 599,
+        "cacheReadInputTokens": 3886,
+        "cacheCreationInputTokens": 1762,
+        "webSearchRequests": 0,
+        "costUSD": 0.013430600000000001,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1762,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"JWT_ALG_NONE_OR_CONFUSION\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/header/alg\",\"actual\":\"none\",\"expected\":\"RS256 (the only algorithm advertised by the OP's JWKS key)\",\"note\":\"The token header declares alg=none, so it is unsigned. The symptom mentions HS256, but the captured header says none. Either way the algorithm does not match the RSA key published by the OP.\"},{\"path\":\"/keys/jwks_json\",\"actual\":\"Single RSA key, kid=test-key-1, alg=RS256\",\"expected\":\"Token alg matches the JWKS key alg\",\"note\":\"The OP publishes only RSA keys, so HS256 or none is not an acceptable algorithm for this token.\"},{\"path\":\"/header/kid\",\"actual\":\"test-key-1\",\"note\":\"The kid exists in the JWKS, so this is not a key lookup failure.\"}],\"fix\":\"Pin the allowed algorithms to the ones the OP publishes (RS256 here) and select the verification key from the JWKS by kid. Reject any token whose alg is none or HS*, and never use an RSA public key as an HMAC secret. Make sure the OP or the client library issues id_tokens signed with RS256. Then re-capture a token and verify its signature against the JWKS.\",\"alternatives\":[],\"posture_codes\":[\"POSTURE_WEAK_ALGORITHM\"]}",
+    "structured_output": {
+      "root_cause_code": "JWT_ALG_NONE_OR_CONFUSION",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/header/alg",
+          "actual": "none",
+          "expected": "RS256 (the only algorithm advertised by the OP's JWKS key)",
+          "note": "The token header declares alg=none, so it is unsigned. The symptom mentions HS256, but the captured header says none. Either way the algorithm does not match the RSA key published by the OP."
+        },
+        {
+          "path": "/keys/jwks_json",
+          "actual": "Single RSA key, kid=test-key-1, alg=RS256",
+          "expected": "Token alg matches the JWKS key alg",
+          "note": "The OP publishes only RSA keys, so HS256 or none is not an acceptable algorithm for this token."
+        },
+        {
+          "path": "/header/kid",
+          "actual": "test-key-1",
+          "note": "The kid exists in the JWKS, so this is not a key lookup failure."
+        }
+      ],
+      "fix": "Pin the allowed algorithms to the ones the OP publishes (RS256 here) and select the verification key from the JWKS by kid. Reject any token whose alg is none or HS*, and never use an RSA public key as an HMAC secret. Make sure the OP or the client library issues id_tokens signed with RS256. Then re-capture a token and verify its signature against the JWKS.",
+      "alternatives": [],
+      "posture_codes": [
+        "POSTURE_WEAK_ALGORITHM"
+      ]
+    },
+    "ttft_ms": 5453,
+    "type": "result",
+    "duration_ms": 5483,
+    "uuid": "233b6e9f-3152-4112-842c-4d475497fda0",
+    "ttft_stream_ms": 1582,
+    "time_to_request_ms": 226,
+    "first_content_frame_ms": 1582,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,229 @@
+{
+  "case_id": "oauth_pkce_verifier_mismatch-01",
+  "case_hash": "72aa33094afb164b",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/request/code_verifier",
+    "fix_keys": [
+      "generate",
+      "verifier",
+      "store",
+      "session"
+    ],
+    "needs": [
+      "code_verifier"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_pkce_verifier_mismatch-01",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_pkce_verifier_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 1,
+    "hash": "72aa33094afb164b"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_grant",
+        "note": "Token endpoint rejected the code exchange"
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "Failed to verify code verifier",
+        "note": "Matches the reported AADSTS501481 PKCE failure"
+      },
+      {
+        "path": "/request/code_challenge_method",
+        "actual": "S256",
+        "expected": "S256",
+        "note": "The challenge must be BASE64URL(SHA256(code_verifier)) of the exact verifier sent on the token request"
+      }
+    ],
+    "fix": "Make sure the code_verifier sent to the token endpoint is the exact one that produced the code_challenge in the authorization request. Generate one verifier for each authorization attempt, and store it per-session or per-state. Don't regenerate it on redirect, on a second tab, or on a retry. Compute the challenge as BASE64URL-without-padding(SHA256(verifier)) with method S256. Confirm the verifier isn't truncated, re-encoded, or altered in storage or transport. It must be 43–128 unreserved characters. Then restart the flow to get a fresh authorization code.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OAUTH_INVALID_GRANT_CODE",
+        "why_not": "invalid_grant can also mean an expired or reused code, but the description names the code verifier specifically."
+      },
+      {
+        "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+        "why_not": "Client type, redirect URI, and method are consistent with the configuration, and the error points at the verifier."
+      }
+    ],
+    "questions": [
+      "Is the code_verifier sent in the token request the same value that was used to derive the code_challenge in this authorization request, or could it come from a different session or tab?"
+    ]
+  },
+  "started": "2026-10-27T09:35:43.527524-05:00",
+  "duration_ms": 7804,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 875,
+    "cache_creation_input_tokens": 1349,
+    "cache_read_input_tokens": 3864
+  },
+  "cost_usd": 0.014536400000000001,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 875,
+      "cacheReadInputTokens": 3864,
+      "cacheCreationInputTokens": 1349,
+      "costUSD": 0.014536400000000001,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 7666,
+    "stop_reason": "tool_use",
+    "session_id": "948619fa-00ec-48cd-88f5-ccf6e74eee6c",
+    "total_cost_usd": 0.014536400000000001,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1349,
+      "cache_read_input_tokens": 3864,
+      "output_tokens": 875,
+      "output_tokens_details": {
+        "thinking_tokens": 139
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1349,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 875,
+          "cache_read_input_tokens": 3864,
+          "cache_creation_input_tokens": 1349,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1349
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 875,
+        "cacheReadInputTokens": 3864,
+        "cacheCreationInputTokens": 1349,
+        "webSearchRequests": 0,
+        "costUSD": 0.014536400000000001,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 139,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1349,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_PKCE_VERIFIER_MISMATCH\",\"confidence\":0.8,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"invalid_grant\",\"note\":\"Token endpoint rejected the code exchange\"},{\"path\":\"/redirect/error_description\",\"actual\":\"Failed to verify code verifier\",\"note\":\"Matches the reported AADSTS501481 PKCE failure\"},{\"path\":\"/request/code_challenge_method\",\"actual\":\"S256\",\"expected\":\"S256\",\"note\":\"The challenge must be BASE64URL(SHA256(code_verifier)) of the exact verifier sent on the token request\"}],\"fix\":\"Make sure the code_verifier sent to the token endpoint is the exact one that produced the code_challenge in the authorization request. Generate one verifier for each authorization attempt, and store it per-session or per-state. Don't regenerate it on redirect, on a second tab, or on a retry. Compute the challenge as BASE64URL-without-padding(SHA256(verifier)) with method S256. Confirm the verifier isn't truncated, re-encoded, or altered in storage or transport. It must be 43–128 unreserved characters. Then restart the flow to get a fresh authorization code.\",\"alternatives\":[{\"code\":\"OAUTH_INVALID_GRANT_CODE\",\"why_not\":\"invalid_grant can also mean an expired or reused code, but the description names the code verifier specifically.\"},{\"code\":\"OAUTH_CLIENT_CONFIG_REJECTED\",\"why_not\":\"Client type, redirect URI, and method are consistent with the configuration, and the error points at the verifier.\"}],\"questions\":[\"Is the code_verifier sent in the token request the same value that was used to derive the code_challenge in this authorization request, or could it come from a different session or tab?\"]}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "invalid_grant",
+          "note": "Token endpoint rejected the code exchange"
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "Failed to verify code verifier",
+          "note": "Matches the reported AADSTS501481 PKCE failure"
+        },
+        {
+          "path": "/request/code_challenge_method",
+          "actual": "S256",
+          "expected": "S256",
+          "note": "The challenge must be BASE64URL(SHA256(code_verifier)) of the exact verifier sent on the token request"
+        }
+      ],
+      "fix": "Make sure the code_verifier sent to the token endpoint is the exact one that produced the code_challenge in the authorization request. Generate one verifier for each authorization attempt, and store it per-session or per-state. Don't regenerate it on redirect, on a second tab, or on a retry. Compute the challenge as BASE64URL-without-padding(SHA256(verifier)) with method S256. Confirm the verifier isn't truncated, re-encoded, or altered in storage or transport. It must be 43–128 unreserved characters. Then restart the flow to get a fresh authorization code.",
+      "alternatives": [
+        {
+          "code": "OAUTH_INVALID_GRANT_CODE",
+          "why_not": "invalid_grant can also mean an expired or reused code, but the description names the code verifier specifically."
+        },
+        {
+          "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+          "why_not": "Client type, redirect URI, and method are consistent with the configuration, and the error points at the verifier."
+        }
+      ],
+      "questions": [
+        "Is the code_verifier sent in the token request the same value that was used to derive the code_challenge in this authorization request, or could it come from a different session or tab?"
+      ]
+    },
+    "ttft_ms": 2960,
+    "type": "result",
+    "duration_ms": 7804,
+    "uuid": "a25a831d-70b5-4b92-9226-5ba1e355496c",
+    "ttft_stream_ms": 1385,
+    "time_to_request_ms": 135,
+    "first_content_frame_ms": 1385,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

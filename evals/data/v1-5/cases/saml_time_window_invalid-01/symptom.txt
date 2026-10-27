@@ -1,0 +1,1 @@
+Scalekit assertion_expired, intermittently, mostly in the morning.

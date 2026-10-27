@@ -1,0 +1,217 @@
+{
+  "case_id": "jwt_alg_none_or_confusion-01",
+  "case_hash": "143315fd833a4686",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "JWT_ALG_NONE_OR_CONFUSION",
+    "posture_codes": [],
+    "evidence_path": "/header/jku",
+    "fix_keys": [
+      "reject",
+      "token"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "jwt_alg_none_or_confusion-01",
+    "kind": "jwt",
+    "mutator": "jwt_jku_header",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 1,
+    "hash": "143315fd833a4686"
+  },
+  "output": {
+    "root_cause_code": "JWT_ALG_NONE_OR_CONFUSION",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "path": "/header/jku",
+        "actual": "present",
+        "note": "The token header names its own key source. An SP must ignore it and use only the OP's configured JWKS."
+      },
+      {
+        "path": "/header/alg",
+        "actual": "RS256",
+        "expected": "RS256",
+        "note": "The algorithm is on the allow-list."
+      },
+      {
+        "path": "/signature",
+        "actual": "verified with jwks_json (RSA 2048)",
+        "note": "The signature verifies against the pinned JWKS, so the jku header is not what is failing validation."
+      }
+    ],
+    "fix": "Ignore the jku header, and also jwk and x5u. Take verification keys only from the JWKS configured for the OP, either the jwks_uri in its discovery document or a pinned copy. Keep the algorithm allow-list pinned to the asymmetric algorithms the OP publishes (RS256). If your JWT library fetches keys from jku automatically, turn that off. Treat tokens that carry a jku as suspicious and reject them unless the OP is known to emit it. If the OP does emit it, check that the value points at the OP's own JWKS host.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "HEALTHY",
+        "why_not": "The signature, iss, aud, exp, nbf, iat and nonce checks all pass. However, the validator flagged the jku header as a fault, and the rules say to prefer the deterministic top cause. The at_hash check was skipped."
+      }
+    ],
+    "questions": [
+      "access_token (needed to run the at_hash check)",
+      "Does your OP normally put a jku header in its ID tokens, and what URL does it point to?"
+    ]
+  },
+  "started": "2026-10-27T09:53:00.955885-05:00",
+  "duration_ms": 8871,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1319,
+    "cache_creation_input_tokens": 14727,
+    "cache_read_input_tokens": 12852
+  },
+  "cost_usd": 0.0733912,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1319,
+      "cacheReadInputTokens": 12852,
+      "cacheCreationInputTokens": 14727,
+      "costUSD": 0.0733912,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 8740,
+    "stop_reason": "tool_use",
+    "session_id": "521a713d-29df-4957-a412-98a9bba5789f",
+    "total_cost_usd": 0.0733912,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 14727,
+      "cache_read_input_tokens": 12852,
+      "output_tokens": 1319,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 14727,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 674,
+          "cache_read_input_tokens": 12852,
+          "cache_creation_input_tokens": 1875,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1875
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1319,
+        "cacheReadInputTokens": 12852,
+        "cacheCreationInputTokens": 14727,
+        "webSearchRequests": 0,
+        "costUSD": 0.0733912,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 14727,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"JWT_ALG_NONE_OR_CONFUSION\",\"confidence\":0.8,\"evidence\":[{\"path\":\"/header/jku\",\"actual\":\"present\",\"note\":\"The token header names its own key source. An SP must ignore it and use only the OP's configured JWKS.\"},{\"path\":\"/header/alg\",\"actual\":\"RS256\",\"expected\":\"RS256\",\"note\":\"The algorithm is on the allow-list.\"},{\"path\":\"/signature\",\"actual\":\"verified with jwks_json (RSA 2048)\",\"note\":\"The signature verifies against the pinned JWKS, so the jku header is not what is failing validation.\"}],\"fix\":\"Ignore the jku header, and also jwk and x5u. Take verification keys only from the JWKS configured for the OP, either the jwks_uri in its discovery document or a pinned copy. Keep the algorithm allow-list pinned to the asymmetric algorithms the OP publishes (RS256). If your JWT library fetches keys from jku automatically, turn that off. Treat tokens that carry a jku as suspicious and reject them unless the OP is known to emit it. If the OP does emit it, check that the value points at the OP's own JWKS host.\",\"alternatives\":[{\"code\":\"HEALTHY\",\"why_not\":\"The signature, iss, aud, exp, nbf, iat and nonce checks all pass. However, the validator flagged the jku header as a fault, and the rules say to prefer the deterministic top cause. The at_hash check was skipped.\"}],\"questions\":[\"access_token (needed to run the at_hash check)\",\"Does your OP normally put a jku header in its ID tokens, and what URL does it point to?\"]}",
+    "structured_output": {
+      "root_cause_code": "JWT_ALG_NONE_OR_CONFUSION",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "path": "/header/jku",
+          "actual": "present",
+          "note": "The token header names its own key source. An SP must ignore it and use only the OP's configured JWKS."
+        },
+        {
+          "path": "/header/alg",
+          "actual": "RS256",
+          "expected": "RS256",
+          "note": "The algorithm is on the allow-list."
+        },
+        {
+          "path": "/signature",
+          "actual": "verified with jwks_json (RSA 2048)",
+          "note": "The signature verifies against the pinned JWKS, so the jku header is not what is failing validation."
+        }
+      ],
+      "fix": "Ignore the jku header, and also jwk and x5u. Take verification keys only from the JWKS configured for the OP, either the jwks_uri in its discovery document or a pinned copy. Keep the algorithm allow-list pinned to the asymmetric algorithms the OP publishes (RS256). If your JWT library fetches keys from jku automatically, turn that off. Treat tokens that carry a jku as suspicious and reject them unless the OP is known to emit it. If the OP does emit it, check that the value points at the OP's own JWKS host.",
+      "alternatives": [
+        {
+          "code": "HEALTHY",
+          "why_not": "The signature, iss, aud, exp, nbf, iat and nonce checks all pass. However, the validator flagged the jku header as a fault, and the rules say to prefer the deterministic top cause. The at_hash check was skipped."
+        }
+      ],
+      "questions": [
+        "access_token (needed to run the at_hash check)",
+        "Does your OP normally put a jku header in its ID tokens, and what URL does it point to?"
+      ]
+    },
+    "ttft_ms": 3718,
+    "type": "result",
+    "duration_ms": 8871,
+    "uuid": "84ff8d4f-d280-43c7-958f-42075b4e8ca2",
+    "ttft_stream_ms": 1136,
+    "time_to_request_ms": 114,
+    "first_content_frame_ms": 1137,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,1 @@
+Entra signing key rollover: our cached JWKS no longer has the kid.

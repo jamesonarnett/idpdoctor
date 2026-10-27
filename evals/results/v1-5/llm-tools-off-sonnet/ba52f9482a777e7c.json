@@ -1,0 +1,200 @@
+{
+  "case_id": "saml_inresponseto_mismatch_or_unsolicited-00",
+  "case_hash": "ba52f9482a777e7c",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED",
+    "posture_codes": [],
+    "evidence_path": "/Response/@InResponseTo",
+    "fix_keys": [
+      "ensure",
+      "keeps",
+      "authnrequest",
+      "across"
+    ],
+    "needs": [
+      "request_id"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_inresponseto_mismatch_or_unsolicited-00",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "in_response_to_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "ba52f9482a777e7c"
+  },
+  "output": {
+    "root_cause_code": "SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED",
+    "confidence": 0.93,
+    "evidence": [
+      {
+        "path": "/Response/@InResponseTo",
+        "actual": "_req_stale_from_another_tab",
+        "expected": "_req_1234567890abcdef",
+        "note": "Response answers a different AuthnRequest than the one the SP has pending for this session (a second tab overwrote or consumed the stored request ID)."
+      },
+      {
+        "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@InResponseTo",
+        "actual": "_req_stale_from_another_tab",
+        "expected": "_req_1234567890abcdef",
+        "note": "Same stale request ID in the bearer confirmation."
+      }
+    ],
+    "fix": "Track pending AuthnRequest IDs per login attempt, not as a single per-session value. Store a set of outstanding request IDs, or key each one by RelayState, so a second tab doesn't overwrite the first. On each response, check that InResponseTo matches one of the outstanding IDs, then consume it so it can't be replayed. Expire pending IDs after a short TTL. Keep signature, audience, recipient and time-window checks strict. Don't accept unsolicited or mismatched responses to work around this. If the user's second tab fails because its request was already consumed or evicted, restart the login flow and send a new AuthnRequest.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T09:42:13.21589-05:00",
+  "duration_ms": 4574,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 610,
+    "cache_creation_input_tokens": 6440,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.0323832,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 610,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 6440,
+      "costUSD": 0.0323832,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 2,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 4415,
+    "stop_reason": "tool_use",
+    "session_id": "e989a6c4-67e9-47f4-b79d-af8f596f6419",
+    "total_cost_usd": 0.0323832,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 6440,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 610,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6440,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 610,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 6440,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 6440
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 610,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 6440,
+        "webSearchRequests": 0,
+        "costUSD": 0.0323832,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6440,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED\",\"confidence\":0.93,\"evidence\":[{\"path\":\"/Response/@InResponseTo\",\"actual\":\"_req_stale_from_another_tab\",\"expected\":\"_req_1234567890abcdef\",\"note\":\"Response answers a different AuthnRequest than the one the SP has pending for this session (a second tab overwrote or consumed the stored request ID).\"},{\"path\":\"/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@InResponseTo\",\"actual\":\"_req_stale_from_another_tab\",\"expected\":\"_req_1234567890abcdef\",\"note\":\"Same stale request ID in the bearer confirmation.\"}],\"fix\":\"Track pending AuthnRequest IDs per login attempt, not as a single per-session value. Store a set of outstanding request IDs, or key each one by RelayState, so a second tab doesn't overwrite the first. On each response, check that InResponseTo matches one of the outstanding IDs, then consume it so it can't be replayed. Expire pending IDs after a short TTL. Keep signature, audience, recipient and time-window checks strict. Don't accept unsolicited or mismatched responses to work around this. If the user's second tab fails because its request was already consumed or evicted, restart the login flow and send a new AuthnRequest.\",\"alternatives\":[],\"questions\":[]}",
+    "structured_output": {
+      "root_cause_code": "SAML_INRESPONSETO_MISMATCH_OR_UNSOLICITED",
+      "confidence": 0.93,
+      "evidence": [
+        {
+          "path": "/Response/@InResponseTo",
+          "actual": "_req_stale_from_another_tab",
+          "expected": "_req_1234567890abcdef",
+          "note": "Response answers a different AuthnRequest than the one the SP has pending for this session (a second tab overwrote or consumed the stored request ID)."
+        },
+        {
+          "path": "/Response/Assertion/Subject/SubjectConfirmation/SubjectConfirmationData/@InResponseTo",
+          "actual": "_req_stale_from_another_tab",
+          "expected": "_req_1234567890abcdef",
+          "note": "Same stale request ID in the bearer confirmation."
+        }
+      ],
+      "fix": "Track pending AuthnRequest IDs per login attempt, not as a single per-session value. Store a set of outstanding request IDs, or key each one by RelayState, so a second tab doesn't overwrite the first. On each response, check that InResponseTo matches one of the outstanding IDs, then consume it so it can't be replayed. Expire pending IDs after a short TTL. Keep signature, audience, recipient and time-window checks strict. Don't accept unsolicited or mismatched responses to work around this. If the user's second tab fails because its request was already consumed or evicted, restart the login flow and send a new AuthnRequest.",
+      "alternatives": [],
+      "questions": []
+    },
+    "ttft_ms": 4544,
+    "type": "result",
+    "duration_ms": 4574,
+    "uuid": "9c59063b-7013-439e-97c1-d0a764c7f771",
+    "ttft_stream_ms": 1025,
+    "time_to_request_ms": 157,
+    "first_content_frame_ms": 1025,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

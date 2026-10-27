@@ -1,0 +1,10 @@
+{
+  "id": "saml_status_not_success-00",
+  "kind": "saml_response",
+  "dialect": "entra",
+  "mutator": "status_responder",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 0,
+  "hash": "6e0e4d48758794a8"
+}

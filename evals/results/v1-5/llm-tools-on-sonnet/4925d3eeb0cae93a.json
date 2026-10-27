@@ -1,0 +1,191 @@
+{
+  "case_id": "healthy-oidcdiscovery-03",
+  "case_hash": "4925d3eeb0cae93a",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [],
+    "fix_keys": [
+      "no change needed",
+      "the artifact validates"
+    ]
+  },
+  "kind": "oidc_discovery",
+  "meta": {
+    "id": "healthy-oidcdiscovery-03",
+    "kind": "oidc_discovery",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 3,
+    "hash": "4925d3eeb0cae93a"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.93,
+    "evidence": [
+      {
+        "path": "/discovery/issuer",
+        "actual": "matches the expected issuer https://login.example.com/tenant-1/v2.0",
+        "expected": "https://login.example.com/tenant-1/v2.0"
+      },
+      {
+        "path": "/discovery/id_token_signing_alg_values_supported",
+        "actual": "RS256 is supported"
+      },
+      {
+        "path": "/discovery/token_endpoint",
+        "actual": "present and https, so the code flow can run"
+      }
+    ],
+    "fix": "No change is needed. The discovery document passes every check: required fields are present, the issuer matches, all endpoints use https on login.example.com, and RS256 is supported. If you fetch the document live, also confirm it is served with an application/json content type. That check was skipped here because the document was pasted.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": []
+  },
+  "started": "2026-10-27T09:50:45.62039-05:00",
+  "duration_ms": 7017,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 483,
+    "cache_creation_input_tokens": 13151,
+    "cache_read_input_tokens": 12636
+  },
+  "cost_usd": 0.058705600000000004,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 483,
+      "cacheReadInputTokens": 12636,
+      "cacheCreationInputTokens": 13151,
+      "costUSD": 0.058705600000000004,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 6908,
+    "stop_reason": "tool_use",
+    "session_id": "4e9eb33d-731b-47ef-a434-e672f6adfc65",
+    "total_cost_usd": 0.058705600000000004,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 13151,
+      "cache_read_input_tokens": 12636,
+      "output_tokens": 483,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 13151,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 363,
+          "cache_read_input_tokens": 12636,
+          "cache_creation_input_tokens": 515,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 515
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 483,
+        "cacheReadInputTokens": 12636,
+        "cacheCreationInputTokens": 13151,
+        "webSearchRequests": 0,
+        "costUSD": 0.058705600000000004,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 13151,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.93,\"evidence\":[{\"path\":\"/discovery/issuer\",\"actual\":\"matches the expected issuer https://login.example.com/tenant-1/v2.0\",\"expected\":\"https://login.example.com/tenant-1/v2.0\"},{\"path\":\"/discovery/id_token_signing_alg_values_supported\",\"actual\":\"RS256 is supported\"},{\"path\":\"/discovery/token_endpoint\",\"actual\":\"present and https, so the code flow can run\"}],\"fix\":\"No change is needed. The discovery document passes every check: required fields are present, the issuer matches, all endpoints use https on login.example.com, and RS256 is supported. If you fetch the document live, also confirm it is served with an application/json content type. That check was skipped here because the document was pasted.\"}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.93,
+      "evidence": [
+        {
+          "path": "/discovery/issuer",
+          "actual": "matches the expected issuer https://login.example.com/tenant-1/v2.0",
+          "expected": "https://login.example.com/tenant-1/v2.0"
+        },
+        {
+          "path": "/discovery/id_token_signing_alg_values_supported",
+          "actual": "RS256 is supported"
+        },
+        {
+          "path": "/discovery/token_endpoint",
+          "actual": "present and https, so the code flow can run"
+        }
+      ],
+      "fix": "No change is needed. The discovery document passes every check: required fields are present, the issuer matches, all endpoints use https on login.example.com, and RS256 is supported. If you fetch the document live, also confirm it is served with an application/json content type. That check was skipped here because the document was pasted."
+    },
+    "ttft_ms": 3367,
+    "type": "result",
+    "duration_ms": 7017,
+    "uuid": "5a5535a5-ec64-429b-841f-408af5689802",
+    "ttft_stream_ms": 3113,
+    "time_to_request_ms": 95,
+    "first_content_frame_ms": 3113,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

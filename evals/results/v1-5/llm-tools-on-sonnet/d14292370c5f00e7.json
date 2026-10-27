@@ -1,0 +1,197 @@
+{
+  "case_id": "saml_required_attribute_missing-01",
+  "case_hash": "d14292370c5f00e7",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_REQUIRED_ATTRIBUTE_MISSING",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/AttributeStatement/Attribute[@Name='email']",
+    "fix_keys": [
+      "missing",
+      "attribute",
+      "claim",
+      "application"
+    ],
+    "needs": [
+      "required_attributes"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_required_attribute_missing-01",
+    "kind": "saml_response",
+    "dialect": "auth0",
+    "mutator": "attribute_missing",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 1,
+    "hash": "d14292370c5f00e7"
+  },
+  "output": {
+    "root_cause_code": "SAML_REQUIRED_ATTRIBUTE_MISSING",
+    "confidence": 0.97,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/AttributeStatement/Attribute[@Name='email']",
+        "actual": "absent; present attributes: firstName, groups",
+        "expected": "email",
+        "note": "The assertion has no email attribute. This matches GitLab's 'Email can't be blank'."
+      }
+    ],
+    "fix": "In the IdP application's SAML attribute mapping, add an attribute named exactly `email` (case-sensitive). Map it to the user's primary email profile field and make sure each user has a value. If the SP expects a different attribute name, such as a full URI claim name, change one side so the names match. Then sign in again and re-capture the response. Keep assertion signing and signature validation enabled.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH",
+        "why_not": "The NameID is present and in emailAddress format, so that check passed. GitLab reads the email from the attribute statement here, and that attribute is missing."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T10:11:09.225375-05:00",
+  "duration_ms": 12933,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1933,
+    "cache_creation_input_tokens": 6745,
+    "cache_read_input_tokens": 28677
+  },
+  "cost_usd": 0.0491857,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1933,
+      "cacheReadInputTokens": 28677,
+      "cacheCreationInputTokens": 6745,
+      "costUSD": 0.0491857,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 12773,
+    "stop_reason": "tool_use",
+    "session_id": "5b84c70c-93aa-487c-b1ac-b09ee0647e32",
+    "total_cost_usd": 0.0491857,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 6745,
+      "cache_read_input_tokens": 28677,
+      "output_tokens": 1933,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6745,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 479,
+          "cache_read_input_tokens": 16298,
+          "cache_creation_input_tokens": 2826,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2826
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1933,
+        "cacheReadInputTokens": 28677,
+        "cacheCreationInputTokens": 6745,
+        "webSearchRequests": 0,
+        "costUSD": 0.0491857,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6745,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_REQUIRED_ATTRIBUTE_MISSING\",\"confidence\":0.97,\"evidence\":[{\"path\":\"/Response/Assertion/AttributeStatement/Attribute[@Name='email']\",\"expected\":\"email\",\"actual\":\"absent; present attributes: firstName, groups\",\"note\":\"The assertion has no email attribute. This matches GitLab's 'Email can't be blank'.\"}],\"fix\":\"In the IdP application's SAML attribute mapping, add an attribute named exactly `email` (case-sensitive). Map it to the user's primary email profile field and make sure each user has a value. If the SP expects a different attribute name, such as a full URI claim name, change one side so the names match. Then sign in again and re-capture the response. Keep assertion signing and signature validation enabled.\",\"alternatives\":[{\"code\":\"SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH\",\"why_not\":\"The NameID is present and in emailAddress format, so that check passed. GitLab reads the email from the attribute statement here, and that attribute is missing.\"}]}",
+    "structured_output": {
+      "root_cause_code": "SAML_REQUIRED_ATTRIBUTE_MISSING",
+      "confidence": 0.97,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/AttributeStatement/Attribute[@Name='email']",
+          "expected": "email",
+          "actual": "absent; present attributes: firstName, groups",
+          "note": "The assertion has no email attribute. This matches GitLab's 'Email can't be blank'."
+        }
+      ],
+      "fix": "In the IdP application's SAML attribute mapping, add an attribute named exactly `email` (case-sensitive). Map it to the user's primary email profile field and make sure each user has a value. If the SP expects a different attribute name, such as a full URI claim name, change one side so the names match. Then sign in again and re-capture the response. Keep assertion signing and signature validation enabled.",
+      "alternatives": [
+        {
+          "code": "SAML_NAMEID_MISSING_OR_FORMAT_MISMATCH",
+          "why_not": "The NameID is present and in emailAddress format, so that check passed. GitLab reads the email from the attribute statement here, and that attribute is missing."
+        }
+      ]
+    },
+    "ttft_ms": 8166,
+    "type": "result",
+    "duration_ms": 12933,
+    "uuid": "a061f25e-5049-48dd-81bc-428dd8c90bf8",
+    "ttft_stream_ms": 1663,
+    "time_to_request_ms": 145,
+    "first_content_frame_ms": 1663,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

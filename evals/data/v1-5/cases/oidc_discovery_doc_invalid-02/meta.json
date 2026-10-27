@@ -1,0 +1,9 @@
+{
+  "id": "oidc_discovery_doc_invalid-02",
+  "kind": "oidc_discovery",
+  "mutator": "discovery_missing_subject_types",
+  "expected_completeness": "full",
+  "seed": 42,
+  "index": 2,
+  "hash": "1d81f675d9a0d8c7"
+}

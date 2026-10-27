@@ -1,0 +1,216 @@
+{
+  "case_id": "oauth_invalid_grant_code-02",
+  "case_hash": "5b07c023b0df63d8",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_INVALID_GRANT_CODE",
+    "posture_codes": [],
+    "evidence_path": "/redirect/error",
+    "fix_keys": [
+      "exchange",
+      "within",
+      "minutes",
+      "issuance"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_invalid_grant_code-02",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_invalid_grant_expired",
+    "expected_completeness": "full",
+    "seed": 42,
+    "index": 2,
+    "hash": "5b07c023b0df63d8"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_INVALID_GRANT_CODE",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_grant",
+        "note": "classified by vendor code AADSTS70008"
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "AADSTS70008: The provided authorization code or refresh token has expired due to inactivity.",
+        "note": "Code expired or was already used; redirect_uri and PKCE checks both passed."
+      }
+    ],
+    "fix": "Exchange the authorization code exactly once and within a few minutes of issuance. Use the same redirect_uri and client_id as in the authorization request, and the matching PKCE code_verifier. Guard against double submission, such as effects firing twice or retries and page reloads that replay the code. If the code has expired, start a new interactive authorization request to get a fresh one.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OAUTH_REDIRECT_URI_MISMATCH",
+        "why_not": "The redirect_uri exactly matches a registered URI."
+      },
+      {
+        "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+        "why_not": "The code_verifier matches the S256 code_challenge."
+      },
+      {
+        "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+        "why_not": "The public client with authorization_code grant and S256 passes the config checks."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:56:40.721035-05:00",
+  "duration_ms": 6068,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 881,
+    "cache_creation_input_tokens": 3362,
+    "cache_read_input_tokens": 23579
+  },
+  "cost_usd": 0.024623899999999997,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 881,
+      "cacheReadInputTokens": 23579,
+      "cacheCreationInputTokens": 3362,
+      "costUSD": 0.024623899999999997,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 2,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 5955,
+    "stop_reason": "tool_use",
+    "session_id": "dddff526-2b9d-41e2-bc86-c1efde7b801f",
+    "total_cost_usd": 0.024623899999999997,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 3362,
+      "cache_read_input_tokens": 23579,
+      "output_tokens": 881,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 3362,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 569,
+          "cache_read_input_tokens": 12528,
+          "cache_creation_input_tokens": 1885,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1885
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 881,
+        "cacheReadInputTokens": 23579,
+        "cacheCreationInputTokens": 3362,
+        "webSearchRequests": 0,
+        "costUSD": 0.024623899999999997,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 3362,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_INVALID_GRANT_CODE\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"invalid_grant\",\"note\":\"classified by vendor code AADSTS70008\"},{\"path\":\"/redirect/error_description\",\"actual\":\"AADSTS70008: The provided authorization code or refresh token has expired due to inactivity.\",\"note\":\"Code expired or was already used; redirect_uri and PKCE checks both passed.\"}],\"fix\":\"Exchange the authorization code exactly once and within a few minutes of issuance. Use the same redirect_uri and client_id as in the authorization request, and the matching PKCE code_verifier. Guard against double submission, such as effects firing twice or retries and page reloads that replay the code. If the code has expired, start a new interactive authorization request to get a fresh one.\",\"alternatives\":[{\"code\":\"OAUTH_REDIRECT_URI_MISMATCH\",\"why_not\":\"The redirect_uri exactly matches a registered URI.\"},{\"code\":\"OAUTH_PKCE_VERIFIER_MISMATCH\",\"why_not\":\"The code_verifier matches the S256 code_challenge.\"},{\"code\":\"OAUTH_CLIENT_CONFIG_REJECTED\",\"why_not\":\"The public client with authorization_code grant and S256 passes the config checks.\"}]}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_INVALID_GRANT_CODE",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "invalid_grant",
+          "note": "classified by vendor code AADSTS70008"
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "AADSTS70008: The provided authorization code or refresh token has expired due to inactivity.",
+          "note": "Code expired or was already used; redirect_uri and PKCE checks both passed."
+        }
+      ],
+      "fix": "Exchange the authorization code exactly once and within a few minutes of issuance. Use the same redirect_uri and client_id as in the authorization request, and the matching PKCE code_verifier. Guard against double submission, such as effects firing twice or retries and page reloads that replay the code. If the code has expired, start a new interactive authorization request to get a fresh one.",
+      "alternatives": [
+        {
+          "code": "OAUTH_REDIRECT_URI_MISMATCH",
+          "why_not": "The redirect_uri exactly matches a registered URI."
+        },
+        {
+          "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+          "why_not": "The code_verifier matches the S256 code_challenge."
+        },
+        {
+          "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+          "why_not": "The public client with authorization_code grant and S256 passes the config checks."
+        }
+      ]
+    },
+    "ttft_ms": 2291,
+    "type": "result",
+    "duration_ms": 6068,
+    "uuid": "76be0eff-a030-443c-8079-f679bd05eb85",
+    "ttft_stream_ms": 1045,
+    "time_to_request_ms": 103,
+    "first_content_frame_ms": 1045,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

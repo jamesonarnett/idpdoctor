@@ -1,0 +1,192 @@
+{
+  "case_id": "saml_audience_mismatch-03",
+  "case_hash": "9fd98e4c88802c1b",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_AUDIENCE_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+    "fix_keys": [
+      "application",
+      "audience",
+      "entity",
+      "configured"
+    ],
+    "needs": [
+      "sp_entity_id"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_audience_mismatch-03",
+    "kind": "saml_response",
+    "dialect": "okta",
+    "mutator": "audience_mismatch",
+    "expected_completeness": "partial",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 3,
+    "hash": "9fd98e4c88802c1b"
+  },
+  "output": {
+    "root_cause_code": "SAML_AUDIENCE_MISMATCH",
+    "confidence": 0.97,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+        "actual": "https://sp.example.com/saml/metadata/",
+        "expected": "https://sp.example.com/saml/metadata",
+        "note": "Differs only by a trailing slash. Audience comparison is an exact string match."
+      }
+    ],
+    "fix": "In the new IdP app, set the Audience URI (SP entity ID) to exactly https://sp.example.com/saml/metadata, with no trailing slash. This must match the SP's configured entity ID character for character. Alternatively, if the SP's entity ID really is the slash form, change the SP configuration to match, but don't loosen the audience check. Leave signature validation, the time window and clock skew as they are. They all pass.",
+    "posture_codes": [],
+    "alternatives": [],
+    "questions": [
+      "request_id: the AuthnRequest ID, so the InResponseTo check can run. The response carries an InResponseTo value, and that check was skipped."
+    ]
+  },
+  "started": "2026-10-27T10:05:14.768995-05:00",
+  "duration_ms": 11349,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1937,
+    "cache_creation_input_tokens": 6941,
+    "cache_read_input_tokens": 28675
+  },
+  "cost_usd": 0.0500095,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1937,
+      "cacheReadInputTokens": 28675,
+      "cacheCreationInputTokens": 6941,
+      "costUSD": 0.0500095,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 11184,
+    "stop_reason": "tool_use",
+    "session_id": "3a65cbc3-e6ff-41b9-aed8-eba2972d4916",
+    "total_cost_usd": 0.0500095,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 6941,
+      "cache_read_input_tokens": 28675,
+      "output_tokens": 1937,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 6941,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 477,
+          "cache_read_input_tokens": 16296,
+          "cache_creation_input_tokens": 3024,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 3024
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1937,
+        "cacheReadInputTokens": 28675,
+        "cacheCreationInputTokens": 6941,
+        "webSearchRequests": 0,
+        "costUSD": 0.0500095,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 6941,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_AUDIENCE_MISMATCH\",\"confidence\":0.97,\"evidence\":[{\"path\":\"/Response/Assertion/Conditions/AudienceRestriction/Audience\",\"actual\":\"https://sp.example.com/saml/metadata/\",\"expected\":\"https://sp.example.com/saml/metadata\",\"note\":\"Differs only by a trailing slash. Audience comparison is an exact string match.\"}],\"fix\":\"In the new IdP app, set the Audience URI (SP entity ID) to exactly https://sp.example.com/saml/metadata, with no trailing slash. This must match the SP's configured entity ID character for character. Alternatively, if the SP's entity ID really is the slash form, change the SP configuration to match, but don't loosen the audience check. Leave signature validation, the time window and clock skew as they are. They all pass.\",\"questions\":[\"request_id: the AuthnRequest ID, so the InResponseTo check can run. The response carries an InResponseTo value, and that check was skipped.\"],\"alternatives\":[]}",
+    "structured_output": {
+      "root_cause_code": "SAML_AUDIENCE_MISMATCH",
+      "confidence": 0.97,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+          "actual": "https://sp.example.com/saml/metadata/",
+          "expected": "https://sp.example.com/saml/metadata",
+          "note": "Differs only by a trailing slash. Audience comparison is an exact string match."
+        }
+      ],
+      "fix": "In the new IdP app, set the Audience URI (SP entity ID) to exactly https://sp.example.com/saml/metadata, with no trailing slash. This must match the SP's configured entity ID character for character. Alternatively, if the SP's entity ID really is the slash form, change the SP configuration to match, but don't loosen the audience check. Leave signature validation, the time window and clock skew as they are. They all pass.",
+      "questions": [
+        "request_id: the AuthnRequest ID, so the InResponseTo check can run. The response carries an InResponseTo value, and that check was skipped."
+      ],
+      "alternatives": []
+    },
+    "ttft_ms": 7716,
+    "type": "result",
+    "duration_ms": 11349,
+    "uuid": "b79a846c-6527-49bf-829e-9fc2d0b8a0c9",
+    "ttft_stream_ms": 1108,
+    "time_to_request_ms": 149,
+    "first_content_frame_ms": 1109,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

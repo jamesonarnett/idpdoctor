@@ -1,0 +1,203 @@
+{
+  "case_id": "oidc_issuer_mismatch-02",
+  "case_hash": "60ce9d8feaad53b6",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "OIDC_ISSUER_MISMATCH",
+    "posture_codes": [],
+    "evidence_path": "/claims/iss",
+    "fix_keys": [
+      "configure",
+      "issuer",
+      "exact",
+      "string"
+    ],
+    "needs": [
+      "issuer"
+    ]
+  },
+  "kind": "jwt",
+  "meta": {
+    "id": "oidc_issuer_mismatch-02",
+    "kind": "jwt",
+    "mutator": "jwt_iss_mismatch",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 2,
+    "hash": "60ce9d8feaad53b6"
+  },
+  "output": {
+    "root_cause_code": "OIDC_ISSUER_MISMATCH",
+    "confidence": 0.93,
+    "evidence": [
+      {
+        "path": "/claims/iss",
+        "actual": "https://login.example.com/tenant-1/",
+        "expected": "https://login.example.com/tenant-1/v2.0",
+        "note": "Token iss differs from the configured issuer. It lacks the /v2.0 path segment and has a trailing slash. Issuer comparison must be an exact string match."
+      }
+    ],
+    "fix": "Don't normalize or loosen the comparison. Fetch the OP's discovery document (/.well-known/openid-configuration) and copy its `issuer` value exactly into the SP config. Confirm that the discovery URL and the tenant/version endpoint you use are the ones that issue these tokens. The token iss (https://login.example.com/tenant-1/) and the configured issuer (.../tenant-1/v2.0) are different strings, so they may come from different endpoint versions. Keep strict exact-match issuer validation, and keep signature, audience, nonce and expiry checks on.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OIDC_DISCOVERY_DOC_INVALID",
+        "why_not": "The symptom mentions the discovery document, but the artifact is a token whose iss differs from the configured issuer. No evidence shows the discovery document is malformed."
+      }
+    ],
+    "questions": [
+      "What exact issuer value does the discovery document at your OP's /.well-known/openid-configuration return?",
+      "Is the token issued by the v1 or the v2.0 endpoint of tenant-1?"
+    ]
+  },
+  "started": "2026-10-27T09:37:33.105374-05:00",
+  "duration_ms": 4973,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 637,
+    "cache_creation_input_tokens": 1762,
+    "cache_read_input_tokens": 3886
+  },
+  "cost_usd": 0.0138106,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 637,
+      "cacheReadInputTokens": 3886,
+      "cacheCreationInputTokens": 1762,
+      "costUSD": 0.0138106,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 1,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 4829,
+    "stop_reason": "tool_use",
+    "session_id": "ed140ac8-43cf-4928-b836-72d15fac5c44",
+    "total_cost_usd": 0.0138106,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1762,
+      "cache_read_input_tokens": 3886,
+      "output_tokens": 637,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1762,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 637,
+          "cache_read_input_tokens": 3886,
+          "cache_creation_input_tokens": 1762,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1762
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 637,
+        "cacheReadInputTokens": 3886,
+        "cacheCreationInputTokens": 1762,
+        "webSearchRequests": 0,
+        "costUSD": 0.0138106,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1762,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OIDC_ISSUER_MISMATCH\",\"confidence\":0.93,\"evidence\":[{\"path\":\"/claims/iss\",\"actual\":\"https://login.example.com/tenant-1/\",\"expected\":\"https://login.example.com/tenant-1/v2.0\",\"note\":\"Token iss differs from the configured issuer. It lacks the /v2.0 path segment and has a trailing slash. Issuer comparison must be an exact string match.\"}],\"fix\":\"Don't normalize or loosen the comparison. Fetch the OP's discovery document (/.well-known/openid-configuration) and copy its `issuer` value exactly into the SP config. Confirm that the discovery URL and the tenant/version endpoint you use are the ones that issue these tokens. The token iss (https://login.example.com/tenant-1/) and the configured issuer (.../tenant-1/v2.0) are different strings, so they may come from different endpoint versions. Keep strict exact-match issuer validation, and keep signature, audience, nonce and expiry checks on.\",\"alternatives\":[{\"code\":\"OIDC_DISCOVERY_DOC_INVALID\",\"why_not\":\"The symptom mentions the discovery document, but the artifact is a token whose iss differs from the configured issuer. No evidence shows the discovery document is malformed.\"}],\"questions\":[\"What exact issuer value does the discovery document at your OP's /.well-known/openid-configuration return?\",\"Is the token issued by the v1 or the v2.0 endpoint of tenant-1?\"]}",
+    "structured_output": {
+      "root_cause_code": "OIDC_ISSUER_MISMATCH",
+      "confidence": 0.93,
+      "evidence": [
+        {
+          "path": "/claims/iss",
+          "actual": "https://login.example.com/tenant-1/",
+          "expected": "https://login.example.com/tenant-1/v2.0",
+          "note": "Token iss differs from the configured issuer. It lacks the /v2.0 path segment and has a trailing slash. Issuer comparison must be an exact string match."
+        }
+      ],
+      "fix": "Don't normalize or loosen the comparison. Fetch the OP's discovery document (/.well-known/openid-configuration) and copy its `issuer` value exactly into the SP config. Confirm that the discovery URL and the tenant/version endpoint you use are the ones that issue these tokens. The token iss (https://login.example.com/tenant-1/) and the configured issuer (.../tenant-1/v2.0) are different strings, so they may come from different endpoint versions. Keep strict exact-match issuer validation, and keep signature, audience, nonce and expiry checks on.",
+      "alternatives": [
+        {
+          "code": "OIDC_DISCOVERY_DOC_INVALID",
+          "why_not": "The symptom mentions the discovery document, but the artifact is a token whose iss differs from the configured issuer. No evidence shows the discovery document is malformed."
+        }
+      ],
+      "questions": [
+        "What exact issuer value does the discovery document at your OP's /.well-known/openid-configuration return?",
+        "Is the token issued by the v1 or the v2.0 endpoint of tenant-1?"
+      ]
+    },
+    "ttft_ms": 4953,
+    "type": "result",
+    "duration_ms": 4973,
+    "uuid": "523cfa20-5c40-423b-945b-7ea451d3ac54",
+    "ttft_stream_ms": 1115,
+    "time_to_request_ms": 144,
+    "first_content_frame_ms": 1115,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,230 @@
+{
+  "case_id": "oauth_client_config_rejected-00",
+  "case_hash": "ccf09ebbde98675d",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+    "posture_codes": [],
+    "evidence_path": "/redirect/error",
+    "fix_keys": [
+      "compare",
+      "client",
+      "registered",
+      "grant"
+    ]
+  },
+  "kind": "oauth_redirect",
+  "meta": {
+    "id": "oauth_client_config_rejected-00",
+    "kind": "oauth_redirect",
+    "mutator": "oauth_invalid_client",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 0,
+    "hash": "ccf09ebbde98675d"
+  },
+  "output": {
+    "root_cause_code": "OAUTH_CLIENT_CONFIG_REJECTED",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "path": "/redirect/error",
+        "actual": "invalid_client",
+        "note": "Classified by vendor code AADSTS7000215"
+      },
+      {
+        "path": "/redirect/error_description",
+        "actual": "AADSTS7000215: Invalid client secret provided. Ensure the secret being sent in the request is the client secret value, not the client secret ID",
+        "note": "The authorization server rejected the client credential."
+      },
+      {
+        "path": "/request/redirect_uri",
+        "actual": "https://app.example.com/callback",
+        "note": "Exact match with a registered URI, so this is not the cause."
+      },
+      {
+        "path": "/request/client_type",
+        "actual": "confidential",
+        "note": "A confidential client authenticates with a secret at the token endpoint."
+      }
+    ],
+    "fix": "Check the client secret that the token request sends. In the Entra app registration, open Certificates \u0026 secrets. Copy the secret Value, not the Secret ID. The Value is shown only once, when the secret is created. Check that the secret has not expired. If it has, create a new secret and store it in your secret manager. Update the client configuration with it. Make sure the secret belongs to this app (client-abc123) and tenant, and that no stray whitespace or encoding changes were added. Do not turn off client authentication or put the secret in the front channel.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+        "why_not": "The code_verifier matches the S256 code_challenge, so the PKCE check passed."
+      },
+      {
+        "code": "OAUTH_REDIRECT_URI_MISMATCH",
+        "why_not": "The redirect_uri exactly matches a registered URI."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:55:43.048223-05:00",
+  "duration_ms": 10133,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 1062,
+    "cache_creation_input_tokens": 14400,
+    "cache_read_input_tokens": 12551
+  },
+  "cost_usd": 0.06948309999999999,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 1062,
+      "cacheReadInputTokens": 12551,
+      "cacheCreationInputTokens": 14400,
+      "costUSD": 0.06948309999999999,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 10039,
+    "stop_reason": "tool_use",
+    "session_id": "02b06f11-4f2f-49e4-8da8-131f1c45e5de",
+    "total_cost_usd": 0.06948309999999999,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 14400,
+      "cache_read_input_tokens": 12551,
+      "output_tokens": 1062,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 14400,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 707,
+          "cache_read_input_tokens": 12551,
+          "cache_creation_input_tokens": 1849,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1849
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 1062,
+        "cacheReadInputTokens": 12551,
+        "cacheCreationInputTokens": 14400,
+        "webSearchRequests": 0,
+        "costUSD": 0.06948309999999999,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 14400,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OAUTH_CLIENT_CONFIG_REJECTED\",\"confidence\":0.95,\"evidence\":[{\"path\":\"/redirect/error\",\"actual\":\"invalid_client\",\"note\":\"Classified by vendor code AADSTS7000215\"},{\"path\":\"/redirect/error_description\",\"actual\":\"AADSTS7000215: Invalid client secret provided. Ensure the secret being sent in the request is the client secret value, not the client secret ID\",\"note\":\"The authorization server rejected the client credential.\"},{\"path\":\"/request/redirect_uri\",\"actual\":\"https://app.example.com/callback\",\"note\":\"Exact match with a registered URI, so this is not the cause.\"},{\"path\":\"/request/client_type\",\"actual\":\"confidential\",\"note\":\"A confidential client authenticates with a secret at the token endpoint.\"}],\"fix\":\"Check the client secret that the token request sends. In the Entra app registration, open Certificates \u0026 secrets. Copy the secret Value, not the Secret ID. The Value is shown only once, when the secret is created. Check that the secret has not expired. If it has, create a new secret and store it in your secret manager. Update the client configuration with it. Make sure the secret belongs to this app (client-abc123) and tenant, and that no stray whitespace or encoding changes were added. Do not turn off client authentication or put the secret in the front channel.\",\"alternatives\":[{\"code\":\"OAUTH_PKCE_VERIFIER_MISMATCH\",\"why_not\":\"The code_verifier matches the S256 code_challenge, so the PKCE check passed.\"},{\"code\":\"OAUTH_REDIRECT_URI_MISMATCH\",\"why_not\":\"The redirect_uri exactly matches a registered URI.\"}],\"posture_codes\":[]}",
+    "structured_output": {
+      "root_cause_code": "OAUTH_CLIENT_CONFIG_REJECTED",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "path": "/redirect/error",
+          "actual": "invalid_client",
+          "note": "Classified by vendor code AADSTS7000215"
+        },
+        {
+          "path": "/redirect/error_description",
+          "actual": "AADSTS7000215: Invalid client secret provided. Ensure the secret being sent in the request is the client secret value, not the client secret ID",
+          "note": "The authorization server rejected the client credential."
+        },
+        {
+          "path": "/request/redirect_uri",
+          "actual": "https://app.example.com/callback",
+          "note": "Exact match with a registered URI, so this is not the cause."
+        },
+        {
+          "path": "/request/client_type",
+          "actual": "confidential",
+          "note": "A confidential client authenticates with a secret at the token endpoint."
+        }
+      ],
+      "fix": "Check the client secret that the token request sends. In the Entra app registration, open Certificates \u0026 secrets. Copy the secret Value, not the Secret ID. The Value is shown only once, when the secret is created. Check that the secret has not expired. If it has, create a new secret and store it in your secret manager. Update the client configuration with it. Make sure the secret belongs to this app (client-abc123) and tenant, and that no stray whitespace or encoding changes were added. Do not turn off client authentication or put the secret in the front channel.",
+      "alternatives": [
+        {
+          "code": "OAUTH_PKCE_VERIFIER_MISMATCH",
+          "why_not": "The code_verifier matches the S256 code_challenge, so the PKCE check passed."
+        },
+        {
+          "code": "OAUTH_REDIRECT_URI_MISMATCH",
+          "why_not": "The redirect_uri exactly matches a registered URI."
+        }
+      ],
+      "posture_codes": []
+    },
+    "ttft_ms": 3571,
+    "type": "result",
+    "duration_ms": 10133,
+    "uuid": "3fbe13d6-759d-4a63-9445-1efb37c4d7e0",
+    "ttft_stream_ms": 2057,
+    "time_to_request_ms": 89,
+    "first_content_frame_ms": 2057,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -1,0 +1,226 @@
+{
+  "case_id": "healthy-samlresponse-05",
+  "case_hash": "fee976d9b543c5bb",
+  "arm": "llm-tools-on",
+  "model": "sonnet",
+  "label": {
+    "code": "HEALTHY",
+    "posture_codes": [],
+    "fix_keys": [
+      "no change needed",
+      "the artifact validates"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "healthy-samlresponse-05",
+    "kind": "saml_response",
+    "dialect": "okta",
+    "expected_completeness": "full",
+    "symptom_from": "misleading",
+    "misleading_symptom": true,
+    "seed": 42,
+    "index": 5,
+    "hash": "fee976d9b543c5bb"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.7,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature",
+        "actual": "Assertion signed; signature verified against the configured idp_cert_pem"
+      },
+      {
+        "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+        "actual": "matches sp_entity_id"
+      },
+      {
+        "path": "/Response/Assertion/Subject/NameID/@Format",
+        "actual": "emailAddress, matches the expected format"
+      },
+      {
+        "path": "/Response/Assertion/AttributeStatement",
+        "actual": "required attributes email and firstName are present"
+      }
+    ],
+    "fix": "This captured response passes all 14 checks, so the IdP output is not the problem. Look at the SP side for this one user. Check for a duplicate or stale local account, a case or format difference between the NameID and the stored user identifier, a provisioning or authorization rule that rejects this user (for example group membership), and the SP application logs from this login attempt. Also check whether this was the failing attempt, since a retry or a different time could produce a different response. Re-capture the failing attempt and re-run the validation with the real current time. The check used 2026-01-15T12:00:00Z, and the capture may be stale compared with today's date.",
+    "posture_codes": [],
+    "alternatives": [
+      {
+        "code": "SAML_TIME_WINDOW_INVALID",
+        "why_not": "The time window passed only because the supplied 'now' of 2026-01-15 was used. A wall-clock check was not run, so it is untested, but nothing in the capture points to it."
+      },
+      {
+        "code": "SAML_REQUIRED_ATTRIBUTE_MISSING",
+        "why_not": "email and firstName are both present. Only the SP's own per-user mapping or authorization rules could reject them."
+      }
+    ],
+    "questions": [
+      "What error or log message does the SP show for this user's failed login?",
+      "Was this capture taken from the failing attempt, and at what time?"
+    ]
+  },
+  "started": "2026-10-27T09:51:29.178605-05:00",
+  "duration_ms": 18583,
+  "tool_calls": 1,
+  "num_turns": 3,
+  "usage": {
+    "input_tokens": 4,
+    "output_tokens": 2204,
+    "cache_creation_input_tokens": 5971,
+    "cache_read_input_tokens": 28640
+  },
+  "cost_usd": 0.048796,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 2204,
+      "cacheReadInputTokens": 28640,
+      "cacheCreationInputTokens": 5971,
+      "costUSD": 0.048796,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 18469,
+    "stop_reason": "tool_use",
+    "session_id": "c2eaf65a-e60f-42f5-a97b-ab07d3f2f5de",
+    "total_cost_usd": 0.048796,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 5971,
+      "cache_read_input_tokens": 28640,
+      "output_tokens": 2204,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 5971,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 749,
+          "cache_read_input_tokens": 16261,
+          "cache_creation_input_tokens": 2089,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 2089
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 4,
+        "outputTokens": 2204,
+        "cacheReadInputTokens": 28640,
+        "cacheCreationInputTokens": 5971,
+        "webSearchRequests": 0,
+        "costUSD": 0.048796,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 5971,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 3,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.7,\"evidence\":[{\"path\":\"/Response/Assertion/Signature\",\"actual\":\"Assertion signed; signature verified against the configured idp_cert_pem\"},{\"path\":\"/Response/Assertion/Conditions/AudienceRestriction/Audience\",\"actual\":\"matches sp_entity_id\"},{\"path\":\"/Response/Assertion/Subject/NameID/@Format\",\"actual\":\"emailAddress, matches the expected format\"},{\"path\":\"/Response/Assertion/AttributeStatement\",\"actual\":\"required attributes email and firstName are present\"}],\"fix\":\"This captured response passes all 14 checks, so the IdP output is not the problem. Look at the SP side for this one user. Check for a duplicate or stale local account, a case or format difference between the NameID and the stored user identifier, a provisioning or authorization rule that rejects this user (for example group membership), and the SP application logs from this login attempt. Also check whether this was the failing attempt, since a retry or a different time could produce a different response. Re-capture the failing attempt and re-run the validation with the real current time. The check used 2026-01-15T12:00:00Z, and the capture may be stale compared with today's date.\",\"alternatives\":[{\"code\":\"SAML_TIME_WINDOW_INVALID\",\"why_not\":\"The time window passed only because the supplied 'now' of 2026-01-15 was used. A wall-clock check was not run, so it is untested, but nothing in the capture points to it.\"},{\"code\":\"SAML_REQUIRED_ATTRIBUTE_MISSING\",\"why_not\":\"email and firstName are both present. Only the SP's own per-user mapping or authorization rules could reject them.\"}],\"questions\":[\"What error or log message does the SP show for this user's failed login?\",\"Was this capture taken from the failing attempt, and at what time?\"]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.7,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Signature",
+          "actual": "Assertion signed; signature verified against the configured idp_cert_pem"
+        },
+        {
+          "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+          "actual": "matches sp_entity_id"
+        },
+        {
+          "path": "/Response/Assertion/Subject/NameID/@Format",
+          "actual": "emailAddress, matches the expected format"
+        },
+        {
+          "path": "/Response/Assertion/AttributeStatement",
+          "actual": "required attributes email and firstName are present"
+        }
+      ],
+      "fix": "This captured response passes all 14 checks, so the IdP output is not the problem. Look at the SP side for this one user. Check for a duplicate or stale local account, a case or format difference between the NameID and the stored user identifier, a provisioning or authorization rule that rejects this user (for example group membership), and the SP application logs from this login attempt. Also check whether this was the failing attempt, since a retry or a different time could produce a different response. Re-capture the failing attempt and re-run the validation with the real current time. The check used 2026-01-15T12:00:00Z, and the capture may be stale compared with today's date.",
+      "alternatives": [
+        {
+          "code": "SAML_TIME_WINDOW_INVALID",
+          "why_not": "The time window passed only because the supplied 'now' of 2026-01-15 was used. A wall-clock check was not run, so it is untested, but nothing in the capture points to it."
+        },
+        {
+          "code": "SAML_REQUIRED_ATTRIBUTE_MISSING",
+          "why_not": "email and firstName are both present. Only the SP's own per-user mapping or authorization rules could reject them."
+        }
+      ],
+      "questions": [
+        "What error or log message does the SP show for this user's failed login?",
+        "Was this capture taken from the failing attempt, and at what time?"
+      ]
+    },
+    "ttft_ms": 9842,
+    "type": "result",
+    "duration_ms": 18583,
+    "uuid": "1d328a91-ce85-4d54-a3f8-e2d168ac80e8",
+    "ttft_stream_ms": 2722,
+    "time_to_request_ms": 99,
+    "first_content_frame_ms": 2723,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

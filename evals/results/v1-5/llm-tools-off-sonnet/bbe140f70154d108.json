@@ -1,0 +1,245 @@
+{
+  "case_id": "oidc_discovery_doc_invalid-04",
+  "case_hash": "bbe140f70154d108",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "OIDC_DISCOVERY_DOC_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/discovery/jwks_uri",
+    "fix_keys": [
+      "point",
+      "canonical"
+    ]
+  },
+  "kind": "oidc_discovery",
+  "meta": {
+    "id": "oidc_discovery_doc_invalid-04",
+    "kind": "oidc_discovery",
+    "mutator": "discovery_offhost_endpoint",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 4,
+    "hash": "bbe140f70154d108"
+  },
+  "output": {
+    "root_cause_code": "OIDC_DISCOVERY_DOC_INVALID",
+    "confidence": 0.5,
+    "evidence": [
+      {
+        "path": "/discovery/jwks_uri",
+        "actual": "https://keys.cdn-example.net/tenant-1/discovery/v2.0/keys",
+        "expected": "same host as issuer (login.example.com)",
+        "note": "jwks_uri is on a different host than the issuer and every other endpoint, so the document is not self-consistent."
+      },
+      {
+        "path": "/discovery/userinfo_endpoint",
+        "actual": "https://login.example.com/oidc/userinfo",
+        "expected": "https://login.example.com/tenant-1/...",
+        "note": "This endpoint has no tenant path segment, unlike the other endpoints."
+      },
+      {
+        "path": "/discovery/issuer",
+        "actual": "https://login.example.com/tenant-1/v2.0",
+        "expected": "https://login.example.com/tenant-1/v2.0",
+        "note": "Issuer matches the configuration, so the issuer is not the fault."
+      },
+      {
+        "path": "/discovery/code_challenge_methods_supported",
+        "actual": "[\"S256\",\"plain\"]",
+        "note": "The OP advertises the weak plain PKCE method."
+      }
+    ],
+    "fix": "AADSTS50049 is raised by Microsoft Entra, so check which instance or authority Entra is being pointed at. The host login.example.com is not an Entra instance it recognises, so Entra cannot load this document. Serve the discovery document from the OP's own authority and keep every endpoint, including jwks_uri and userinfo_endpoint, under the same host and tenant path as the issuer. If a CDN host really is intended for the keys, document it and have the consumer explicitly allow-list that host. Do not turn off issuer or host validation. Also remove \"plain\" from code_challenge_methods_supported and require S256. If this document is meant to be consumed by Entra as a federated or external identity provider, use a configuration type and authority that Entra supports. Otherwise point the SP at the correct tenant authority.",
+    "posture_codes": [
+      "POSTURE_PKCE_PLAIN_OR_ABSENT"
+    ],
+    "alternatives": [
+      {
+        "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+        "why_not": "The error occurs while loading the discovery document, before any client configuration is evaluated. It also comes from Entra's instance lookup, not from this OP."
+      },
+      {
+        "code": "OIDC_ISSUER_MISMATCH",
+        "why_not": "The issuer exactly matches the expected value."
+      }
+    ],
+    "questions": [
+      "Which application or Entra configuration is loading this discovery URL, and is login.example.com meant to be an Entra authority?",
+      "Is keys.cdn-example.net an intended host for the OP's keys?"
+    ]
+  },
+  "started": "2026-10-27T09:37:13.717701-05:00",
+  "duration_ms": 9287,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1319,
+    "cache_creation_input_tokens": 1884,
+    "cache_read_input_tokens": 4038
+  },
+  "cost_usd": 0.0211338,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1319,
+      "cacheReadInputTokens": 4038,
+      "cacheCreationInputTokens": 1884,
+      "costUSD": 0.0211338,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 4,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 9154,
+    "stop_reason": "tool_use",
+    "session_id": "f275db44-cf23-4e95-b72f-01dfaf8bf331",
+    "total_cost_usd": 0.0211338,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 1884,
+      "cache_read_input_tokens": 4038,
+      "output_tokens": 1319,
+      "output_tokens_details": {
+        "thinking_tokens": 276
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 1884,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1319,
+          "cache_read_input_tokens": 4038,
+          "cache_creation_input_tokens": 1884,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1884
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1319,
+        "cacheReadInputTokens": 4038,
+        "cacheCreationInputTokens": 1884,
+        "webSearchRequests": 0,
+        "costUSD": 0.0211338,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 276,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 1884,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"OIDC_DISCOVERY_DOC_INVALID\",\"confidence\":0.5,\"evidence\":[{\"path\":\"/discovery/jwks_uri\",\"actual\":\"https://keys.cdn-example.net/tenant-1/discovery/v2.0/keys\",\"expected\":\"same host as issuer (login.example.com)\",\"note\":\"jwks_uri is on a different host than the issuer and every other endpoint, so the document is not self-consistent.\"},{\"path\":\"/discovery/userinfo_endpoint\",\"actual\":\"https://login.example.com/oidc/userinfo\",\"expected\":\"https://login.example.com/tenant-1/...\",\"note\":\"This endpoint has no tenant path segment, unlike the other endpoints.\"},{\"path\":\"/discovery/issuer\",\"actual\":\"https://login.example.com/tenant-1/v2.0\",\"expected\":\"https://login.example.com/tenant-1/v2.0\",\"note\":\"Issuer matches the configuration, so the issuer is not the fault.\"},{\"path\":\"/discovery/code_challenge_methods_supported\",\"actual\":\"[\\\"S256\\\",\\\"plain\\\"]\",\"note\":\"The OP advertises the weak plain PKCE method.\"}],\"fix\":\"AADSTS50049 is raised by Microsoft Entra, so check which instance or authority Entra is being pointed at. The host login.example.com is not an Entra instance it recognises, so Entra cannot load this document. Serve the discovery document from the OP's own authority and keep every endpoint, including jwks_uri and userinfo_endpoint, under the same host and tenant path as the issuer. If a CDN host really is intended for the keys, document it and have the consumer explicitly allow-list that host. Do not turn off issuer or host validation. Also remove \\\"plain\\\" from code_challenge_methods_supported and require S256. If this document is meant to be consumed by Entra as a federated or external identity provider, use a configuration type and authority that Entra supports. Otherwise point the SP at the correct tenant authority.\",\"questions\":[\"Which application or Entra configuration is loading this discovery URL, and is login.example.com meant to be an Entra authority?\",\"Is keys.cdn-example.net an intended host for the OP's keys?\"],\"alternatives\":[{\"code\":\"OAUTH_CLIENT_CONFIG_REJECTED\",\"why_not\":\"The error occurs while loading the discovery document, before any client configuration is evaluated. It also comes from Entra's instance lookup, not from this OP.\"},{\"code\":\"OIDC_ISSUER_MISMATCH\",\"why_not\":\"The issuer exactly matches the expected value.\"}],\"posture_codes\":[\"POSTURE_PKCE_PLAIN_OR_ABSENT\"]}",
+    "structured_output": {
+      "root_cause_code": "OIDC_DISCOVERY_DOC_INVALID",
+      "confidence": 0.5,
+      "evidence": [
+        {
+          "path": "/discovery/jwks_uri",
+          "actual": "https://keys.cdn-example.net/tenant-1/discovery/v2.0/keys",
+          "expected": "same host as issuer (login.example.com)",
+          "note": "jwks_uri is on a different host than the issuer and every other endpoint, so the document is not self-consistent."
+        },
+        {
+          "path": "/discovery/userinfo_endpoint",
+          "actual": "https://login.example.com/oidc/userinfo",
+          "expected": "https://login.example.com/tenant-1/...",
+          "note": "This endpoint has no tenant path segment, unlike the other endpoints."
+        },
+        {
+          "path": "/discovery/issuer",
+          "actual": "https://login.example.com/tenant-1/v2.0",
+          "expected": "https://login.example.com/tenant-1/v2.0",
+          "note": "Issuer matches the configuration, so the issuer is not the fault."
+        },
+        {
+          "path": "/discovery/code_challenge_methods_supported",
+          "actual": "[\"S256\",\"plain\"]",
+          "note": "The OP advertises the weak plain PKCE method."
+        }
+      ],
+      "fix": "AADSTS50049 is raised by Microsoft Entra, so check which instance or authority Entra is being pointed at. The host login.example.com is not an Entra instance it recognises, so Entra cannot load this document. Serve the discovery document from the OP's own authority and keep every endpoint, including jwks_uri and userinfo_endpoint, under the same host and tenant path as the issuer. If a CDN host really is intended for the keys, document it and have the consumer explicitly allow-list that host. Do not turn off issuer or host validation. Also remove \"plain\" from code_challenge_methods_supported and require S256. If this document is meant to be consumed by Entra as a federated or external identity provider, use a configuration type and authority that Entra supports. Otherwise point the SP at the correct tenant authority.",
+      "questions": [
+        "Which application or Entra configuration is loading this discovery URL, and is login.example.com meant to be an Entra authority?",
+        "Is keys.cdn-example.net an intended host for the OP's keys?"
+      ],
+      "alternatives": [
+        {
+          "code": "OAUTH_CLIENT_CONFIG_REJECTED",
+          "why_not": "The error occurs while loading the discovery document, before any client configuration is evaluated. It also comes from Entra's instance lookup, not from this OP."
+        },
+        {
+          "code": "OIDC_ISSUER_MISMATCH",
+          "why_not": "The issuer exactly matches the expected value."
+        }
+      ],
+      "posture_codes": [
+        "POSTURE_PKCE_PLAIN_OR_ABSENT"
+      ]
+    },
+    "ttft_ms": 3084,
+    "type": "result",
+    "duration_ms": 9287,
+    "uuid": "f25f28f2-8d4a-4cad-8f14-388366edd89d",
+    "ttft_stream_ms": 1148,
+    "time_to_request_ms": 130,
+    "first_content_frame_ms": 1149,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

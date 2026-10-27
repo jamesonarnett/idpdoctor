@@ -1,0 +1,226 @@
+{
+  "case_id": "saml_structure_invalid-02",
+  "case_hash": "d847fb2c12481843",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "SAML_STRUCTURE_INVALID",
+    "posture_codes": [],
+    "evidence_path": "/Response/Assertion",
+    "fix_keys": [
+      "treat",
+      "response",
+      "hostile",
+      "unless"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "saml_structure_invalid-02",
+    "kind": "saml_response",
+    "dialect": "generic",
+    "mutator": "structure_multi_assertion",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 2,
+    "hash": "d847fb2c12481843"
+  },
+  "output": {
+    "root_cause_code": "SAML_STRUCTURE_INVALID",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "path": "/Response/Assertion",
+        "actual": "Two Assertion elements in the Response. The first (_assert_a289ac) is signed. The second (_assert_a289ac_wrapped) has no Signature, and its ID looks like a copy of the first with a '_wrapped' suffix. This matches a signature-wrapping or assertion-injection pattern.",
+        "expected": "Exactly one assertion, and it is signed",
+        "note": "The unsigned second assertion carries a different NameID hash (941e7c61 against ff8d9819) but the same attributes and conditions. An SP that picks the first matching assertion, or the last one, can be tricked into using the unsigned one."
+      },
+      {
+        "path": "/Response/Assertion/Signature",
+        "actual": "The signature is inside the first assertion only. Its Reference URI is #_assert_a289ac, so it covers that assertion and not the second one.",
+        "expected": "Every assertion the SP consumes is covered by a verified signature",
+        "note": "The Response element itself has no signature, so nothing authenticates the second assertion."
+      },
+      {
+        "path": "/Response/Assertion/Subject/NameID",
+        "actual": "The NameID values differ between the two assertions (redacted hashes ff8d9819 and 941e7c61), so the unsigned assertion asserts a different identity.",
+        "expected": "A single subject, taken from the signed assertion",
+        "note": "This is the impersonation vector in the pentest finding."
+      }
+    ],
+    "fix": "Reject any Response that does not contain exactly one Assertion. Check the schema before you process the Response. Verify the signature first. Then take the NameID, attributes and conditions only from the element whose ID matches the signature's Reference URI. To do that, resolve the Reference by ID against the parsed document and use the node it returns. Don't do a second XPath lookup, and don't pick the first or last assertion. Keep require_signed_assertion on. Reject duplicate IDs and any unsigned assertion in the Response. Use a current SAML library that has wrapping protections. Add the pentest payload as a regression test.",
+    "posture_codes": [
+      "POSTURE_UNSIGNED_ASSERTION_ACCEPTED",
+      "POSTURE_PARSER_DIFFERENTIAL_EXPOSURE"
+    ],
+    "alternatives": [
+      {
+        "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+        "why_not": "The signed assertion is correctly signed. The fault is the extra unsigned assertion next to it. That is a structural wrapping or injection problem, and the SP's failure to reject it is the defect."
+      }
+    ],
+    "questions": []
+  },
+  "started": "2026-10-27T09:47:25.438446-05:00",
+  "duration_ms": 8073,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 1039,
+    "cache_creation_input_tokens": 362,
+    "cache_read_input_tokens": 12471
+  },
+  "cost_usd": 0.013089100000000001,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 1039,
+      "cacheReadInputTokens": 12471,
+      "cacheCreationInputTokens": 362,
+      "costUSD": 0.013089100000000001,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 3,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 7917,
+    "stop_reason": "tool_use",
+    "session_id": "c923792d-0aaf-43ba-8ec0-ce2a577ade7a",
+    "total_cost_usd": 0.013089100000000001,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 362,
+      "cache_read_input_tokens": 12471,
+      "output_tokens": 1039,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 362,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1039,
+          "cache_read_input_tokens": 12471,
+          "cache_creation_input_tokens": 362,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 362
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 1039,
+        "cacheReadInputTokens": 12471,
+        "cacheCreationInputTokens": 362,
+        "webSearchRequests": 0,
+        "costUSD": 0.013089100000000001,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 362,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"SAML_STRUCTURE_INVALID\",\"confidence\":0.9,\"evidence\":[{\"path\":\"/Response/Assertion\",\"actual\":\"Two Assertion elements in the Response. The first (_assert_a289ac) is signed. The second (_assert_a289ac_wrapped) has no Signature, and its ID looks like a copy of the first with a '_wrapped' suffix. This matches a signature-wrapping or assertion-injection pattern.\",\"expected\":\"Exactly one assertion, and it is signed\",\"note\":\"The unsigned second assertion carries a different NameID hash (941e7c61 against ff8d9819) but the same attributes and conditions. An SP that picks the first matching assertion, or the last one, can be tricked into using the unsigned one.\"},{\"path\":\"/Response/Assertion/Signature\",\"actual\":\"The signature is inside the first assertion only. Its Reference URI is #_assert_a289ac, so it covers that assertion and not the second one.\",\"expected\":\"Every assertion the SP consumes is covered by a verified signature\",\"note\":\"The Response element itself has no signature, so nothing authenticates the second assertion.\"},{\"path\":\"/Response/Assertion/Subject/NameID\",\"actual\":\"The NameID values differ between the two assertions (redacted hashes ff8d9819 and 941e7c61), so the unsigned assertion asserts a different identity.\",\"expected\":\"A single subject, taken from the signed assertion\",\"note\":\"This is the impersonation vector in the pentest finding.\"}],\"fix\":\"Reject any Response that does not contain exactly one Assertion. Check the schema before you process the Response. Verify the signature first. Then take the NameID, attributes and conditions only from the element whose ID matches the signature's Reference URI. To do that, resolve the Reference by ID against the parsed document and use the node it returns. Don't do a second XPath lookup, and don't pick the first or last assertion. Keep require_signed_assertion on. Reject duplicate IDs and any unsigned assertion in the Response. Use a current SAML library that has wrapping protections. Add the pentest payload as a regression test.\",\"alternatives\":[{\"code\":\"SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED\",\"why_not\":\"The signed assertion is correctly signed. The fault is the extra unsigned assertion next to it. That is a structural wrapping or injection problem, and the SP's failure to reject it is the defect.\"}],\"posture_codes\":[\"POSTURE_UNSIGNED_ASSERTION_ACCEPTED\",\"POSTURE_PARSER_DIFFERENTIAL_EXPOSURE\"],\"questions\":[]}",
+    "structured_output": {
+      "root_cause_code": "SAML_STRUCTURE_INVALID",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "path": "/Response/Assertion",
+          "actual": "Two Assertion elements in the Response. The first (_assert_a289ac) is signed. The second (_assert_a289ac_wrapped) has no Signature, and its ID looks like a copy of the first with a '_wrapped' suffix. This matches a signature-wrapping or assertion-injection pattern.",
+          "expected": "Exactly one assertion, and it is signed",
+          "note": "The unsigned second assertion carries a different NameID hash (941e7c61 against ff8d9819) but the same attributes and conditions. An SP that picks the first matching assertion, or the last one, can be tricked into using the unsigned one."
+        },
+        {
+          "path": "/Response/Assertion/Signature",
+          "actual": "The signature is inside the first assertion only. Its Reference URI is #_assert_a289ac, so it covers that assertion and not the second one.",
+          "expected": "Every assertion the SP consumes is covered by a verified signature",
+          "note": "The Response element itself has no signature, so nothing authenticates the second assertion."
+        },
+        {
+          "path": "/Response/Assertion/Subject/NameID",
+          "actual": "The NameID values differ between the two assertions (redacted hashes ff8d9819 and 941e7c61), so the unsigned assertion asserts a different identity.",
+          "expected": "A single subject, taken from the signed assertion",
+          "note": "This is the impersonation vector in the pentest finding."
+        }
+      ],
+      "fix": "Reject any Response that does not contain exactly one Assertion. Check the schema before you process the Response. Verify the signature first. Then take the NameID, attributes and conditions only from the element whose ID matches the signature's Reference URI. To do that, resolve the Reference by ID against the parsed document and use the node it returns. Don't do a second XPath lookup, and don't pick the first or last assertion. Keep require_signed_assertion on. Reject duplicate IDs and any unsigned assertion in the Response. Use a current SAML library that has wrapping protections. Add the pentest payload as a regression test.",
+      "alternatives": [
+        {
+          "code": "SAML_NOT_SIGNED_OR_WRONG_ELEMENT_SIGNED",
+          "why_not": "The signed assertion is correctly signed. The fault is the extra unsigned assertion next to it. That is a structural wrapping or injection problem, and the SP's failure to reject it is the defect."
+        }
+      ],
+      "posture_codes": [
+        "POSTURE_UNSIGNED_ASSERTION_ACCEPTED",
+        "POSTURE_PARSER_DIFFERENTIAL_EXPOSURE"
+      ],
+      "questions": []
+    },
+    "ttft_ms": 8044,
+    "type": "result",
+    "duration_ms": 8073,
+    "uuid": "a62223b8-04a7-4a14-9e82-d3ebfd2da852",
+    "ttft_stream_ms": 1330,
+    "time_to_request_ms": 152,
+    "first_content_frame_ms": 1330,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

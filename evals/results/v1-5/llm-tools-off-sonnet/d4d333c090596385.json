@@ -1,0 +1,276 @@
+{
+  "case_id": "cert_expired_or_weak-04",
+  "case_hash": "d4d333c090596385",
+  "arm": "llm-tools-off",
+  "model": "sonnet",
+  "label": {
+    "code": "CERT_EXPIRED_OR_WEAK",
+    "posture_codes": [],
+    "evidence_path": "/Signature/KeyInfo/X509Data/X509Certificate/PublicKey",
+    "fix_keys": [
+      "rotate",
+      "signing",
+      "certificate",
+      "generate"
+    ]
+  },
+  "kind": "saml_response",
+  "meta": {
+    "id": "cert_expired_or_weak-04",
+    "kind": "saml_response",
+    "dialect": "entra",
+    "mutator": "cert_weak_key",
+    "expected_completeness": "full",
+    "symptom_from": "vendor_strings.json",
+    "seed": 42,
+    "index": 4,
+    "hash": "d4d333c090596385"
+  },
+  "output": {
+    "root_cause_code": "HEALTHY",
+    "confidence": 0.7,
+    "evidence": [
+      {
+        "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate/NotAfter",
+        "actual": "2126-01-01T00:00:00Z",
+        "expected": "after 2026-01-15T12:00:00Z",
+        "note": "Certificate is not expired; contradicts the symptom that it expired today."
+      },
+      {
+        "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate/NotBefore",
+        "actual": "2026-01-01T00:00:00Z",
+        "expected": "before 2026-01-15T12:00:00Z",
+        "note": "Certificate is already valid at evaluation time."
+      },
+      {
+        "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate/PublicKey",
+        "actual": "RSA 1024-bit",
+        "note": "Weak key size; posture warning only."
+      },
+      {
+        "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+        "actual": "2026-01-15T12:02:30.000Z",
+        "expected": "after now 2026-01-15T12:00:00Z",
+        "note": "Validity window is current and 5 minutes long."
+      },
+      {
+        "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+        "actual": "https://sp.example.com/saml/metadata",
+        "expected": "https://sp.example.com/saml/metadata"
+      },
+      {
+        "path": "/Response/@Destination",
+        "actual": "https://sp.example.com/saml/acs",
+        "expected": "https://sp.example.com/saml/acs"
+      },
+      {
+        "path": "/Response/Status/StatusCode/@Value",
+        "actual": "urn:oasis:names:tc:SAML:2.0:status:Success"
+      }
+    ],
+    "fix": "The IdP certificate is not expired (valid 2026-01-01 to 2126-01-01) and the assertion matches every configured value, so the IdP certificate is not what stopped logins at midnight. Check SP-side causes: a certificate or metadata rollover on the SP, a different IdP certificate than the one captured here, or SP clock drift (keep skew at 5 minutes or less). Separately, ask the IdP to move to an RSA key of at least 2048 bits and update the configured certificate through a trusted channel. Keep signature validation on and pinned to the configured certificate.",
+    "posture_codes": [
+      "POSTURE_WEAK_ALGORITHM"
+    ],
+    "alternatives": [
+      {
+        "code": "CERT_EXPIRED_OR_WEAK",
+        "why_not": "The certificate is valid until 2126. The 1024-bit key is weak, but that is only a posture warning because the signature validates under the configured certificate."
+      },
+      {
+        "code": "SAML_SIGNATURE_INVALID",
+        "why_not": "The embedded certificate matches the configured idp_cert_pem and nothing in the artifact suggests the signature fails. The signature value is redacted, so this is not cryptographically confirmed."
+      }
+    ],
+    "questions": [
+      "What error does the SP log when logins fail, and does it fail on a fresh response or only on older ones?",
+      "Was a different IdP certificate or SP configuration deployed at midnight?"
+    ]
+  },
+  "started": "2026-10-27T09:30:11.979832-05:00",
+  "duration_ms": 15647,
+  "tool_calls": 0,
+  "num_turns": 2,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 2323,
+    "cache_creation_input_tokens": 5808,
+    "cache_read_input_tokens": 5192
+  },
+  "cost_usd": 0.046985200000000005,
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 2323,
+      "cacheReadInputTokens": 5192,
+      "cacheCreationInputTokens": 5808,
+      "costUSD": 0.046985200000000005,
+      "costBasis": "list"
+    }
+  },
+  "hallucinated": [],
+  "valid_citations": 7,
+  "prompt_version": 2,
+  "envelope": {
+    "duration_api_ms": 15506,
+    "stop_reason": "tool_use",
+    "session_id": "98e0d6ef-83be-4695-8272-83f36f632485",
+    "total_cost_usd": 0.046985200000000005,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 5808,
+      "cache_read_input_tokens": 5192,
+      "output_tokens": 2323,
+      "output_tokens_details": {
+        "thinking_tokens": 455
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 5808,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 2323,
+          "cache_read_input_tokens": 5192,
+          "cache_creation_input_tokens": 5808,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 5808
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 2323,
+        "cacheReadInputTokens": 5192,
+        "cacheCreationInputTokens": 5808,
+        "webSearchRequests": 0,
+        "costUSD": 0.046985200000000005,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 455,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 5808,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 2,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "{\"root_cause_code\":\"HEALTHY\",\"confidence\":0.7,\"evidence\":[{\"path\":\"/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate/NotAfter\",\"actual\":\"2126-01-01T00:00:00Z\",\"expected\":\"after 2026-01-15T12:00:00Z\",\"note\":\"Certificate is not expired; contradicts the symptom that it expired today.\"},{\"path\":\"/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate/NotBefore\",\"actual\":\"2026-01-01T00:00:00Z\",\"expected\":\"before 2026-01-15T12:00:00Z\",\"note\":\"Certificate is already valid at evaluation time.\"},{\"path\":\"/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate/PublicKey\",\"actual\":\"RSA 1024-bit\",\"note\":\"Weak key size; posture warning only.\"},{\"path\":\"/Response/Assertion/Conditions/@NotOnOrAfter\",\"actual\":\"2026-01-15T12:02:30.000Z\",\"expected\":\"after now 2026-01-15T12:00:00Z\",\"note\":\"Validity window is current and 5 minutes long.\"},{\"path\":\"/Response/Assertion/Conditions/AudienceRestriction/Audience\",\"actual\":\"https://sp.example.com/saml/metadata\",\"expected\":\"https://sp.example.com/saml/metadata\"},{\"path\":\"/Response/@Destination\",\"actual\":\"https://sp.example.com/saml/acs\",\"expected\":\"https://sp.example.com/saml/acs\"},{\"path\":\"/Response/Status/StatusCode/@Value\",\"actual\":\"urn:oasis:names:tc:SAML:2.0:status:Success\"}],\"fix\":\"The IdP certificate is not expired (valid 2026-01-01 to 2126-01-01) and the assertion matches every configured value, so the IdP certificate is not what stopped logins at midnight. Check SP-side causes: a certificate or metadata rollover on the SP, a different IdP certificate than the one captured here, or SP clock drift (keep skew at 5 minutes or less). Separately, ask the IdP to move to an RSA key of at least 2048 bits and update the configured certificate through a trusted channel. Keep signature validation on and pinned to the configured certificate.\",\"posture_codes\":[\"POSTURE_WEAK_ALGORITHM\"],\"alternatives\":[{\"code\":\"CERT_EXPIRED_OR_WEAK\",\"why_not\":\"The certificate is valid until 2126. The 1024-bit key is weak, but that is only a posture warning because the signature validates under the configured certificate.\"},{\"code\":\"SAML_SIGNATURE_INVALID\",\"why_not\":\"The embedded certificate matches the configured idp_cert_pem and nothing in the artifact suggests the signature fails. The signature value is redacted, so this is not cryptographically confirmed.\"}],\"questions\":[\"What error does the SP log when logins fail, and does it fail on a fresh response or only on older ones?\",\"Was a different IdP certificate or SP configuration deployed at midnight?\"]}",
+    "structured_output": {
+      "root_cause_code": "HEALTHY",
+      "confidence": 0.7,
+      "evidence": [
+        {
+          "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate/NotAfter",
+          "actual": "2126-01-01T00:00:00Z",
+          "expected": "after 2026-01-15T12:00:00Z",
+          "note": "Certificate is not expired; contradicts the symptom that it expired today."
+        },
+        {
+          "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate/NotBefore",
+          "actual": "2026-01-01T00:00:00Z",
+          "expected": "before 2026-01-15T12:00:00Z",
+          "note": "Certificate is already valid at evaluation time."
+        },
+        {
+          "path": "/Response/Assertion/Signature/KeyInfo/X509Data/X509Certificate/PublicKey",
+          "actual": "RSA 1024-bit",
+          "note": "Weak key size; posture warning only."
+        },
+        {
+          "path": "/Response/Assertion/Conditions/@NotOnOrAfter",
+          "actual": "2026-01-15T12:02:30.000Z",
+          "expected": "after now 2026-01-15T12:00:00Z",
+          "note": "Validity window is current and 5 minutes long."
+        },
+        {
+          "path": "/Response/Assertion/Conditions/AudienceRestriction/Audience",
+          "actual": "https://sp.example.com/saml/metadata",
+          "expected": "https://sp.example.com/saml/metadata"
+        },
+        {
+          "path": "/Response/@Destination",
+          "actual": "https://sp.example.com/saml/acs",
+          "expected": "https://sp.example.com/saml/acs"
+        },
+        {
+          "path": "/Response/Status/StatusCode/@Value",
+          "actual": "urn:oasis:names:tc:SAML:2.0:status:Success"
+        }
+      ],
+      "fix": "The IdP certificate is not expired (valid 2026-01-01 to 2126-01-01) and the assertion matches every configured value, so the IdP certificate is not what stopped logins at midnight. Check SP-side causes: a certificate or metadata rollover on the SP, a different IdP certificate than the one captured here, or SP clock drift (keep skew at 5 minutes or less). Separately, ask the IdP to move to an RSA key of at least 2048 bits and update the configured certificate through a trusted channel. Keep signature validation on and pinned to the configured certificate.",
+      "posture_codes": [
+        "POSTURE_WEAK_ALGORITHM"
+      ],
+      "alternatives": [
+        {
+          "code": "CERT_EXPIRED_OR_WEAK",
+          "why_not": "The certificate is valid until 2126. The 1024-bit key is weak, but that is only a posture warning because the signature validates under the configured certificate."
+        },
+        {
+          "code": "SAML_SIGNATURE_INVALID",
+          "why_not": "The embedded certificate matches the configured idp_cert_pem and nothing in the artifact suggests the signature fails. The signature value is redacted, so this is not cryptographically confirmed."
+        }
+      ],
+      "questions": [
+        "What error does the SP log when logins fail, and does it fail on a fresh response or only on older ones?",
+        "Was a different IdP certificate or SP configuration deployed at midnight?"
+      ]
+    },
+    "ttft_ms": 4214,
+    "type": "result",
+    "duration_ms": 15647,
+    "uuid": "08d86bdc-fe07-4a89-8b11-5857fd710451",
+    "ttft_stream_ms": 980,
+    "time_to_request_ms": 138,
+    "first_content_frame_ms": 980,
+    "queued_turn_count": 0,
+    "result_index": 0
+  }
+}

@@ -9,7 +9,7 @@ file the symptom came from, so results can be split by source.
 - `vendor_strings.json`: the public vendor error strings from BUILD_PLAN
   section 3 (Okta, Entra AADSTS, Google, Snowflake, GitLab, GitHub, Auth0,
   WorkOS, Scalekit), lightly paraphrased into ticket form.
-- `spear.json`: **placeholder, to be written by Jameson.** 3-5 anonymized
+- `realworld.json`: not written yet. 3-5 anonymized
   symptom templates from real support tickets, each filed under an existing
   catalog code, no tenant names, no user identifiers, no hostnames other
   than example.com. The file does not exist yet; `eval gen` works without it

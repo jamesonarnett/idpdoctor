@@ -8,7 +8,7 @@ and a vague error from their own library. It runs every applicable check, never 
 returns machine-readable findings with evidence paths and a vendor-neutral fix. The same validators power the
 CLI and the MCP server, so a Claude Code or Cursor session can call `saml_validate` mid-debug.
 
-Status: **v1: agent + eval harness, smoke-tested on the real subscription** (2026-10-27). 24 of the 25
+Status: **v1: agent + eval harness, smoke-tested end to end** (2026-10-27). 24 of the 25
 catalog classes have a validator, a fixture mutator and a golden case (SAML #1-12, JWT/OIDC #14-20, OAuth
 #21-25; #13 encrypted assertions is v2), and all 8 posture codes do. `idpdoctor diagnose` is rules-only by
 default and stays fully useful that way; `--explain` adds one headless Claude Code call that narrates the same
@@ -195,8 +195,8 @@ idpdoctor eval report --results evals/results/v1 --dataset evals/data/v1 --out e
 ```
 
 `gen` mints N cases per catalog class across the four SAML dialects (generic, Okta, Entra, Auth0), rotates the
-mutator variants, draws symptom text from `evals/symptom_templates/*.json` (vendor strings now; Jameson's
-anonymized Spear templates later, see that directory's README), withholds expected values on a schedule
+mutator variants, draws symptom text from `evals/symptom_templates/*.json` (vendor strings now; anonymized
+real-world templates later, see that directory's README), withholds expected values on a schedule
 (full / partial / none) so abstention is measured, adds healthy controls (a third with a misleading symptom)
 and one validating fixture per posture code labelled `HEALTHY` + `posture_codes`. Every fault case is checked
 against the deterministic pipeline at generation time, so a label is always the validators' own truth. `run`
@@ -347,8 +347,6 @@ Decisions recorded while building v1 (where the plan met a real API):
   their evidence paths on a labelled line, and a post-parse normaliser maps an exact check name to its canonical
   path only when unambiguous, reported as "normalised", never as correct. `agent.PromptVersion` joined the cache
   key so the v1 results could not be reused by accident.
-
-See [LEARNING.md](LEARNING.md) for a reading order through the code and the Go concepts each package exercises.
 
 ## License
 

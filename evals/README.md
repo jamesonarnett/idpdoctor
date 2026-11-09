@@ -5,7 +5,7 @@ inputs and outputs. See `idpdoctor eval --help` and the README's "Eval"
 section.
 
 - `rubric.md`: the judge prompt (BUILD_PLAN 6.3).
-- `symptom_templates/`: vendor error strings and, later, anonymized Spear
+- `symptom_templates/`: vendor error strings and, later, anonymized real-world
   templates (see its README).
 - `labels/hand_labels.csv`: human scores for the judge calibration (kappa).
 - `data/<name>/cases/<id>/`: generated datasets (`eval gen`), committed when

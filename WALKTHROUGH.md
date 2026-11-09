@@ -12,7 +12,7 @@ make check          # go vet, go test ./..., staticcheck; no real claude call ha
 ./bin/idpdoctor version
 git log --oneline | head   # the commit history is the story you tell in interviews
 ```
-Read while it runs: `LEARNING.md` (reading order through the code) and `docs/TAXONOMY.md` (generated from
+Read while it runs: `docs/TAXONOMY.md` (generated from
 `internal/finding/codes.go`, the single source of truth for the 25 failure classes and 8 posture codes).
 
 ## 1. Decode a SAML response (what every other tool stops at)
